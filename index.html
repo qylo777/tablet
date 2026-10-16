@@ -4,59 +4,103 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tablet LSPD - MDT</title>
-  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Wbudowane style zapasowe (gwarantują ciemny wygląd nawet przy blokadzie CDN) */
-    :root {
-      color-scheme: dark;
-    }
-    * {
-      box-sizing: border-box;
-    }
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       padding: 0;
-      background-color: #090c12;
+      background-color: #080b11;
       color: #e2e8f0;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
       overflow-x: hidden;
     }
-    .mdt-container {
+    .mdt-app {
       display: flex;
       min-height: 100vh;
       background-color: #0b0e14;
     }
+    /* BOCZNY PANEL */
     .mdt-sidebar {
-      width: 245px;
-      background-color: #0f131c;
+      width: 255px;
+      background-color: #0f131d;
       border-right: 1px solid #1e293b;
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
     }
+    .mdt-brand {
+      padding: 18px 16px;
+      border-bottom: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .mdt-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1d4ed8, #0f172a);
+      border: 2px solid #3b82f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 12px;
+      color: #93c5fd;
+    }
+    .nav-label {
+      padding: 14px 16px 6px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #64748b;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      margin: 2px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #94a3b8;
+      cursor: pointer;
+      border: 1px solid transparent;
+      background: transparent;
+      text-align: left;
+      transition: all 0.15s;
+    }
+    .nav-btn:hover { background-color: #161e2e; color: #f8fafc; }
+    .nav-btn.active {
+      background-color: #172554;
+      color: #60a5fa;
+      border-color: #1e3a8a;
+    }
+    /* GŁÓWNY OBSZAR */
     .mdt-main {
       flex: 1;
-      display: flex;
-      flex-direction: column;
-      background-color: #0b0e14;
+      padding: 24px;
       overflow-y: auto;
     }
     .mdt-card {
-      background-color: #131824;
+      background-color: #121723;
       border: 1px solid #1e293b;
       border-radius: 10px;
       padding: 16px;
+      margin-bottom: 16px;
     }
     .mdt-input, .mdt-select, .mdt-textarea {
       width: 100%;
-      background-color: #0b0e14;
+      background-color: #090d14;
       border: 1px solid #263248;
       color: #f1f5f9;
       border-radius: 8px;
-      padding: 9px 12px;
+      padding: 8px 12px;
       font-size: 13px;
       outline: none;
-      transition: border-color 0.15s;
     }
     .mdt-input:focus, .mdt-select:focus, .mdt-textarea:focus {
       border-color: #3b82f6;
@@ -69,46 +113,21 @@
       padding: 8px 14px;
       border-radius: 8px;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       border: 1px solid transparent;
       transition: all 0.15s;
       color: #fff;
     }
-    .mdt-btn-blue { background-color: #2563eb; }
+    .mdt-btn-blue { background-color: #2563eb; border-color: #3b82f6; }
     .mdt-btn-blue:hover { background-color: #1d4ed8; }
-    .mdt-btn-green { background-color: #16a34a; }
+    .mdt-btn-green { background-color: #16a34a; border-color: #22c55e; }
     .mdt-btn-green:hover { background-color: #15803d; }
-    .mdt-btn-red { background-color: #dc2626; }
+    .mdt-btn-red { background-color: #dc2626; border-color: #ef4444; }
     .mdt-btn-red:hover { background-color: #b91c1c; }
     .mdt-btn-gray { background-color: #1e293b; border-color: #334155; color: #cbd5e1; }
     .mdt-btn-gray:hover { background-color: #334155; color: #fff; }
-    
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
-      margin: 2px 10px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      color: #94a3b8;
-      cursor: pointer;
-      border: none;
-      background: transparent;
-      text-align: left;
-      transition: all 0.15s;
-    }
-    .nav-item:hover {
-      background-color: #161d2b;
-      color: #f8fafc;
-    }
-    .nav-item.active {
-      background-color: #172554;
-      color: #60a5fa;
-      border: 1px solid #1e3a8a;
-    }
+
     table.mdt-table {
       width: 100%;
       border-collapse: collapse;
@@ -116,235 +135,180 @@
     }
     table.mdt-table th {
       text-align: left;
-      padding: 10px 12px;
-      background-color: #0f141f;
+      padding: 11px 12px;
+      background-color: #0e131d;
       color: #94a3b8;
       font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
       border-bottom: 1px solid #1e293b;
     }
     table.mdt-table td {
       padding: 10px 12px;
-      border-bottom: 1px solid #1a2232;
+      border-bottom: 1px solid #192130;
       vertical-align: middle;
     }
-    table.mdt-table tr:hover td {
-      background-color: #161e2e;
+    table.mdt-table tr:hover td { background-color: #151d2d; }
+    .hidden { display: none !important; }
+    .q-box {
+      background-color: #0c1018;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
     }
-    .badge-pill {
+    .q-ans {
+      margin-top: 8px;
+      padding: 9px 12px;
+      background-color: #111827;
+      border-left: 3px solid #3b82f6;
+      border-radius: 6px;
+      font-size: 12.5px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+    .lic-pill {
       display: inline-block;
-      padding: 2px 8px;
-      border-radius: 999px;
+      padding: 3px 8px;
+      border-radius: 6px;
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 700;
+      margin: 2px;
+      cursor: pointer;
+      user-select: none;
     }
-    .hidden-view {
-      display: none !important;
-    }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0b0e14; }
-    ::-webkit-scrollbar-thumb { background: #263248; border-radius: 3px; }
+    .lic-on { background-color: #064e3b; color: #4ade80; border: 1px solid #10b981; }
+    .lic-off { background-color: #1e293b; color: #64748b; border: 1px solid #334155; }
   </style>
 </head>
 <body>
 
-<div class="mdt-container">
-  <!-- BOCZNY PANEL NAWIGACJI -->
+<div class="mdt-app">
+  <!-- BOCZNA NAWIGACJA TABLETU -->
   <aside class="mdt-sidebar">
-    <div style="padding: 18px 16px; border-bottom: 1px solid #1e293b; display: flex; align-items: center; gap: 12px;">
-      <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #1e40af, #0f172a); border: 2px solid #3b82f6; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; color: #93c5fd;">
-        LSPD
-      </div>
+    <div class="mdt-brand">
+      <div class="mdt-logo">LSPD</div>
       <div>
-        <div style="font-weight: 700; font-size: 15px; color: #fff;">Tablet <span style="color: #3b82f6;">LSPD</span></div>
+        <div style="font-weight: 800; font-size: 15px; color: #fff;">Tablet <span style="color: #3b82f6;">LSPD</span></div>
         <div style="font-size: 11px; color: #64748b;">Los Santos Police Department</div>
       </div>
     </div>
 
-    <div style="padding: 12px 16px 4px; font-size: 10px; font-weight: 700; color: #475569; letter-spacing: 0.08em;">KATEGORIE</div>
-
+    <div class="nav-label">KATEGORIE</div>
     <nav style="display: flex; flex-direction: column; flex: 1;">
-      <button class="nav-item" onclick="switchMainTab('dyspozytornia')" id="nav-dyspozytornia">📡 Dyspozytornia</button>
-      <button class="nav-item active" onclick="switchMainTab('raporty')" id="nav-raporty">📋 Raporty</button>
-      <button class="nav-item" onclick="switchMainTab('kadet')" id="nav-kadet">🎓 Strefa Kadeta (FTO)</button>
-      <button class="nav-item" onclick="switchMainTab('szkolenia')" id="nav-szkolenia">📚 Szkolenia i Pytania</button>
-      <button class="nav-item" onclick="switchMainTab('sprawy')" id="nav-sprawy">⚖️ Sprawy i Taryfikator</button>
-      <button class="nav-item" onclick="switchMainTab('funkcjonariusze')" id="nav-funkcjonariusze">👮 Funkcjonariusze</button>
+      <button class="nav-btn active" id="nav-szkolenia" onclick="switchTab('szkolenia')">
+        <span>🎖️ Szkolenia LSPD</span>
+      </button>
+      <button class="nav-btn" id="nav-kadet" onclick="switchTab('kadet')">
+        <span>🎓 Strefa Kadeta (FTO)</span>
+      </button>
+      <button class="nav-btn" id="nav-raporty" onclick="switchTab('raporty')">
+        <span>📋 Raporty (#309)</span>
+      </button>
+      <button class="nav-btn" id="nav-sprawy" onclick="switchTab('sprawy')">
+        <span>⚖️ Sprawy / Taryfikator</span>
+      </button>
+      <button class="nav-btn" id="nav-funkcjonariusze" onclick="switchTab('funkcjonariusze')">
+        <span>👮 Funkcjonariusze</span>
+      </button>
     </nav>
 
-    <div style="padding: 14px; border-top: 1px solid #1e293b; background-color: #0b0f17; font-size: 12px;">
+    <div style="padding: 14px; border-top: 1px solid #1e293b; background-color: #090d14; font-size: 12px;">
       <div style="color: #64748b; font-size: 10px; text-transform: uppercase;">Zalogowany funkcjonariusz</div>
-      <div style="font-weight: 700; color: #f8fafc; margin-top: 2px;">[923] Oley Sasa</div>
-      <div style="color: #ef4444; font-size: 11px; font-weight: 600;">AIAD / FTO Supervisor</div>
+      <div style="font-weight: 800; color: #fff; margin-top: 2px;">[923] Oley Sasa</div>
+      <div style="color: #ef4444; font-size: 11px; font-weight: 700;">AIAD / FTO / Szkoleniowiec</div>
     </div>
   </aside>
 
-  <!-- GŁÓWNA ZAWARTOŚĆ TABLETU -->
+  <!-- GŁÓWNE OKNO -->
   <main class="mdt-main">
-    <!-- Pasek powiadomień (Toast) -->
-    <div id="toast-box" style="position: fixed; bottom: 20px; right: 20px; background: #1e40af; color: #fff; padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: none; z-index: 9999; border: 1px solid #60a5fa;"></div>
+    <div id="toast" style="position: fixed; bottom: 20px; right: 20px; background: #1d4ed8; color: #fff; padding: 12px 18px; border-radius: 8px; font-size: 13px; font-weight: 700; border: 1px solid #60a5fa; display: none; z-index: 9999;"></div>
 
-    <!-- ========================================== -->
-    <!-- 1. ZAKŁADKA: RAPORTY (Domyślna z raportem) -->
-    <!-- ========================================== -->
-    <section id="view-raporty" style="padding: 24px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+    <!-- ========================================================= -->
+    <!-- 1. ZAKŁADKA: SZKOLENIA LSPD (DLA KAŻDEGO FUNKCJONARIUSZA) -->
+    <!-- ========================================================= -->
+    <section id="tab-szkolenia">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
         <div>
-          <h1 style="margin: 0; font-size: 20px; font-weight: 700; color: #fff;">Nowy raport służbowy</h1>
-          <p style="margin: 2px 0 0; font-size: 12px; color: #64748b;">Tworzenie raportu służbowego LSPD (#309 – Szpital St. Fiacre)</p>
+          <h1 style="margin: 0; font-size: 21px; font-weight: 800; color: #fff;">🎖️ Szkolenia Specjalistyczne LSPD (Dla wszystkich funkcjonariuszy)</h1>
+          <p style="margin: 3px 0 0; font-size: 12.5px; color: #94a3b8;">Kursy: RTO+HRO, NEGO, SV, PWC+APWC, ASU, MERRY, SEU — pytania egzaminacyjne, próby praktyczne oraz baza licencji funkcjonariuszy</p>
         </div>
         <div style="display: flex; gap: 8px;">
-          <button class="mdt-btn mdt-btn-gray" onclick="copyReportTextOnly()">📄 Kopiuj samą treść</button>
-          <button class="mdt-btn mdt-btn-blue" onclick="copyFullReport()">📋 Kopiuj cały raport</button>
+          <button class="mdt-btn mdt-btn-blue" id="sub-szk-egzaminator" onclick="switchTrainingSub('egzaminator')">📖 Arkusz Pytań i Egzaminowania</button>
+          <button class="mdt-btn mdt-btn-gray" id="sub-szk-wykaz" onclick="switchTrainingSub('wykaz')">👮 Wykaz Licencji Funkcjonariuszy</button>
         </div>
       </div>
 
-      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 18px;">
-        <!-- Lewa kolumna raportu -->
-        <div style="display: flex; flex-direction: column; gap: 14px;">
-          <div class="mdt-card">
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 14px;">
-              <div>
-                <label style="display: block; font-size: 11px; color: #94a3b8; font-weight: 700; margin-bottom: 6px;">TYTUŁ RAPORTU</label>
-                <input type="text" id="rep-title" class="mdt-input" value="Podsumowanie akcji – Alarm bombowy w St. Fiacre Hospital (El Burro Heights)" />
-              </div>
-              <div>
-                <label style="display: block; font-size: 11px; color: #94a3b8; font-weight: 700; margin-bottom: 6px;">RODZAJ RAPORTU</label>
-                <select id="rep-type" class="mdt-select">
-                  <option value="Podsumowanie akcji" selected>Podsumowanie akcji</option>
-                  <option value="Patrolowy">Patrolowy</option>
-                  <option value="Pościgowy">Pościgowy</option>
-                  <option value="Operacyjny">Operacyjny</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label style="display: block; font-size: 11px; color: #94a3b8; font-weight: 700; margin-bottom: 6px;">TREŚĆ RAPORTU</label>
-              <textarea id="rep-body" rows="16" class="mdt-textarea" style="line-height: 1.55; font-family: inherit;">1. Dyspozycja i przybycie na miejsce zdarzenia:
-W dniu dzisiejszym około godziny 20:00 funkcjonariusz [923] Oley Sasa otrzymał zgłoszenie dotyczące prawdopodobnego podłożenia ładunku wybuchowego na terenie szpitala St. Fiacre Hospital na El Burro Heights. Funkcjonariusz [923] Oley Sasa wraz z funkcjonariuszką [141] Vivienne Walker niezwłocznie udali się na miejsce zdarzenia, współdziałając na kanale taktycznym LSPD Tac #3. W momencie przybycia pod budynek szpital nie był jeszcze ewakuowany, a przed wejściem panował chaos i znajdowała się liczna grupa obywateli oraz personel SAMS (m.in. [729] Jade Grayson oraz [711] Andrew Karabin).
-
-2. Rozpoznanie zagrożenia (Alarm Bombowy):
-Po przybyciu na miejsce funkcjonariusz [941] Gregory Solin oraz pracownica SAMS [729] Jade Grayson przekazali informację o lokalizacji ładunków wybuchowych wewnątrz budynku. Funkcjonariusz [923] Oley Sasa wraz z [941] Gregory Solin oraz [729] Jade Grayson weszli do holu głównego (West Reception) w celu weryfikacji zgłoszenia. Z bezpiecznej odległości potwierdzono obecność dwóch urządzeń wybuchowych umieszczonych pod krzesełkami poczekalni naprzeciwko recepcji.
-
-3. Przejęcie dowodzenia (Supervisor), wezwanie wsparcia i zabezpieczenie terenu:
-Funkcjonariusz [923] Oley Sasa natychmiast zarządził ewakuację osób przebywających wewnątrz budynku, nadał komunikat na centrali (/d 10-21 alarm bombowy TAC 3 potwierdzone) i przejął rolę Supervisora (SV) akcji.
-- Wezwanie wsparcia: Funkcjonariusz [923] Oley Sasa czterokrotnie wzywał wsparcie dodatkowych jednostek (raz na kanale radiowym dyspozytorni, gdzie nikt nie przebywał, oraz trzykrotnie za pośrednictwem Dispatcha jako 10-0). Na wezwania zareagowały zaledwie dwie dodatkowe osoby, co łącznie z trzema funkcjonariuszami obecnymi wcześniej dało początkowo zaledwie 5 funkcjonariuszy zabezpieczających cały teren szpitala.
-- Kordon i organizacja ruchu medycznego: Po konsultacji z personelem SAMS (brak możliwości technicznego zamknięcia głównych drzwi na klucz), funkcjonariusz [923] Oley Sasa osobiście odgrodził wejście główne barierkami ostrzegawczymi (Road Closed). Wyznaczono funkcjonariuszy [141] Vivienne Walker oraz [941] Gregory Solin do zabezpieczenia tylnego wejścia od strony garażu i SOR-u, ustalając procedurę bezpiecznego transportowania pacjentów przez garaż z pominięciem strefy zagrożenia.
-- Rozstawiono szeroki kordon z barierek oraz kolczatek na wjeździe głównym od strony ulicy, wycofując wszystkich funkcjonariuszy LSPD, medyków SAMS (m.in. [711] Andrew Karabin wraz z karetkami) oraz gapiów poza wyznaczoną strefę bezpieczeństwa za pomocą komunikatów przez megafon policyjny.
-
-4. Incydenty z obywatelami naruszającymi kordon bezpieczeństwa:
-W trakcie zabezpieczania perymetru doszło do kilkukrotnego złamania poleceń funkcjonariuszy przez osoby postronne:
-- Mężczyzna z brązowym irokezem w białej koszuli i złotym łańcuchu wbiegł za barierki prosto do zaminowanego holu szpitala. Funkcjonariusz [923] Oley Sasa wraz z innym funkcjonariuszem udali się za nim do środka. Obywatel stawiał opór podczas próby skucia, jednak został obezwładniony, wyprowadzony poza kordon bezpieczeństwa i po pouczeniu rozkuty.
-- Kierowca szarego sedana (mężczyzna w białym dresie) podjechał bezpośrednio pod kordon i odmawiał opuszczenia strefy zagrożenia. Został siłą wyciągnięty z pojazdu przez [923] Oley Sasa. Chwilę później w zamieszaniu pod barierkami zakuto oraz odprowadzono w bezpieczne miejsce na drugą stronę ulicy mężczyznę w czarnej marynarce, który odmówił oddalenia się od zagrożonej strefy, martwiąc się o pozostawiony pojazd. Po wyprowadzeniu na bezpieczną odległość został on zwolniony z kajdanek.
-
-5. Działania saperskie i neutralizacja ładunków:
-Ze względu na brak reakcji ze strony dodatkowych jednostek oraz brak dostępnego zespołu Bomb Squad i SWAT na służbie, podjęto próbę neutralizacji zagrożenia przy udziale dwóch ochotników wyposażonych w pełne kombinezony saperskie EOD, z których jeden zadeklarował posiadanie stosownej licencji saperskiej.
-- Funkcjonariusz [923] Oley Sasa wskazał saperom dokładne położenie obu ładunków pod krzesełkami w poczekalni, po czym wycofał wszystkie służby na linię ulicy.
-- Po krótkim czasie zespół saperski opuścił budynek, informując o rozbrojeniu pierwszego ładunku, a następnie powrócił po drugi ładunek (proces rozbrajania był przez nich transmitowany na żywo w aplikacji Instapic, co pozwoliło funkcjonariuszom na zewnątrz śledzić postępy z bezpiecznej odległości i doradzać przecięcie zielonego, a następnie czerwonego przewodu).
-- Po zakończeniu czynności wewnątrz budynku zespół saperski wyniósł rzekomo rozbrojone ładunki w kartonowym pudle poza budynek szpitala. Funkcjonariusz [923] Oley Sasa odmówił osobistego przejęcia pudła z uwagi na brak kombinezonu ochronnego i polecił przetransportowanie ładunków na lądowisko helipad.
-- Na miejsce zadysponowano policyjny śmigłowiec (obsługiwany przez funkcjonariuszy [73] Chris Angel oraz [70] Matt Dick), który zabrał zabezpieczone ładunki z lądowiska, przetransportował je nad ocean i zneutralizował poprzez zatopienie w morzu.
-
-6. Pościg i ujęcie sprawców zamachu (Działania [27] John Cagville):
-Równolegle do działań zabezpieczających pod szpitalem, funkcjonariusz [27] John Cagville wraz z innymi jednostkami prowadził pościg za osobami zidentyfikowanymi przez personel medyczny jako sprawcy podłożenia ładunków wybuchowych.
-- Pościg za podejrzanymi trwał około 40 minut i zakończył się w momencie, gdy uciekinierzy wpadli do morza.
-- Początkowo ścigano dwóch podejrzanych, którym w trakcie ucieczki pomagał trzeci mężczyzna (czwarta osoba wykonała na wcześniejszym etapie zastawkę i oddaliła się z miejsca zdarzenia).
-- Finalnie funkcjonariuszom udało się ująć dwie z trzech uciekających osób: jednego z głównych sprawców zamachu (który nie będzie już stanowił problemu) oraz osobę pomagającą w ucieczce (której ze względu na charakter udziału nie udało się postawić większych zarzutów).
-
-7. Zakończenie działań i powrót na komendę (MRPD):
-Po otrzymaniu potwierdzenia radiowego o zatopieniu ładunków w oceanie, funkcjonariusz [923] Oley Sasa ogłosił przez megafon ponowne otwarcie szpitala St. Fiacre, a następnie wraz z obecnymi na miejscu jednostkami zdemontował barierki oraz kolczatki. Za zgodą [105] Junior Brill zakończono działania na kanale taktycznym Tac #3 i powrócono na kanał główny (Main), udając się na komendę Mission Row (MRPD) na odprawę podsumowującą oraz w celu sporządzenia niniejszego raportu.</textarea>
-            </div>
+      <!-- PODWIDOK 1A: PRZEPROWADZANIE SZKOLENIA (7 KURSÓW) -->
+      <div id="szk-view-egzaminator">
+        <div class="mdt-card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <span style="font-size: 12px; font-weight: 700; color: #94a3b8;">Funkcjonariusz zdający:</span>
+            <select id="trainee-officer-select" class="mdt-select" style="width: 240px;"></select>
           </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-            <div class="mdt-card">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <span style="font-size: 11px; font-weight: 700; color: #94a3b8;">OSOBY POWIĄZANE</span>
-                <button class="mdt-btn mdt-btn-blue" style="padding: 3px 8px;" onclick="addPromptItem('persons-list')">+</button>
-              </div>
-              <div id="persons-list" style="display: flex; flex-direction: column; gap: 6px; font-size: 12px;">
-                <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">[729] Jade Grayson (SAMS – wskazała bomby)</div>
-                <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">[711] Andrew Karabin (SAMS)</div>
-                <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">2x Ochotnicy w kombinezonach EOD (Saperzy)</div>
-                <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">2x Ujęci sprawcy z pościgu ([27] John Cagville)</div>
-              </div>
-            </div>
-
-            <div class="mdt-card">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <span style="font-size: 11px; font-weight: 700; color: #94a3b8;">POJAZDY POWIĄZANE</span>
-                <button class="mdt-btn mdt-btn-blue" style="padding: 3px 8px;" onclick="addPromptItem('vehicles-list')">+</button>
-              </div>
-              <div id="vehicles-list" style="display: flex; flex-direction: column; gap: 6px; font-size: 12px;">
-                <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">Szary klasyczny sedan Albany (przebił kordon)</div>
-                <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">Różowo-białe Karin Futo (rej. 68LCE795)</div>
-                <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">Zielony van przed wejściem głównym</div>
-              </div>
-            </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="mdt-btn mdt-btn-green" onclick="grantCurrentLicenseToOfficer()">✅ Nadaj licencję funkcjonariuszowi</button>
+            <button class="mdt-btn mdt-btn-blue" onclick="copyTrainingProtocol()">📋 Kopiuj protokół ze szkolenia</button>
           </div>
         </div>
 
-        <!-- Prawa kolumna raportu -->
-        <div style="display: flex; flex-direction: column; gap: 14px;">
-          <div class="mdt-card">
-            <div style="font-size: 11px; color: #94a3b8; font-weight: 700; margin-bottom: 4px;">AUTOR</div>
-            <div style="font-size: 15px; font-weight: 700; color: #fff;">[923] Oley Sasa</div>
-          </div>
+        <!-- Pasek 7 przycisków szkoleń -->
+        <div id="course-buttons-bar" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;"></div>
 
-          <div class="mdt-card" style="flex: 1;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-              <div>
-                <div style="font-size: 11px; font-weight: 700; color: #94a3b8;">FUNKCJONARIUSZE</div>
-                <div style="font-size: 11px; color: #64748b;">Dodatkowe jednostki w raporcie</div>
-              </div>
-              <button class="mdt-btn mdt-btn-blue" style="padding: 3px 8px;" onclick="addPromptItem('officers-list')">+</button>
-            </div>
-            <div id="officers-list" style="display: flex; flex-direction: column; gap: 6px; font-size: 12px;">
-              <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">[141] Vivienne Walker</div>
-              <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">[941] Gregory Solin</div>
-              <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">[27] John Cagville</div>
-              <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">[73] Chris Angel</div>
-              <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">[70] Matt Dick</div>
-              <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">[74] James Williams</div>
-              <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">[131] Valerie Raver</div>
-              <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">[163] Ava Bachillo</div>
-              <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">[130] Santiago Bachillo</div>
-              <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">[149] Tony Evans</div>
-              <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">[118] Kavin Turner</div>
-              <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">[105] Junior Brill</div>
-              <div style="padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;">[85] John Black</div>
-            </div>
+        <!-- Zawartość wybranego szkolenia -->
+        <div id="course-details-container"></div>
+      </div>
+
+      <!-- PODWIDOK 1B: TABELA LICENCJI WSZYSTKICH FUNKCJONARIUSZY -->
+      <div id="szk-view-wykaz" class="hidden">
+        <div class="mdt-card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <input type="text" id="lic-officer-search" class="mdt-input" style="max-width: 300px;" placeholder="🔍 Szukaj funkcjonariusza po odznace lub nazwisku..." oninput="renderOfficersLicenseTable()" />
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="new-off-badge" class="mdt-input" style="width: 90px;" placeholder="Odznaka" />
+            <input type="text" id="new-off-name" class="mdt-input" style="width: 180px;" placeholder="Imię i nazwisko" />
+            <button class="mdt-btn mdt-btn-green" onclick="addNewOfficerToRoster()">+ Dodaj funkcjonariusza</button>
           </div>
+        </div>
+
+        <div class="mdt-card" style="padding: 0; overflow-x: auto;">
+          <table class="mdt-table">
+            <thead>
+              <tr>
+                <th>Odznaka</th>
+                <th>Funkcjonariusz</th>
+                <th>Posiadane Szkolenia (Kliknij licencję, aby nadać / odebrać)</th>
+                <th>Ostatni wpis / Egzaminator</th>
+              </tr>
+            </thead>
+            <tbody id="officers-license-tbody"></tbody>
+          </table>
         </div>
       </div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- 2. ZAKŁADKA: STREFA KADETA (FTO + STOPER)  -->
-    <!-- ========================================== -->
-    <section id="view-kadet" class="hidden-view" style="padding: 24px;">
-      <!-- Górny pasek Strefy Kadeta -->
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+    <!-- ========================================================= -->
+    <!-- 2. ZAKŁADKA: STREFA KADETA (TYLKO REKRUCI + STOPER)       -->
+    <!-- ========================================================= -->
+    <section id="tab-kadet" class="hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px;">
         <div>
-          <h1 style="margin: 0; font-size: 20px; font-weight: 700; color: #fff;">Strefa Kadeta — Panel FTO</h1>
-          <p style="margin: 2px 0 0; font-size: 12px; color: #64748b;">Zarządzanie kadetami, licznik czasu w patrolu (START/STOP), arkusze szkoleń i egzamin oficerski</p>
+          <h1 style="margin: 0; font-size: 21px; font-weight: 800; color: #fff;">🎓 Strefa Kadeta — Panel FTO i Licznik Czasu w Patrolu</h1>
+          <p style="margin: 3px 0 0; font-size: 12.5px; color: #94a3b8;">Zarządzanie rekrutami, licznik czasu patrolowego (START/STOP), szkolenia podstawowe FTO oraz Egzamin Oficerski</p>
         </div>
         <div style="display: flex; gap: 8px;">
-          <button class="mdt-btn mdt-btn-blue" id="subbtn-lista" onclick="switchCadetSubView('lista')">📋 Lista Kadetów (FTO)</button>
-          <button class="mdt-btn mdt-btn-gray" id="subbtn-egzamin" onclick="switchCadetSubView('egzamin')">🎯 Egzamin Oficerski (Min. 17 pkt)</button>
+          <button class="mdt-btn mdt-btn-blue" id="sub-fto-lista" onclick="switchFtoSub('lista')">📋 Lista Kadetów</button>
+          <button class="mdt-btn mdt-btn-gray" id="sub-fto-egzamin" onclick="switchFtoSub('egzamin')">🎯 Egzamin Oficerski (Min. 17 pkt)</button>
         </div>
       </div>
 
-      <!-- PODWIDOK A: LISTA KADETÓW -->
-      <div id="cadet-sub-lista">
-        <div class="mdt-card" style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
-          <input type="text" id="cadet-search" class="mdt-input" style="max-width: 320px;" placeholder="🔍 Szukaj po odznace, nazwisku lub FTO..." oninput="renderCadetsTable()" />
-          <div style="display: flex; gap: 8px; align-items: center;">
-            <input type="text" id="new-cadet-badge" class="mdt-input" style="width: 90px;" placeholder="Odznaka" />
-            <input type="text" id="new-cadet-name" class="mdt-input" style="width: 170px;" placeholder="Imię i nazwisko kadeta" />
-            <input type="text" id="new-cadet-fto" class="mdt-input" style="width: 150px;" placeholder="Opiekun FTO" value="Oley Sasa" />
-            <button class="mdt-btn mdt-btn-green" onclick="addNewCadet()">+ Dodaj kadeta</button>
+      <!-- LISTA KADETÓW -->
+      <div id="fto-view-lista">
+        <div class="mdt-card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <input type="text" id="cadet-filter-inp" class="mdt-input" style="max-width: 280px;" placeholder="🔍 Szukaj kadeta lub FTO..." oninput="renderCadetsTable()" />
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="inp-c-badge" class="mdt-input" style="width: 85px;" placeholder="Odznaka" />
+            <input type="text" id="inp-c-name" class="mdt-input" style="width: 170px;" placeholder="Imię i nazwisko" />
+            <input type="text" id="inp-c-fto" class="mdt-input" style="width: 140px;" value="Oley Sasa" placeholder="FTO" />
+            <button class="mdt-btn mdt-btn-green" onclick="addCadet()">+ Dodaj kadeta</button>
           </div>
         </div>
 
@@ -354,9 +318,9 @@ Po otrzymaniu potwierdzenia radiowego o zatopieniu ładunków w oceanie, funkcjo
               <tr>
                 <th>Odznaka</th>
                 <th>Kadet</th>
-                <th>FTO (Opiekun)</th>
+                <th>FTO</th>
                 <th>Czas w patrolu (START / STOP)</th>
-                <th>Arkusz szkoleń</th>
+                <th>Arkusz FTO</th>
                 <th>Data dołączenia</th>
                 <th>Pozytywny</th>
                 <th>Raport negatywny</th>
@@ -367,62 +331,60 @@ Po otrzymaniu potwierdzenia radiowego o zatopieniu ładunków w oceanie, funkcjo
         </div>
       </div>
 
-      <!-- PODWIDOK B: INDYWIDUALNY ARKUSZ KADETA -->
-      <div id="cadet-sub-arkusz" class="hidden-view">
-        <div class="mdt-card" style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+      <!-- ARKUSZ INDYWIDUALNY KADETA -->
+      <div id="fto-view-arkusz" class="hidden">
+        <div class="mdt-card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
           <div>
-            <div style="font-size: 12px; color: #60a5fa; font-weight: 700;" id="sheet-cadet-badge">#165</div>
-            <h2 style="margin: 2px 0; font-size: 22px; font-weight: 800; color: #fff;" id="sheet-cadet-name">Paulo Cortez</h2>
-            <div style="font-size: 12px; color: #94a3b8;" id="sheet-cadet-meta">Opiekun FTO: Oley Sasa • Data dołączenia: 03.10.2026</div>
+            <div style="font-size: 12px; font-weight: 800; color: #60a5fa;" id="cs-badge">#165</div>
+            <h2 style="margin: 2px 0; font-size: 22px; font-weight: 800; color: #fff;" id="cs-name">Paulo Cortez</h2>
+            <div style="font-size: 12px; color: #94a3b8;" id="cs-meta">Opiekun FTO: Oley Sasa • Data dołączenia: 03.10.2026</div>
           </div>
 
-          <!-- Stoper w arkuszu kadeta -->
-          <div style="display: flex; align-items: center; gap: 12px; background: #0b0e14; padding: 10px 16px; border-radius: 10px; border: 1px solid #1e293b;">
+          <div style="display: flex; align-items: center; gap: 10px; background: #080b11; padding: 10px 14px; border-radius: 10px; border: 1px solid #1e293b;">
             <div>
               <div style="font-size: 10px; color: #64748b; text-transform: uppercase;">Łączny czas w patrolu</div>
-              <div id="sheet-timer-display" style="font-family: monospace; font-size: 18px; font-weight: 800; color: #38bdf8;">00h 00m 00s</div>
+              <div id="cs-timer-text" style="font-family: monospace; font-size: 18px; font-weight: 800; color: #38bdf8;">00h 00m 00s</div>
             </div>
-            <button id="sheet-startstop-btn" class="mdt-btn mdt-btn-green" onclick="toggleActiveCadetTimer()">▶ START</button>
-            <button class="mdt-btn mdt-btn-gray" onclick="addMinutesToActiveCadet(15)">+15m</button>
+            <button id="cs-timer-btn" class="mdt-btn mdt-btn-green" onclick="toggleCadetTimer(activeCadetId)">▶ START</button>
+            <button class="mdt-btn mdt-btn-gray" onclick="addMinutesCadet(15)">+15m</button>
           </div>
 
           <div style="display: flex; gap: 8px;">
-            <button class="mdt-btn mdt-btn-blue" onclick="signAllModulesSasa()">✍ Zatwierdź wszystkie (SASA)</button>
-            <button class="mdt-btn mdt-btn-gray" onclick="copyCadetSheet()">📋 Kopiuj arkusz</button>
-            <button class="mdt-btn mdt-btn-gray" onclick="switchCadetSubView('lista')">⬅ Wróć do listy</button>
+            <button class="mdt-btn mdt-btn-blue" onclick="signAllCadetModules()">✍ Podpisz wszystkie (SASA)</button>
+            <button class="mdt-btn mdt-btn-gray" onclick="copyCadetSheetText()">📋 Kopiuj arkusz</button>
+            <button class="mdt-btn mdt-btn-gray" onclick="switchFtoSub('lista')">⬅ Wróć do listy</button>
           </div>
         </div>
 
-        <div class="mdt-card" style="padding: 0; margin-bottom: 16px; overflow-x: auto;">
+        <div class="mdt-card" style="padding: 0; overflow-x: auto;">
           <table class="mdt-table">
             <thead>
               <tr>
-                <th style="width: 180px;">Szkolenia</th>
+                <th style="width: 180px;">Szkolenia Podstawowe</th>
                 <th style="width: 90px; text-align: center;">Potrafi</th>
-                <th>Notatki (Pozytywne / Do poprawy / Błędy)</th>
-                <th style="width: 160px;">Podpis FTO</th>
+                <th>Notatki FTO</th>
+                <th style="width: 150px;">Podpis FTO</th>
                 <th style="width: 120px;">Szybki podpis</th>
               </tr>
             </thead>
-            <tbody id="sheet-modules-tbody"></tbody>
+            <tbody id="cs-modules-tbody"></tbody>
           </table>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
           <div class="mdt-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <span style="font-size: 13px; font-weight: 700; color: #4ade80;">✅ Pozytywne raporty / Pochwały FTO</span>
-              <label style="font-size: 12px; display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                <input type="checkbox" id="sheet-pos-check" onchange="saveActiveCadetReports()" /> Zaliczony pozytywny raport
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+              <span style="font-weight: 700; color: #4ade80;">✅ Pozytywne raporty / Pochwały</span>
+              <label style="font-size: 12px; cursor: pointer;">
+                <input type="checkbox" id="cs-pos-chk" onchange="saveCadetNotes()" /> Pozytywny raport
               </label>
             </div>
-            <textarea id="sheet-pos-notes" rows="4" class="mdt-textarea" placeholder="Wpisz co kadet zrobił dobrze (np. bardzo dobra komunikacja na radiu, poprawne 10-80)..." oninput="saveActiveCadetReports()"></textarea>
+            <textarea id="cs-pos-txt" rows="3" class="mdt-textarea" placeholder="Co kadet robi dobrze..." oninput="saveCadetNotes()"></textarea>
           </div>
-
           <div class="mdt-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <span style="font-size: 13px; font-weight: 700; color: #f87171;">⚠️ Negatywne raporty / Błędy kadeta</span>
-              <select id="sheet-neg-status" class="mdt-select" style="width: 160px; padding: 4px 8px;" onchange="saveActiveCadetReports()">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+              <span style="font-weight: 700; color: #f87171;">⚠️ Negatywne raporty / Do poprawy</span>
+              <select id="cs-neg-sel" class="mdt-select" style="width: 150px; padding: 3px 8px;" onchange="saveCadetNotes()">
                 <option value="BRAK">BRAK</option>
                 <option value="1 NEGATYWNY">1 NEGATYWNY</option>
                 <option value="2 NEGATYWNE">2 NEGATYWNE</option>
@@ -430,53 +392,48 @@ Po otrzymaniu potwierdzenia radiowego o zatopieniu ładunków w oceanie, funkcjo
                 <option value="ZAWIESZONY">ZAWIESZONY</option>
               </select>
             </div>
-            <textarea id="sheet-neg-notes" rows="4" class="mdt-textarea" placeholder="Wpisz błędy kadeta do poprawy (np. mylenie kodów radiowych, brak ostrożności na Code 6)..." oninput="saveActiveCadetReports()"></textarea>
+            <textarea id="cs-neg-txt" rows="3" class="mdt-textarea" placeholder="Błędy kadeta do poprawy..." oninput="saveCadetNotes()"></textarea>
           </div>
         </div>
       </div>
 
-      <!-- PODWIDOK C: EGZAMIN OFICERSKI -->
-      <div id="cadet-sub-egzamin" class="hidden-view">
-        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 18px;">
+      <!-- EGZAMIN OFICERSKI -->
+      <div id="fto-view-egzamin" class="hidden">
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 16px;">
           <div class="mdt-card" style="display: flex; flex-direction: column; gap: 12px;">
-            <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: #60a5fa;">Dane Egzaminu Oficerskiego</h3>
+            <h3 style="margin: 0; font-size: 15px; color: #60a5fa;">Egzamin Oficerski (Próg: min. 17 pkt)</h3>
             <div>
-              <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Rekrut podchodzący do egzaminu</label>
-              <select id="exam-cadet-select" class="mdt-select" style="margin-top: 4px;"></select>
+              <label style="font-size: 11px; color: #94a3b8;">Rekrut podchodzący do egzaminu</label>
+              <select id="eo-cadet" class="mdt-select" style="margin-top: 4px;"></select>
             </div>
             <div>
-              <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Funkcjonariusz prowadzący egzamin</label>
-              <input type="text" id="exam-lead" class="mdt-input" style="margin-top: 4px;" value="[923] Oley Sasa" />
+              <label style="font-size: 11px; color: #94a3b8;">Prowadzący egzamin</label>
+              <input type="text" id="eo-lead" class="mdt-input" style="margin-top: 4px;" value="[923] Oley Sasa" />
             </div>
             <div>
-              <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Funkcjonariusz asystujący egzamin</label>
-              <input type="text" id="exam-assist" class="mdt-input" style="margin-top: 4px;" value="[941] Gregory Solin" />
+              <label style="font-size: 11px; color: #94a3b8;">Asystujący</label>
+              <input type="text" id="eo-assist" class="mdt-input" style="margin-top: 4px;" value="[941] Gregory Solin" />
             </div>
-            <div>
-              <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Notatki egzaminatora</label>
-              <textarea id="exam-notes" rows="4" class="mdt-textarea" style="margin-top: 4px;" placeholder="Dodatkowe uwagi z przebiegu egzaminu praktycznego i teoretycznego..."></textarea>
-            </div>
-            <button class="mdt-btn mdt-btn-blue" onclick="copyOfficerExamResult()">📋 Kopiuj wynik egzaminu</button>
+            <button class="mdt-btn mdt-btn-blue" onclick="copyEoResult()">📋 Kopiuj wynik egzaminu</button>
           </div>
-
-          <div class="mdt-card" style="padding: 0; overflow: hidden;">
+          <div class="mdt-card" style="padding: 0;">
             <table class="mdt-table">
               <thead>
                 <tr>
-                  <th>Zadania / Punktacja</th>
-                  <th style="text-align: center;">0 pkt</th>
-                  <th style="text-align: center;">1 pkt</th>
-                  <th style="text-align: center;">2 pkt</th>
-                  <th style="text-align: center;">3 pkt</th>
-                  <th style="text-align: center;">Wynik</th>
+                  <th>Zadanie</th>
+                  <th style="text-align:center;">0</th>
+                  <th style="text-align:center;">1</th>
+                  <th style="text-align:center;">2</th>
+                  <th style="text-align:center;">3</th>
+                  <th style="text-align:center;">Wynik</th>
                 </tr>
               </thead>
-              <tbody id="exam-tasks-tbody"></tbody>
+              <tbody id="eo-tbody"></tbody>
               <tfoot>
-                <tr style="background: #0f172a; font-weight: 800;">
-                  <td style="color: #f87171;">Rezultat (min. 17 pkt / max 21 pkt)</td>
-                  <td colspan="4" style="text-align: center; font-size: 14px;" id="exam-pass-status">NIEZDANE</td>
-                  <td style="text-align: center; font-size: 16px; color: #fff;" id="exam-total-points">0</td>
+                <tr style="background:#0f172a; font-weight:800;">
+                  <td style="color:#f87171;">Rezultat (min. 17 pkt)</td>
+                  <td colspan="4" style="text-align:center;" id="eo-status">NIEZDANE</td>
+                  <td style="text-align:center;" id="eo-sum">0 / 21</td>
                 </tr>
               </tfoot>
             </table>
@@ -485,81 +442,59 @@ Po otrzymaniu potwierdzenia radiowego o zatopieniu ładunków w oceanie, funkcjo
       </div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- 3. ZAKŁADKA: SZKOLENIA I PYTANIA (7 KURSÓW)-->
-    <!-- ========================================== -->
-    <section id="view-szkolenia" class="hidden-view" style="padding: 24px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+    <!-- ========================================================= -->
+    <!-- 3. ZAKŁADKA: RAPORTY (#309 SZPITAL ST. FIACRE)            -->
+    <!-- ========================================================= -->
+    <section id="tab-raporty" class="hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
         <div>
-          <h1 style="margin: 0; font-size: 20px; font-weight: 700; color: #fff;">Centrum Szkoleń Specjalistycznych LSPD</h1>
-          <p style="margin: 2px 0 0; font-size: 12px; color: #64748b;">Interaktywne arkusze pytań, odpowiedzi, punktacji i map pościgowych dla szkoleniowców</p>
+          <h1 style="margin: 0; font-size: 20px; font-weight: 800; color: #fff;">Nowy raport służbowy (#309)</h1>
+          <p style="margin: 2px 0 0; font-size: 12px; color: #94a3b8;">Gotowy raport z akcji pod szpitalem St. Fiacre na El Burro Heights</p>
         </div>
-        <button class="mdt-btn mdt-btn-blue" onclick="copyCurrentTrainingSummary()">📋 Kopiuj protokół szkolenia</button>
+        <button class="mdt-btn mdt-btn-blue" onclick="copyMainReport()">📋 Kopiuj treść raportu</button>
       </div>
-
-      <!-- Pasek wyboru szkolenia -->
-      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px;" id="training-tabs-bar"></div>
-
-      <!-- Kontener aktywnego szkolenia -->
-      <div id="training-content-area"></div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- 4. ZAKŁADKA: SPRAWY I TARYFIKATOR          -->
-    <!-- ========================================== -->
-    <section id="view-sprawy" class="hidden-view" style="padding: 24px;">
-      <h1 style="margin: 0 0 14px; font-size: 20px; font-weight: 700; color: #fff;">Taryfikator Przestępstw LSPD — Kalkulator Wyroków</h1>
-      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 18px;">
-        <div class="mdt-card" id="penal-code-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-height: 75vh; overflow-y: auto;"></div>
-        <div class="mdt-card" style="display: flex; flex-direction: column; gap: 12px;">
-          <div style="font-size: 12px; color: #94a3b8; font-weight: 700;">PODSUMOWANIE WYROKU</div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <div style="background: #0b0e14; padding: 12px; border-radius: 8px; border: 1px solid #1e293b;">
-              <div style="font-size: 10px; color: #64748b;">ŁĄCZNA ODSIADKA</div>
-              <div id="calc-months" style="font-size: 20px; font-weight: 800; color: #60a5fa;">0 mies.</div>
-            </div>
-            <div style="background: #0b0e14; padding: 12px; border-radius: 8px; border: 1px solid #1e293b;">
-              <div style="font-size: 10px; color: #64748b;">ŁĄCZNA GRZYWNA</div>
-              <div id="calc-fine" style="font-size: 20px; font-weight: 800; color: #4ade80;">$0</div>
-            </div>
-          </div>
-          <div id="calc-selected-crimes" style="font-size: 12px; color: #cbd5e1; flex: 1;">Brak wybranych zarzutów.</div>
-          <button class="mdt-btn mdt-btn-gray" onclick="resetPenalCalc()">Wyczyść zarzuty</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- 5. ZAKŁADKA: DYSPOZYTORNIA                 -->
-    <!-- ========================================== -->
-    <section id="view-dyspozytornia" class="hidden-view" style="padding: 24px;">
-      <h1 style="margin: 0 0 14px; font-size: 20px; font-weight: 700; color: #fff;">Dyspozytornia LSPD — Funkcjonariusze na zmianie</h1>
-      <div class="mdt-card" style="padding: 0;">
-        <table class="mdt-table">
-          <thead>
-            <tr><th>Odznaka</th><th>Imię i nazwisko</th><th>Stopień</th><th>Kanał / Przydział</th><th>Status</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>[923]</td><td>Oley Sasa</td><td>AIAD / FTO</td><td>LSPD Tac #3</td><td><span class="badge-pill" style="background:#064e3b;color:#4ade80;">Na służbie</span></td></tr>
-            <tr><td>[941]</td><td>Gregory Solin</td><td>Officer II</td><td>LSPD Tac #3</td><td><span class="badge-pill" style="background:#064e3b;color:#4ade80;">Na służbie</span></td></tr>
-            <tr><td>[141]</td><td>Vivienne Walker</td><td>Officer I</td><td>LSPD Tac #3</td><td><span class="badge-pill" style="background:#064e3b;color:#4ade80;">Na służbie</span></td></tr>
-            <tr><td>[27]</td><td>John Cagville</td><td>Captain I</td><td>LSPD Tac #3</td><td><span class="badge-pill" style="background:#064e3b;color:#4ade80;">Na służbie</span></td></tr>
-            <tr><td>[73]</td><td>Chris Angel</td><td>Sergeant I</td><td>LSPD Tac #3</td><td><span class="badge-pill" style="background:#064e3b;color:#4ade80;">Na służbie</span></td></tr>
-            <tr><td>[70]</td><td>Matt Dick</td><td>Sergeant I</td><td>LSPD Tac #3</td><td><span class="badge-pill" style="background:#064e3b;color:#4ade80;">Na służbie</span></td></tr>
-            <tr><td>[74]</td><td>James Williams</td><td>Sergeant I</td><td>LSPD Tac #3</td><td><span class="badge-pill" style="background:#064e3b;color:#4ade80;">Na służbie</span></td></tr>
-            <tr><td>[105]</td><td>Junior Brill</td><td>Chief of Police</td><td>Dyspozytornia LSPD</td><td><span class="badge-pill" style="background:#064e3b;color:#4ade80;">Na służbie</span></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- 6. ZAKŁADKA: FUNKCJONARIUSZE               -->
-    <!-- ========================================== -->
-    <section id="view-funkcjonariusze" class="hidden-view" style="padding: 24px;">
-      <h1 style="margin: 0 0 14px; font-size: 20px; font-weight: 700; color: #fff;">Wykaz Funkcjonariuszy LSPD</h1>
       <div class="mdt-card">
-        <p style="margin: 0; font-size: 13px; color: #94a3b8;">Pełna lista funkcjonariuszy zsynchronizowana z Dyspozytornią oraz Strefą Kadeta (FTO).</p>
+        <div style="margin-bottom: 12px;">
+          <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">TYTUŁ RAPORTU</label>
+          <input type="text" id="r-title" class="mdt-input" style="margin-top: 4px;" value="Podsumowanie akcji – Alarm bombowy w St. Fiacre Hospital (El Burro Heights)" />
+        </div>
+        <div>
+          <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">TREŚĆ RAPORTU</label>
+          <textarea id="r-body" rows="16" class="mdt-textarea" style="margin-top: 4px; line-height: 1.55;">1. Dyspozycja i przybycie na miejsce zdarzenia:
+W dniu dzisiejszym około godziny 20:00 funkcjonariusz [923] Oley Sasa otrzymał zgłoszenie dotyczące prawdopodobnego podłożenia ładunku wybuchowego na terenie szpitala St. Fiacre Hospital na El Burro Heights. Funkcjonariusz [923] Oley Sasa wraz z funkcjonariuszką [141] Vivienne Walker niezwłocznie udali się na miejsce zdarzenia, współdziałając na kanale taktycznym LSPD Tac #3. W momencie przybycia pod budynek szpital nie był jeszcze ewakuowany, a przed wejściem panował chaos i znajdowała się liczna grupa obywateli oraz personel SAMS (m.in. [729] Jade Grayson oraz [711] Andrew Karabin).
+
+2. Rozpoznanie zagrożenia (Alarm Bombowy):
+Po przybyciu na miejsce funkcjonariusz [941] Gregory Solin oraz pracownica SAMS [729] Jade Grayson przekazali informację o lokalizacji ładunków wybuchowych wewnątrz budynku. Funkcjonariusz [923] Oley Sasa wraz z [941] Gregory Solin oraz [729] Jade Grayson weszli do holu głównego (West Reception) w celu weryfikacji zgłoszenia. Z bezpiecznej odległości potwierdzono obecność dwóch urządzeń wybuchowych umieszczonych pod krzesełkami poczekalni naprzeciwko recepcji.
+
+3. Przejęcie dowodzenia (Supervisor), wezwanie wsparcia i zabezpieczenie terenu:
+Funkcjonariusz [923] Oley Sasa natychmiast zarządził ewakuację osób przebywających wewnątrz budynku, nadał komunikat na centrali (/d 10-21 alarm bombowy TAC 3 potwierdzone) i przejął rolę Supervisora (SV) akcji. Funkcjonariusz [923] Oley Sasa czterokrotnie wzywał wsparcie dodatkowych jednostek (raz na kanale dyspozytorni oraz trzykrotnie przez Dispatch jako 10-0), na co zareagowały zaledwie dwie dodatkowe osoby (łącznie na miejscu działało początkowo 5 funkcjonariuszy). Odgrodzono główne wejście barierkami, wyznaczono [141] Vivienne Walker oraz [941] Gregory Solin do zabezpieczenia tylnego wejścia od strony garażu/SOR-u oraz wycofano personel i cywilów za kordon przy ulicy.
+
+4. Działania saperskie i neutralizacja ładunków:
+Ze względu na brak dostępnego zespołu Bomb Squad oraz SWAT, do neutralizacji wykorzystano obecnych na miejscu dwóch ochotników w kombinezonach saperskich EOD (deklarujących posiadanie licencji saperskiej). Proces rozbrajania był transmitowany na żywo w aplikacji Instapic. Po wyniesieniu ładunków w kartonowym pudle przetransportowano je na helipad, skąd policyjny śmigłowiec ([73] Chris Angel oraz [70] Matt Dick) wywiózł je nad ocean i zatopił w morzu.
+
+5. Pościg i ujęcie sprawców zamachu (Działania [27] John Cagville):
+Równolegle funkcjonariusz [27] John Cagville wraz z innymi jednostkami prowadził 40-minutowy pościg za sprawcami zamachu zidentyfikowanymi przez personel medyczny. Pościg zakończył się w morzu ujęciem dwóch osób (głównego sprawcy, który nie stanowi już zagrożenia, oraz osoby pomagającej w ucieczce). Po zatopieniu ładunków szpital został ponownie otwarty, a jednostki powróciły na MRPD.</textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 4. ZAKŁADKA: SPRAWY / TARYFIKATOR                         -->
+    <!-- ========================================================= -->
+    <section id="tab-sprawy" class="hidden">
+      <h1 style="margin: 0 0 14px; font-size: 20px; font-weight: 800;">⚖️ Taryfikator LSPD</h1>
+      <div class="mdt-card">
+        <p style="margin: 0; font-size: 13px; color: #94a3b8;">Moduł kalkulatora wyroków i mandatów LSPD.</p>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 5. ZAKŁADKA: FUNKCJONARIUSZE                              -->
+    <!-- ========================================================= -->
+    <section id="tab-funkcjonariusze" class="hidden">
+      <h1 style="margin: 0 0 14px; font-size: 20px; font-weight: 800;">👮 Funkcjonariusze LSPD</h1>
+      <div class="mdt-card">
+        <p style="margin: 0; font-size: 13px; color: #94a3b8;">Aby zarządzać licencjami funkcjonariuszy (`RTO+HRO`, `NEGO`, `SV`, `PWC+APWC`, `ASU`, `MERRY`, `SEU`), przejdź do zakładki <strong>🎖️ Szkolenia LSPD -> Wykaz Licencji Funkcjonariuszy</strong>.</p>
       </div>
     </section>
   </main>
@@ -567,535 +502,107 @@ Po otrzymaniu potwierdzenia radiowego o zatopieniu ładunków w oceanie, funkcjo
 
 <script>
   /* =========================================================
-     STAN APLIKACJI I DANE KADETÓW (Z ZAP. W LOCALSTORAGE)
+     1. BAZA 7 SZKOLEŃ SPECJALISTYCZNYCH (DLA WSZYSTKICH FP)
      ========================================================= */
-  constTRAINING_MODULES_LIST = [
-    "Code 6",
-    "FTS",
-    "10-80",
-    "10-80 Pieszo",
-    "Status 7",
-    "TCCC",
-    "Kompendium"
-  ];
+  const LICENSE_KEYS = ["RTO+HRO", "NEGO", "SV", "PWC+APWC", "ASU", "MERRY", "SEU"];
 
-  const DEFAULT_CADETS = [
-    {
-      id: "165", badge: "165", name: "Paulo Cortez", fto: "Oley Sasa", joinDate: "03.10.2026",
-      totalSeconds: 0, timerRunning: false, lastStartTimestamp: null,
-      posReport: true, posNotes: "Dobrze skoordynowany pościg pojazdem jak i pieszo.",
-      negStatus: "BRAK", negNotes: "",
-      modules: {
-        "Code 6": { passed: true, notes: "Poprawił błędy", sign: "SASA" },
-        "FTS": { passed: true, notes: "", sign: "SASA" },
-        "10-80": { passed: true, notes: "Dobrze skoordynowany pościg pojazdem jak i pieszo", sign: "Sasa" },
-        "10-80 Pieszo": { passed: true, notes: "(wyżej)", sign: "SASA" },
-        "Status 7": { passed: true, notes: "dobrze wykonane zatrzymanie na celach", sign: "Smith" },
-        "TCCC": { passed: true, notes: "", sign: "Walker" },
-        "Kompendium": { passed: true, notes: "błędy poprawione", sign: "Solin" }
-      }
-    },
-    { id: "166", badge: "166", name: "Cayden Potato", fto: "Oley Sasa", joinDate: "10.10.2026", totalSeconds: 0, timerRunning: false, lastStartTimestamp: null, posReport: false, posNotes: "", negStatus: "BRAK", negNotes: "", modules: {} },
-    { id: "168", badge: "168", name: "Troy Stardust", fto: "Gregory Solin", joinDate: "03.10.2026", totalSeconds: 0, timerRunning: false, lastStartTimestamp: null, posReport: false, posNotes: "", negStatus: "BRAK", negNotes: "", modules: {} },
-    { id: "169", badge: "169", name: "Mark Kochones", fto: "Hailey Sinclair", joinDate: "03.10.2026", totalSeconds: 0, timerRunning: false, lastStartTimestamp: null, posReport: false, posNotes: "", negStatus: "BRAK", negNotes: "", modules: {} },
-    { id: "170", badge: "170", name: "Mackey Sztonowski", fto: "John Cagvill", joinDate: "03.10.2026", totalSeconds: 0, timerRunning: false, lastStartTimestamp: null, posReport: false, posNotes: "", negStatus: "BRAK", negNotes: "", modules: {} },
-    { id: "171", badge: "171", name: "Evan Myers", fto: "Mike Smith", joinDate: "03.10.2026", totalSeconds: 0, timerRunning: false, lastStartTimestamp: null, posReport: false, posNotes: "", negStatus: "BRAK", negNotes: "", modules: {} },
-    { id: "174", badge: "174", name: "Tony Wood", fto: "Amy Rover", joinDate: "03.10.2026", totalSeconds: 0, timerRunning: false, lastStartTimestamp: null, posReport: false, posNotes: "", negStatus: "BRAK", negNotes: "", modules: {} },
-    { id: "176", badge: "176", name: "Bobby Bennett", fto: "Zoya Sierra", joinDate: "03.10.2026", totalSeconds: 0, timerRunning: false, lastStartTimestamp: null, posReport: false, posNotes: "", negStatus: "BRAK", negNotes: "", modules: {} },
-    { id: "178", badge: "178", name: "Iris Bloodworth", fto: "Jacob Galahad", joinDate: "04.10.2026", totalSeconds: 0, timerRunning: false, lastStartTimestamp: null, posReport: false, posNotes: "", negStatus: "BRAK", negNotes: "", modules: {} },
-    { id: "182", badge: "182", name: "Joe Harrah", fto: "Zoya Sierra", joinDate: "05.10.2026", totalSeconds: 0, timerRunning: false, lastStartTimestamp: null, posReport: false, posNotes: "", negStatus: "BRAK", negNotes: "", modules: {} },
-    { id: "183", badge: "183", name: "Nathan Luke", fto: "Jack Onfire", joinDate: "05.10.2026", totalSeconds: 0, timerRunning: false, lastStartTimestamp: null, posReport: false, posNotes: "", negStatus: "BRAK", negNotes: "", modules: {} },
-    { id: "199", badge: "199", name: "Túlio Navarro Figueiredo", fto: "Oley Sasa", joinDate: "11.10.2026", totalSeconds: 0, timerRunning: false, lastStartTimestamp: null, posReport: false, posNotes: "", negStatus: "BRAK", negNotes: "", modules: {} }
-  ];
-
-  let cadetsData = [];
-  let activeCadetId = "165";
-
-  function loadCadetsFromStorage() {
-    try {
-      const saved = localStorage.getItem("lspd_mdt_cadets_v2");
-      if (saved) {
-        cadetsData = JSON.parse(saved);
-      } else {
-        cadetsData = JSON.parse(JSON.stringify(DEFAULT_CADETS));
-      }
-    } catch (e) {
-      cadetsData = JSON.parse(JSON.stringify(DEFAULT_CADETS));
-    }
-    // Upewnij się, że każdy kadet ma strukturę 7 modułów
-    cadetsData.forEach(c => {
-      if (!c.modules) c.modules = {};
-      constTRAINING_MODULES_LIST.forEach(m => {
-        if (!c.modules[m]) c.modules[m] = { passed: false, notes: "", sign: "" };
-      });
-    });
-  }
-
-  function saveCadetsToStorage() {
-    try {
-      localStorage.setItem("lspd_mdt_cadets_v2", JSON.stringify(cadetsData));
-    } catch (e) {}
-  }
-
-  /* =========================================================
-     STOPER PATROLOWY KADETA (START / STOP + SUMOWANIE)
-     ========================================================= */
-  function getCadetCurrentTotalSeconds(cadet) {
-    let base = cadet.totalSeconds || 0;
-    if (cadet.timerRunning && cadet.lastStartTimestamp) {
-      const diff = Math.floor((Date.now() - cadet.lastStartTimestamp) / 1000);
-      if (diff > 0) base += diff;
-    }
-    return base;
-  }
-
-  function formatDurationHMS(totalSec) {
-    const hrs = Math.floor(totalSec / 3600);
-    const mins = Math.floor((totalSec % 3600) / 60);
-    const secs = totalSec % 60;
-    return String(hrs).padStart(2, "0") + "h " + String(mins).padStart(2, "0") + "m " + String(secs).padStart(2, "0") + "s";
-  }
-
-  function toggleCadetTimer(cadetId) {
-    const c = cadetsData.find(x => x.id === cadetId);
-    if (!c) return;
-    if (c.timerRunning) {
-      // Zatrzymaj i dodaj czas do puli
-      const elapsed = Math.floor((Date.now() - c.lastStartTimestamp) / 1000);
-      c.totalSeconds = (c.totalSeconds || 0) + Math.max(0, elapsed);
-      c.timerRunning = false;
-      c.lastStartTimestamp = null;
-      showToast("⏹ Zatrzymano patrol [" + c.badge + "] " + c.name + ". Łączny czas: " + formatDurationHMS(c.totalSeconds));
-    } else {
-      // Wystartuj
-      c.timerRunning = true;
-      c.lastStartTimestamp = Date.now();
-      showToast("▶ Rozpoczęto liczenie czasu w patrolu dla [" + c.badge + "] " + c.name);
-    }
-    saveCadetsToStorage();
-    renderCadetsTable();
-    if (activeCadetId === cadetId) updateActiveSheetTimerUI();
-  }
-
-  function toggleActiveCadetTimer() {
-    toggleCadetTimer(activeCadetId);
-  }
-
-  function addMinutesToActiveCadet(mins) {
-    const c = cadetsData.find(x => x.id === activeCadetId);
-    if (!c) return;
-    c.totalSeconds = (c.totalSeconds || 0) + (mins * 60);
-    saveCadetsToStorage();
-    renderCadetsTable();
-    updateActiveSheetTimerUI();
-    showToast("Dodano +" + mins + " min do czasu patrolu kadeta " + c.name);
-  }
-
-  function updateActiveSheetTimerUI() {
-    const c = cadetsData.find(x => x.id === activeCadetId);
-    if (!c) return;
-    const disp = document.getElementById("sheet-timer-display");
-    const btn = document.getElementById("sheet-startstop-btn");
-    if (disp) disp.textContent = formatDurationHMS(getCadetCurrentTotalSeconds(c));
-    if (btn) {
-      if (c.timerRunning) {
-        btn.textContent = "⏹ STOP";
-        btn.className = "mdt-btn mdt-btn-red";
-      } else {
-        btn.textContent = "▶ START";
-        btn.className = "mdt-btn mdt-btn-green";
-      }
-    }
-  }
-
-  // Odświeżanie zegarów co 1 sekundę
-  setInterval(() => {
-    let anyRunning = false;
-    cadetsData.forEach(c => {
-      if (c.timerRunning) {
-        anyRunning = true;
-        const cell = document.getElementById("timer-text-" + c.id);
-        if (cell) cell.textContent = formatDurationHMS(getCadetCurrentTotalSeconds(c));
-      }
-    });
-    if (anyRunning) updateActiveSheetTimerUI();
-  }, 1000);
-
-  /* =========================================================
-     RENDEROWANIE TABELI KADETÓW I ARKUSZA INDYWIDUALNEGO
-     ========================================================= */
-  function renderCadetsTable() {
-    const tbody = document.getElementById("cadets-tbody");
-    if (!tbody) return;
-    const q = (document.getElementById("cadet-search")?.value || "").toLowerCase();
-    tbody.innerHTML = "";
-
-    cadetsData
-      .filter(c => c.badge.toLowerCase().includes(q) || c.name.toLowerCase().includes(q) || c.fto.toLowerCase().includes(q))
-      .forEach(c => {
-        const doneCount = constTRAINING_MODULES_LIST.filter(m => c.modules[m]?.passed).length;
-        const sec = getCadetCurrentTotalSeconds(c);
-        const tr = document.createElement("tr");
-
-        tr.innerHTML = `
-          <td style="font-weight:700; color:#60a5fa;">#${c.badge}</td>
-          <td style="font-weight:700; color:#fff;">${c.name}</td>
-          <td style="color:#cbd5e1;">${c.fto || "-"}</td>
-          <td>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span id="timer-text-${c.id}" style="font-family:monospace; font-weight:700; color:${c.timerRunning ? '#4ade80' : '#38bdf8'};">${formatDurationHMS(sec)}</span>
-              <button class="mdt-btn ${c.timerRunning ? 'mdt-btn-red' : 'mdt-btn-green'}" style="padding:3px 8px; font-size:11px;" onclick="toggleCadetTimer('${c.id}')">
-                ${c.timerRunning ? '⏹ STOP' : '▶ START'}
-              </button>
-            </div>
-          </td>
-          <td>
-            <button class="mdt-btn mdt-btn-blue" style="padding:4px 10px; font-size:11px;" onclick="openCadetSheet('${c.id}')">
-              KLIKNIJ (${doneCount}/7)
-            </button>
-          </td>
-          <td style="color:#94a3b8;">${c.joinDate}</td>
-          <td style="text-align:center;">
-            <input type="checkbox" ${c.posReport ? "checked" : ""} onchange="toggleCadetPosTable('${c.id}', this.checked)" style="width:16px;height:16px;cursor:pointer;" />
-          </td>
-          <td>
-            <select class="mdt-select" style="padding:4px 8px; font-size:11px; color:${c.negStatus !== 'BRAK' ? '#f87171' : '#94a3b8'};" onchange="changeCadetNegTable('${c.id}', this.value)">
-              <option value="BRAK" ${c.negStatus === 'BRAK' ? 'selected' : ''}>BRAK</option>
-              <option value="1 NEGATYWNY" ${c.negStatus === '1 NEGATYWNY' ? 'selected' : ''}>1 NEGATYWNY</option>
-              <option value="2 NEGATYWNE" ${c.negStatus === '2 NEGATYWNE' ? 'selected' : ''}>2 NEGATYWNE</option>
-              <option value="DO POPRAWY" ${c.negStatus === 'DO POPRAWY' ? 'selected' : ''}>DO POPRAWY</option>
-              <option value="ZAWIESZONY" ${c.negStatus === 'ZAWIESZONY' ? 'selected' : ''}>ZAWIESZONY</option>
-            </select>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-    // Aktualizacja listy w Egzaminie Oficerskim
-    const examSel = document.getElementById("exam-cadet-select");
-    if (examSel) {
-      examSel.innerHTML = cadetsData.map(c => `<option value="[${c.badge}] ${c.name}">[${c.badge}] ${c.name}</option>`).join("");
-    }
-  }
-
-  function addNewCadet() {
-    const badge = document.getElementById("new-cadet-badge").value.trim();
-    const name = document.getElementById("new-cadet-name").value.trim();
-    const fto = document.getElementById("new-cadet-fto").value.trim() || "Oley Sasa";
-    if (!badge || !name) {
-      showToast("⚠️ Podaj numer odznaki oraz imię i nazwisko kadeta!");
-      return;
-    }
-    const today = new Date().toLocaleDateString("pl-PL");
-    const newC = {
-      id: badge + "_" + Date.now(),
-      badge,
-      name,
-      fto,
-      joinDate: today,
-      totalSeconds: 0,
-      timerRunning: false,
-      lastStartTimestamp: null,
-      posReport: false,
-      posNotes: "",
-      negStatus: "BRAK",
-      negNotes: "",
-      modules: {}
-    };
-    constTRAINING_MODULES_LIST.forEach(m => {
-      newC.modules[m] = { passed: false, notes: "", sign: "" };
-    });
-    cadetsData.unshift(newC);
-    saveCadetsToStorage();
-    renderCadetsTable();
-    document.getElementById("new-cadet-badge").value = "";
-    document.getElementById("new-cadet-name").value = "";
-    showToast("✅ Dodano kadeta [" + badge + "] " + name);
-  }
-
-  function toggleCadetPosTable(id, checked) {
-    const c = cadetsData.find(x => x.id === id);
-    if (c) {
-      c.posReport = checked;
-      saveCadetsToStorage();
-    }
-  }
-
-  function changeCadetNegTable(id, val) {
-    const c = cadetsData.find(x => x.id === id);
-    if (c) {
-      c.negStatus = val;
-      saveCadetsToStorage();
-      renderCadetsTable();
-    }
-  }
-
-  function openCadetSheet(id) {
-    activeCadetId = id;
-    const c = cadetsData.find(x => x.id === id);
-    if (!c) return;
-
-    document.getElementById("sheet-cadet-badge").textContent = "#" + c.badge;
-    document.getElementById("sheet-cadet-name").textContent = c.name;
-    document.getElementById("sheet-cadet-meta").textContent = "Opiekun FTO: " + (c.fto || "Brak") + " • Data dołączenia: " + c.joinDate;
-    document.getElementById("sheet-pos-check").checked = !!c.posReport;
-    document.getElementById("sheet-pos-notes").value = c.posNotes || "";
-    document.getElementById("sheet-neg-status").value = c.negStatus || "BRAK";
-    document.getElementById("sheet-neg-notes").value = c.negNotes || "";
-
-    updateActiveSheetTimerUI();
-    renderSheetModules(c);
-    switchCadetSubView("arkusz");
-  }
-
-  function renderSheetModules(c) {
-    const tbody = document.getElementById("sheet-modules-tbody");
-    tbody.innerHTML = "";
-    constTRAINING_MODULES_LIST.forEach(modName => {
-      const m = c.modules[modName] || { passed: false, notes: "", sign: "" };
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td style="font-weight:700; color:#fff;">${modName}</td>
-        <td style="text-align:center;">
-          <input type="checkbox" ${m.passed ? "checked" : ""} style="width:17px;height:17px;cursor:pointer;" onchange="updateCadetModule('${modName}', 'passed', this.checked)" />
-        </td>
-        <td>
-          <input type="text" class="mdt-input" value="${m.notes.replace(/"/g, '&quot;')}" placeholder="Wpisz notatkę FTO..." oninput="updateCadetModule('${modName}', 'notes', this.value)" />
-        </td>
-        <td>
-          <input type="text" class="mdt-input" style="font-weight:700; text-align:center;" value="${m.sign.replace(/"/g, '&quot;')}" placeholder="Podpis..." oninput="updateCadetModule('${modName}', 'sign', this.value)" />
-        </td>
-        <td>
-          <button class="mdt-btn mdt-btn-gray" style="padding:4px 8px; font-size:11px;" onclick="quickSignSasa('${modName}')">Podpisz: SASA</button>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
-  function updateCadetModule(modName, field, value) {
-    const c = cadetsData.find(x => x.id === activeCadetId);
-    if (!c) return;
-    if (!c.modules[modName]) c.modules[modName] = { passed: false, notes: "", sign: "" };
-    c.modules[modName][field] = value;
-    saveCadetsToStorage();
-    renderCadetsTable();
-  }
-
-  function quickSignSasa(modName) {
-    const c = cadetsData.find(x => x.id === activeCadetId);
-    if (!c) return;
-    c.modules[modName].passed = true;
-    c.modules[modName].sign = "SASA";
-    saveCadetsToStorage();
-    renderSheetModules(c);
-    renderCadetsTable();
-  }
-
-  function signAllModulesSasa() {
-    const c = cadetsData.find(x => x.id === activeCadetId);
-    if (!c) return;
-    constTRAINING_MODULES_LIST.forEach(m => {
-      c.modules[m].passed = true;
-      if (!c.modules[m].sign) c.modules[m].sign = "SASA";
-    });
-    saveCadetsToStorage();
-    renderSheetModules(c);
-    renderCadetsTable();
-    showToast("✍ Podpisano wszystkie moduły szkoleniowe jako SASA");
-  }
-
-  function saveActiveCadetReports() {
-    const c = cadetsData.find(x => x.id === activeCadetId);
-    if (!c) return;
-    c.posReport = document.getElementById("sheet-pos-check").checked;
-    c.posNotes = document.getElementById("sheet-pos-notes").value;
-    c.negStatus = document.getElementById("sheet-neg-status").value;
-    c.negNotes = document.getElementById("sheet-neg-notes").value;
-    saveCadetsToStorage();
-    renderCadetsTable();
-  }
-
-  function copyCadetSheet() {
-    const c = cadetsData.find(x => x.id === activeCadetId);
-    if (!c) return;
-    let lines = [
-      `ARKUSZ SZKOLENIOWY KADETA — [${c.badge}] ${c.name}`,
-      `Opiekun FTO: ${c.fto} | Data dołączenia: ${c.joinDate} | Czas w patrolu: ${formatDurationHMS(getCadetCurrentTotalSeconds(c))}`,
-      `--------------------------------------------------`
-    ];
-    constTRAINING_MODULES_LIST.forEach(m => {
-      const mod = c.modules[m];
-      lines.push(`${mod.passed ? "[✓]" : "[ ]"} ${m} — Notatki: ${mod.notes || "Brak"} (Podpis: ${mod.sign || "-"})`);
-    });
-    lines.push(`--------------------------------------------------`);
-    lines.push(`Pozytywny raport: ${c.posReport ? "TAK" : "NIE"} (${c.posNotes || "Brak uwag"})`);
-    lines.push(`Negatywny raport: ${c.negStatus} (${c.negNotes || "Brak uwag"})`);
-    navigator.clipboard.writeText(lines.join("\n"));
-    showToast("📋 Skopiowano arkusz kadeta do schowka!");
-  }
-
-  /* =========================================================
-     EGZAMIN OFICERSKI (7 ZADAŃ, MIN. 17 PKT)
-     ========================================================= */
-  const OFFICER_EXAM_TASKS = ["Teoria", "NTS", "FTS", "Status 7", "10-80", "10-80 patyki", "Pierwsza pomoc"];
-  let officerExamScores = { "Teoria": 0, "NTS": 0, "FTS": 0, "Status 7": 0, "10-80": 0, "10-80 patyki": 0, "Pierwsza pomoc": 0 };
-
-  function renderOfficerExam() {
-    const tbody = document.getElementById("exam-tasks-tbody");
-    if (!tbody) return;
-    tbody.innerHTML = "";
-    let total = 0;
-
-    OFFICER_EXAM_TASKS.forEach(task => {
-      const val = officerExamScores[task] || 0;
-      total += val;
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td style="font-weight:700; color:#60a5fa;">${task}</td>
-        ${[0, 1, 2, 3].map(pts => `
-          <td style="text-align:center;">
-            <input type="radio" name="exam-${task}" ${val === pts ? "checked" : ""} onchange="setOfficerExamScore('${task}', ${pts})" style="width:16px;height:16px;cursor:pointer;" />
-          </td>
-        `).join("")}
-        <td style="text-align:center; font-weight:800; color:#fff;">${val}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-
-    const totalEl = document.getElementById("exam-total-points");
-    const statusEl = document.getElementById("exam-pass-status");
-    totalEl.textContent = total + " / 21";
-    if (total >= 17) {
-      statusEl.textContent = "ZDANE ✅";
-      statusEl.style.color = "#4ade80";
-    } else {
-      statusEl.textContent = "NIEZDANE ❌ (Wymagane 17 pkt)";
-      statusEl.style.color = "#f87171";
-    }
-  }
-
-  function setOfficerExamScore(task, pts) {
-    officerExamScores[task] = pts;
-    renderOfficerExam();
-  }
-
-  function copyOfficerExamResult() {
-    const cadet = document.getElementById("exam-cadet-select").value;
-    const lead = document.getElementById("exam-lead").value;
-    const assist = document.getElementById("exam-assist").value;
-    const notes = document.getElementById("exam-notes").value;
-    let total = 0;
-    let details = OFFICER_EXAM_TASKS.map(t => {
-      total += officerExamScores[t];
-      return `- ${t}: ${officerExamScores[t]}/3 pkt`;
-    }).join("\n");
-
-    const text = `PROTOKÓŁ EGZAMINU OFICERSKIEGO LSPD\nRekrut: ${cadet}\nProwadzący: ${lead}\nAsystujący: ${assist}\n\nPunktacja:\n${details}\n\nWynik łączny: ${total}/21 pkt (Próg: 17 pkt) — ${total >= 17 ? "ZDANE" : "NIEZDANE"}\nUwagi: ${notes || "Brak"}`;
-    navigator.clipboard.writeText(text);
-    showToast("📋 Skopiowano protokół Egzaminu Oficerskiego!");
-  }
-
-  /* =========================================================
-     7 SZKOLEŃ SPECJALISTYCZNYCH (RTO+HRO, NEGO, SV, PWC, ASU, MERRY, SEU)
-     ========================================================= */
-  const SPECIAL_TRAININGS = {
-    "RTO_HRO": {
-      title: "1. RTO + HRO",
-      subtitle: "Etap teoretyczny (min. 15/16 pkt) + Etap 2 (Pościg HRO) + Etap 3 (Pościg RTO)",
-      reqPoints: 15,
-      maxPoints: 16,
+  const COURSES_DB = {
+    "RTO+HRO": {
+      name: "RTO + HRO",
+      desc: "Etap 1 Teoretyczny (min. 15/16 pkt) + Etap 2 (Pościg HRO) + Etap 3 (Pościg RTO)",
+      passScore: 15,
+      maxScore: 16,
       questions: [
-        { q: "1. Jaki jest nadrzędny cel prowadzenia radiówki podczas pościgu?", max: 1, a: "Głównym celem jest zapewnienie świadomości sytuacyjnej innym jednostkom. Radiówka musi być prowadzona tak, aby odcięte od pościgu radiowozy mogły na podstawie samych komunikatów głosowych precyzyjnie wyliczyć trasę uciekiniera, zastawić blokadę (kolczatki) lub odciąć mu drogę ucieczki bez patrzenia na mapę." },
-        { q: "2. Dlaczego jednostka prowadząca pościg nie powinna zajmować się raportowaniem na radiu?", max: 2, a: "Ponieważ prowadzenie pościgu z dużą prędkością w mieście wymaga pełnego skupienia i koordynacji wzrokowo-ruchowej. Próba jednoczesnej orientacji (nazw ulic) i mówienia drastycznie zwiększa ryzyko wypadku i utraty uciekiniera. Odpowiedzialność tę przejmuje pasażer lub kierowca U2." },
-        { q: "3. Jakie informacje i w jakiej kolejności należy podać w „komunikacie inicjującym” (zaraz po rozpoczęciu pościgu)?", max: 1, a: "1) Kod pościgu i identyfikator, 2) Opis pojazdu, 3) Aktualną lokalizację i kierunek, 4) Powód pościgu (np. nr odznaki rozpoczynam 10-80 za czarnym mercedesem, nasze 10-20 to kwadraciak, powód nie zatrzymanie się do kontroli)." },
-        { q: "4. Co oznacza pojęcie objaśnienie progresywne i jak należy je stosować?", max: 3, a: "To technika podawania komunikatów z wyprzedzeniem. Zamiast mówić, gdzie pojazd znajduje się w danej sekundzie, operator radiowy mówi, do jakiego punktu lub skrzyżowania pojazd się zbliża (np. „Poruszamy się na zachód przez Vinewood Boulevard, zbliżamy się do skrzyżowania z Alta Street”). Daje to jednostkom z tyłu czas na reakcję." },
-        { q: "5. Jak należy prawidłowo określać kierunki jazdy w pościgu, gdy nazwy ulic szybko się zmieniają?", max: 2, a: "Należy bezwzględnie używać kierunków świata (North, South, East, West), zamiast zwrotów „w lewo / w prawo”. Zwroty relatywne są nieczytelne dla jednostek jadących z innych stron miasta, natomiast kierunki geograficzne są uniwersalne dla każdego." },
-        { q: "6. Jak operator radiowy powinien reagować na wjazd uciekiniera w tzw. „strefę martwą” (tunele metra, kanały burzowe, podziemia)?", max: 1, a: "Operator musi natychmiast podać ostatni punkt wejścia, kierunek i zasygnalizować zmianę środowiska (np. „Uciekinier wjechał do tunelu metra na Alta Street, kierunek dół, przechodzimy w pościg podziemny”). Informuje to resztę jednostek, że ikona na mapie może zniknąć lub pokazywać błędną pozycję GPS." },
-        { q: "7. W jaki sposób należy raportować zmiany prędkości i stylu jazdy uciekiniera?", max: 2, a: "Prędkość raportuje się opisowo (np. prędkość autostradowa / średnia miejska / niska), a styl jazdy poprzez wychwytywanie anomalii (np. „uciekinier ścina krawężniki”, „jedzie chodnikiem”, „gasi światła w pojeździe”). Pozwala to RO na bieżąco oceniać poziom zagrożenia." },
-        { q: "8. Czym różni się „Cisza radiowa” od „Komunikacji ograniczonej”?", max: 1, a: "Cisza radiowa to całkowity zakaz nadawania dla wszystkich (np. ciche podejście pod zakładników). Komunikacja ograniczona (lub przeniesienie pościgu na kanał TAC) to sytuacja, w której z danego pasma korzystają wyłącznie jednostki zaangażowane w pościg, a reszta frakcji przenosi rozmowy na inny kanał." },
-        { q: "9. Jaka jest rola i obowiązek jednostek dołączających do pościgu w kwestii komunikacji?", max: 2, a: "Jednostki dołączające (jako 3., 4. czy 5. radiowóz) mają obowiązek zachować absolutną ciszę. Ich jedynym komunikatem może być krótkie zgłoszenie wejścia w szyk (np. U4 przejmuje U3 po 10-50). Zabronione jest komentowanie jazdy uciekiniera czy powtarzanie informacji." },
-        { q: "10. Kiedy i w jaki sposób operator radiowy powinien ogłosić status „10-13” w trakcie pościgu?", max: 1, a: "Tylko wtedy, gdy życie funkcjonariusza jest bezpośrednio zagrożone (radiowóz eksplodował, oficer ciężko postrzelony lub potrącony). Komunikat musi być rzucony natychmiast z frazą: „10-0 10-5 na 10-13 na [Lokalizacja]!”, co zmniejsza priorytet pościgu i kieruje FP na ratowanie życia policjanta." }
+        { q: "1. Jaki jest nadrzędny cel prowadzenia radiówki podczas pościgu?", pts: 1, a: "Głównym celem jest zapewnienie świadomości sytuacyjnej innym jednostkom. Radiówka musi być prowadzona tak, aby odcięte od pościgu radiowozy mogły na podstawie samych komunikatów głosowych precyzyjnie wyliczyć trasę uciekiniera, zastawić blokadę (kolczatki) lub odciąć mu drogę ucieczki bez patrzenia na mapę." },
+        { q: "2. Dlaczego jednostka prowadząca pościg nie powinna zajmować się raportowaniem na radiu?", pts: 2, a: "Ponieważ prowadzenie pościgu z dużą prędkością w mieście wymaga pełnego skupienia i koordynacji wzrokowo-ruchowej. Próba jednoczesnej orientacji (nazw ulic) i mówienia drastycznie zwiększa ryzyko wypadku i utraty uciekiniera. Odpowiedzialność tę przejmuje pasażer lub kierowca U2." },
+        { q: "3. Jakie informacje i w jakiej kolejności należy podać w „komunikacie inicjującym” (zaraz po rozpoczęciu pościgu)?", pts: 1, a: "Komunikat musi zawierać: 1) Kod pościgu i identyfikator, 2) Opis pojazdu, 3) Aktualną lokalizację i kierunek, 4) Powód pościgu (np. nr odznaki rozpoczynam 10-80 za czarnym mercedesem, nasze 10-20 to kwadraciak, powód nie zatrzymanie się do kontroli)." },
+        { q: "4. Co oznacza pojęcie objaśnienie progresywne i jak należy je stosować?", pts: 3, a: "To technika podawania komunikatów z wyprzedzeniem. Zamiast mówić, gdzie pojazd znajduje się w danej sekundzie, operator radiowy mówi, do jakiego punktu lub skrzyżowania pojazd się zbliża (np. „Poruszamy się na zachód przez Vinewood Boulevard, zbliżamy się do skrzyżowania z Alta Street”). Daje to jednostkom z tyłu czas na reakcję." },
+        { q: "5. Jak należy prawidłowo określać kierunki jazdy w pościgu, gdy nazwy ulic szybko się zmieniają?", pts: 2, a: "Należy bezwzględnie używać kierunków świata (North, South, East, West), zamiast zwrotów „w lewo / w prawo”. Zwroty relatywne są nieczytelne dla jednostek jadących z innych stron miasta, natomiast kierunki geograficzne są uniwersalne dla każdego." },
+        { q: "6. Jak operator radiowy powinien reagować na wjazd uciekiniera w tzw. „strefę martwą” (np. tunele metra, kanały burzowe, podziemia)?", pts: 1, a: "Operator musi natychmiast podać ostatni punkt wejścia, kierunek i zasygnalizować zmianę środowiska (np. „Uciekinier wjechał do tunelu metra na Alta Street, kierunek dół, przechodzimy w pościg podziemny”). Informuje to resztę jednostek, że ikona na mapie może zniknąć lub pokazywać błędną pozycję GPS." },
+        { q: "7. W jaki sposób należy raportować zmiany prędkości i stylu jazdy uciekiniera?", pts: 2, a: "Prędkość raportuje się opisowo (np. prędkość autostradowa / średnia miejska / niska), a styl jazdy poprzez wychwytywanie anomalii (np. „uciekinier ścina krawężniki”, „jedzie chodnikiem”, „gasi światła w pojeździe”). Pozwala to (RO) na bieżąco oceniać poziom zagrożenia." },
+        { q: "8. Czym różni się „Cisza radiowa” od „Komunikacji ograniczonej”?", pts: 1, a: "Cisza radiowa to całkowity zakaz nadawania dla wszystkich (stosowany np. podczas cichego podejścia pod zakładników). Komunikacja ograniczonej (lub przeniesienie pościgu na kanał TAC) to sytuacja, w której z danego pasma korzystają wyłącznie jednostki zaangażowane w pościg, a reszta frakcji przenosi swoje codzienne rozmowy na inny kanał." },
+        { q: "9. Jaka jest rola i obowiązek jednostek dołączających do pościgu w kwestii komunikacji?", pts: 2, a: "Jednostki dołączające (jako 3., 4. czy 5. radiowóz) mają obowiązek zachować absolutną ciszę. Ich jedynym komunikatem może być krótkie zgłoszenie wejścia w szyk (np. U4 przejmuje U3 po 10-50). Zabronione jest komentowanie jazdy uciekiniera czy powtarzanie informacji, które podał już operator." },
+        { q: "10. Kiedy i w jaki sposób operator radiowy powinien ogłosić status „10-13” w trakcie pościgu?", pts: 1, a: "Taki komunikat nadaje się tylko wtedy, gdy życie funkcjonariusza jest bezpośrednio zagrożone (np. radiowóz eksplodował, oficer został ciężko postrzelony lub potrącony). Komunikat musi być rzucony natychmiast, z użyciem frazy „10-0 10-5 na 10-13 na [Lokalizacja]!”, co automatycznie zmniejsza priorytet pościgu i kieruje większą liczbę FP na ratowanie życia policjanta." }
       ],
-      practicalStages: [
-        "Etap 2 (Pościg HRO): Szkoleniowiec ucieka radiowozem, szkolony utrzymuje pościg helikopterem dając pełną radiówkę (brak radiówki = niezdane). Wymagane 2 pościgi po min. 5 minut. (Próby: 2)",
-        "Etap 3 (Pościg RTO): Szkolony pojazdem ADAM ściga szkoleniowca uciekającego pojazdem ADAM z pełną radiówką przez 10 minut. (Próby: 2)"
+      stages: [
+        "Etap 2 (Pościg HRO): Szkoleniowiec zasiada za kierownicą radiowozu i rozpoczyna ucieczkę, szkolony ma za zadanie utrzymywać pościg helikopterem za szkoleniowcem dając pełną radiówkę — w przypadku jej braku próba automatycznie jest niezdana. Szkolony musi utrzymać 2 pościgi po przynajmniej 5 minut. (Próby: 2)",
+        "Etap 3 (Pościg RTO): Szkolony pojazdem ADAM ma za zadanie ścigać szkoleniowca uciekającego pojazdem ADAM z pełną radiówką przez 10 minut. (Próby: 2)"
       ]
     },
     "NEGO": {
-      title: "2. Negocjator (NEGO)",
-      subtitle: "Etap 1 Teoretyczny (min. 15/17 pkt) + Etap 2 Praktyczny (min. 3/4 pkt)",
-      reqPoints: 15,
-      maxPoints: 17,
+      name: "NEGO (Negocjator)",
+      desc: "Etap 1 Teoretyczny (min. 15/17 pkt) + Etap 2 Praktyczny (min. 3/4 pkt)",
+      passScore: 15,
+      maxScore: 17,
       questions: [
-        { q: "1. Czy negocjator musi się przedstawić?", max: 1, a: "Tak, przedstawia się na początku interakcji z napastnikami." },
-        { q: "2. Co jest najważniejsze dla negocjatora?", max: 1, a: "Bezpieczeństwo i życie własne oraz zakładników." },
-        { q: "3. Kiedy możemy podejść do negocjacji?", max: 1, a: "Po zgłoszeniu na radiu „Podchodzę do negocjacji” i upewnieniu się, że ktoś nas ubezpiecza." },
-        { q: "4. Jakie są obowiązki negocjatora?", max: 3, a: "1) Ustalenie liczby napastników i zakładników, ich stanu, posiadanej broni oraz rejestracji pojazdu napastników. 2) Samodzielne korygowanie i akceptowanie żądań napastników. 3) Poinformowanie SV o ostatecznych ustaleniach na koniec negocjacji." },
-        { q: "5. Ile żądań realizujemy za jednego zakładnika?", max: 1, a: "Nie stosujemy systemu „jedynkowego” — każde negocjacje rozpatrujemy osobno." },
-        { q: "6. Co negocjator musi zrobić na początku rozmowy (między przedstawieniem a uzyskaniem informacji)?", max: 1, a: "Zapytać, co się dzieje. Skłaniać napastników do oddania zakładników i poddania się." },
-        { q: "7. Co negocjator musi się dowiedzieć o zakładnikach i jak?", max: 1, a: "Czy potrzebują czegoś (jedzenia, picia, pomocy medycznej) i czy czują się dobrze. Najlepiej pytać osobiście." },
-        { q: "8. Czy negocjator może kłamać?", max: 1, a: "Nie. Wyjątek: próby samobójcze." },
-        { q: "9. Czy negocjator może rozmawiać sam na sam z osobą uzbrojoną?", max: 1, a: "Nie. Może rozmawiać sam na sam tylko z osobą próbującą popełnić samobójstwo (bez możliwości skrzywdzenia negocjatora)." },
-        { q: "10. W jaki sposób zwracasz się do napastnika?", max: 1, a: "Z szacunkiem, bez względu na jego czyny." },
-        { q: "11. Jaki powinien być głos i mowa ciała negocjatora?", max: 1, a: "Spokojny, opanowany, pewny siebie. Szczególnie podczas prób samobójczych." },
-        { q: "12. Ile jest ostrzeżeń negocjatorskich?", max: 1, a: "3." },
-        { q: "13. Kto nakłada ostrzeżenia negocjatorskie?", max: 1, a: "Supervisor (SV) nakłada ostrzeżenia negocjatorskie — Negocjator przekazuje tę informację napastnikom." },
-        { q: "14. Za co można nałożyć ostrzeżenia negocjatorskie? (2 przykłady)", max: 1, a: "Np. zmiana żądań po ich przyklepaniu, groźby wobec zakładników, obraza negocjatora, brak stosowania się do poleceń FP." },
-        { q: "15. Co się dzieje po przekroczeniu liczby ostrzeżeń?", max: 1, a: "SV podejmuje decyzję o zerwaniu negocjacji i informuje o tym PWC." }
+        { q: "1. Czy negocjator musi się przedstawić?", pts: 1, a: "Tak, przedstawia się na początku interakcji z napastnikami." },
+        { q: "2. Co jest najważniejsze dla negocjatora?", pts: 1, a: "Bezpieczeństwo i życie własne oraz zakładników." },
+        { q: "3. Kiedy możemy podejść do negocjacji?", pts: 1, a: "Po zgłoszeniu na radiu „Podchodzę do negocjacji” i upewnieniu się, że ktoś nas ubezpiecza." },
+        { q: "4. Jakie są obowiązki negocjatora?", pts: 3, a: "1) Ustalenie liczby napastników i zakładników, ich stanu, posiadanej broni oraz rejestracja pojazdu napastników.\n2) Samodzielne korygowanie i akceptowanie żądań napastników.\n3) Poinformowanie SV o ostatecznych ustaleniach na koniec negocjacji." },
+        { q: "5. Ile żądań realizujemy za jednego zakładnika?", pts: 1, a: "Nie stosujemy systemu „jedynkowego” — każde negocjacje rozpatrujemy osobno." },
+        { q: "6. Co negocjator musi zrobić na początku rozmowy (między przedstawieniem a uzyskaniem informacji)?", pts: 1, a: "Zapytać, co się dzieje. Skłaniać napastników do oddania zakładników i poddania się." },
+        { q: "7. Co negocjator musi się dowiedzieć o zakładnikach i jak?", pts: 1, a: "Czy potrzebują czegoś (jedzenia, picia, pomocy medycznej) i czy czują się dobrze. Najlepiej pytać osobiście." },
+        { q: "8. Czy negocjator może kłamać?", pts: 1, a: "Nie. Wyjątek: próby samobójcze." },
+        { q: "9. Czy negocjator może rozmawiać sam na sam z osobą uzbrojoną?", pts: 1, a: "Nie. Może rozmawiać sam na sam tylko z osobą próbującą popełnić samobójstwo (bez możliwości skrzywdzenia negocjatora)." },
+        { q: "10. W jaki sposób zwracasz się do napastnika?", pts: 1, a: "Z szacunkiem, bez względu na jego czyny." },
+        { q: "11. Jaki powinien być głos i mowa ciała negocjatora?", pts: 1, a: "Spokojny, opanowany, pewny siebie. Szczególnie podczas prób samobójczych." },
+        { q: "12. Ile jest ostrzeżeń negocjatorskich?", pts: 1, a: "3." },
+        { q: "13. Kto nakłada ostrzeżenia negocjatorskich?", pts: 1, a: "Supervisor (SV) nakłada ostrzeżenia negocjatorskie — Negocjator przekazuje tę informację napastnikom." },
+        { q: "14. Za co można nałożyć ostrzeżenia negocjatorskie? (2 przykłady)", pts: 1, a: "Np. zmiana żądań po ich przyklepaniu, groźby wobec zakładników, obraza negocjatora, brak stosowania się do poleceń FP." },
+        { q: "15. Co się dzieje po przekroczeniu liczby ostrzeżeń?", pts: 1, a: "SV podejmuje decyzję o zerwaniu negocjacji i informuje o tym PWC." }
       ],
-      practicalStages: [
-        "Etap 2 Praktyczny (Symulacja negocjacji na napadzie — wymagane min. 3/4 pkt):",
+      stages: [
+        "Etap 2 Praktyczny (Symulacja negocjacji na napadzie — wymagane 3/4 pkt):",
         "• Przestrzeganie zasad negocjacji (0/1 pkt)",
-        "• Reakcja na zmieniające się warunki, np. nierealne żądania / postrzelenie zakładnika (0/1 pkt)",
+        "• Reakcja na zmieniające się warunki (0/1 pkt)",
         "• Ogólne zachowanie podczas negocjacji (0/1 pkt)",
         "• Profesjonalne podejście (0/1 pkt)"
       ]
     },
     "SV": {
-      title: "3. Supervisor (SV)",
-      subtitle: "Etap 1 Teoretyczny (min. 12/14 pkt) + Etap 2 Praktyczny (min. 4/5 pkt)",
-      reqPoints: 12,
-      maxPoints: 14,
+      name: "SV (Supervisor)",
+      desc: "Etap 1 Teoretyczny (min. 12/14 pkt) + Etap 2 Praktyczny (min. 4/5 pkt)",
+      passScore: 12,
+      maxScore: 14,
       questions: [
-        { q: "1. Kto przejmuje rolę SV na każdej akcji?", max: 1, a: "Osoba wyznaczona przez PWC, lub osoba ze szkoleniem, lub osoba z najwyższym stopniem na radiu." },
-        { q: "2. Czy jako SV możesz zezwolić negocjatorowi na wejście do placówki?", max: 1, a: "Nie." },
-        { q: "3. Czy będziesz prowadził dwa pościgi na jednym radiu?", max: 1, a: "Nie." },
-        { q: "4. Czy wydasz polecenie zerwania negocjacji, gdy zobaczysz na miejscu zdarzenia szansę na powodzenie odbicia zakładnika?", max: 2, a: "Nie, chyba że nałożone byłyby 3 ostrzeżenia negocjatorskie." },
-        { q: "5. Jeśli do dyspozycji masz 2 jednostki SEU, 3 jednostki LINCOLN oraz 2 jednostki ADAM, jak rozstawisz unity pościgu wiedząc, że gonić należy jeden pojazd typu offroad oraz jeden typu sportowego?", max: 2, a: "Akceptujemy wg uznania szkoleniowca — tak, aby miało to logiczny sens taktyczny." },
-        { q: "6. Na konwoju masz 4 zatrzymanych — jakie i ile unitów przygotujesz? (Rozmieszczenie osób i zatrzymanych)", max: 2, a: "Akceptujemy wg uznania szkoleniowca — tak, aby miało to sens i spełniało wymogi bezpieczeństwa." },
-        { q: "7. Jakie są obowiązki SV? (5 elementów)", max: 5, a: "1) Wyznaczanie negocjatora, osoby ubezpieczającej i innych FP. 2) Ustalanie jednostek pościgowych i ich rozmieszczenia. 3) Nadawanie kodów pościgowych. 4) Uzupełnianie dispatcha w trakcie akcji. 5) Przydzielenie funkcjonariuszy do zabezpieczenia terenu wokół akcji." }
+        { q: "1. Kto przejmuje rolę SV na każdej akcji?", pts: 1, a: "Osoba wyznaczona przez PWC, lub osoba ze szkoleniem, lub osoba z najwyższym stopniem na radiu." },
+        { q: "2. Czy jako SV możesz zezwolić negocjatorowi na wejście do placówki?", pts: 1, a: "Nie." },
+        { q: "3. Czy będziesz prowadził dwa pościgi na jednym radiu?", pts: 1, a: "Nie." },
+        { q: "4. Czy wydasz polecenie zerwania negocjacji, gdy zobaczysz na miejscu zdarzenia szansę na powodzenie odbicia zakładnika?", pts: 2, a: "Nie, chyba że nałożone byłyby 3 ostrzeżenia negocjatorskie." },
+        { q: "5. Jeśli do dyspozycji masz 2 jednostki SEU, 3 jednostki LINCOLN oraz 2 jednostki ADAM, jak rozstawisz unity pościgu wiedząc, że gonić należy jeden pojazd typu offroad oraz jeden typu sportowego?", pts: 2, a: "Akceptujemy wg uznania oczywiście tak, aby miało to jakikolwiek sens." },
+        { q: "6. Na konwoju masz 4 zatrzymanych — jakie i ile unitów przygotujesz? (Rozmieszczenie osób i zatrzymanych do danego unitu)", pts: 2, a: "Akceptujemy wg uznania oczywiście tak, aby miało to jakikolwiek sens." },
+        { q: "7. Jakie są obowiązki SV?", pts: 5, a: "1) Wyznaczanie negocjatora, osoby ubezpieczającej i innych FP.\n2) Ustalanie jednostek pościgowych i ich rozmieszczenia.\n3) Nadawanie kodów pościgowych.\n4) Uzupełnianie dispatcha w trakcie akcji.\n5) Przydzielenie funkcjonariuszy do zabezpieczenia terenu wokół akcji." }
       ],
-      practicalStages: [
-        "Etap 2 Praktyczny (Symulacja kierowania akcją jako SV — wymagane min. 4/5 pkt):",
+      stages: [
+        "Etap 2 Praktyczny (Symulacja kierowania akcją jako SV — wymagane 4/5 pkt):",
         "• Przestrzeganie zasad działania SV (0/1 pkt)",
         "• Przystanie na odpowiednie żądania (0/1 pkt)",
         "• Rozmieszczenie jednostek na miejscu zdarzenia (0/1 pkt)",
         "• Profesjonalne podejście do akcji (0/1 pkt)",
-        "• Obserwacja terenu i reagowanie na sytuację w placówce jak i wkoło (0/1 pkt)"
+        "• Obserwacja terenu i reagowanie na sytuację zarówno w placówce jak i wkoło (0/1 pkt)"
       ]
     },
-    "PWC": {
-      title: "4. PWC + APWC",
-      subtitle: "Etap 1 Teoretyczny (min. 15/17 pkt) + Etap 2 Praktyczny Code 8 (min. 3/4 pkt)",
-      reqPoints: 15,
-      maxPoints: 17,
+    "PWC+APWC": {
+      name: "PWC + APWC",
+      desc: "Etap 1 Teoretyczny (min. 15/17 pkt) + Etap 2 Praktyczny Code 8 (min. 3/4 pkt)",
+      passScore: 15,
+      maxScore: 17,
       questions: [
-        { q: "1. Czym zajmują się PWC / APWC?", max: 1, a: "Dowodzenie jednostkami patrolowymi, wyznaczanie supervisorów akcji, ustalanie jednostek, pilnowanie porządku na radiu, dbanie o Dispatch." },
-        { q: "2. Jaki numer ma PWC?", max: 1, a: "00" },
-        { q: "3. Jak wyznaczany jest PWC lub APWC?", max: 1, a: "Najwyższy stopniem (bez HC) lub osoba wyznaczona przez poprzedniego PWC/APWC." },
-        { q: "4. Czy PWC i APWC mogą jeździć razem w patrolu?", max: 1, a: "Nie." },
-        { q: "5. Czy PWC może zareagować na zgłoszenie, gdy APWC jest podczas akcji?", max: 1, a: "Nie. PWC/APWC musi zostać na radiu Main." },
-        { q: "6. Co musi zrobić PWC, gdy schodzi ze służby (oprócz przekazania funkcji)?", max: 2, a: "Przekazać informacje o sytuacji w mieście: ostatnie akcje, miejsca zdarzeń, aktualny kod i powód jego wprowadzenia." },
-        { q: "7. Co powinien zrobić PWC/APWC, gdy widać, że jest niebezpiecznie, a kod to Zielony?", max: 2, a: "Zawołać HC, poprosić o zmianę kodu i uzasadnić." },
-        { q: "8. Jak powinny być rozdzielone jednostki na mieście?", max: 2, a: "Harmonijnie i równomiernie – nie może być samych Edwardów." },
-        { q: "9. Co zrobić, gdy funkcjonariusze popełniają błędy lub są źle rozdysponowani względem kodu?", max: 1, a: "Zrobić Code 8." },
-        { q: "10. Co zrobić, gdy funkcjonariusz popełnia poważne błędy wymagające ukarania?", max: 2, a: "Zgłosić się do HC/AIAD jednostki i poinformować o sytuacji." },
-        { q: "11. Czy PWC/APWC musi zostać poinformowany o zerwaniu negocjacji?", max: 1, a: "Tak." },
-        { q: "12. Co zrobić, gdy wszystkie jednostki są na jednej akcji, a pojawia się kolejna?", max: 2, a: "W zależności od pilności – cofnąć część jednostek i przekierować na drugą akcję." }
+        { q: "1. Czym się zajmują PWC / APWC?", pts: 1, a: "Dowodzenie jednostkami patrolowymi, wyznaczanie supervisorów akcji, ustalanie jednostek, pilnowanie porządku na radiu, dbanie o Dispatch." },
+        { q: "2. Jaki numer ma PWC?", pts: 1, a: "00" },
+        { q: "3. Jak wyznaczany jest PWC lub APWC?", pts: 1, a: "Najwyższy stopniem (bez HC) lub osoba wyznaczona przez poprzedniego PWC/APWC." },
+        { q: "4. Czy PWC i APWC mogą jeździć razem w patrolu?", pts: 1, a: "Nie." },
+        { q: "5. Czy PWC może zareagować na zgłoszenie, gdy APWC jest podczas akcji?", pts: 1, a: "Nie. PWC/APWC musi zostać na radiu Main." },
+        { q: "6. Co musi zrobić PWC, gdy schodzi ze służby (oprócz przekazania funkcji)?", pts: 2, a: "Przekazać informacje o sytuacji w mieście: ostatnie akcje, miejsca zdarzeń, aktualny kod i powód jego wprowadzenia." },
+        { q: "7. Co powinien zrobić PWC/APWC, gdy widać, że jest niebezpiecznie, a kod to Zielony?", pts: 2, a: "Zawołać HC, poprosić o zmianę kodu i uzasadnić." },
+        { q: "8. Jak powinny być rozdzielone jednostki na mieście?", pts: 2, a: "Harmonijnie i równomiernie – nie może być samych Edwardów." },
+        { q: "9. Co zrobić, gdy funkcjonariusze popełniają błędy lub są źle rozdysponowani względem kodu?", pts: 1, a: "Zrobić Code 8." },
+        { q: "10. Co zrobić, gdy funkcjonariusz popełnia poważne błędy wymagające ukarania?", pts: 2, a: "Zgłosić się do HC/AIAD jednostki i poinformować o sytuacji." },
+        { q: "11. Czy PWC/APWC musi zostać poinformowany o zerwaniu negocjacji?", pts: 1, a: "Tak." },
+        { q: "12. Co zrobić, gdy wszystkie jednostki są na jednej akcji, a pojawia się kolejna?", pts: 2, a: "W zależności od pilności – cofnąć część jednostek i przekierować na drugą akcję." }
       ],
-      practicalStages: [
-        "Etap 2 Praktyczny (Organizacja nieoficjalnego Code 8 — wymagane min. 3/4 pkt):",
+      stages: [
+        "Etap 2 Praktyczny (Organizacja nieoficjalnego Code 8 — wymagane 3/4 pkt):",
         "• Poprawne przejęcie roli PWC oraz ogłoszenie Code 8 (0/1 pkt)",
         "• Poprawny przebieg Code 8 (0/1 pkt)",
         "• Poprawne rozdysponowanie jednostek (0/1 pkt)",
@@ -1103,142 +610,195 @@ Po otrzymaniu potwierdzenia radiowego o zatopieniu ładunków w oceanie, funkcjo
       ]
     },
     "ASU": {
-      title: "5. ASU (Helikopter)",
-      subtitle: "4 Etapy praktyczne + Mapka przelotu pod mostami w kanale Los Santos (< 0:55s)",
-      reqPoints: 4,
-      maxPoints: 4,
+      name: "ASU (Helikopter)",
+      desc: "4 Etapy praktyczne + Mapka przelotu pod mostami (< 0:55s)",
+      passScore: 0,
+      maxScore: 0,
+      mapType: "ASU",
       questions: [],
-      hasMap: "ASU",
-      practicalStages: [
-        "Etap 1 (Free flight): Szkolony lata helikopterem przez ok. 3 minuty (start, opanowanie maszyny w locie, lądowanie na helipadzie). FTO tłumaczy zasady pilotowania oraz kiedy jednostka może zostać użyta.",
-        "Etap 2 (Lądowania): Szkoleniowiec wskazuje 3 trudne, ale możliwe miejsca, w których szkolony musi bezpiecznie wylądować.",
-        "Etap 3 (Pościg): Szkoleniowiec ucieka radiowozem, szkolony utrzymuje pościg helikopterem z pełną radiówką (brak radiówki = niezdane). Wymagane 2 pościgi po min. 5 minut. (Próby: 3)",
-        "Etap 4 (Mapka pod mostami): Szkolony ma za zadanie przelecieć wyznaczoną trasę pod mostami w kanale Los Santos (od Mirror Park / Vinewood do doków) w czasie poniżej 0:55 sekundy."
+      stages: [
+        "Etap 1 (Free flight): Szkolony lata helikopterem przez ok. 3 minuty w trakcie których ma wystartować, opanować maszynę w locie, a na koniec wylądować na helipadzie. Przed i w trakcie lotu FTO tłumaczy zasady pilotowania śmigłowca oraz omawia kiedy jednostka może zostać użyta.",
+        "Etap 2 (Lądowania): Szkoleniowiec pokazuje szkolonemu 3 miejsca w których ten musi wylądować (trudne do lądowania, ale jednocześnie możliwe).",
+        "Etap 3 (Pościg): Szkoleniowiec zasiada za kierownicą radiowozu i rozpoczyna ucieczkę, szkolony ma za zadanie utrzymywać pościg helikopterem za szkoleniowcem dając pełną radiówkę — w przypadku jej braku próba automatycznie jest niezdana. Szkolony musi utrzymać 2 pościgi po przynajmniej 5 minut. (Próby: 3)",
+        "Etap 4 (Mapka): Szkolony ma za zadanie przelecieć wyznaczoną trasę pod mostami (mapka) w czasie poniżej 0:55 sekundy."
       ]
     },
     "MERRY": {
-      title: "6. MERRY (Motocykle)",
-      subtitle: "4 Etapy pościgowe na motocyklu policyjnym",
-      reqPoints: 4,
-      maxPoints: 4,
+      name: "MERRY (Motocykle)",
+      desc: "4 Etapy pościgowe na motocyklu policyjnym",
+      passScore: 0,
+      maxScore: 0,
       questions: [],
-      practicalStages: [
-        "Etap 1 (Pościg motor-motor): Szkolony ściga motorem szkoleniowca na motocyklu przez 5 minut. Wymagane utrzymanie pościgu 2 razy. (Próby: 2)",
-        "Etap 2 (Pościg motor-auto ADAM): Szkolony ściga motorem szkoleniowca w radiowozie ADAM przez 5 minut. Wymagane utrzymanie pościgu 2 razy. (Próby: 2)",
-        "Etap 3 (Pościg motor-auto EDWARD): Szkolony ściga motorem szkoleniowca w radiowozie EDWARD przez 3 minuty. (Próby: 3)",
-        "Etap 4 (Pościg do destylacji): Szkolony ściga motorem szkoleniowca na motocyklu do czasu pełnej destylacji motoru szkoleniowca. (Próby: 1)"
+      stages: [
+        "Etap 1 (Pościg motor-motor): Szkolony ma za zadanie ścigać motorem szkoleniowca na motocyklu przez 5 minut. Szkolony ma utrzymać pościg 2 razy. (Próby: 2)",
+        "Etap 2 (Pościg motor-auto ADAM): Szkolony ma za zadanie ścigać motorem szkoleniowca w radiowozie ADAM przez 5 minut. Szkolony ma utrzymać pościg 2 razy. (Próby: 2)",
+        "Etap 3 (Pościg motor-auto EDWARD): Szkolony ma za zadanie ścigać motorem szkoleniowca w radiowozie EDWARD przez 3 minuty. (Próby: 3)",
+        "Etap 4 (Pościg do destylacji): Szkolony ma za zadanie ścigać motorem szkoleniowca na motocyklu do czasu pełnej destylacji motoru szkoleniowca. (Próby: 1)"
       ]
     },
     "SEU": {
-      title: "7. SEU (Pościgowe)",
-      subtitle: "4 Etapy praktyczne + Mapka Drive Skills Test (Pacific Bluffs -> Great Ocean Hwy -> Fort Zancudo)",
-      reqPoints: 4,
-      maxPoints: 4,
+      name: "SEU (Pościgowe)",
+      desc: "4 Etapy praktyczne + Mapka Drive Skills Test",
+      passScore: 0,
+      maxScore: 0,
+      mapType: "SEU",
       questions: [],
-      hasMap: "SEU",
-      practicalStages: [
-        "Etap 1 (Drive skills test - Mapka): Przejazd wyznaczoną trasą od Pacific Bluffs przez Great Ocean Hwy (z nawrotką) do Fortu Zancudo z najwyższą możliwą prędkością bez uderzenia w żaden pojazd ani infrastrukturę. (Próby: 2)",
-        "Etap 2 (Pościg SEU-SEU): Szkolony pojazdem EDWARD ściga szkoleniowca w pojeździe EDWARD przez 5 minut. Wymagane utrzymanie 2 razy. (Próby: 2)",
-        "Etap 3 (Pościg do destylacji): Szkolony pojazdem EDWARD ściga szkoleniowca w pojeździe EDWARD do pełnej destylacji pojazdu szkoleniowca. (Próby: 1)",
-        "Etap 4 (Pościg z radiówką): Szkolony pojazdem EDWARD ściga szkoleniowca w pojeździe EDWARD z pełną radiówką przez 10 minut. (Próby: 2)"
+      stages: [
+        "Etap 1 (Drive skills test): Szkolony ma za zadanie przejechać wyznaczoną trasę (mapka) z najwyższą możliwą prędkością bez uderzenia w ani jeden inny pojazd lub infrastrukturę drogową. Tempo przejazdu ocenia szkoleniowiec. (Próby: 2)",
+        "Etap 2 (Pościg SEU-SEU): Szkolony pojazdem EDWARD ma za zadanie ścigać szkoleniowca uciekającego pojazdem EDWARD przez 5 minut. Szkolony ma utrzymać pościg 2 razy. (Próby: 2)",
+        "Etap 3 (Pościg do destylacji): Szkolony pojazdem EDWARD ma za zadanie ścigać szkoleniowca uciekającego pojazdem EDWARD do pełnej destylacji pojazdu szkoleniowca. (Próby: 1)",
+        "Etap 4 (Pościg z radiówką): Szkolony pojazdem EDWARD ma za zadanie ścigać szkoleniowca uciekającego pojazdem EDWARD z pełną radiówką przez 10 minut. (Próby: 2)"
       ]
     }
   };
 
-  let currentTrainingKey = "RTO_HRO";
-  let trainingQuestionScores = {};
+  /* =========================================================
+     2. BAZA FUNKCJONARIUSZY LSPD (DO LICENCJI SPECJALISTYCZNYCH)
+     ========================================================= */
+  const DEFAULT_OFFICERS = [
+    { badge: "923", name: "Oley Sasa", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "ASU": true, "MERRY": true, "SEU": true }, note: "Szkoleniowiec / AIAD" },
+    { badge: "941", name: "Gregory Solin", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "SEU": true }, note: "Nadano: SASA" },
+    { badge: "141", name: "Vivienne Walker", licenses: { "RTO+HRO": true, "NEGO": true }, note: "Nadano: SASA" },
+    { badge: "27", name: "John Cagville", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "SEU": true }, note: "High Command" },
+    { badge: "73", name: "Chris Angel", licenses: { "RTO+HRO": true, "ASU": true, "SV": true }, note: "Pilot ASU" },
+    { badge: "70", name: "Matt Dick", licenses: { "RTO+HRO": true, "ASU": true }, note: "Pilot ASU" },
+    { badge: "74", name: "James Williams", licenses: { "RTO+HRO": true, "SV": true }, note: "-" },
+    { badge: "131", name: "Valerie Raver", licenses: { "RTO+HRO": true }, note: "-" },
+    { badge: "130", name: "Santiago Bachillo", licenses: { "RTO+HRO": true }, note: "-" },
+    { badge: "149", name: "Tony Evans", licenses: {}, note: "-" },
+    { badge: "118", name: "Kavin Turner", licenses: { "RTO+HRO": true }, note: "-" }
+  ];
 
-  function renderTrainingTabs() {
-    const bar = document.getElementById("training-tabs-bar");
-    if (!bar) return;
-    bar.innerHTML = Object.keys(SPECIAL_TRAININGS).map(key => {
-      const t = SPECIAL_TRAININGS[key];
-      const active = key === currentTrainingKey;
-      return `<button class="mdt-btn ${active ? 'mdt-btn-blue' : 'mdt-btn-gray'}" onclick="selectTrainingTab('${key}')">${t.title}</button>`;
-    }).join("");
-    renderActiveTrainingContent();
-  }
+  let officersRoster = [];
+  let activeCourseKey = "RTO+HRO";
+  let courseQPoints = {};
 
-  function selectTrainingTab(key) {
-    currentTrainingKey = key;
-    renderTrainingTabs();
-  }
-
-  function renderActiveTrainingContent() {
-    const container = document.getElementById("training-content-area");
-    const t = SPECIAL_TRAININGS[currentTrainingKey];
-    if (!container || !t) return;
-
-    if (!trainingQuestionScores[currentTrainingKey]) {
-      trainingQuestionScores[currentTrainingKey] = {};
+  function loadOfficersRoster() {
+    try {
+      const saved = localStorage.getItem("lspd_officers_licenses_v1");
+      officersRoster = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(DEFAULT_OFFICERS));
+    } catch (e) {
+      officersRoster = JSON.parse(JSON.stringify(DEFAULT_OFFICERS));
     }
-    const scoresObj = trainingQuestionScores[currentTrainingKey];
+  }
 
-    let earned = 0;
-    t.questions.forEach((q, idx) => {
-      earned += (scoresObj[idx] || 0);
-    });
+  function saveOfficersRoster() {
+    try {
+      localStorage.setItem("lspd_officers_licenses_v1", JSON.stringify(officersRoster));
+    } catch (e) {}
+  }
 
-    let questionsHTML = "";
-    if (t.questions.length > 0) {
-      questionsHTML = `
-        <div class="mdt-card" style="margin-bottom: 16px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-            <h3 style="margin:0; font-size:16px; color:#fff;">Pytania Teoretyczne (${t.title})</h3>
-            <div style="font-size:15px; font-weight:800; color:${earned >= t.reqPoints ? '#4ade80' : '#f87171'};">
-              Wynik teorii: ${earned} / ${t.maxPoints} pkt (Wymagane: ${t.reqPoints} pkt) — ${earned >= t.reqPoints ? 'ZALICZONE ✅' : 'NIEZALICZONE ❌'}
+  function renderTraineeSelect() {
+    const sel = document.getElementById("trainee-officer-select");
+    if (!sel) return;
+    sel.innerHTML = officersRoster.map(o => `<option value="${o.badge}">[${o.badge}] ${o.name}</option>`).join("");
+  }
+
+  function renderCourseButtons() {
+    const bar = document.getElementById("course-buttons-bar");
+    if (!bar) return;
+    bar.innerHTML = LICENSE_KEYS.map(key => {
+      const c = COURSES_DB[key];
+      const isAct = key === activeCourseKey;
+      return `<button class="mdt-btn ${isAct ? 'mdt-btn-blue' : 'mdt-btn-gray'}" onclick="selectCourse('${key}')">${c.name}</button>`;
+    }).join("");
+    renderActiveCourseView();
+  }
+
+  function selectCourse(key) {
+    activeCourseKey = key;
+    renderCourseButtons();
+  }
+
+  function renderActiveCourseView() {
+    const box = document.getElementById("course-details-container");
+    const course = COURSES_DB[activeCourseKey];
+    if (!box || !course) return;
+
+    if (!courseQPoints[activeCourseKey]) courseQPoints[activeCourseKey] = {};
+    const ptsMap = courseQPoints[activeCourseKey];
+
+    let sumPts = 0;
+    course.questions.forEach((q, i) => { sumPts += (ptsMap[i] || 0); });
+
+    let theoryHTML = "";
+    if (course.questions.length > 0) {
+      const passed = sumPts >= course.passScore;
+      theoryHTML = `
+        <div class="mdt-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+            <div>
+              <h3 style="margin:0; font-size:16px; color:#fff;">Etap 1: Pytania Teoretyczne — ${course.name}</h3>
+              <div style="font-size:12px; color:#94a3b8;">${course.desc}</div>
+            </div>
+            <div style="padding:8px 14px; border-radius:8px; background:#090d14; border:1px solid ${passed ? '#10b981' : '#ef4444'}; font-weight:800; color:${passed ? '#4ade80' : '#f87171'};">
+              Łącznie: ${sumPts} / ${course.maxScore} pkt (Wymagane: ${course.passScore} pkt) — ${passed ? 'ZALICZONA TEORIA ✅' : 'NIEZALICZONA ❌'}
             </div>
           </div>
-          <div style="display:flex; flex-direction:column; gap:10px;">
-            ${t.questions.map((item, idx) => {
-              const cur = scoresObj[idx] || 0;
-              let btns = "";
-              for (let p = 0; p <= item.max; p++) {
-                btns += `<button class="mdt-btn ${cur === p ? 'mdt-btn-blue' : 'mdt-btn-gray'}" style="padding:4px 10px;" onclick="setTrainingQScore('${currentTrainingKey}',${idx}, ${p})">${p} pkt</button>`;
-              }
-              return `
-                <div style="background:#0b0e14; border:1px solid #1e293b; border-radius:8px; padding:12px;">
-                  <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
-                    <div style="font-weight:700; color:#60a5fa; font-size:13px;">${item.q} <span style="color:#94a3b8;">(Max: ${item.max} pkt)</span></div>
-                    <div style="display:flex; gap:4px; flex-shrink:0;">${btns}</div>
-                  </div>
-                  <div style="margin-top:8px; font-size:12px; color:#cbd5e1; line-height:1.5; background:#111726; padding:8px 10px; border-radius:6px; border-left:3px solid #3b82f6;">
-                    <strong>Odpowiedź wzorcowa:</strong> ${item.a}
-                  </div>
+          ${course.questions.map((item, idx) => {
+            const cur = ptsMap[idx] || 0;
+            let btns = "";
+            for (let p = 0; p <= item.pts; p++) {
+              btns += `<button class="mdt-btn ${cur === p ? 'mdt-btn-blue' : 'mdt-btn-gray'}" style="padding:4px 10px;" onclick="setCourseQuestionPts('${activeCourseKey}',${idx}, ${p})">${p} pkt</button>`;
+            }
+            return `
+              <div class="q-box">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+                  <div style="font-weight:700; color:#60a5fa; font-size:13.5px;">${item.q} <span style="color:#64748b;">(${item.pts} pkt)</span></div>
+                  <div style="display:flex; gap:4px; flex-shrink:0;">${btns}</div>
                 </div>
-              `;
-            }).join("")}
-          </div>
+                <div class="q-ans"><strong>Odp:</strong> ${item.a}</div>
+              </div>
+            `;
+          }).join("")}
         </div>
       `;
     }
 
     let mapHTML = "";
-    if (t.hasMap === "ASU") {
+    if (course.mapType === "ASU") {
       mapHTML = `
-        <div class="mdt-card" style="margin-bottom: 16px;">
-          <h3 style="margin:0 0 8px; font-size:15px; color:#38bdf8;">🗺️ Mapka Etapu 4 ASU — Przelot pod mostami w kanale Los Santos (Limit: poniżej 0:55s)</h3>
-          <div style="background:#0b0e14; border:1px solid #1e293b; border-radius:8px; padding:14px; font-size:13px; color:#cbd5e1;">
-            <p style="margin:0 0 8px;"><strong>Trasa przelotu (czerwona linia z Twojej mapy):</strong></p>
-            <ol style="margin:0; padding-left:20px; line-height:1.6;">
-              <li><strong>START:</strong> Górny odcinek kanału burzowego na wysokości <em>Mirror Park / East Vinewood</em> (wlot do betonowego koryta rzeki).</li>
-              <li><strong>PRZELOT:</strong> Lot wzdłuż głównego kanału Los Santos w kierunku południowym (South) pod wszystkimi kolejnymi mostami drogowymi i kolejowymi (przez Downtown, Olympic Fwy, La Mesa, Cypress Flats).</li>
-              <li><strong>META:</strong> Wylot kanału przy porcie <em>Port of South Los Santos / Elysian Island</em> (za ostatnim mostem zwodzonym).</li>
-            </ol>
+        <div class="mdt-card">
+          <h3 style="margin:0 0 10px; font-size:15px; color:#38bdf8;">🗺️ Mapka ASU Etap 4 — Trasa przelotu pod mostami w kanale LS (Czas: &lt; 0:55 sekundy)</h3>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:center;">
+            <div style="background:#090d14; border:1px solid #1e293b; border-radius:8px; padding:12px; text-align:center;">
+              <svg viewBox="0 0 300 220" style="width:100%; max-height:210px; background:#0d1520; border-radius:6px;">
+                <path d="M 175 20 Q 140 35 130 65 L 128 120 L 132 175 L 155 200" stroke="#ef4444" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <circle cx="175" cy="20" r="6" fill="#22c55e"/>
+                <text x="185" y="24" fill="#4ade80" font-size="12" font-weight="bold">START (Mirror Park)</text>
+                <circle cx="155" cy="200" r="6" fill="#ef4444"/>
+                <text x="165" y="204" fill="#f87171" font-size="12" font-weight="bold">META (Port LS)</text>
+              </svg>
+            </div>
+            <div style="font-size:13px; color:#cbd5e1; line-height:1.6;">
+              <p style="margin:0 0 8px;"><strong>Przebieg trasy z mapki szkoleniowej ASU:</strong></p>
+              <div>1. <strong>START:</strong> Wlot do betonowego kanału burzowego na północny-wschód od Downtown (okolice Mirror Park / Vinewood).</div>
+              <div>2. <strong>TRASA:</strong> Lot na południe korytem kanału Los Santos pod wszystkimi mostami drogowymi i kolejowymi.</div>
+              <div>3. <strong>META:</strong> Wylot kanału do basenu portowego <em>Port of South Los Santos</em> (wymagany czas poniżej <strong>0:55s</strong>).</div>
+            </div>
           </div>
         </div>
       `;
-    } else if (t.hasMap === "SEU") {
+    } else if (course.mapType === "SEU") {
       mapHTML = `
-        <div class="mdt-card" style="margin-bottom: 16px;">
-          <h3 style="margin:0 0 8px; font-size:15px; color:#38bdf8;">🗺️ Mapka Etapu 1 SEU — Drive Skills Test (Bezkolizyjny przejazd na czas)</h3>
-          <div style="background:#0b0e14; border:1px solid #1e293b; border-radius:8px; padding:14px; font-size:13px; color:#cbd5e1;">
-            <p style="margin:0 0 8px;"><strong>Trasa przejazdu (czerwona linia z Twojej mapy):</strong></p>
-            <ol style="margin:0; padding-left:20px; line-height:1.6;">
-              <li><strong>START:</strong> Zjazd na autostradę przy plaży w okolicach <em>Pacific Bluffs / Del Perro</em>.</li>
-              <li><strong>TRASA:</strong> Jazda na północ wzdłuż wybrzeża drogą <em>Great Ocean Highway</em> przez Chumash, Banham Canyon, następnie zjazd na krętą pętlę drogową przy <em>Tongva Hills</em> i powrót na trasę w stronę mostu przy Lago Zancudo.</li>
-              <li><strong>META:</strong> Przejazd przez tunel pod pasem startowym <em>Fortu Zancudo</em>, nawrotka za tunelem i wjazd drogą dojazdową pod bramę bazy <em>Fort Zancudo</em>.</li>
-            </ol>
+        <div class="mdt-card">
+          <h3 style="margin:0 0 10px; font-size:15px; color:#38bdf8;">🗺️ Mapka SEU Etap 1 — Drive Skills Test (Bezkolizyjny przejazd z najwyższą prędkością)</h3>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:center;">
+            <div style="background:#090d14; border:1px solid #1e293b; border-radius:8px; padding:12px; text-align:center;">
+              <svg viewBox="0 0 300 220" style="width:100%; max-height:210px; background:#0d1520; border-radius:6px;">
+                <path d="M 145 200 C 90 185 80 140 85 105 C 90 85 110 75 125 75 C 110 75 112 50 120 25 C 125 15 135 20 135 32" stroke="#ef4444" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <circle cx="145" cy="200" r="6" fill="#22c55e"/>
+                <text x="155" y="204" fill="#4ade80" font-size="12" font-weight="bold">START (Pacific Bluffs)</text>
+                <circle cx="135" cy="32" r="6" fill="#ef4444"/>
+                <text x="145" y="36" fill="#f87171" font-size="12" font-weight="bold">META (Fort Zancudo)</text>
+              </svg>
+            </div>
+            <div style="font-size:13px; color:#cbd5e1; line-height:1.6;">
+              <p style="margin:0 0 8px;"><strong>Przebieg trasy z mapki szkoleniowej SEU:</strong></p>
+              <div>1. <strong>START:</strong> Wybrzeże <em>Pacific Bluffs</em> (wjazd na Great Ocean Highway).</div>
+              <div>2. <strong>TRASA:</strong> Przejazd autostradą wzdłuż oceanu przez Chumash, wjazd na pętlę przy <em>Tongva Hills</em> i kontynuacja na północ przez tunel pod pasem startowym.</div>
+              <div>3. <strong>META:</strong> Nawrotka za tunelem Zancudo i dojazd pod bramę wjazdową bazy <em>Fort Zancudo</em> (0 kolizji, Próby: 2).</div>
+            </div>
           </div>
         </div>
       `;
@@ -1246,147 +806,437 @@ Po otrzymaniu potwierdzenia radiowego o zatopieniu ładunków w oceanie, funkcjo
 
     const stagesHTML = `
       <div class="mdt-card">
-        <h3 style="margin:0 0 10px; font-size:15px; color:#fff;">Etapy Praktyczne i Wymagania (${t.title})</h3>
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          ${t.practicalStages.map(st => `
-            <label style="display:flex; align-items:center; gap:10px; background:#0b0e14; padding:10px 12px; border-radius:8px; border:1px solid #1e293b; font-size:13px; cursor:pointer;">
-              <input type="checkbox" style="width:16px;height:16px;" />
-              <span>${st}</span>
-            </label>
-          `).join("")}
-        </div>
+        <h3 style="margin:0 0 10px; font-size:15px; color:#4ade80;">Etapy Praktyczne — ${course.name}</h3>
+        ${course.stages.map(s => `
+          <label style="display:flex; align-items:center; gap:10px; background:#090d14; border:1px solid #1e293b; padding:10px 12px; border-radius:8px; margin-bottom:8px; cursor:pointer; font-size:13px;">
+            <input type="checkbox" style="width:16px;height:16px;" />
+            <span>${s}</span>
+          </label>
+        `).join("")}
       </div>
     `;
 
-    container.innerHTML = questionsHTML + mapHTML + stagesHTML;
+    box.innerHTML = theoryHTML + mapHTML + stagesHTML;
   }
 
-  function setTrainingQScore(tKey, qIdx, pts) {
-    if (!trainingQuestionScores[tKey]) trainingQuestionScores[tKey] = {};
-    trainingQuestionScores[tKey][qIdx] = pts;
-    renderActiveTrainingContent();
+  function setCourseQuestionPts(cKey, qIdx, pts) {
+    if (!courseQPoints[cKey]) courseQPoints[cKey] = {};
+    courseQPoints[cKey][qIdx] = pts;
+    renderActiveCourseView();
   }
 
-  function copyCurrentTrainingSummary() {
-    const t = SPECIAL_TRAININGS[currentTrainingKey];
-    const scoresObj = trainingQuestionScores[currentTrainingKey] || {};
-    let earned = 0;
-    t.questions.forEach((q, idx) => { earned += (scoresObj[idx] || 0); });
-    const text = `PROTOKÓŁ SZKOLENIA LSPD — ${t.title}\nProwadzący FTO: [923] Oley Sasa\nWynik teorii: ${earned}/${t.maxPoints} pkt (Wymagane: ${t.reqPoints} pkt)\nStatus: ${earned >= t.reqPoints || t.questions.length === 0 ? "ZALICZONE" : "NIEZALICZONE"}`;
-    navigator.clipboard.writeText(text);
-    showToast("📋 Skopiowano podsumowanie szkolenia " + t.title);
+  function grantCurrentLicenseToOfficer() {
+    const badge = document.getElementById("trainee-officer-select").value;
+    const off = officersRoster.find(o => o.badge === badge);
+    if (!off) return;
+    if (!off.licenses) off.licenses = {};
+    off.licenses[activeCourseKey] = true;
+    off.note = "Zaliczył " + activeCourseKey + " (SASA)";
+    saveOfficersRoster();
+    renderOfficersLicenseTable();
+    showToast("✅ Nadano szkolenie " + activeCourseKey + " dla [" + off.badge + "] " + off.name);
+  }
+
+  function copyTrainingProtocol() {
+    const badge = document.getElementById("trainee-officer-select").value;
+    const off = officersRoster.find(o => o.badge === badge);
+    const c = COURSES_DB[activeCourseKey];
+    const ptsMap = courseQPoints[activeCourseKey] || {};
+    let sum = 0;
+    c.questions.forEach((q, i) => { sum += (ptsMap[i] || 0); });
+    const txt = `PROTOKÓŁ SZKOLENIA LSPD — ${c.name}\nFunkcjonariusz: [${off ? off.badge : badge}] ${off ? off.name : ""}\nSzkoleniowiec: [923] Oley Sasa\nWynik teorii: ${c.maxScore > 0 ? sum + "/" + c.maxScore + " pkt (Próg: " + c.passScore + " pkt)" : "Szkolenie praktyczne"}\nStatus: ZALICZONE`;
+    navigator.clipboard.writeText(txt);
+    showToast("📋 Skopiowano protokół ze szkolenia " + c.name);
+  }
+
+  function renderOfficersLicenseTable() {
+    const tbody = document.getElementById("officers-license-tbody");
+    if (!tbody) return;
+    const q = (document.getElementById("lic-officer-search")?.value || "").toLowerCase();
+    tbody.innerHTML = "";
+
+    officersRoster
+      .filter(o => o.badge.toLowerCase().includes(q) || o.name.toLowerCase().includes(q))
+      .forEach(o => {
+        const tr = document.createElement("tr");
+        const pills = LICENSE_KEYS.map(k => {
+          const has = !!(o.licenses && o.licenses[k]);
+          return `<span class="lic-pill ${has ? 'lic-on' : 'lic-off'}" onclick="toggleOfficerLicense('${o.badge}', '${k}')">${has ? '✓ ' : ''}${k}</span>`;
+        }).join("");
+
+        tr.innerHTML = `
+          <td style="font-weight:800; color:#60a5fa;">[${o.badge}]</td>
+          <td style="font-weight:700; color:#fff;">${o.name}</td>
+          <td>${pills}</td>
+          <td style="font-size:12px; color:#94a3b8;">${o.note || "-"}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+  }
+
+  function toggleOfficerLicense(badge, licKey) {
+    const off = officersRoster.find(o => o.badge === badge);
+    if (!off) return;
+    if (!off.licenses) off.licenses = {};
+    off.licenses[licKey] = !off.licenses[licKey];
+    off.note = (off.licenses[licKey] ? "Nadano " : "Odebrano ") + licKey + " (SASA)";
+    saveOfficersRoster();
+    renderOfficersLicenseTable();
+  }
+
+  function addNewOfficerToRoster() {
+    const b = document.getElementById("new-off-badge").value.trim();
+    const n = document.getElementById("new-off-name").value.trim();
+    if (!b || !n) { showToast("⚠️ Wpisz odznakę oraz imię i nazwisko funkcjonariusza!"); return; }
+    officersRoster.unshift({ badge: b, name: n, licenses: {}, note: "Dodano do wykazu" });
+    saveOfficersRoster();
+    renderOfficersLicenseTable();
+    renderTraineeSelect();
+    document.getElementById("new-off-badge").value = "";
+    document.getElementById("new-off-name").value = "";
+    showToast("✅ Dodano funkcjonariusza [" + b + "] " + n);
   }
 
   /* =========================================================
-     TARYFIKATOR PRZESTĘPSTW
+     3. STREFA KADETA (FTO) + STOPER PATROLOWY START/STOP
      ========================================================= */
-  const PENAL_CODE_ITEMS = [
-    { name: "Morderstwo I stopnia", months: 300, fine: 100000 },
-    { name: "Usiłowanie zabójstwa obywatela", months: 50, fine: 15000 },
-    { name: "Usiłowanie zabójstwa funkcjonariusza", months: 75, fine: 25000 },
-    { name: "Terroryzm / Podłożenie ładunku wybuchowego", months: 250, fine: 80000 },
-    { name: "Fałszywy alarm bombowy", months: 25, fine: 8500 },
-    { name: "Ucieczka przed organami ścigania", months: 15, fine: 3500 },
-    { name: "Stawianie oporu", months: 10, fine: 2500 },
-    { name: "Niewykonywanie poleceń FP", months: 10, fine: 2000 },
-    { name: "Nielegalne posiadanie broni długiej", months: 45, fine: 15000 },
-    { name: "Napad na sklep", months: 25, fine: 5000 }
+  const BASIC_FTO_MODULES = ["Code 6", "FTS", "10-80", "10-80 Pieszo", "Status 7", "TCCC", "Kompendium"];
+
+  const DEFAULT_CADETS = [
+    {
+      id: "165", badge: "165", name: "Paulo Cortez", fto: "Oley Sasa", joinDate: "03.10.2026",
+      totalSeconds: 0, running: false, startTs: null,
+      pos: true, posTxt: "Dobrze skoordynowany pościg pojazdem jak i pieszo.", neg: "BRAK", negTxt: "",
+      modules: {
+        "Code 6": { ok: true, note: "Poprawił błędy", sign: "SASA" },
+        "FTS": { ok: true, note: "", sign: "SASA" },
+        "10-80": { ok: true, note: "Dobrze skoordynowany pościg pojazdem jak i pieszo", sign: "Sasa" },
+        "10-80 Pieszo": { ok: true, note: "(wyżej)", sign: "SASA" },
+        "Status 7": { ok: true, note: "dobrze wykonane zatrzymanie na celach", sign: "Smith" },
+        "TCCC": { ok: true, note: "", sign: "Walker" },
+        "Kompendium": { ok: true, note: "błędy poprawione", sign: "Solin" }
+      }
+    },
+    { id: "166", badge: "166", name: "Cayden Potato", fto: "Oley Sasa", joinDate: "10.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
+    { id: "168", badge: "168", name: "Troy Stardust", fto: "Gregory Solin", joinDate: "03.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
+    { id: "169", badge: "169", name: "Mark Kochones", fto: "Hailey Sinclair", joinDate: "03.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
+    { id: "170", badge: "170", name: "Mackey Sztonowski", fto: "John Cagvill", joinDate: "03.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
+    { id: "171", badge: "171", name: "Evan Myers", fto: "Mike Smith", joinDate: "03.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
+    { id: "174", badge: "174", name: "Tony Wood", fto: "Amy Rover", joinDate: "03.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
+    { id: "176", badge: "176", name: "Bobby Bennett", fto: "Zoya Sierra", joinDate: "03.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
+    { id: "178", badge: "178", name: "Iris Bloodworth", fto: "Jacob Galahad", joinDate: "04.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
+    { id: "182", badge: "182", name: "Joe Harrah", fto: "Zoya Sierra", joinDate: "05.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
+    { id: "183", badge: "183", name: "Nathan Luke", fto: "Jack Onfire", joinDate: "05.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
+    { id: "199", badge: "199", name: "Túlio Navarro Figueiredo", fto: "Oley Sasa", joinDate: "11.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} }
   ];
-  let selectedCrimes = [];
 
-  function renderPenalCode() {
-    const list = document.getElementById("penal-code-list");
-    if (!list) return;
-    list.innerHTML = PENAL_CODE_ITEMS.map((item, idx) => `
-      <div onclick="addCrimeToCalc(${idx})" style="background:#0b0e14; border:1px solid #1e293b; border-radius:8px; padding:10px 12px; cursor:pointer;">
-        <div style="font-weight:700; font-size:13px; color:#fff;">${item.name}</div>
-        <div style="font-size:11px; color:#60a5fa; margin-top:4px;">${item.months} mies. • $${item.fine.toLocaleString()}</div>
-      </div>
-    `).join("");
-  }
+  let cadetsList = [];
+  let activeCadetId = "165";
 
-  function addCrimeToCalc(idx) {
-    selectedCrimes.push(PENAL_CODE_ITEMS[idx]);
-    updatePenalSummary();
-  }
-
-  function resetPenalCalc() {
-    selectedCrimes = [];
-    updatePenalSummary();
-  }
-
-  function updatePenalSummary() {
-    let m = 0, f = 0;
-    selectedCrimes.forEach(c => { m += c.months; f += c.fine; });
-    document.getElementById("calc-months").textContent = m + " mies.";
-    document.getElementById("calc-fine").textContent = "$" + f.toLocaleString();
-    document.getElementById("calc-selected-crimes").innerHTML = selectedCrimes.length
-      ? selectedCrimes.map(c => `• ${c.name} (${c.months}m / $${c.fine})`).join("<br/>")
-      : "Brak wybranych zarzutów.";
-  }
-
-  /* =========================================================
-     NAWIGACJA I FUNKCJE POMOCNICZE RAPORTU
-     ========================================================= */
-  function switchMainTab(tabName) {
-    const tabs = ["dyspozytornia", "raporty", "kadet", "szkolenia", "sprawy", "funkcjonariusze"];
-    tabs.forEach(t => {
-      document.getElementById("view-" + t)?.classList.add("hidden-view");
-      document.getElementById("nav-" + t)?.classList.remove("active");
+  function loadCadets() {
+    try {
+      const s = localStorage.getItem("lspd_fto_cadets_v3");
+      cadetsList = s ? JSON.parse(s) : JSON.parse(JSON.stringify(DEFAULT_CADETS));
+    } catch (e) {
+      cadetsList = JSON.parse(JSON.stringify(DEFAULT_CADETS));
+    }
+    cadetsList.forEach(c => {
+      if (!c.modules) c.modules = {};
+      BASIC_FTO_MODULES.forEach(m => {
+        if (!c.modules[m]) c.modules[m] = { ok: false, note: "", sign: "" };
+      });
     });
-    document.getElementById("view-" + tabName)?.classList.remove("hidden-view");
-    document.getElementById("nav-" + tabName)?.classList.add("active");
   }
 
-  function switchCadetSubView(sub) {
-    ["lista", "arkusz", "egzamin"].forEach(s => {
-      document.getElementById("cadet-sub-" + s)?.classList.add("hidden-view");
+  function saveCadets() {
+    try { localStorage.setItem("lspd_fto_cadets_v3", JSON.stringify(cadetsList)); } catch (e) {}
+  }
+
+  function getCadetSec(c) {
+    let s = c.totalSeconds || 0;
+    if (c.running && c.startTs) {
+      s += Math.max(0, Math.floor((Date.now() - c.startTs) / 1000));
+    }
+    return s;
+  }
+
+  function fmtHMS(sec) {
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    const s = sec % 60;
+    return String(h).padStart(2, "0") + "h " + String(m).padStart(2, "0") + "m " + String(s).padStart(2, "0") + "s";
+  }
+
+  function toggleCadetTimer(id) {
+    const c = cadetsList.find(x => x.id === id);
+    if (!c) return;
+    if (c.running) {
+      const diff = Math.max(0, Math.floor((Date.now() - c.startTs) / 1000));
+      c.totalSeconds = (c.totalSeconds || 0) + diff;
+      c.running = false;
+      c.startTs = null;
+      showToast("⏹ Zatrzymano patrol [" + c.badge + "] " + c.name + " (Suma: " + fmtHMS(c.totalSeconds) + ")");
+    } else {
+      c.running = true;
+      c.startTs = Date.now();
+      showToast("▶ Start patrolu dla [" + c.badge + "] " + c.name);
+    }
+    saveCadets();
+    renderCadetsTable();
+    updateCadetSheetTimer();
+  }
+
+  function addMinutesCadet(mins) {
+    const c = cadetsList.find(x => x.id === activeCadetId);
+    if (!c) return;
+    c.totalSeconds = (c.totalSeconds || 0) + mins * 60;
+    saveCadets();
+    renderCadetsTable();
+    updateCadetSheetTimer();
+    showToast("Dodano +" + mins + "m dla kadeta " + c.name);
+  }
+
+  function updateCadetSheetTimer() {
+    const c = cadetsList.find(x => x.id === activeCadetId);
+    if (!c) return;
+    const tEl = document.getElementById("cs-timer-text");
+    const bEl = document.getElementById("cs-timer-btn");
+    if (tEl) tEl.textContent = fmtHMS(getCadetSec(c));
+    if (bEl) {
+      bEl.textContent = c.running ? "⏹ STOP" : "▶ START";
+      bEl.className = "mdt-btn " + (c.running ? "mdt-btn-red" : "mdt-btn-green");
+    }
+  }
+
+  setInterval(() => {
+    let any = false;
+    cadetsList.forEach(c => {
+      if (c.running) {
+        any = true;
+        const el = document.getElementById("c-time-" + c.id);
+        if (el) el.textContent = fmtHMS(getCadetSec(c));
+      }
     });
-    document.getElementById("cadet-sub-" + sub)?.classList.remove("hidden-view");
-    document.getElementById("subbtn-lista").className = "mdt-btn " + (sub === "lista" || sub === "arkusz" ? "mdt-btn-blue" : "mdt-btn-gray");
-    document.getElementById("subbtn-egzamin").className = "mdt-btn " + (sub === "egzamin" ? "mdt-btn-blue" : "mdt-btn-gray");
+    if (any) updateCadetSheetTimer();
+  }, 1000);
+
+  function renderCadetsTable() {
+    const tbody = document.getElementById("cadets-tbody");
+    if (!tbody) return;
+    const q = (document.getElementById("cadet-filter-inp")?.value || "").toLowerCase();
+    tbody.innerHTML = "";
+
+    cadetsList
+      .filter(c => c.badge.toLowerCase().includes(q) || c.name.toLowerCase().includes(q) || c.fto.toLowerCase().includes(q))
+      .forEach(c => {
+        const done = BASIC_FTO_MODULES.filter(m => c.modules[m]?.ok).length;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td style="font-weight:800; color:#60a5fa;">#${c.badge}</td>
+          <td style="font-weight:700; color:#fff;">${c.name}</td>
+          <td>${c.fto}</td>
+          <td>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span id="c-time-${c.id}" style="font-family:monospace; font-weight:700; color:${c.running ? '#4ade80' : '#38bdf8'};">${fmtHMS(getCadetSec(c))}</span>
+              <button class="mdt-btn ${c.running ? 'mdt-btn-red' : 'mdt-btn-green'}" style="padding:3px 8px; font-size:11px;" onclick="toggleCadetTimer('${c.id}')">${c.running ? '⏹ STOP' : '▶ START'}</button>
+            </div>
+          </td>
+          <td><button class="mdt-btn mdt-btn-blue" style="padding:4px 10px; font-size:11px;" onclick="openCadetSheet('${c.id}')">KLIKNIJ (${done}/7)</button></td>
+          <td style="color:#94a3b8;">${c.joinDate}</td>
+          <td style="text-align:center;"><input type="checkbox" ${c.pos ? 'checked' : ''} onchange="cTogglePos('${c.id}', this.checked)" /></td>
+          <td>
+            <select class="mdt-select" style="padding:3px 6px; font-size:11px;" onchange="cChangeNeg('${c.id}', this.value)">
+              <option value="BRAK" ${c.neg === 'BRAK' ? 'selected' : ''}>BRAK</option>
+              <option value="1 NEGATYWNY" ${c.neg === '1 NEGATYWNY' ? 'selected' : ''}>1 NEGATYWNY</option>
+              <option value="2 NEGATYWNE" ${c.neg === '2 NEGATYWNE' ? 'selected' : ''}>2 NEGATYWNE</option>
+              <option value="DO POPRAWY" ${c.neg === 'DO POPRAWY' ? 'selected' : ''}>DO POPRAWY</option>
+              <option value="ZAWIESZONY" ${c.neg === 'ZAWIESZONY' ? 'selected' : ''}>ZAWIESZONY</option>
+            </select>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+    const eoSel = document.getElementById("eo-cadet");
+    if (eoSel) eoSel.innerHTML = cadetsList.map(c => `<option>[${c.badge}] ${c.name}</option>`).join("");
   }
 
-  function addPromptItem(listId) {
-    const val = prompt("Wpisz pozycję do dodania:");
-    if (!val) return;
-    const container = document.getElementById(listId);
-    const div = document.createElement("div");
-    div.style.cssText = "padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;";
-    div.textContent = val;
-    container.appendChild(div);
+  function addCadet() {
+    const b = document.getElementById("inp-c-badge").value.trim();
+    const n = document.getElementById("inp-c-name").value.trim();
+    const f = document.getElementById("inp-c-fto").value.trim() || "Oley Sasa";
+    if (!b || !n) { showToast("⚠️ Podaj odznakę i nazwisko kadeta!"); return; }
+    const nc = { id: b + "_" + Date.now(), badge: b, name: n, fto: f, joinDate: new Date().toLocaleDateString("pl-PL"), totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} };
+    BASIC_FTO_MODULES.forEach(m => { nc.modules[m] = { ok: false, note: "", sign: "" }; });
+    cadetsList.unshift(nc);
+    saveCadets();
+    renderCadetsTable();
+    document.getElementById("inp-c-badge").value = "";
+    document.getElementById("inp-c-name").value = "";
+    showToast("✅ Dodano kadeta [" + b + "] " + n);
   }
 
-  function copyReportTextOnly() {
-    const body = document.getElementById("rep-body").value;
-    navigator.clipboard.writeText(body);
-    showToast("📄 Skopiowano samą treść raportu!");
+  function cTogglePos(id, val) { const c = cadetsList.find(x => x.id === id); if (c) { c.pos = val; saveCadets(); } }
+  function cChangeNeg(id, val) { const c = cadetsList.find(x => x.id === id); if (c) { c.neg = val; saveCadets(); } }
+
+  function openCadetSheet(id) {
+    activeCadetId = id;
+    const c = cadetsList.find(x => x.id === id);
+    if (!c) return;
+    document.getElementById("cs-badge").textContent = "#" + c.badge;
+    document.getElementById("cs-name").textContent = c.name;
+    document.getElementById("cs-meta").textContent = "Opiekun FTO: " + c.fto + " • Data dołączenia: " + c.joinDate;
+    document.getElementById("cs-pos-chk").checked = !!c.pos;
+    document.getElementById("cs-pos-txt").value = c.posTxt || "";
+    document.getElementById("cs-neg-sel").value = c.neg || "BRAK";
+    document.getElementById("cs-neg-txt").value = c.negTxt || "";
+    updateCadetSheetTimer();
+    renderCadetModules(c);
+    switchFtoSub("arkusz");
   }
 
-  function copyFullReport() {
-    const title = document.getElementById("rep-title").value;
-    const type = document.getElementById("rep-type").value;
-    const body = document.getElementById("rep-body").value;
-    const full = `TYTUŁ: ${title}\nRODZAJ: ${type}\nAUTOR: [923] Oley Sasa\n\nTREŚĆ RAPORTU:\n${body}`;
-    navigator.clipboard.writeText(full);
-    showToast("📋 Skopiowano pełny raport do schowka!");
+  function renderCadetModules(c) {
+    const tbody = document.getElementById("cs-modules-tbody");
+    tbody.innerHTML = "";
+    BASIC_FTO_MODULES.forEach(m => {
+      const mod = c.modules[m] || { ok: false, note: "", sign: "" };
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td style="font-weight:700; color:#fff;">${m}</td>
+        <td style="text-align:center;"><input type="checkbox" ${mod.ok ? 'checked' : ''} onchange="updCMod('${m}', 'ok', this.checked)" /></td>
+        <td><input type="text" class="mdt-input" value="${mod.note}" oninput="updCMod('${m}', 'note', this.value)" /></td>
+        <td><input type="text" class="mdt-input" style="text-align:center;font-weight:700;" value="${mod.sign}" oninput="updCMod('${m}', 'sign', this.value)" /></td>
+        <td><button class="mdt-btn mdt-btn-gray" style="padding:4px 8px; font-size:11px;" onclick="signCModSasa('${m}')">Podpisz: SASA</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function updCMod(m, field, val) {
+    const c = cadetsList.find(x => x.id === activeCadetId);
+    if (!c) return;
+    c.modules[m][field] = val;
+    saveCadets();
+    renderCadetsTable();
+  }
+
+  function signCModSasa(m) {
+    const c = cadetsList.find(x => x.id === activeCadetId);
+    if (!c) return;
+    c.modules[m].ok = true;
+    c.modules[m].sign = "SASA";
+    saveCadets();
+    renderCadetModules(c);
+    renderCadetsTable();
+  }
+
+  function signAllCadetModules() {
+    const c = cadetsList.find(x => x.id === activeCadetId);
+    if (!c) return;
+    BASIC_FTO_MODULES.forEach(m => { c.modules[m].ok = true; c.modules[m].sign = "SASA"; });
+    saveCadets();
+    renderCadetModules(c);
+    renderCadetsTable();
+    showToast("✍ Podpisano wszystkie szkolenia podstawowe jako SASA");
+  }
+
+  function saveCadetNotes() {
+    const c = cadetsList.find(x => x.id === activeCadetId);
+    if (!c) return;
+    c.pos = document.getElementById("cs-pos-chk").checked;
+    c.posTxt = document.getElementById("cs-pos-txt").value;
+    c.neg = document.getElementById("cs-neg-sel").value;
+    c.negTxt = document.getElementById("cs-neg-txt").value;
+    saveCadets();
+    renderCadetsTable();
+  }
+
+  function copyCadetSheetText() {
+    const c = cadetsList.find(x => x.id === activeCadetId);
+    if (!c) return;
+    const modTxt = BASIC_FTO_MODULES.map(m => `${c.modules[m].ok ? '[✓]' : '[ ]'} ${m} - ${c.modules[m].note || 'Brak'} (${c.modules[m].sign || '-'})`).join("\n");
+    navigator.clipboard.writeText(`ARKUSZ KADETA [${c.badge}] ${c.name}\nCzas w patrolu: ${fmtHMS(getCadetSec(c))}\n\n${modTxt}`);
+    showToast("📋 Skopiowano arkusz kadeta!");
+  }
+
+  /* EGZAMIN OFICERSKI */
+  const EO_TASKS = ["Teoria", "NTS", "FTS", "Status 7", "10-80", "10-80 patyki", "Pierwsza pomoc"];
+  let eoScores = { "Teoria": 0, "NTS": 0, "FTS": 0, "Status 7": 0, "10-80": 0, "10-80 patyki": 0, "Pierwsza pomoc": 0 };
+
+  function renderEoTable() {
+    const tb = document.getElementById("eo-tbody");
+    if (!tb) return;
+    let sum = 0;
+    tb.innerHTML = EO_TASKS.map(t => {
+      const v = eoScores[t] || 0;
+      sum += v;
+      return `
+        <tr>
+          <td style="font-weight:700; color:#60a5fa;">${t}</td>
+          ${[0,1,2,3].map(p => `<td style="text-align:center;"><input type="radio" name="eo-${t}" ${v===p?'checked':''} onchange="setEoScore('${t}',${p})"/></td>`).join("")}
+          <td style="text-align:center; font-weight:800;">${v}</td>
+        </tr>
+      `;
+    }).join("");
+    document.getElementById("eo-sum").textContent = sum + " / 21";
+    const st = document.getElementById("eo-status");
+    st.textContent = sum >= 17 ? "ZDANE ✅" : "NIEZDANE ❌ (Min. 17 pkt)";
+    st.style.color = sum >= 17 ? "#4ade80" : "#f87171";
+  }
+
+  function setEoScore(t, p) { eoScores[t] = p; renderEoTable(); }
+  function copyEoResult() {
+    let sum = 0;
+    EO_TASKS.forEach(t => sum += eoScores[t]);
+    navigator.clipboard.writeText(`EGZAMIN OFICERSKI — ${document.getElementById("eo-cadet").value}\nWynik: ${sum}/21 pkt (${sum>=17?'ZDANE':'NIEZDANE'})`);
+    showToast("📋 Skopiowano wynik Egzaminu Oficerskiego!");
+  }
+
+  /* NAWIGACJA GŁÓWNA */
+  function switchTab(t) {
+    ["szkolenia", "kadet", "raporty", "sprawy", "funkcjonariusze"].forEach(k => {
+      document.getElementById("tab-" + k)?.classList.add("hidden");
+      document.getElementById("nav-" + k)?.classList.remove("active");
+    });
+    document.getElementById("tab-" + t)?.classList.remove("hidden");
+    document.getElementById("nav-" + t)?.classList.add("active");
+  }
+
+  function switchTrainingSub(sub) {
+    document.getElementById("szk-view-egzaminator").classList.toggle("hidden", sub !== "egzaminator");
+    document.getElementById("szk-view-wykaz").classList.toggle("hidden", sub !== "wykaz");
+    document.getElementById("sub-szk-egzaminator").className = "mdt-btn " + (sub === "egzaminator" ? "mdt-btn-blue" : "mdt-btn-gray");
+    document.getElementById("sub-szk-wykaz").className = "mdt-btn " + (sub === "wykaz" ? "mdt-btn-blue" : "mdt-btn-gray");
+  }
+
+  function switchFtoSub(sub) {
+    ["lista", "arkusz", "egzamin"].forEach(k => document.getElementById("fto-view-" + k)?.classList.add("hidden"));
+    document.getElementById("fto-view-" + sub)?.classList.remove("hidden");
+    document.getElementById("sub-fto-lista").className = "mdt-btn " + (sub !== "egzamin" ? "mdt-btn-blue" : "mdt-btn-gray");
+    document.getElementById("sub-fto-egzamin").className = "mdt-btn " + (sub === "egzamin" ? "mdt-btn-blue" : "mdt-btn-gray");
+  }
+
+  function copyMainReport() {
+    navigator.clipboard.writeText(document.getElementById("r-body").value);
+    showToast("📋 Skopiowano treść raportu #309!");
   }
 
   function showToast(msg) {
-    const box = document.getElementById("toast-box");
-    box.textContent = msg;
-    box.style.display = "block";
-    clearTimeout(window._toastTimer);
-    window._toastTimer = setTimeout(() => { box.style.display = "none"; }, 3000);
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.style.display = "block";
+    clearTimeout(window._tt);
+    window._tt = setTimeout(() => { t.style.display = "none"; }, 3000);
   }
 
-  // Inicjalizacja przy starcie
   window.addEventListener("DOMContentLoaded", () => {
-    loadCadetsFromStorage();
+    loadOfficersRoster();
+    loadCadets();
+    renderTraineeSelect();
+    renderCourseButtons();
+    renderOfficersLicenseTable();
     renderCadetsTable();
-    renderOfficerExam();
-    renderTrainingTabs();
-    renderPenalCode();
+    renderEoTable();
   });
 </script>
 </body>
