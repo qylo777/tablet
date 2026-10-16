@@ -955,7 +955,7 @@ Po otrzymaniu potwierdzenia radiowego o zatopieniu ładunków w oceanie, funkcjo
         <td style="font-weight:700; color:#60a5fa;">${task}</td>
         ${[0, 1, 2, 3].map(pts => `
           <td style="text-align:center;">
-            <input type="radio" name="exam-${task}" ${val === pts ? "checked" : ""} onchange="setOfficerExamScore('${task}',${pts})" style="width:16px;height:16px;cursor:pointer;" />
+            <input type="radio" name="exam-${task}" ${val === pts ? "checked" : ""} onchange="setOfficerExamScore('${task}', ${pts})" style="width:16px;height:16px;cursor:pointer;" />
           </td>
         `).join("")}
         <td style="text-align:center; font-weight:800; color:#fff;">${val}</td>
@@ -1343,4 +1343,51 @@ Po otrzymaniu potwierdzenia radiowego o zatopieniu ładunków w oceanie, funkcjo
       document.getElementById("cadet-sub-" + s)?.classList.add("hidden-view");
     });
     document.getElementById("cadet-sub-" + sub)?.classList.remove("hidden-view");
-    document.getElementById("subbtn-lista").className = "
+    document.getElementById("subbtn-lista").className = "mdt-btn " + (sub === "lista" || sub === "arkusz" ? "mdt-btn-blue" : "mdt-btn-gray");
+    document.getElementById("subbtn-egzamin").className = "mdt-btn " + (sub === "egzamin" ? "mdt-btn-blue" : "mdt-btn-gray");
+  }
+
+  function addPromptItem(listId) {
+    const val = prompt("Wpisz pozycję do dodania:");
+    if (!val) return;
+    const container = document.getElementById(listId);
+    const div = document.createElement("div");
+    div.style.cssText = "padding: 6px 10px; background: #0b0e14; border-radius: 6px; border: 1px solid #1e293b;";
+    div.textContent = val;
+    container.appendChild(div);
+  }
+
+  function copyReportTextOnly() {
+    const body = document.getElementById("rep-body").value;
+    navigator.clipboard.writeText(body);
+    showToast("📄 Skopiowano samą treść raportu!");
+  }
+
+  function copyFullReport() {
+    const title = document.getElementById("rep-title").value;
+    const type = document.getElementById("rep-type").value;
+    const body = document.getElementById("rep-body").value;
+    const full = `TYTUŁ: ${title}\nRODZAJ: ${type}\nAUTOR: [923] Oley Sasa\n\nTREŚĆ RAPORTU:\n${body}`;
+    navigator.clipboard.writeText(full);
+    showToast("📋 Skopiowano pełny raport do schowka!");
+  }
+
+  function showToast(msg) {
+    const box = document.getElementById("toast-box");
+    box.textContent = msg;
+    box.style.display = "block";
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => { box.style.display = "none"; }, 3000);
+  }
+
+  // Inicjalizacja przy starcie
+  window.addEventListener("DOMContentLoaded", () => {
+    loadCadetsFromStorage();
+    renderCadetsTable();
+    renderOfficerExam();
+    renderTrainingTabs();
+    renderPenalCode();
+  });
+</script>
+</body>
+</html>
