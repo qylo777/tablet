@@ -1,0 +1,2248 @@
+<!DOCTYPE html>
+<html lang="pl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablet LSPD - Los Santos Police Department</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #05070b;
+            background-image: 
+                radial-gradient(at 15% 15%, rgba(29, 78, 216, 0.12) 0px, transparent 50%),
+                radial-gradient(at 85% 85%, rgba(15, 23, 42, 0.4) 0px, transparent 50%);
+            color: #e2e8f0;
+            user-select: none;
+        }
+        .mdt-shell {
+            background-color: #0b0e14;
+            border: 1px solid #1e2533;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.85), 0 0 0 8px #050608;
+        }
+        .mdt-card {
+            background-color: #11151f;
+            border: 1px solid #1c2230;
+        }
+        .mdt-subcard {
+            background-color: #0d1018;
+            border: 1px solid #181e2c;
+        }
+        .mdt-input {
+            background-color: #0b0e16;
+            border: 1px solid #1e2636;
+            color: #f1f5f9;
+        }
+        .mdt-input:focus {
+            border-color: #2563eb;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+        .nav-item.active {
+            background-color: rgba(30, 58, 138, 0.35);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.25);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0e14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-2 sm:p-4 lg:p-6 overflow-x-hidden">
+
+    <!-- Powiadomienie Toast (zamiast alert) -->
+    <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Główna obudowa Tabletu LSPD -->
+    <div class="mdt-shell w-full max-w-[1440px] h-[92vh] min-h-[720px] rounded-2xl flex flex-col md:flex-row overflow-hidden relative">
+        
+        <!-- LEWY PANEL BOCZNY (KATEGORIE) -->
+        <aside class="w-full md:w-64 bg-[#090c12] border-b md:border-b-0 md:border-r border-[#1a202c] flex flex-col justify-between shrink-0">
+            <div>
+                <!-- Nagłówek LSPD -->
+                <div class="p-5 flex items-center gap-3.5 border-b border-[#151a24]">
+                    <div class="w-11 h-11 rounded-full bg-gradient-to-br from-blue-600 via-blue-800 to-slate-900 border-2 border-amber-400/70 flex items-center justify-center shadow-lg shrink-0">
+                        <i data-lucide="shield" class="w-6 h-6 text-amber-300"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="font-bold text-base tracking-tight text-white">Tablet</span>
+                            <span class="font-extrabold text-base tracking-tight text-blue-500">LSPD</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 leading-tight">Los Santos Police Department</p>
+                    </div>
+                </div>
+
+                <!-- Lista Kategorii -->
+                <div class="p-3.5">
+                    <p class="px-3 text-[10px] font-semibold uppercase tracking-wider text-slate-500 mb-2">Kategorie</p>
+                    <nav class="flex md:flex-col gap-1 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0" id="sidebarNav">
+                        <button onclick="switchTab('dyspozytornia')" data-tab="dyspozytornia" class="nav-item flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition-all whitespace-nowrap">
+                            <i data-lucide="megaphone" class="w-4 h-4"></i>
+                            <span>Dyspozytornia</span>
+                        </button>
+                        <button onclick="switchTab('obywatele')" data-tab="obywatele" class="nav-item flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition-all whitespace-nowrap">
+                            <i data-lucide="users" class="w-4 h-4"></i>
+                            <span>Baza Obywateli</span>
+                        </button>
+                        <button onclick="switchTab('pojazdy')" data-tab="pojazdy" class="nav-item flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition-all whitespace-nowrap">
+                            <i data-lucide="car" class="w-4 h-4"></i>
+                            <span>Baza Pojazdów</span>
+                        </button>
+                        <button onclick="switchTab('raporty')" data-tab="raporty" class="nav-item active flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition-all whitespace-nowrap">
+                            <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+                            <span>Raporty</span>
+                        </button>
+                        <button onclick="switchTab('sprawy')" data-tab="sprawy" class="nav-item flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition-all whitespace-nowrap">
+                            <i data-lucide="scale" class="w-4 h-4"></i>
+                            <span>Sprawy</span>
+                        </button>
+                        <button onclick="switchTab('mandaty')" data-tab="mandaty" class="nav-item flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition-all whitespace-nowrap">
+                            <i data-lucide="mail" class="w-4 h-4"></i>
+                            <span>Mandaty</span>
+                        </button>
+                        <button onclick="switchTab('funkcjonariusze')" data-tab="funkcjonariusze" class="nav-item flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition-all whitespace-nowrap">
+                            <i data-lucide="user-check" class="w-4 h-4"></i>
+                            <span>Funkcjonariusze</span>
+                        </button>
+                        <button onclick="switchTab('patrole')" data-tab="patrole" class="nav-item flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition-all whitespace-nowrap">
+                            <i data-lucide="radio" class="w-4 h-4"></i>
+                            <span>Patrole</span>
+                        </button>
+                        <button onclick="switchTab('dispatch')" data-tab="dispatch" class="nav-item flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition-all whitespace-nowrap">
+                            <i data-lucide="navigation" class="w-4 h-4"></i>
+                            <span>Dispatch</span>
+                        </button>
+                        <button onclick="switchTab('kadeci')" data-tab="kadeci" class="nav-item flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-medium text-amber-400/90 hover:text-amber-300 hover:bg-amber-950/30 border border-transparent hover:border-amber-500/20 transition-all whitespace-nowrap">
+                            <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                            <span>Strefa Kadeta (FTO)</span>
+                        </button>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Dolny profil zalogowanego funkcjonariusza -->
+            <div class="hidden md:block p-4 border-t border-[#151a24] bg-[#07090e]">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-red-900/40 border border-red-500/40 flex items-center justify-center text-xs font-bold text-red-300">
+                            923
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold text-white leading-none">Oley Sasa</p>
+                            <p class="text-[10px] text-emerald-400 mt-1 flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                AIAD • Na służbie
+                            </p>
+                        </div>
+                    </div>
+                    <button onclick="loadHospitalReportTemplate()" title="Wczytaj raport ze szpitala" class="p-1.5 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 transition">
+                        <i data-lucide="file-text" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- GŁÓWNY OBSZAR ROBOCZY -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-[#0b0e14]">
+            
+            <!-- ================= ZAKŁADKA: RAPORTY (LISTA + TWORZENIE) ================= -->
+            <section id="tab-raporty" class="tab-section flex-1 flex flex-col h-full overflow-hidden">
+                
+                <!-- WIDOK 1: LISTA RAPORTÓW -->
+                <div id="reportsListView" class="flex-1 flex flex-col h-full overflow-hidden">
+                    <header class="px-6 py-5 border-b border-[#161c28] flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                            <h1 class="text-lg font-bold text-white">Raporty</h1>
+                            <p class="text-xs text-slate-400">Wyszukiwanie raportów i podgląd podstawowych danych</p>
+                        </div>
+                    </header>
+
+                    <div class="p-6 flex-1 flex flex-col gap-4 overflow-hidden">
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <div class="relative flex-1 min-w-[260px]">
+                                <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                                <input id="reportSearchInput" oninput="renderReportsTable()" type="text" placeholder="Wyszukaj po funkcjonariuszu lub numerze raportu np. #923..." class="mdt-input w-full pl-10 pr-4 py-2.5 rounded-lg text-xs">
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="loadHospitalReportTemplate()" class="px-3.5 py-2.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-300 text-xs font-medium flex items-center gap-2 transition">
+                                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                                    <span>Wczytaj raport: Alarm Bombowy (Szpital)</span>
+                                </button>
+                                <button onclick="openNewReportForm()" class="px-4 py-2.5 rounded-lg bg-blue-900/50 hover:bg-blue-800/60 border border-blue-500/30 text-blue-200 text-xs font-semibold flex items-center gap-2 transition">
+                                    <i data-lucide="plus" class="w-4 h-4"></i>
+                                    <span>Nowy raport</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mdt-card rounded-xl flex-1 overflow-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-[#1c2230] text-[11px] font-semibold text-slate-400 bg-[#0e121b]">
+                                        <th class="py-3.5 px-4">Nr</th>
+                                        <th class="py-3.5 px-4">Funkcjonariusz</th>
+                                        <th class="py-3.5 px-4">Tytuł</th>
+                                        <th class="py-3.5 px-4">Rodzaj</th>
+                                        <th class="py-3.5 px-4">Data sporządzenia</th>
+                                        <th class="py-3.5 px-4 text-right">Akcje</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reportsTableBody" class="divide-y divide-[#181e2c] text-xs"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WIDOK 2: NOWY RAPORT / EDYCJA RAPORTU -->
+                <div id="reportFormView" class="hidden flex-1 flex flex-col h-full overflow-hidden">
+                    <header class="px-6 py-4 border-b border-[#161c28] flex items-center justify-between">
+                        <div>
+                            <h1 id="reportFormHeaderTitle" class="text-lg font-bold text-white">Nowy raport</h1>
+                            <p class="text-xs text-slate-400">Tworzenie raportu służbowego</p>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <button onclick="copyFormattedReport()" class="px-3.5 py-2 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 text-xs font-medium flex items-center gap-2 transition">
+                                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                <span>Kopiuj cały raport do schowka</span>
+                            </button>
+                            <button onclick="closeReportForm()" class="px-3.5 py-2 rounded-lg bg-[#141923] hover:bg-[#1c2331] border border-[#242c3d] text-slate-300 text-xs font-medium flex items-center gap-1.5 transition">
+                                <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+                                <span>Powrót do raportów</span>
+                            </button>
+                        </div>
+                    </header>
+
+                    <!-- Główny Grid Formularza Raportu (identyczny jak na zrzucie) -->
+                    <div class="p-6 flex-1 overflow-y-auto grid grid-cols-1 lg:grid-cols-12 gap-5">
+                        
+                        <!-- Lewa/Środkowa kolumna (8/12) -->
+                        <div class="lg:col-span-8 mdt-card rounded-xl p-5 flex flex-col gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-12 gap-4">
+                                <div class="sm:col-span-8">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Tytuł raportu</label>
+                                    <input id="repTitle" type="text" placeholder="Np. Podsumowanie akcji Sandy Shores" class="mdt-input w-full px-3.5 py-2.5 rounded-lg text-xs">
+                                </div>
+                                <div class="sm:col-span-4">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Rodzaj raportu</label>
+                                    <select id="repType" class="mdt-input w-full px-3.5 py-2.5 rounded-lg text-xs">
+                                        <option value="Podsumowanie akcji">Podsumowanie akcji</option>
+                                        <option value="Służbowy">Służbowy</option>
+                                        <option value="Interwencyjny">Interwencyjny</option>
+                                        <option value="Patrolowy">Patrolowy</option>
+                                        <option value="Operacyjny">Operacyjny</option>
+                                        <option value="Kryminalny">Kryminalny</option>
+                                        <option value="Pościgowy">Pościgowy</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Treść raportu -->
+                            <div class="flex-1 flex flex-col min-h-[250px]">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Treść raportu</label>
+                                    <button onclick="copyFieldText('repContent', 'Treść raportu')" class="text-[11px] text-blue-400 hover:text-blue-300 flex items-center gap-1">
+                                        <i data-lucide="copy" class="w-3 h-3"></i> Kopiuj samą treść
+                                    </button>
+                                </div>
+                                <textarea id="repContent" rows="11" placeholder="Opisz przebieg akcji, ustalenia, wnioski, użyte jednostki itd." class="mdt-input w-full flex-1 p-3.5 rounded-lg text-xs font-mono leading-relaxed resize-y"></textarea>
+                            </div>
+
+                            <!-- Dolne 2 boxy: Osoby powiązane & Pojazdy powiązane -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+                                <!-- Osoby powiązane -->
+                                <div class="mdt-subcard rounded-xl p-4 flex flex-col gap-3">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="text-xs font-bold uppercase tracking-wide text-slate-200">Osoby powiązane</h3>
+                                            <p class="text-[10px] text-slate-500">Bez wchodzenia w szczegóły kartoteki</p>
+                                        </div>
+                                        <button onclick="openSelectorModal('citizens')" class="w-7 h-7 rounded-full bg-blue-900/50 hover:bg-blue-700/60 border border-blue-500/40 text-blue-300 flex items-center justify-center transition">
+                                            <i data-lucide="plus" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                    <div id="repCitizensContainer" class="min-h-[110px] max-h-[180px] overflow-y-auto rounded-lg bg-[#090c12] border border-[#161b26] p-2.5 flex flex-col gap-1.5"></div>
+                                </div>
+
+                                <!-- Pojazdy powiązane -->
+                                <div class="mdt-subcard rounded-xl p-4 flex flex-col gap-3">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="text-xs font-bold uppercase tracking-wide text-slate-200">Pojazdy powiązane</h3>
+                                            <p class="text-[10px] text-slate-500">Opcjonalnie, np. pojazdy z akcji</p>
+                                        </div>
+                                        <button onclick="openSelectorModal('vehicles')" class="w-7 h-7 rounded-full bg-blue-900/50 hover:bg-blue-700/60 border border-blue-500/40 text-blue-300 flex items-center justify-center transition">
+                                            <i data-lucide="plus" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                    <div id="repVehiclesContainer" class="min-h-[110px] max-h-[180px] overflow-y-auto rounded-lg bg-[#090c12] border border-[#161b26] p-2.5 flex flex-col gap-1.5"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Prawa kolumna (4/12): Autor, Funkcjonariusze i Zapisz -->
+                        <div class="lg:col-span-4 flex flex-col justify-between gap-4">
+                            <div class="flex flex-col gap-4">
+                                <!-- Autor -->
+                                <div class="mdt-card rounded-xl p-4">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Autor</label>
+                                    <input id="repAuthor" type="text" value="[923] Oley Sasa" class="mdt-input w-full px-3.5 py-2.5 rounded-lg text-xs font-semibold text-white">
+                                </div>
+
+                                <!-- Funkcjonariusze -->
+                                <div class="mdt-card rounded-xl p-4 flex flex-col gap-3">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="text-xs font-bold uppercase tracking-wide text-slate-200">Funkcjonariusze</h3>
+                                            <p class="text-[10px] text-slate-500">Dodatkowe jednostki w raporcie</p>
+                                        </div>
+                                        <button onclick="openSelectorModal('officers')" class="w-7 h-7 rounded-full bg-blue-900/50 hover:bg-blue-700/60 border border-blue-500/40 text-blue-300 flex items-center justify-center transition">
+                                            <i data-lucide="plus" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                    <div id="repOfficersContainer" class="min-h-[220px] max-h-[340px] overflow-y-auto rounded-lg bg-[#090c12] border border-[#161b26] p-2.5 flex flex-col gap-1.5"></div>
+                                </div>
+                            </div>
+
+                            <!-- Przycisk Zapisz raport -->
+                            <button onclick="saveReport()" class="w-full py-3.5 rounded-xl bg-[#132347] hover:bg-[#1b3266] border border-blue-500/30 text-blue-100 text-xs font-semibold flex items-center justify-center gap-2 shadow-lg transition">
+                                <i data-lucide="save" class="w-4 h-4"></i>
+                                <span>Zapisz raport</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= ZAKŁADKA: DYSPOZYTORNIA ================= -->
+            <section id="tab-dyspozytornia" class="tab-section hidden flex-1 flex flex-col h-full overflow-hidden">
+                <header class="px-6 py-5 border-b border-[#161c28]">
+                    <h1 class="text-lg font-bold text-white">Dyspozytornia</h1>
+                    <p class="text-xs text-slate-400">Podgląd funkcjonariuszy i ostatnich wyszukiwań</p>
+                </header>
+                <div class="p-6 flex-1 overflow-y-auto grid grid-cols-1 lg:grid-cols-12 gap-5">
+                    <!-- Funkcjonariusze na zmianie -->
+                    <div class="lg:col-span-7 mdt-card rounded-xl p-5 flex flex-col">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-sm font-bold text-white">Funkcjonariusze na zmianie</h2>
+                            <span id="onDutyCountBadge" class="text-xs font-bold text-slate-300">8</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead>
+                                    <tr class="border-b border-[#1c2230] text-[11px] text-slate-400">
+                                        <th class="py-2.5 px-3">Odznaka</th>
+                                        <th class="py-2.5 px-3">Imię i nazwisko</th>
+                                        <th class="py-2.5 px-3">Stopień</th>
+                                        <th class="py-2.5 px-3">Jednostka</th>
+                                        <th class="py-2.5 px-3">Radio</th>
+                                        <th class="py-2.5 px-3 text-right">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dyspozytorniaOfficersBody" class="divide-y divide-[#181e2c]"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Prawa kolumna: Poszukiwane osoby i pojazdy -->
+                    <div class="lg:col-span-5 flex flex-col gap-5">
+                        <div class="mdt-card rounded-xl p-5">
+                            <h2 class="text-sm font-bold text-white mb-3">Poszukiwane osoby</h2>
+                            <table class="w-full text-left text-xs">
+                                <thead>
+                                    <tr class="border-b border-[#1c2230] text-[11px] text-slate-400">
+                                        <th class="py-2">Imię i nazwisko</th>
+                                        <th class="py-2">CSN</th>
+                                        <th class="py-2 text-right">Data urodzenia</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-[#181e2c] text-slate-300">
+                                    <tr><td class="py-2.5 font-medium">John Doe</td><td class="py-2.5 text-slate-400">T41945</td><td class="py-2.5 text-right text-slate-400">24/7/1997</td></tr>
+                                    <tr><td class="py-2.5 font-medium">Evil Evans</td><td class="py-2.5 text-slate-400">E78615</td><td class="py-2.5 text-right text-slate-400">2/5/2004</td></tr>
+                                    <tr><td class="py-2.5 font-medium">Rayan Thompson</td><td class="py-2.5 text-slate-400">T50316</td><td class="py-2.5 text-right text-slate-400">21/12/1999</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="mdt-card rounded-xl p-5">
+                            <h2 class="text-sm font-bold text-white mb-3">Poszukiwane pojazdy</h2>
+                            <table class="w-full text-left text-xs">
+                                <thead>
+                                    <tr class="border-b border-[#1c2230] text-[11px] text-slate-400">
+                                        <th class="py-2">Model</th>
+                                        <th class="py-2">Rejestracja</th>
+                                        <th class="py-2 text-right">Właściciel</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-[#181e2c] text-slate-300">
+                                    <tr><td class="py-2.5 font-medium">Asterope RS</td><td class="py-2.5 text-slate-400">4FU3777L</td><td class="py-2.5 text-right text-slate-400">Simeon Case</td></tr>
+                                    <tr><td class="py-2.5 font-medium">Oracle LE</td><td class="py-2.5 text-slate-400">6EVN1296</td><td class="py-2.5 text-right text-slate-400">Jack Cotton</td></tr>
+                                    <tr><td class="py-2.5 font-medium">Buffalo H</td><td class="py-2.5 text-slate-400">FBL4CK</td><td class="py-2.5 text-right text-slate-400">Evil Evans</td></tr>
+                                    <tr><td class="py-2.5 font-medium">Argento 7F</td><td class="py-2.5 text-slate-400">98BGR524</td><td class="py-2.5 text-right text-slate-400">Braian Brok</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= ZAKŁADKA: BAZA OBYWATELI ================= -->
+            <section id="tab-obywatele" class="tab-section hidden flex-1 flex flex-col h-full overflow-hidden">
+                <header class="px-6 py-5 border-b border-[#161c28] flex items-center justify-between">
+                    <div>
+                        <h1 class="text-lg font-bold text-white">Baza Obywateli</h1>
+                        <p class="text-xs text-slate-400">Wyszukiwanie obywateli i podgląd podstawowych danych</p>
+                    </div>
+                    <button onclick="openAddCustomEntityModal('citizen')" class="px-3.5 py-2 rounded-lg bg-blue-900/50 hover:bg-blue-800/60 border border-blue-500/30 text-blue-200 text-xs font-semibold flex items-center gap-2">
+                        <i data-lucide="user-plus" class="w-4 h-4"></i> Dodaj obywatela do bazy
+                    </button>
+                </header>
+                <div class="p-6 flex-1 flex flex-col gap-4 overflow-hidden">
+                    <div class="relative">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                        <input id="citizenSearchInput" oninput="renderCitizensTable()" type="text" placeholder="Wyszukaj po imieniu, nazwisku lub CSN..." class="mdt-input w-full pl-10 pr-4 py-2.5 rounded-lg text-xs">
+                    </div>
+                    <div class="mdt-card rounded-xl flex-1 overflow-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="border-b border-[#1c2230] text-[11px] text-slate-400 bg-[#0e121b]">
+                                    <th class="py-3.5 px-4">Imię i nazwisko</th>
+                                    <th class="py-3.5 px-4">CSN</th>
+                                    <th class="py-3.5 px-4">Data urodzenia</th>
+                                    <th class="py-3.5 px-4">Rola / Opis</th>
+                                    <th class="py-3.5 px-4 text-center">Prawo jazdy</th>
+                                    <th class="py-3.5 px-4 text-right">Punkty karne</th>
+                                </tr>
+                            </thead>
+                            <tbody id="citizensTableBody" class="divide-y divide-[#181e2c]"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= ZAKŁADKA: BAZA POJAZDÓW ================= -->
+            <section id="tab-pojazdy" class="tab-section hidden flex-1 flex flex-col h-full overflow-hidden">
+                <header class="px-6 py-5 border-b border-[#161c28] flex items-center justify-between">
+                    <div>
+                        <h1 class="text-lg font-bold text-white">Baza Pojazdów</h1>
+                        <p class="text-xs text-slate-400">Wyszukiwanie pojazdów i podgląd podstawowych danych</p>
+                    </div>
+                    <button onclick="openAddCustomEntityModal('vehicle')" class="px-3.5 py-2 rounded-lg bg-blue-900/50 hover:bg-blue-800/60 border border-blue-500/30 text-blue-200 text-xs font-semibold flex items-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Dodaj pojazd do bazy
+                    </button>
+                </header>
+                <div class="p-6 flex-1 flex flex-col gap-4 overflow-hidden">
+                    <div class="relative">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                        <input id="vehicleSearchInput" oninput="renderVehiclesTable()" type="text" placeholder="Wyszukaj po numerze rejestracji, modelu lub właścicielu..." class="mdt-input w-full pl-10 pr-4 py-2.5 rounded-lg text-xs">
+                    </div>
+                    <div class="mdt-card rounded-xl flex-1 overflow-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="border-b border-[#1c2230] text-[11px] text-slate-400 bg-[#0e121b]">
+                                    <th class="py-3.5 px-4">Właściciel</th>
+                                    <th class="py-3.5 px-4">Marka</th>
+                                    <th class="py-3.5 px-4">Model</th>
+                                    <th class="py-3.5 px-4">Nr Rejestracyjny</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vehiclesTableBody" class="divide-y divide-[#181e2c]"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= ZAKŁADKA: SPRAWY (NOWA SPRAWA + TARYFIKATOR) ================= -->
+            <section id="tab-sprawy" class="tab-section hidden flex-1 flex flex-col h-full overflow-hidden">
+                <header class="px-6 py-4 border-b border-[#161c28] flex items-center justify-between">
+                    <div>
+                        <h1 class="text-lg font-bold text-white">Nowa sprawa</h1>
+                        <p class="text-xs text-slate-400">Kompletna dokumentacja, dobór zarzutów i decyzje końcowe</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="copyCaseSummary()" class="px-3.5 py-2 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 text-xs font-medium flex items-center gap-1.5">
+                            <i data-lucide="copy" class="w-3.5 h-3.5"></i> Kopiuj opis i zarzuty
+                        </button>
+                    </div>
+                </header>
+
+                <div class="p-6 flex-1 overflow-y-auto grid grid-cols-1 lg:grid-cols-12 gap-5">
+                    <!-- Lewa kolumna sprawy (8/12) -->
+                    <div class="lg:col-span-8 mdt-card rounded-xl p-5 flex flex-col gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Funkcjonariusz prowadzący</label>
+                                <input type="text" value="[923] Oley Sasa" class="mdt-input w-full px-3.5 py-2.5 rounded-lg text-xs font-semibold">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Adwokat</label>
+                                <input id="caseLawyer" type="text" placeholder="+ Dodaj adwokata (opcjonalnie)" class="mdt-input w-full px-3.5 py-2.5 rounded-lg text-xs">
+                            </div>
+                        </div>
+
+                        <!-- Opis sprawy -->
+                        <div class="flex-1 flex flex-col">
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Opis sprawy</label>
+                            <textarea id="caseDescription" rows="6" placeholder="Opisz pełny przebieg interwencji, zabezpieczone dowody, zachowanie obywatela i wszystkie istotne informacje" class="mdt-input w-full p-3.5 rounded-lg text-xs leading-relaxed"></textarea>
+                        </div>
+
+                        <!-- Przestępstwa (Taryfikator) -->
+                        <div class="mdt-subcard rounded-xl p-4 flex flex-col gap-3">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xs font-bold uppercase tracking-wide text-slate-200">Przestępstwa</h3>
+                                <button onclick="openPenalCodeModal()" class="px-3 py-1.5 rounded-lg bg-[#161d2b] hover:bg-[#1f293d] border border-[#2a364f] text-slate-200 text-xs font-medium flex items-center gap-1.5 transition">
+                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i> Pokaż wykaz
+                                </button>
+                            </div>
+                            <div id="selectedCrimesContainer" class="min-h-[120px] rounded-lg bg-[#090c12] border border-[#161b26] p-3 flex flex-wrap gap-2 items-start"></div>
+                        </div>
+                    </div>
+
+                    <!-- Prawa kolumna sprawy (4/12) -->
+                    <div class="lg:col-span-4 flex flex-col gap-4">
+                        <div class="mdt-card rounded-xl p-5 flex flex-col gap-3">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xs font-bold uppercase tracking-wide text-slate-200">Obywatel</h3>
+                            </div>
+                            <select id="caseCitizenSelect" class="mdt-input w-full px-3.5 py-2.5 rounded-lg text-xs"></select>
+                        </div>
+
+                        <div class="mdt-card rounded-xl p-5 flex flex-col gap-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Sugerowane miesiące</p>
+                                    <p id="caseTotalMonths" class="text-xl font-extrabold text-white mt-1">0 mies.</p>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Sugerowana grzywna</p>
+                                    <p id="caseTotalFine" class="text-xl font-extrabold text-emerald-400 mt-1">$0</p>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2.5 pt-2">
+                                <button onclick="showToast('Wysłano skazanego do więzienia stanowego!')" class="py-2.5 px-3 rounded-lg bg-red-950/60 hover:bg-red-900/70 border border-red-500/30 text-red-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition">
+                                    <i data-lucide="lock" class="w-3.5 h-3.5"></i> Wyślij do więzienia
+                                </button>
+                                <button onclick="showToast('Skierowano sprawę na postępowanie sądowe!')" class="py-2.5 px-3 rounded-lg bg-amber-950/50 hover:bg-amber-900/60 border border-amber-500/30 text-amber-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition">
+                                    <i data-lucide="gavel" class="w-3.5 h-3.5"></i> Postępowanie sądowe
+                                </button>
+                                <button onclick="showToast('Obywatel został ułaskawiony.')" class="py-2.5 px-3 rounded-lg bg-emerald-950/50 hover:bg-emerald-900/60 border border-emerald-500/30 text-emerald-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition">
+                                    <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Ułaskaw
+                                </button>
+                                <button onclick="showToast('Oznaczono status: Zatrzymany w areszcie.')" class="py-2.5 px-3 rounded-lg bg-blue-950/60 hover:bg-blue-900/70 border border-blue-500/30 text-blue-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition">
+                                    <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> Zatrzymany
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= ZAKŁADKA: MANDATY ================= -->
+            <section id="tab-mandaty" class="tab-section hidden flex-1 flex flex-col h-full overflow-hidden">
+                <header class="px-6 py-5 border-b border-[#161c28]">
+                    <h1 class="text-lg font-bold text-white">Mandaty</h1>
+                    <p class="text-xs text-slate-400">Wyszukiwanie mandatów i podgląd podstawowych danych</p>
+                </header>
+                <div class="p-6 flex-1 flex flex-col gap-4 overflow-hidden">
+                    <div class="mdt-card rounded-xl flex-1 overflow-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="border-b border-[#1c2230] text-[11px] text-slate-400 bg-[#0e121b]">
+                                    <th class="py-3.5 px-4">Nr</th>
+                                    <th class="py-3.5 px-4">Funkcjonariusz</th>
+                                    <th class="py-3.5 px-4">Obywatel</th>
+                                    <th class="py-3.5 px-4">Kara finansowa</th>
+                                    <th class="py-3.5 px-4 text-right">Ilość punktów</th>
+                                </tr>
+                            </thead>
+                            <tbody id="finesTableBody" class="divide-y divide-[#181e2c]"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= ZAKŁADKA: FUNKCJONARIUSZE ================= -->
+            <section id="tab-funkcjonariusze" class="tab-section hidden flex-1 flex flex-col h-full overflow-hidden">
+                <header class="px-6 py-5 border-b border-[#161c28] flex items-center justify-between">
+                    <div>
+                        <h1 class="text-lg font-bold text-white">Funkcjonariusze</h1>
+                        <p class="text-xs text-slate-400">Wyszukiwanie funkcjonariuszy i podgląd podstawowych danych</p>
+                    </div>
+                    <button onclick="openAddCustomEntityModal('officer')" class="px-3.5 py-2 rounded-lg bg-blue-900/50 hover:bg-blue-800/60 border border-blue-500/30 text-blue-200 text-xs font-semibold flex items-center gap-2">
+                        <i data-lucide="user-plus" class="w-4 h-4"></i> Dodaj funkcjonariusza
+                    </button>
+                </header>
+                <div class="p-6 flex-1 flex flex-col gap-4 overflow-hidden">
+                    <div class="flex flex-wrap gap-3">
+                        <div class="relative flex-1 min-w-[240px]">
+                            <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                            <input id="officerSearchInput" oninput="renderOfficersTable()" type="text" placeholder="Wyszukaj po odznace lub imieniu i nazwisku..." class="mdt-input w-full pl-10 pr-4 py-2.5 rounded-lg text-xs">
+                        </div>
+                        <select id="officerStatusFilter" onchange="renderOfficersTable()" class="mdt-input px-4 py-2.5 rounded-lg text-xs">
+                            <option value="ALL">Wszystkie</option>
+                            <option value="Na służbie">Na służbie</option>
+                            <option value="Poza służbą">Poza służbą</option>
+                        </select>
+                    </div>
+                    <div class="mdt-card rounded-xl flex-1 overflow-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="border-b border-[#1c2230] text-[11px] text-slate-400 bg-[#0e121b]">
+                                    <th class="py-3.5 px-4">Odznaka</th>
+                                    <th class="py-3.5 px-4">Imię i nazwisko</th>
+                                    <th class="py-3.5 px-4">Jednostka</th>
+                                    <th class="py-3.5 px-4 text-right">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="officersTableBody" class="divide-y divide-[#181e2c]"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= ZAKŁADKA: PATROLE ================= -->
+            <section id="tab-patrole" class="tab-section hidden flex-1 flex flex-col h-full overflow-hidden">
+                <header class="px-6 py-5 border-b border-[#161c28]">
+                    <h1 class="text-lg font-bold text-white">Patrole</h1>
+                    <p class="text-xs text-slate-400">Zarządzanie patrolami, PWC, APWC i obsadą jednostek</p>
+                </header>
+                <div class="p-6 flex-1 overflow-y-auto flex flex-col gap-6">
+                    <!-- PWC i APWC -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="mdt-card rounded-xl p-4 flex items-center justify-between">
+                            <div class="flex items-center gap-3.5">
+                                <span class="px-3 py-2 rounded-lg bg-red-950/70 border border-red-500/30 text-red-300 text-xs font-bold">PWC</span>
+                                <div>
+                                    <p id="pwcName" class="text-sm font-bold text-white">[923] Oley Sasa</p>
+                                    <p class="text-[11px] text-slate-400">Patrol Watch Commander</p>
+                                </div>
+                            </div>
+                            <button onclick="assignSelfToRole('pwcName', 'PWC')" class="px-3.5 py-2 rounded-lg bg-red-900/40 hover:bg-red-800/50 border border-red-500/30 text-red-200 text-xs font-semibold transition">Przejmij</button>
+                        </div>
+
+                        <div class="mdt-card rounded-xl p-4 flex items-center justify-between">
+                            <div class="flex items-center gap-3.5">
+                                <span class="px-3 py-2 rounded-lg bg-amber-950/70 border border-amber-500/30 text-amber-300 text-xs font-bold">APWC</span>
+                                <div>
+                                    <p id="apwcName" class="text-sm font-bold text-white">[941] Gregory Solin</p>
+                                    <p class="text-[11px] text-slate-400">Assistant Patrol Watch Commander</p>
+                                </div>
+                            </div>
+                            <button onclick="assignSelfToRole('apwcName', 'APWC')" class="px-3.5 py-2 rounded-lg bg-blue-900/40 hover:bg-blue-800/50 border border-blue-500/30 text-blue-200 text-xs font-semibold transition">Przejmij</button>
+                        </div>
+                    </div>
+
+                    <!-- Lista aktywnych patroli -->
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h2 class="text-sm font-bold text-white">Aktywne patrole</h2>
+                        </div>
+                        <div id="patrolsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= ZAKŁADKA: DISPATCH ================= -->
+            <section id="tab-dispatch" class="tab-section hidden flex-1 flex flex-col h-full overflow-hidden">
+                <header class="px-6 py-5 border-b border-[#161c28] flex items-center justify-between">
+                    <div>
+                        <h1 class="text-lg font-bold text-white">Dispatch</h1>
+                        <p class="text-xs text-slate-400">Historia zgłoszeń z czasów Twojej służby oraz aktualne powiadomienia</p>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-blue-950 border border-blue-500/30 text-blue-400 text-xs font-bold">Aktywne: 12</span>
+                </header>
+                <div class="p-6 flex-1 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="dispatchGrid"></div>
+            </section>
+
+            <!-- ================= ZAKŁADKA: STREFA KADETA (FTO & EGZAMIN OFICERSKI) ================= -->
+            <section id="tab-kadeci" class="tab-section hidden flex-1 flex flex-col h-full overflow-hidden">
+                <header class="px-6 py-4 border-b border-[#161c28] flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-lg font-bold text-white">Strefa Kadeta — Panel FTO</h1>
+                            <span class="px-2 py-0.5 rounded bg-blue-600/20 border border-blue-500/40 text-blue-400 text-[10px] font-bold uppercase">Field Training Officer</span>
+                        </div>
+                        <p class="text-xs text-slate-400">Zarządzanie kadetami, arkusze szkoleń, raporty pozytywne/negatywne oraz egzamin oficerski</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button id="ftoSubTabListBtn" onclick="switchFtoView('list')" class="px-3.5 py-2 rounded-lg bg-blue-600 text-white text-xs font-semibold flex items-center gap-1.5 transition">
+                            <i data-lucide="users" class="w-3.5 h-3.5"></i>
+                            <span>Lista Kadetów (FTO)</span>
+                        </button>
+                        <button id="ftoSubTabExamBtn" onclick="switchFtoView('exam')" class="px-3.5 py-2 rounded-lg bg-[#141923] hover:bg-[#1c2331] border border-[#242c3d] text-slate-300 text-xs font-semibold flex items-center gap-1.5 transition">
+                            <i data-lucide="award" class="w-3.5 h-3.5"></i>
+                            <span>Egzamin Oficerski</span>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- PODWIDOK 1: TABELA FTO (LISTA KADETÓW + RAPORTY POZYTYWNE/NEGATYWNE) -->
+                <div id="ftoListView" class="p-6 flex-1 flex flex-col gap-4 overflow-hidden">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div class="relative flex-1 min-w-[260px]">
+                            <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                            <input id="cadetSearchInput" oninput="renderCadetsTable()" type="text" placeholder="Wyszukaj po odznace (np. 165), nazwisku kadeta lub FTO (np. Oley Sasa)..." class="mdt-input w-full pl-10 pr-4 py-2.5 rounded-lg text-xs">
+                        </div>
+                        <button onclick="openAddCadetModal()" class="px-4 py-2.5 rounded-lg bg-blue-900/50 hover:bg-blue-800/60 border border-blue-500/30 text-blue-200 text-xs font-semibold flex items-center gap-2 transition">
+                            <i data-lucide="user-plus" class="w-4 h-4"></i>
+                            <span>+ Dodaj kadeta</span>
+                        </button>
+                    </div>
+
+                    <div class="mdt-card rounded-xl flex-1 overflow-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="border-b border-[#1c2230] text-[11px] font-bold uppercase tracking-wider text-slate-300 bg-[#131b2e]">
+                                    <th class="py-3.5 px-4">Odznaka</th>
+                                    <th class="py-3.5 px-4">Kadet</th>
+                                    <th class="py-3.5 px-4">FTO (Opiekun)</th>
+                                    <th class="py-3.5 px-4 text-center">Arkusz szkoleń</th>
+                                    <th class="py-3.5 px-4 text-center">Data dołączenia</th>
+                                    <th class="py-3.5 px-4 text-center">Pozytywny raport</th>
+                                    <th class="py-3.5 px-4">Raport negatywny / Notatka</th>
+                                    <th class="py-3.5 px-4 text-right">Akcje</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cadetsTableBody" class="divide-y divide-[#181e2c]"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- PODWIDOK 2: ARKUSZ SZKOLEŃ KONKRETNEGO KADETA (PO KLIKNIĘCIU "KLIKNIJ") -->
+                <div id="ftoSheetView" class="hidden p-6 flex-1 flex flex-col gap-5 overflow-y-auto">
+                    <div class="mdt-card rounded-xl p-5 flex flex-wrap items-center justify-between gap-4 bg-gradient-to-r from-[#111827] to-[#0f1420]">
+                        <div class="flex items-center gap-4">
+                            <div id="sheetCadetBadge" class="w-12 h-12 rounded-xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-base font-extrabold text-blue-400">
+                                #165
+                            </div>
+                            <div>
+                                <h2 id="sheetCadetName" class="text-base font-bold text-white">Paulo Cortez</h2>
+                                <p class="text-xs text-slate-400 mt-0.5">
+                                    Opiekun FTO: <span id="sheetCadetFto" class="text-blue-400 font-semibold">Oley Sasa</span> • 
+                                    Data dołączenia: <span id="sheetCadetDate" class="text-slate-200 font-semibold">03.10.2026</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <button onclick="copyCadetSheetSummary()" class="px-3.5 py-2 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center gap-1.5 transition">
+                                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                <span>Kopiuj arkusz kadeta</span>
+                            </button>
+                            <button onclick="goToExamWithCadet()" class="px-3.5 py-2 rounded-lg bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/40 text-amber-300 text-xs font-semibold flex items-center gap-1.5 transition">
+                                <i data-lucide="award" class="w-3.5 h-3.5"></i>
+                                <span>Przejdź do egzaminu</span>
+                            </button>
+                            <button onclick="switchFtoView('list')" class="px-3.5 py-2 rounded-lg bg-[#141923] hover:bg-[#1c2331] border border-[#242c3d] text-slate-300 text-xs font-medium flex items-center gap-1.5 transition">
+                                <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+                                <span>Wróć do listy FTO</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tabela szkoleń wzorowana na arkuszu Google Sheets -->
+                    <div class="mdt-card rounded-xl overflow-hidden">
+                        <div class="bg-blue-600/90 py-2.5 px-4 text-center font-bold text-xs uppercase tracking-wider text-white">
+                            Arkusz Szkoleniowy Kadeta — Data dołączenia: <span id="sheetBannerDate">03.10.2026</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead>
+                                    <tr class="border-b border-[#1c2230] bg-[#0e121b] text-[11px] font-bold uppercase text-slate-300">
+                                        <th class="py-3.5 px-5 w-48">Szkolenia</th>
+                                        <th class="py-3.5 px-4 w-28 text-center">Potrafi</th>
+                                        <th class="py-3.5 px-4">Notatki (Pozytywne / Do poprawy / Błędy)</th>
+                                        <th class="py-3.5 px-4 w-48 text-center">Podpis FTO</th>
+                                        <th class="py-3.5 px-4 w-28 text-right">Szybki podpis</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cadetTrainingsBody" class="divide-y divide-[#181e2c]"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Dolna sekcja na szczegółowe raporty pozytywne i negatywne z patroli z kadetem -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="mdt-card rounded-xl p-4 flex flex-col gap-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                                    <h3 class="text-xs font-bold uppercase tracking-wide text-emerald-400">Pozytywne raporty / Pochwały FTO</h3>
+                                </div>
+                                <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+                                    <input id="sheetPositiveCheck" type="checkbox" onchange="toggleCurrentCadetPositive(this.checked)" class="w-4 h-4 accent-emerald-500 rounded cursor-pointer">
+                                    <span>Zaliczony pozytywny raport</span>
+                                </label>
+                            </div>
+                            <textarea id="sheetPositiveNotes" oninput="saveCurrentCadetNotes()" rows="4" placeholder="Wpisz co kadet zrobił dobrze (np. bardzo dobra komunikacja na radiu, sprawne przejęcie dowodzenia na 10-80)..." class="mdt-input w-full p-3 rounded-lg text-xs leading-relaxed"></textarea>
+                        </div>
+
+                        <div class="mdt-card rounded-xl p-4 flex flex-col gap-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
+                                    <h3 class="text-xs font-bold uppercase tracking-wide text-red-400">Negatywne raporty / Błędy kadeta</h3>
+                                </div>
+                                <select id="sheetNegativeStatus" onchange="changeCurrentCadetNegativeStatus(this.value)" class="mdt-input px-2.5 py-1 rounded text-xs font-semibold">
+                                    <option value="BRAK">BRAK</option>
+                                    <option value="1 NEGATYWNY">1 NEGATYWNY</option>
+                                    <option value="2 NEGATYWNE">2 NEGATYWNE</option>
+                                    <option value="DO POPRAWY">DO POPRAWY</option>
+                                    <option value="ZAWIESZONY">ZAWIESZONY</option>
+                                </select>
+                            </div>
+                            <textarea id="sheetNegativeNotes" oninput="saveCurrentCadetNotes()" rows="4" placeholder="Wpisz błędy kadeta do poprawy (np. mylenie kodów radiowych, brak przeszukania przed celą)..." class="mdt-input w-full p-3 rounded-lg text-xs leading-relaxed"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PODWIDOK 3: EGZAMIN OFICERSKI (KALKULATOR Z ARKUSZA) -->
+                <div id="ftoExamView" class="hidden p-6 flex-1 overflow-y-auto">
+                    <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-5">
+                        <!-- Lewy box: Dane rekruta i egzaminatorów (4/12) -->
+                        <div class="lg:col-span-4 flex flex-col gap-4">
+                            <div class="mdt-card rounded-xl overflow-hidden">
+                                <div class="bg-blue-600 py-2.5 px-4 text-xs font-bold text-white text-center uppercase tracking-wider">
+                                    Rekrut podchodzący do egzaminu
+                                </div>
+                                <div class="p-3.5">
+                                    <select id="examCadetSelect" onchange="updateExamSummary()" class="mdt-input w-full px-3 py-2.5 rounded-lg text-xs font-semibold"></select>
+                                </div>
+
+                                <div class="bg-blue-600 py-2.5 px-4 text-xs font-bold text-white text-center uppercase tracking-wider">
+                                    Funkcjonariusz prowadzący egzamin
+                                </div>
+                                <div class="p-3.5">
+                                    <input id="examLeadOfficer" type="text" value="[923] Oley Sasa" class="mdt-input w-full px-3 py-2.5 rounded-lg text-xs font-semibold text-center">
+                                </div>
+
+                                <div class="bg-blue-600 py-2.5 px-4 text-xs font-bold text-white text-center uppercase tracking-wider">
+                                    Funkcjonariusz asystujący egzamin
+                                </div>
+                                <div class="p-3.5">
+                                    <input id="examAssistOfficer" type="text" value="[941] Gregory Solin" placeholder="Wpisz asystującego..." class="mdt-input w-full px-3 py-2.5 rounded-lg text-xs font-semibold text-center">
+                                </div>
+                            </div>
+
+                            <div class="mdt-card rounded-xl p-4 flex flex-col gap-3">
+                                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Notatki egzaminatora (Pozytywne / Negatywne)</label>
+                                <textarea id="examCustomNotes" rows="5" placeholder="Dodatkowe uwagi z przebiegu egzaminu praktycznego i teoretycznego..." class="mdt-input w-full p-3 rounded-lg text-xs"></textarea>
+                                <button onclick="copyExamResult()" class="w-full py-2.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center justify-center gap-2 transition">
+                                    <i data-lucide="copy" class="w-4 h-4"></i>
+                                    <span>Kopiuj wynik egzaminu</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Prawy box: Tabela Punktacji 0-3 (8/12) -->
+                        <div class="lg:col-span-8 mdt-card rounded-xl overflow-hidden flex flex-col justify-between">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-center border-collapse text-xs">
+                                    <thead>
+                                        <tr class="bg-blue-600 text-white font-bold text-xs">
+                                            <th class="py-3 px-4 text-left border-r border-blue-500/40">Zadania / Punktacja</th>
+                                            <th class="py-3 px-4 w-16 border-r border-blue-500/40">0</th>
+                                            <th class="py-3 px-4 w-16 border-r border-blue-500/40">1</th>
+                                            <th class="py-3 px-4 w-16 border-r border-blue-500/40">2</th>
+                                            <th class="py-3 px-4 w-16 border-r border-blue-500/40">3</th>
+                                            <th class="py-3 px-4 w-24">Wynik</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="examTasksTableBody" class="divide-y divide-[#1c2230]"></tbody>
+                                    <tfoot>
+                                        <tr class="border-t-2 border-[#263044] font-extrabold text-sm">
+                                            <td class="py-4 px-4 bg-red-700 text-white text-left">Rezultat (min. 17 pkt)</td>
+                                            <td id="examStatusCell" colspan="4" class="py-4 px-4 bg-[#1a202c] text-slate-200 uppercase tracking-wider">
+                                                 Niezaliczone (0 / 21)
+                                            </td>
+                                            <td id="examTotalPointsCell" class="py-4 px-4 bg-[#141923] text-white text-base">
+                                                0
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                            <div class="p-4 bg-[#0d1018] border-t border-[#181e2c] flex flex-wrap items-center justify-between gap-3">
+                                <p class="text-[11px] text-slate-400">Kliknij w odpowiednią kolumnę (0, 1, 2 lub 3), aby przyznać punkty za dane zadanie egzaminacyjne.</p>
+                                <button onclick="resetExamScores()" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition">
+                                    Wyczyść punktację
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- MODAL DODAWANIA NOWEGO KADETA -->
+    <div id="addCadetModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="mdt-card w-full max-w-md rounded-2xl p-6 flex flex-col gap-4 shadow-2xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-white">Dodaj nowego kadeta (FTO)</h3>
+                    <p class="text-xs text-slate-400">Utwórz kartotekę szkoleniową i przypisz opiekuna</p>
+                </div>
+                <button onclick="closeAddCadetModal()" class="text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="flex flex-col gap-3">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Numer odznaki kadeta</label>
+                    <input id="newCadetBadge" type="text" placeholder="Np. 167" class="mdt-input w-full px-3.5 py-2 rounded-lg text-xs">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Imię i nazwisko kadeta</label>
+                    <input id="newCadetName" type="text" placeholder="Np. Sergio Flores" class="mdt-input w-full px-3.5 py-2 rounded-lg text-xs">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Opiekun FTO</label>
+                    <input id="newCadetFto" type="text" value="Oley Sasa" class="mdt-input w-full px-3.5 py-2 rounded-lg text-xs">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Data dołączenia</label>
+                    <input id="newCadetDate" type="text" value="16.10.2026" class="mdt-input w-full px-3.5 py-2 rounded-lg text-xs">
+                </div>
+            </div>
+            <button onclick="saveNewCadet()" class="w-full py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition">
+                Dodaj kadeta do listy FTO
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL WYBORU DO RAPORTU (FUNKCJONARIUSZE / OSOBY / POJAZDY) -->
+    <div id="selectorModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="mdt-card w-full max-w-lg rounded-2xl p-6 flex flex-col gap-4 max-h-[85vh] shadow-2xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 id="selectorModalTitle" class="text-base font-bold text-white">Dodaj do raportu</h3>
+                    <p id="selectorModalSub" class="text-xs text-slate-400">Wybierz z listy lub wpisz własną pozycję</p>
+                </div>
+                <button onclick="closeSelectorModal()" class="text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Szybkie dodanie własnego wpisu -->
+            <div class="flex gap-2">
+                <input id="customSelectorInput" type="text" placeholder="Wpisz ręcznie (np. [729] Jade Grayson lub Szary sedan)..." class="mdt-input flex-1 px-3.5 py-2 rounded-lg text-xs">
+                <button onclick="addCustomFromSelector()" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shrink-0">
+                    + Dodaj własne
+                </button>
+            </div>
+
+            <div class="relative">
+                <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                <input id="selectorSearchInput" oninput="renderSelectorList()" type="text" placeholder="Wyszukaj na liście..." class="mdt-input w-full pl-10 pr-4 py-2 rounded-lg text-xs">
+            </div>
+
+            <div id="selectorListContainer" class="flex-1 overflow-y-auto flex flex-col gap-1.5 pr-1"></div>
+        </div>
+    </div>
+
+    <!-- MODAL TARYFIKATORA PRZESTĘPSTW (Wykaz zarzutów) -->
+    <div id="penalCodeModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="mdt-card w-full max-w-5xl rounded-2xl p-6 flex flex-col gap-4 max-h-[88vh] shadow-2xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-white">Taryfikator Przestępstw LSPD</h3>
+                    <p class="text-xs text-slate-400">Kliknij na zarzut, aby dodać go do prowadzonej sprawy</p>
+                </div>
+                <button onclick="closePenalCodeModal()" class="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200">
+                    Zamknij
+                </button>
+            </div>
+            <div id="penalCodeCategories" class="flex-1 overflow-y-auto flex flex-col gap-5 pr-2"></div>
+        </div>
+    </div>
+
+    <!-- MODAL DODAWANIA NOWEGO OBYWATELA / POJAZDU / FUNKCJONARIUSZA DO BAZY -->
+    <div id="addEntityModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="mdt-card w-full max-w-md rounded-2xl p-6 flex flex-col gap-4 shadow-2xl">
+            <div class="flex items-center justify-between">
+                <h3 id="addEntityModalTitle" class="text-base font-bold text-white">Dodaj do bazy</h3>
+                <button onclick="closeAddCustomEntityModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div id="addEntityFields" class="flex flex-col gap-3"></div>
+            <button onclick="saveCustomEntity()" class="w-full py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold">Zapisz w bazie</button>
+        </div>
+    </div>
+
+    <script>
+        // ================= DANE BAZOWE Z NAGRANIA =================
+        const officersDB = [
+            { badge: '923', name: 'Oley Sasa', unit: 'LSPD / AIAD', radio: 'LSPD Tac #3', status: 'Na służbie' },
+            { badge: '141', name: 'Vivienne Walker', unit: 'LSPD', radio: 'LSPD Tac #3', status: 'Na służbie' },
+            { badge: '941', name: 'Gregory Solin', unit: 'LSPD', radio: 'LSPD Tac #3', status: 'Na służbie' },
+            { badge: '27', name: 'John Cagville', unit: 'LSPD', radio: 'LSPD Tac #1', status: 'Na służbie' },
+            { badge: '73', name: 'Chris Angel', unit: 'LSPD', radio: 'LSPD Tac #3', status: 'Na służbie' },
+            { badge: '70', name: 'Matt Dick', unit: 'LSPD', radio: 'LSPD Tac #3', status: 'Na służbie' },
+            { badge: '74', name: 'James Williams', unit: 'LSPD', radio: 'LSPD Tac #3', status: 'Na służbie' },
+            { badge: '131', name: 'Valerie Raver', unit: 'LSPD', radio: 'LSPD Tac #3', status: 'Na służbie' },
+            { badge: '163', name: 'Ava Bachillo', unit: 'LSPD', radio: 'LSPD Tac #3', status: 'Na służbie' },
+            { badge: '130', name: 'Santiago Bachillo', unit: 'LSPD', radio: 'LSPD Tac #3', status: 'Na służbie' },
+            { badge: '149', name: 'Tony Evans', unit: 'LSPD', radio: 'LSPD Tac #3', status: 'Na służbie' },
+            { badge: '118', name: 'Kavin Turner', unit: 'LSPD', radio: 'LSPD Tac #3', status: 'Na służbie' },
+            { badge: '105', name: 'Junior Brill', unit: 'LSPD', radio: 'Dyspozytornia LSPD', status: 'Na służbie' },
+            { badge: '85', name: 'John Black', unit: 'LSPD', radio: 'Dyspozytornia LSPD', status: 'Na służbie' },
+            { badge: '80', name: 'Henry Scott', unit: 'LSPD', radio: 'Dyspozytornia LSPD', status: 'Na służbie' },
+            { badge: '158', name: 'Iris Hernandez', unit: 'LSPD', radio: 'LSPD Tac #1', status: 'Na służbie' },
+            { badge: '155', name: 'David White', unit: 'LSPD', radio: 'LSPD Tac #3', status: 'Na służbie' },
+            { badge: '167', name: 'Sergio Flores', unit: 'LSPD', radio: 'Dyspozytornia LSPD', status: 'Na służbie' },
+            { badge: '12', name: 'Jerry Black', unit: 'LSPD', radio: 'LSPD Tac #1', status: 'Na służbie' }
+        ];
+
+        const citizensDB = [
+            { name: '[729] Jade Grayson (SAMS)', csn: 'SAMS-729', dob: '14/05/1998', desc: 'Pracownica SAMS (fioletowe włosy) – wskazała lokalizację dwóch ładunków wybuchowych pod krzesełkami', license: 'Tak', points: 0 },
+            { name: '[711] Andrew Karabin (SAMS)', csn: 'SAMS-711', dob: '03/11/1989', desc: 'Medyk SAMS (łysy z wąsem w fioletowym mundurze EMS)', license: 'Tak', points: 0 },
+            { name: 'Sprawcy zamachu bombowego (Grupa 3-4 osób)', csn: 'WANTED-01', dob: '-', desc: 'Ścigani przez [27] John Cagville przez 40 minut do morza; 2 ujętych (główny sprawca zneutralizowany)', license: 'Brak', points: 15 },
+            { name: 'Obywatel z brązowym irokezem (ID: 3471)', csn: 'CIT-3471', dob: '11/02/1996', desc: 'Biała koszula, złoty łańcuch – wbiegł za kordon do szpitala, wyprowadzony w kajdankach', license: 'Tak', points: 2 },
+            { name: 'Kierowca szarego sedana w białym dresie (ID: 3115)', csn: 'CIT-3115', dob: '19/08/1995', desc: 'Wjechał pod barierki kordonu, wyciągnięty z pojazdu', license: 'Tak', points: 4 },
+            { name: 'Obywatel w czarnej marynarce (ID: 3255)', csn: 'CIT-3255', dob: '05/04/1993', desc: 'Odprowadzony w kajdankach na bezpieczną odległość od kordonu', license: 'Tak', points: 0 },
+            { name: 'Dwuosobowy zespół saperski EOD (Ochotnicy)', csn: 'EOD-LIC', dob: '-', desc: 'Kombinezony saperskie EOD, transmisja na żywo z rozbrajania na Instapic', license: 'Tak', points: 0 }
+        ];
+
+        const vehiclesDB = [
+            { owner: 'Nieznany (Kierowca w białym dresie)', brand: 'Albany', model: 'Szary klasyczny sedan (wybite szyby)', plate: 'BRAK / KORDON' },
+            { owner: 'Obywatel cywilny', brand: 'Karin', model: 'Futo (Różowo-białe coupe)', plate: '68LCE795' },
+            { owner: 'Obywatel cywilny', brand: 'Brute', model: 'Zielony van przed wejściem', plate: 'SZPITAL-01' },
+            { owner: 'Javier Malnao', brand: 'Vapid', model: 'Uranus', plate: '003173GG' },
+            { owner: 'Anthoni Banatoni', brand: 'Benefactor', model: 'Panto', plate: '00L4C708' },
+            { owner: 'Jedediah Davis', brand: 'Bravado', model: 'Gresley STX', plate: '0145UUU3' }
+        ];
+
+        // Domyślny, pełny raport z akcji pod szpitalem St. Fiacre (gotowy od razu po otwarciu)
+        const hospitalReportText = `1. Dyspozycja i przybycie na miejsce zdarzenia:
+W dniu dzisiejszym około godziny 20:00 funkcjonariusz [923] Oley Sasa otrzymał zgłoszenie dotyczące prawdopodobnego podłożenia ładunku wybuchowego na terenie szpitala St. Fiacre Hospital na El Burro Heights. Funkcjonariusz [923] Oley Sasa wraz z funkcjonariuszką [141] Vivienne Walker niezwłocznie udali się na miejsce zdarzenia, współdziałając na kanale taktycznym LSPD Tac #3. W momencie przybycia pod budynek szpital nie był jeszcze ewakuowany, a przed wejściem panował chaos i znajdowała się liczna grupa obywateli oraz personel SAMS (m.in. [729] Jade Grayson oraz [711] Andrew Karabin).
+
+2. Rozpoznanie zagrożenia (Alarm Bombowy):
+Po przybyciu na miejsce funkcjonariusz [941] Gregory Solin oraz pracownica SAMS [729] Jade Grayson przekazali informację o lokalizacji ładunków wybuchowych wewnątrz budynku. Funkcjonariusz [923] Oley Sasa wraz z [941] Gregory Solin oraz [729] Jade Grayson weszli do holu głównego (West Reception) w celu weryfikacji zgłoszenia. Z bezpiecznej odległości potwierdzono obecność dwóch urządzeń wybuchowych umieszczonych pod krzesełkami poczekalni naprzeciwko recepcji.
+
+3. Przejęcie dowodzenia (Supervisor), wezwanie wsparcia i zabezpieczenie terenu:
+Funkcjonariusz [923] Oley Sasa natychmiast zarządził ewakuację osób przebywających wewnątrz budynku, nadał komunikat na centrali (/d 10-21 alarm bombowy TAC 3 potwierdzone) i przejął rolę Supervisora (SV) akcji.
+- Wezwanie wsparcia: Funkcjonariusz [923] Oley Sasa czterokrotnie wzywał wsparcie dodatkowych jednostek (raz na kanale radiowym dyspozytorni, gdzie nikt nie przebywał, oraz trzykrotnie za pośrednictwem Dispatcha jako 10-0). Na wezwania zareagowały zaledwie dwie dodatkowe osoby, co łącznie z trzema funkcjonariuszami obecnymi wcześniej dało początkowo zaledwie 5 funkcjonariuszy zabezpieczających cały teren szpitala.
+- Kordon i organizacja ruchu medycznego: Po konsultacji z personelem SAMS (brak możliwości technicznego zamknięcia głównych drzwi na klucz), funkcjonariusz [923] Oley Sasa osobiście odgrodził wejście główne barierkami ostrzegawczymi (Road Closed). Wyznaczono funkcjonariuszy [141] Vivienne Walker oraz [941] Gregory Solin do zabezpieczenia tylnego wejścia od strony garażu i SOR-u, ustalając procedurę bezpiecznego transportowania pacjentów przez garaż z pominięciem strefy zagrożenia.
+- Rozstawiono szeroki kordon z barierek oraz kolczatek na wjeździe głównym od strony ulicy, wycofując wszystkich funkcjonariuszy LSPD, medyków SAMS (m.in. [711] Andrew Karabin wraz z karetkami) oraz gapiów poza wyznaczoną strefę bezpieczeństwa za pomocą komunikatów przez megafon policyjny.
+
+4. Incydenty z obywatelami naruszającymi kordon bezpieczeństwa:
+W trakcie zabezpieczania perymetru doszło do kilkukrotnego złamania poleceń funkcjonariuszy przez osoby postronne:
+- Mężczyzna z brązowym irokezem w białej koszuli i złotym łańcuchu wbiegł za barierki prosto do zaminowanego holu szpitala. Funkcjonariusz [923] Oley Sasa wraz z innym funkcjonariuszem udali się za nim do środka. Obywatel stawiał opór podczas próby skucia, jednak został obezwładniony, wyprowadzony poza kordon bezpieczeństwa i po pouczeniu rozkuty.
+- Kierowca szarego sedana (mężczyzna w białym dresie) podjechał bezpośrednio pod kordon i odmawiał opuszczenia strefy zagrożenia. Został siłą wyciągnięty z pojazdu przez [923] Oley Sasa. Chwilę później w zamieszaniu pod barierkami zakuto oraz odprowadzono w bezpieczne miejsce na drugą stronę ulicy mężczyznę w czarnej marynarce, który odmówił oddalenia się od zagrożonej strefy, martwiąc się o pozostawiony pojazd. Po wyprowadzeniu na bezpieczną odległość został on zwolniony z kajdanek.
+
+5. Działania saperskie i neutralizacja ładunków:
+Ze względu na brak reakcji ze strony dodatkowych jednostek oraz brak dostępnego zespołu Bomb Squad i SWAT na służbie, podjęto próbę neutralizacji zagrożenia przy udziale dwóch ochotników wyposażonych w pełne kombinezony saperskie EOD, z których jeden zadeklarował posiadanie stosownej licencji saperskiej.
+- Funkcjonariusz [923] Oley Sasa wskazał saperom dokładne położenie obu ładunków pod krzesełkami w poczekalni, po czym wycofał wszystkie służby na linię ulicy.
+- Po krótkim czasie zespół saperski opuścił budynek, informując o rozbrojeniu pierwszego ładunku, a następnie powrócił po drugi ładunek (proces rozbrajania był przez nich transmitowany na żywo w aplikacji Instapic, co pozwoliło funkcjonariuszom na zewnątrz śledzić postępy z bezpiecznej odległości i doradzać przecięcie zielonego, a następnie czerwonego przewodu).
+- Po zakończeniu czynności wewnątrz budynku zespół saperski wyniósł rzekomo rozbrojone ładunki w kartonowym pudle poza budynek szpitala. Funkcjonariusz [923] Oley Sasa odmówił osobistego przejęcia pudła z uwagi na brak kombinezonu ochronnego i polecił przetransportowanie ładunków na lądowisko helipad.
+- Na miejsce zadysponowano policyjny śmigłowiec (obsługiwany przez funkcjonariuszy [73] Chris Angel oraz [70] Matt Dick), który zabrał zabezpieczone ładunki z lądowiska, przetransportował je nad ocean i zneutralizował poprzez zatopienie w morzu.
+
+6. Pościg i ujęcie sprawców zamachu (Działania [27] John Cagville):
+Równolegle do działań zabezpieczających pod szpitalem, funkcjonariusz [27] John Cagville wraz z innymi jednostkami prowadził pościg za osobami zidentyfikowanymi przez personel medyczny jako sprawcy podłożenia ładunków wybuchowych.
+- Pościg za podejrzanymi trwał około 40 minut i zakończył się w momencie, gdy uciekinierzy wpadli do morza.
+- Początkowo ścigano dwóch podejrzanych, którym w trakcie ucieczki pomagał trzeci mężczyzna (czwarta osoba wykonała na wcześniejszym etapie zastawkę i oddaliła się z miejsca zdarzenia).
+- Finalnie funkcjonariuszom udało się ująć dwie z trzech uciekających osób: jednego z głównych sprawców zamachu (który nie będzie już stanowił problemu) oraz osobę pomagającą w ucieczce (której ze względu na charakter udziału nie udało się postawić większych zarzutów).
+
+7. Zakończenie działań i powrót na komendę (MRPD):
+Po otrzymaniu potwierdzenia radiowego o zatopieniu ładunków w oceanie, funkcjonariusz [923] Oley Sasa ogłosił przez megafon ponowne otwarcie szpitala St. Fiacre, a następnie wraz z obecnymi na miejscu jednostkami zdemontował barierki oraz kolczatki. Za zgodą [105] Junior Brill zakończono działania na kanale taktycznym Tac #3 i powrócono na kanał główny (Main), udając się na komendę Mission Row (MRPD) na odprawę podsumowującą oraz w celu sporządzenia niniejszego raportu.`;
+
+        let reportsDB = [
+            {
+                id: 309,
+                author: '[923] Oley Sasa',
+                title: 'Podsumowanie akcji – Alarm bombowy w St. Fiacre Hospital (El Burro Heights)',
+                type: 'Podsumowanie akcji',
+                date: '15.10.2026 22:28',
+                content: hospitalReportText,
+                officers: [
+                    '[141] Vivienne Walker', '[941] Gregory Solin', '[27] John Cagville',
+                    '[73] Chris Angel', '[70] Matt Dick', '[74] James Williams',
+                    '[131] Valerie Raver', '[163] Ava Bachillo', '[130] Santiago Bachillo',
+                    '[149] Tony Evans', '[118] Kavin Turner', '[105] Junior Brill', '[85] John Black'
+                ],
+                citizens: [
+                    '[729] Jade Grayson (SAMS)', '[711] Andrew Karabin (SAMS)',
+                    'Sprawcy zamachu bombowego (Grupa 3-4 osób)',
+                    'Obywatel z brązowym irokezem (ID: 3471)',
+                    'Kierowca szarego sedana w białym dresie (ID: 3115)',
+                    'Obywatel w czarnej marynarce (ID: 3255)',
+                    'Dwuosobowy zespół saperski EOD (Ochotnicy)'
+                ],
+                vehicles: [
+                    'Albany Szary klasyczny sedan (BRAK / KORDON)',
+                    'Karin Futo Różowo-białe (68LCE795)',
+                    'Brute Zielony van (SZPITAL-01)'
+                ]
+            },
+            {
+                id: 308,
+                author: '[42] Pablo Taylor',
+                title: 'Poszukiwania akcji (Tracker)',
+                type: 'Podsumowanie akcji',
+                date: '14.10.2026 20:41',
+                content: 'Przeprowadzono działania pościgowe za kradzionym pojazdem wyposażonym w nadajnik GPS.',
+                officers: ['[923] Oley Sasa'],
+                citizens: [],
+                vehicles: []
+            },
+            {
+                id: 307,
+                author: '[941] Gregory Solin',
+                title: 'PWC 14.10.2026',
+                type: 'Służbowy',
+                date: '14.10.2026 17:53',
+                content: 'Raport ze zmiany Patrol Watch Commandera.',
+                officers: ['[923] Oley Sasa', '[141] Vivienne Walker'],
+                citizens: [],
+                vehicles: []
+            }
+        ];
+
+        let currentEditingReportId = null;
+        let currentReportOfficers = [];
+        let currentReportCitizens = [];
+        let currentReportVehicles = [];
+        let currentSelectorMode = 'officers';
+
+        const penalCodeDB = [
+            {
+                category: 'PRZESTĘPSTWA PRZECIWKO ŻYCIU I ZDROWIU',
+                items: [
+                    { name: 'Współudział w morderstwie I stopnia', months: 200, fine: 50000 },
+                    { name: 'Usiłowanie zabójstwa obywatela', months: 15, fine: 2000 },
+                    { name: 'Usiłowanie zabójstwa funkcjonariusza', months: 30, fine: 5000 },
+                    { name: 'Naruszenie nietykalności cielesnej', months: 5, fine: 750 },
+                    { name: 'Napaść na funkcjonariusza', months: 15, fine: 3500 },
+                    { name: 'Narażenie życia obywatela', months: 10, fine: 2500 }
+                ]
+            },
+            {
+                category: 'PRZESTĘPSTWA PRZECIWKO PORZĄDKOWI PUBLICZNEMU I PAŃSTWU',
+                items: [
+                    { name: 'Stawianie oporu funkcjonariuszowi', months: 5, fine: 1500 },
+                    { name: 'Ucieczka przed organami ścigania', months: 10, fine: 2500 },
+                    { name: 'Zakłócanie porządku publicznego', months: 2, fine: 1000 },
+                    { name: 'Fałszywy alarm bombowy / Zamach bombowy', months: 100, fine: 25000 },
+                    { name: 'Niewykonywanie poleceń funkcjonariusza', months: 3, fine: 825 },
+                    { name: 'Wytwarzanie / Posiadanie materiałów wybuchowych', months: 100, fine: 40000 }
+                ]
+            }
+        ];
+        let selectedCrimes = [];
+
+        // ================= NAWIGACJA MIĘDZY ZAKŁADKAMI =================
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-section').forEach(sec => sec.classList.add('hidden'));
+            const target = document.getElementById(`tab-${tabId}`);
+            if (target) target.classList.remove('hidden');
+
+            document.querySelectorAll('#sidebarNav .nav-item').forEach(btn => {
+                if (btn.dataset.tab === tabId) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+            lucide.createIcons();
+        }
+
+        // ================= OBSŁUGA RAPORTÓW =================
+        function renderReportsTable() {
+            const query = (document.getElementById('reportSearchInput')?.value || '').toLowerCase();
+            const tbody = document.getElementById('reportsTableBody');
+            tbody.innerHTML = '';
+
+            const filtered = reportsDB.filter(r => 
+                `#${r.id}`.toLowerCase().includes(query) ||
+                r.author.toLowerCase().includes(query) ||
+                r.title.toLowerCase().includes(query)
+            );
+
+            filtered.forEach(rep => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-800/35 transition cursor-pointer';
+                tr.onclick = () => openReportForEdit(rep.id);
+                tr.innerHTML = `
+                    <td class="py-3.5 px-4 font-bold text-blue-400">#${rep.id}</td>
+                    <td class="py-3.5 px-4 font-medium text-slate-200">${rep.author}</td>
+                    <td class="py-3.5 px-4 text-slate-300 max-w-[340px] truncate">${rep.title}</td>
+                    <td class="py-3.5 px-4">
+                        <span class="px-2.5 py-1 rounded-md bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[11px] font-semibold">${rep.type}</span>
+                    </td>
+                    <td class="py-3.5 px-4 text-slate-400">${rep.date}</td>
+                    <td class="py-3.5 px-4 text-right">
+                        <button onclick="event.stopPropagation(); openReportForEdit(${rep.id})" class="px-2.5 py-1 rounded bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 text-[11px] font-medium">Otwórz / Edytuj</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function openNewReportForm() {
+            currentEditingReportId = null;
+            document.getElementById('reportFormHeaderTitle').textContent = 'Nowy raport';
+            document.getElementById('repTitle').value = '';
+            document.getElementById('repType').value = 'Podsumowanie akcji';
+            document.getElementById('repAuthor').value = '[923] Oley Sasa';
+            document.getElementById('repContent').value = '';
+            currentReportOfficers = [];
+            currentReportCitizens = [];
+            currentReportVehicles = [];
+            renderReportPills();
+
+            document.getElementById('reportsListView').classList.add('hidden');
+            document.getElementById('reportFormView').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function openReportForEdit(reportId) {
+            const rep = reportsDB.find(r => r.id === reportId);
+            if (!rep) return;
+            currentEditingReportId = rep.id;
+            document.getElementById('reportFormHeaderTitle').textContent = `Edycja raportu #${rep.id}`;
+            document.getElementById('repTitle').value = rep.title;
+            document.getElementById('repType').value = rep.type;
+            document.getElementById('repAuthor').value = rep.author;
+            document.getElementById('repContent').value = rep.content;
+            currentReportOfficers = [...rep.officers];
+            currentReportCitizens = [...rep.citizens];
+            currentReportVehicles = [...rep.vehicles];
+            renderReportPills();
+
+            document.getElementById('reportsListView').classList.add('hidden');
+            document.getElementById('reportFormView').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function loadHospitalReportTemplate() {
+            switchTab('raporty');
+            openReportForEdit(309);
+            showToast('Wczytano kompletny raport z akcji: Alarm bombowy w St. Fiacre Hospital!');
+        }
+
+        function closeReportForm() {
+            document.getElementById('reportFormView').classList.add('hidden');
+            document.getElementById('reportsListView').classList.remove('hidden');
+            renderReportsTable();
+        }
+
+        function renderReportPills() {
+            // Funkcjonariusze
+            const offCont = document.getElementById('repOfficersContainer');
+            if (currentReportOfficers.length === 0) {
+                offCont.innerHTML = `<div class="h-full flex items-center justify-center text-slate-500 text-xs py-12">Brak dodatkowych funkcjonariuszy</div>`;
+            } else {
+                offCont.innerHTML = currentReportOfficers.map((item, idx) => `
+                    <div class="flex items-center justify-between px-3 py-2 rounded-lg bg-[#121722] border border-[#1f2738] text-xs">
+                        <span class="font-medium text-slate-200">${item}</span>
+                        <button onclick="removeReportItem('officers', ${idx})" class="text-slate-500 hover:text-red-400 transition">✕</button>
+                    </div>
+                `).join('');
+            }
+
+            // Osoby powiązane
+            const citCont = document.getElementById('repCitizensContainer');
+            if (currentReportCitizens.length === 0) {
+                citCont.innerHTML = `<div class="h-full flex items-center justify-center text-slate-500 text-xs py-8">Brak powiązanych osób</div>`;
+            } else {
+                citCont.innerHTML = currentReportCitizens.map((item, idx) => `
+                    <div class="flex items-center justify-between px-3 py-1.5 rounded-lg bg-[#121722] border border-[#1f2738] text-xs">
+                        <span class="text-slate-200 truncate pr-2">${item}</span>
+                        <button onclick="removeReportItem('citizens', ${idx})" class="text-slate-500 hover:text-red-400 shrink-0">✕</button>
+                    </div>
+                `).join('');
+            }
+
+            // Pojazdy powiązane
+            const vehCont = document.getElementById('repVehiclesContainer');
+            if (currentReportVehicles.length === 0) {
+                vehCont.innerHTML = `<div class="h-full flex items-center justify-center text-slate-500 text-xs py-8">Brak powiązanych pojazdów</div>`;
+            } else {
+                vehCont.innerHTML = currentReportVehicles.map((item, idx) => `
+                    <div class="flex items-center justify-between px-3 py-1.5 rounded-lg bg-[#121722] border border-[#1f2738] text-xs">
+                        <span class="text-slate-200 truncate pr-2">${item}</span>
+                        <button onclick="removeReportItem('vehicles', ${idx})" class="text-slate-500 hover:text-red-400 shrink-0">✕</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function removeReportItem(type, index) {
+            if (type === 'officers') currentReportOfficers.splice(index, 1);
+            if (type === 'citizens') currentReportCitizens.splice(index, 1);
+            if (type === 'vehicles') currentReportVehicles.splice(index, 1);
+            renderReportPills();
+        }
+
+        function saveReport() {
+            const title = document.getElementById('repTitle').value.trim() || 'Raport bez tytułu';
+            const type = document.getElementById('repType').value;
+            const author = document.getElementById('repAuthor').value.trim() || '[923] Oley Sasa';
+            const content = document.getElementById('repContent').value.trim();
+
+            const now = new Date();
+            const dateStr = `${String(now.getDate()).padStart(2, '0')}.${String(now.getMonth() + 1).padStart(2, '0')}.${now.getFullYear()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+            if (currentEditingReportId) {
+                const idx = reportsDB.findIndex(r => r.id === currentEditingReportId);
+                if (idx !== -1) {
+                    reportsDB[idx] = {
+                        ...reportsDB[idx],
+                        title, type, author, content,
+                        officers: [...currentReportOfficers],
+                        citizens: [...currentReportCitizens],
+                        vehicles: [...currentReportVehicles]
+                    };
+                }
+                showToast(`Zaktualizowano raport #${currentEditingReportId}!`);
+            } else {
+                const newId = reportsDB.length > 0 ? Math.max(...reportsDB.map(r => r.id)) + 1 : 301;
+                reportsDB.unshift({
+                    id: newId,
+                    author, title, type, date: dateStr, content,
+                    officers: [...currentReportOfficers],
+                    citizens: [...currentReportCitizens],
+                    vehicles: [...currentReportVehicles]
+                });
+                showToast(`Zapisano nowy raport #${newId} w bazie LSPD!`);
+            }
+            closeReportForm();
+        }
+
+        function copyToClipboardText(text, label) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast(`Skopiowano do schowka: ${label}`);
+        }
+
+        function copyFieldText(elementId, label) {
+            const val = document.getElementById(elementId).value;
+            copyToClipboardText(val, label);
+        }
+
+        function copyFormattedReport() {
+            const title = document.getElementById('repTitle').value;
+            const type = document.getElementById('repType').value;
+            const author = document.getElementById('repAuthor').value;
+            const content = document.getElementById('repContent').value;
+
+            const formatted = `TYTUŁ RAPORTU: ${title}
+RODZAJ RAPORTU: ${type}
+AUTOR: ${author}
+
+FUNKCJONARIUSZE POWIĄZANI:
+${currentReportOfficers.map(o => `- ${o}`).join('\n') || 'Brak'}
+
+OSOBY POWIĄZANE:
+${currentReportCitizens.map(c => `- ${c}`).join('\n') || 'Brak'}
+
+POJAZDY POWIĄZANE:
+${currentReportVehicles.map(v => `- ${v}`).join('\n') || 'Brak'}
+
+TREŚĆ RAPORTU:
+${content}`;
+
+            copyToClipboardText(formatted, 'Pełny sformatowany raport LSPD');
+        }
+
+        // ================= MODAL WYBORU DO RAPORTU =================
+        function openSelectorModal(mode) {
+            currentSelectorMode = mode;
+            document.getElementById('selectorSearchInput').value = '';
+            document.getElementById('customSelectorInput').value = '';
+            const titleEl = document.getElementById('selectorModalTitle');
+            const subEl = document.getElementById('selectorModalSub');
+
+            if (mode === 'officers') {
+                titleEl.textContent = 'Dodaj funkcjonariusza do raportu';
+                subEl.textContent = 'Wybierz funkcjonariuszy z listy LSPD';
+            } else if (mode === 'citizens') {
+                titleEl.textContent = 'Dodaj osobę do raportu';
+                subEl.textContent = 'Wybierz obywatela z bazy lub dopisz ręcznie';
+            } else {
+                titleEl.textContent = 'Dodaj pojazd do raportu';
+                subEl.textContent = 'Wybierz pojazd z bazy lub dopisz ręcznie';
+            }
+
+            renderSelectorList();
+            document.getElementById('selectorModal').classList.remove('hidden');
+        }
+
+        function closeSelectorModal() {
+            document.getElementById('selectorModal').classList.add('hidden');
+        }
+
+        function renderSelectorList() {
+            const q = (document.getElementById('selectorSearchInput').value || '').toLowerCase();
+            const cont = document.getElementById('selectorListContainer');
+            cont.innerHTML = '';
+
+            if (currentSelectorMode === 'officers') {
+                officersDB
+                    .filter(o => `[${o.badge}] ${o.name}`.toLowerCase().includes(q))
+                    .forEach(o => {
+                        const label = `[${o.badge}] ${o.name}`;
+                        const added = currentReportOfficers.includes(label);
+                        cont.innerHTML += `
+                            <div onclick="toggleSelectorItem('${label.replace(/'/g, "\\'")}')" class="p-3 rounded-lg bg-[#0d111a] hover:bg-[#161d2b] border ${added ? 'border-blue-500/60' : 'border-[#1b2232]'} flex items-center justify-between cursor-pointer transition">
+                                <div>
+                                    <p class="text-xs font-bold text-white">${label}</p>
+                                    <p class="text-[10px] text-slate-400">${o.unit} • ${o.radio}</p>
+                                </div>
+                                <span class="text-xs font-semibold ${added ? 'text-emerald-400' : 'text-blue-400'}">${added ? 'Dodano ✓' : '+ Dodaj'}</span>
+                            </div>
+                        `;
+                    });
+            } else if (currentSelectorMode === 'citizens') {
+                citizensDB
+                    .filter(c => `${c.name} ${c.csn} ${c.desc}`.toLowerCase().includes(q))
+                    .forEach(c => {
+                        const label = c.name;
+                        const added = currentReportCitizens.includes(label);
+                        cont.innerHTML += `
+                            <div onclick="toggleSelectorItem('${label.replace(/'/g, "\\'")}')" class="p-3 rounded-lg bg-[#0d111a] hover:bg-[#161d2b] border ${added ? 'border-blue-500/60' : 'border-[#1b2232]'} flex items-center justify-between cursor-pointer transition">
+                                <div>
+                                    <p class="text-xs font-bold text-white">${c.name}</p>
+                                    <p class="text-[10px] text-slate-400">CSN: ${c.csn} • ${c.desc}</p>
+                                </div>
+                                <span class="text-xs font-semibold ${added ? 'text-emerald-400' : 'text-blue-400'}">${added ? 'Dodano ✓' : '+ Dodaj'}</span>
+                            </div>
+                        `;
+                    });
+            } else {
+                vehiclesDB
+                    .filter(v => `${v.brand} ${v.model} ${v.plate} ${v.owner}`.toLowerCase().includes(q))
+                    .forEach(v => {
+                        const label = `${v.brand} ${v.model} (${v.plate})`;
+                        const added = currentReportVehicles.includes(label);
+                        cont.innerHTML += `
+                            <div onclick="toggleSelectorItem('${label.replace(/'/g, "\\'")}')" class="p-3 rounded-lg bg-[#0d111a] hover:bg-[#161d2b] border ${added ? 'border-blue-500/60' : 'border-[#1b2232]'} flex items-center justify-between cursor-pointer transition">
+                                <div>
+                                    <p class="text-xs font-bold text-white">${label}</p>
+                                    <p class="text-[10px] text-slate-400">Właściciel: ${v.owner}</p>
+                                </div>
+                                <span class="text-xs font-semibold ${added ? 'text-emerald-400' : 'text-blue-400'}">${added ? 'Dodano ✓' : '+ Dodaj'}</span>
+                            </div>
+                        `;
+                    });
+            }
+        }
+
+        function toggleSelectorItem(label) {
+            let targetArr = currentSelectorMode === 'officers' ? currentReportOfficers :
+                            currentSelectorMode === 'citizens' ? currentReportCitizens : currentReportVehicles;
+            const idx = targetArr.indexOf(label);
+            if (idx === -1) targetArr.push(label);
+            else targetArr.splice(idx, 1);
+
+            renderSelectorList();
+            renderReportPills();
+        }
+
+        function addCustomFromSelector() {
+            const val = document.getElementById('customSelectorInput').value.trim();
+            if (!val) return;
+            toggleSelectorItem(val);
+            document.getElementById('customSelectorInput').value = '';
+            showToast(`Dodano do raportu: ${val}`);
+        }
+
+        function renderAllTables() {
+            // Dyspozytornia
+            const dysBody = document.getElementById('dyspozytorniaOfficersBody');
+            const onDuty = officersDB.filter(o => o.status === 'Na służbie');
+            document.getElementById('onDutyCountBadge').textContent = onDuty.length;
+            dysBody.innerHTML = onDuty.map(o => `
+                <tr class="hover:bg-slate-800/30">
+                    <td class="py-2.5 px-3 font-bold text-blue-400">[${o.badge}]</td>
+                    <td class="py-2.5 px-3 font-medium text-white">${o.name}</td>
+                    <td class="py-2.5 px-3 text-slate-400">Funkcjonariusz</td>
+                    <td class="py-2.5 px-3 text-slate-400">${o.unit}</td>
+                    <td class="py-2.5 px-3 text-slate-300">${o.radio}</td>
+                    <td class="py-2.5 px-3 text-right">
+                        <span class="px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[10px] font-semibold">Na służbie</span>
+                    </td>
+                </tr>
+            `).join('');
+
+            renderCitizensTable();
+            renderVehiclesTable();
+            renderOfficersTable();
+            renderFinesTable();
+            renderPatrols();
+            renderDispatch();
+            populateCaseCitizens();
+        }
+
+        function renderCitizensTable() {
+            const q = (document.getElementById('citizenSearchInput')?.value || '').toLowerCase();
+            const body = document.getElementById('citizensTableBody');
+            body.innerHTML = citizensDB
+                .filter(c => `${c.name} ${c.csn} ${c.desc}`.toLowerCase().includes(q))
+                .map(c => `
+                    <tr class="hover:bg-slate-800/30">
+                        <td class="py-3 px-4 font-semibold text-white">${c.name}</td>
+                        <td class="py-3 px-4 text-slate-400">${c.csn}</td>
+                        <td class="py-3 px-4 text-slate-400">${c.dob}</td>
+                        <td class="py-3 px-4 text-slate-300 max-w-md">${c.desc}</td>
+                        <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 text-[10px]">${c.license}</span></td>
+                        <td class="py-3 px-4 text-right font-bold text-slate-300">${c.points}</td>
+                    </tr>
+                `).join('');
+        }
+
+        function renderVehiclesTable() {
+            const q = (document.getElementById('vehicleSearchInput')?.value || '').toLowerCase();
+            const body = document.getElementById('vehiclesTableBody');
+            body.innerHTML = vehiclesDB
+                .filter(v => `${v.owner} ${v.brand} ${v.model} ${v.plate}`.toLowerCase().includes(q))
+                .map(v => `
+                    <tr class="hover:bg-slate-800/30">
+                        <td class="py-3 px-4 font-semibold text-white">${v.owner}</td>
+                        <td class="py-3 px-4 text-slate-300">${v.brand}</td>
+                        <td class="py-3 px-4 text-slate-300">${v.model}</td>
+                        <td class="py-3 px-4 font-mono text-blue-400 font-semibold">${v.plate}</td>
+                    </tr>
+                `).join('');
+        }
+
+        function renderOfficersTable() {
+            const q = (document.getElementById('officerSearchInput')?.value || '').toLowerCase();
+            const status = document.getElementById('officerStatusFilter')?.value || 'ALL';
+            const body = document.getElementById('officersTableBody');
+            body.innerHTML = officersDB
+                .filter(o => (status === 'ALL' || o.status === status) && `[${o.badge}] ${o.name}`.toLowerCase().includes(q))
+                .map(o => `
+                    <tr class="hover:bg-slate-800/30">
+                        <td class="py-3 px-4 font-bold text-blue-400">[${o.badge}]</td>
+                        <td class="py-3 px-4 font-semibold text-white">${o.name}</td>
+                        <td class="py-3 px-4 text-slate-400">${o.unit}</td>
+                        <td class="py-3 px-4 text-right">
+                            <span class="px-2.5 py-1 rounded text-[10px] font-semibold ${o.status === 'Na służbie' ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' : 'bg-slate-800 text-slate-400'}">${o.status}</span>
+                        </td>
+                    </tr>
+                `).join('');
+        }
+
+        function renderFinesTable() {
+            const fines = [
+                { id: 681, officer: '[923] Oley Sasa', citizen: 'Giorgi Beridze', fine: '$250', pts: 10 },
+                { id: 682, officer: '[468] Jacob Taylor', citizen: 'Jade Grayson', fine: '$250', pts: 4 },
+                { id: 685, officer: '[454] Rafael Henrique Moreira', citizen: 'Alejandro Sancho', fine: '$375', pts: 5 }
+            ];
+            document.getElementById('finesTableBody').innerHTML = fines.map(f => `
+                <tr class="hover:bg-slate-800/30">
+                    <td class="py-3.5 px-4 font-bold text-blue-400">#${f.id}</td>
+                    <td class="py-3.5 px-4 text-slate-200">${f.officer}</td>
+                    <td class="py-3.5 px-4 text-slate-300">${f.citizen}</td>
+                    <td class="py-3.5 px-4 font-bold text-emerald-400">${f.fine}</td>
+                    <td class="py-3.5 px-4 text-right font-bold text-amber-400">${f.pts}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderPatrols() {
+            const patrols = [
+                { name: 'Patrol 1 (TAC #3)', unit: 'Adam', members: ['[923] Oley Sasa', '[141] Vivienne Walker', '[941] Gregory Solin'] },
+                { name: 'Patrol 2 (Pościgowy)', unit: 'Eagle', members: ['[27] John Cagville', '[74] James Williams'] },
+                { name: 'Patrol 3 (Heli / Air)', unit: 'Eagle', members: ['[73] Chris Angel', '[70] Matt Dick'] }
+            ];
+            document.getElementById('patrolsGrid').innerHTML = patrols.map(p => `
+                <div class="mdt-card rounded-xl p-4 flex flex-col gap-3">
+                    <div class="flex items-center justify-between border-b border-[#1c2230] pb-2.5">
+                        <div>
+                            <h3 class="text-xs font-bold text-white">${p.name}</h3>
+                            <span class="text-[11px] text-blue-400 font-semibold">${p.unit}</span>
+                        </div>
+                        <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px]">Aktywny</span>
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        ${p.members.map(m => `<div class="px-3 py-2 rounded-lg bg-[#0b0e16] border border-[#19202e] text-xs font-medium text-slate-200">${m}</div>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderDispatch() {
+            const calls = [
+                { code: '10-21', title: 'Alarm bombowy TAC 3 potwierdzone', loc: 'El Burro Heights / St. Fiacre Hospital', time: '20:00', units: 13 },
+                { code: '10-13B', title: 'Ranny funkcjonariusz: Chris Angel', loc: 'Wschodnie Vinewood / Popular St', time: '20:44', units: 4 },
+                { code: '10-13B', title: 'Ranny funkcjonariusz: Matt Dick', loc: 'Wschodnie Vinewood / Popular St', time: '20:44', units: 4 },
+                { code: '10-90', title: 'Okradanie mieszkania', loc: 'Mirror Park / Nikola Pl', time: '20:38', units: 2 }
+            ];
+            document.getElementById('dispatchGrid').innerHTML = calls.map(c => `
+                <div class="mdt-card rounded-xl p-4 flex flex-col justify-between gap-3">
+                    <div>
+                        <div class="flex items-center justify-between">
+                            <span class="px-2 py-0.5 rounded bg-blue-600/20 border border-blue-500/40 text-blue-400 text-[10px] font-bold">${c.code}</span>
+                            <span class="text-[11px] text-slate-500">${c.time}</span>
+                        </div>
+                        <h3 class="text-xs font-bold text-white mt-2">${c.title}</h3>
+                        <p class="text-[11px] text-slate-400 mt-1">📍 ${c.loc}</p>
+                        <p class="text-[11px] text-slate-400 mt-0.5"> Jednostki: ${c.units}</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-[#1c2230]">
+                        <button onclick="showToast('Przypisano do zgłoszenia: ${c.title}')" class="py-1.5 rounded bg-[#151c28] hover:bg-[#1e293b] text-[11px] font-semibold text-slate-200">Dołącz</button>
+                        <button onclick="showToast('Ustawiono GPS na: ${c.loc}')" class="py-1.5 rounded bg-blue-950/60 hover:bg-blue-900/70 text-[11px] font-semibold text-blue-300">Trasa</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ================= TARYFIKATOR I SPRAWY =================
+        function populateCaseCitizens() {
+            const sel = document.getElementById('caseCitizenSelect');
+            sel.innerHTML = citizensDB.map(c => `<option value="${c.name}">${c.name} (${c.csn})</option>`).join('');
+        }
+
+        function openPenalCodeModal() {
+            const cont = document.getElementById('penalCodeCategories');
+            cont.innerHTML = penalCodeDB.map(cat => `
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2.5">${cat.category}</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                        ${cat.items.map(item => `
+                            <div onclick="addCrimeToCase('${item.name}', ${item.months}, ${item.fine})" class="p-3 rounded-xl bg-[#0d111a] hover:bg-blue-950/40 border border-[#1d2536] hover:border-blue-500/40 cursor-pointer transition">
+                                <p class="text-xs font-bold text-white">${item.name}</p>
+                                <p class="text-[11px] text-slate-400 mt-1">${item.months} mies. • <span class="text-emerald-400 font-semibold">$${item.fine.toLocaleString()}</span></p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('penalCodeModal').classList.remove('hidden');
+        }
+
+        function closePenalCodeModal() {
+            document.getElementById('penalCodeModal').classList.add('hidden');
+        }
+
+        function addCrimeToCase(name, months, fine) {
+            selectedCrimes.push({ name, months, fine });
+            renderSelectedCrimes();
+            showToast(`Dodano zarzut: ${name}`);
+        }
+
+        function removeCrimeFromCase(idx) {
+            selectedCrimes.splice(idx, 1);
+            renderSelectedCrimes();
+        }
+
+        function renderSelectedCrimes() {
+            const cont = document.getElementById('selectedCrimesContainer');
+            if (selectedCrimes.length === 0) {
+                cont.innerHTML = `<div class="w-full text-center text-slate-500 text-xs py-8">Nie wybrano jeszcze żadnego przestępstwa</div>`;
+            } else {
+                cont.innerHTML = selectedCrimes.map((c, i) => `
+                    <div class="px-3 py-1.5 rounded-lg bg-blue-950/50 border border-blue-500/30 text-xs flex items-center gap-2">
+                        <span class="font-medium text-blue-200">${c.name} (${c.months}m / $${c.fine})</span>
+                        <button onclick="removeCrimeFromCase(${i})" class="text-slate-400 hover:text-red-400">✕</button>
+                    </div>
+                `).join('');
+            }
+            const totalM = selectedCrimes.reduce((s, c) => s + c.months, 0);
+            const totalF = selectedCrimes.reduce((s, c) => s + c.fine, 0);
+            document.getElementById('caseTotalMonths').textContent = `${totalM} mies.`;
+            document.getElementById('caseTotalFine').textContent = `$${totalF.toLocaleString()}`;
+        }
+
+        function copyCaseSummary() {
+            const citizen = document.getElementById('caseCitizenSelect').value;
+            const desc = document.getElementById('caseDescription').value;
+            const crimes = selectedCrimes.map(c => c.name).join(', ') || 'Brak';
+            const totalM = document.getElementById('caseTotalMonths').textContent;
+            const totalF = document.getElementById('caseTotalFine').textContent;
+
+            const text = `OBYWATEL: ${citizen}\nZARZUTY: ${crimes}\nWYROK: ${totalM} | GRZYWNA: ${totalF}\nOPIS SPRAWY:\n${desc}`;
+            copyToClipboardText(text, 'Podsumowanie sprawy');
+        }
+
+        // ================= DODAWANIE WŁASNYCH REKORDÓW DO BAZY =================
+        let currentCustomEntityType = 'citizen';
+        function openAddCustomEntityModal(type) {
+            currentCustomEntityType = type;
+            const fields = document.getElementById('addEntityFields');
+            const title = document.getElementById('addEntityModalTitle');
+
+            if (type === 'citizen') {
+                title.textContent = 'Dodaj obywatela do bazy';
+                fields.innerHTML = `
+                    <input id="newCitName" type="text" placeholder="Imię i nazwisko / Rysopis (np. [729] Jade Grayson)" class="mdt-input px-3.5 py-2.5 rounded-lg text-xs">
+                    <input id="newCitCsn" type="text" placeholder="CSN / ID" class="mdt-input px-3.5 py-2.5 rounded-lg text-xs">
+                    <input id="newCitDesc" type="text" placeholder="Opis udziału w akcji" class="mdt-input px-3.5 py-2.5 rounded-lg text-xs">
+                `;
+            } else if (type === 'vehicle') {
+                title.textContent = 'Dodaj pojazd do bazy';
+                fields.innerHTML = `
+                    <input id="newVehOwner" type="text" placeholder="Właściciel" class="mdt-input px-3.5 py-2.5 rounded-lg text-xs">
+                    <input id="newVehBrand" type="text" placeholder="Marka (np. Karin)" class="mdt-input px-3.5 py-2.5 rounded-lg text-xs">
+                    <input id="newVehModel" type="text" placeholder="Model i kolor (np. Futo Różowo-białe)" class="mdt-input px-3.5 py-2.5 rounded-lg text-xs">
+                    <input id="newVehPlate" type="text" placeholder="Numer rejestracyjny" class="mdt-input px-3.5 py-2.5 rounded-lg text-xs">
+                `;
+            } else {
+                title.textContent = 'Dodaj funkcjonariusza do bazy';
+                fields.innerHTML = `
+                    <input id="newOffBadge" type="text" placeholder="Numer odznaki (np. 923)" class="mdt-input px-3.5 py-2.5 rounded-lg text-xs">
+                    <input id="newOffName" type="text" placeholder="Imię i nazwisko" class="mdt-input px-3.5 py-2.5 rounded-lg text-xs">
+                `;
+            }
+            document.getElementById('addEntityModal').classList.remove('hidden');
+        }
+
+        function closeAddCustomEntityModal() {
+            document.getElementById('addEntityModal').classList.add('hidden');
+        }
+
+        function saveCustomEntity() {
+            if (currentCustomEntityType === 'citizen') {
+                const name = document.getElementById('newCitName').value.trim();
+                if (!name) return;
+                citizensDB.unshift({
+                    name,
+                    csn: document.getElementById('newCitCsn').value.trim() || 'BRAK',
+                    dob: '01/01/1995',
+                    desc: document.getElementById('newCitDesc').value.trim() || '-',
+                    license: 'Tak',
+                    points: 0
+                });
+                renderCitizensTable();
+            } else if (currentCustomEntityType === 'vehicle') {
+                const model = document.getElementById('newVehModel').value.trim();
+                if (!model) return;
+                vehiclesDB.unshift({
+                    owner: document.getElementById('newVehOwner').value.trim() || 'Nieznany',
+                    brand: document.getElementById('newVehBrand').value.trim() || 'Pojazd',
+                    model,
+                    plate: document.getElementById('newVehPlate').value.trim() || 'BRAK'
+                });
+                renderVehiclesTable();
+            } else {
+                const badge = document.getElementById('newOffBadge').value.trim();
+                const name = document.getElementById('newOffName').value.trim();
+                if (!badge || !name) return;
+                officersDB.unshift({ badge, name, unit: 'LSPD', radio: 'LSPD Tac #3', status: 'Na służbie' });
+                renderAllTables();
+            }
+            closeAddCustomEntityModal();
+            showToast('Dodano nowy wpis do bazy danych LSPD!');
+        }
+
+        function assignSelfToRole(elementId, roleName) {
+            document.getElementById(elementId).textContent = '[923] Oley Sasa';
+            showToast(`Przejąłeś funkcję ${roleName} jako [923] Oley Sasa`);
+        }
+
+        // ================= STREFA KADETA (FTO) & EGZAMIN OFICERSKI =================
+        const defaultTrainingTemplate = () => [
+            { name: 'Code 6', passed: false, notes: '', signature: '' },
+            { name: 'FTS', passed: false, notes: '', signature: '' },
+            { name: '10-80', passed: false, notes: '', signature: '' },
+            { name: '10-80 Pieszo', passed: false, notes: '', signature: '' },
+            { name: 'Status 7', passed: false, notes: '', signature: '' },
+            { name: 'TCCC', passed: false, notes: '', signature: '' },
+            { name: 'Kompendium', passed: false, notes: '', signature: '' }
+        ];
+
+        let cadetsDB = [
+            {
+                badge: '165',
+                name: 'Paulo Cortez',
+                fto: 'Oley Sasa',
+                joinDate: '03.10.2026',
+                positiveReport: true,
+                negativeReport: 'BRAK',
+                positiveNotes: 'Dobrze skoordynowany pościg pojazdem jak i pieszo, poprawił wcześniejsze błędy z Code 6.',
+                negativeNotes: '',
+                trainings: [
+                    { name: 'Code 6', passed: true, notes: 'Poprawił błędy', signature: 'SASA' },
+                    { name: 'FTS', passed: true, notes: '', signature: 'SASA' },
+                    { name: '10-80', passed: true, notes: 'Dobrze skoordynowany pościg pojazdem jak i pieszo', signature: 'Sasa' },
+                    { name: '10-80 Pieszo', passed: true, notes: '(wyżej)', signature: 'SASA' },
+                    { name: 'Status 7', passed: true, notes: 'dobrze wykonane zatrzymanie na celach', signature: 'Smith' },
+                    { name: 'TCCC', passed: true, notes: '', signature: 'Walker' },
+                    { name: 'Kompendium', passed: true, notes: 'błędy poprawione', signature: 'Solin' }
+                ]
+            },
+            {
+                badge: '166',
+                name: 'Cayden Potato',
+                fto: 'Oley Sasa',
+                joinDate: '10.10.2026',
+                positiveReport: false,
+                negativeReport: 'BRAK',
+                positiveNotes: '',
+                negativeNotes: '',
+                trainings: defaultTrainingTemplate()
+            },
+            {
+                badge: '168',
+                name: 'Troy Stardust',
+                fto: 'Gregory Solin',
+                joinDate: '03.10.2026',
+                positiveReport: false,
+                negativeReport: 'BRAK',
+                positiveNotes: '',
+                negativeNotes: '',
+                trainings: defaultTrainingTemplate()
+            },
+            {
+                badge: '169',
+                name: 'Mark Kochones',
+                fto: 'Hailey Sinclair',
+                joinDate: '03.10.2026',
+                positiveReport: false,
+                negativeReport: 'BRAK',
+                positiveNotes: '',
+                negativeNotes: '',
+                trainings: defaultTrainingTemplate()
+            },
+            {
+                badge: '170',
+                name: 'Mackey Sztonowski',
+                fto: 'John Cagville',
+                joinDate: '03.10.2026',
+                positiveReport: false,
+                negativeReport: 'BRAK',
+                positiveNotes: '',
+                negativeNotes: '',
+                trainings: defaultTrainingTemplate()
+            },
+            {
+                badge: '171',
+                name: 'Evan Myers',
+                fto: 'Mike Smith',
+                joinDate: '03.10.2026',
+                positiveReport: false,
+                negativeReport: 'BRAK',
+                positiveNotes: '',
+                negativeNotes: '',
+                trainings: defaultTrainingTemplate()
+            },
+            {
+                badge: '174',
+                name: 'Tony Wood',
+                fto: 'Amy Rover',
+                joinDate: '03.10.2026',
+                positiveReport: false,
+                negativeReport: 'BRAK',
+                positiveNotes: '',
+                negativeNotes: '',
+                trainings: defaultTrainingTemplate()
+            },
+            {
+                badge: '176',
+                name: 'Bobby Bennett',
+                fto: 'Zoya Sierra',
+                joinDate: '03.10.2026',
+                positiveReport: false,
+                negativeReport: 'BRAK',
+                positiveNotes: '',
+                negativeNotes: '',
+                trainings: defaultTrainingTemplate()
+            },
+            {
+                badge: '178',
+                name: 'Iris Bloodworth',
+                fto: 'Jacob Galahad',
+                joinDate: '04.10.2026',
+                positiveReport: false,
+                negativeReport: 'BRAK',
+                positiveNotes: '',
+                negativeNotes: '',
+                trainings: defaultTrainingTemplate()
+            },
+            {
+                badge: '182',
+                name: 'Joe Harrah',
+                fto: 'Zoya Sierra',
+                joinDate: '05.10.2026',
+                positiveReport: false,
+                negativeReport: 'BRAK',
+                positiveNotes: '',
+                negativeNotes: '',
+                trainings: defaultTrainingTemplate()
+            },
+            {
+                badge: '183',
+                name: 'Nathan Luke',
+                fto: 'Jack Onfire',
+                joinDate: '05.10.2026',
+                positiveReport: false,
+                negativeReport: 'BRAK',
+                positiveNotes: '',
+                negativeNotes: '',
+                trainings: defaultTrainingTemplate()
+            },
+            {
+                badge: '199',
+                name: 'Túlio Navarro Figueiredo',
+                fto: 'Oley Sasa',
+                joinDate: '11.10.2026',
+                positiveReport: false,
+                negativeReport: 'BRAK',
+                positiveNotes: '',
+                negativeNotes: '',
+                trainings: defaultTrainingTemplate()
+            }
+        ];
+
+        let activeCadetBadge = '165';
+
+        const examTasks = [
+            { id: 'teoria', name: 'Teoria', score: 0 },
+            { id: 'nts', name: 'NTS', score: 0 },
+            { id: 'fts', name: 'FTS', score: 0 },
+            { id: 'status7', name: 'Status 7', score: 0 },
+            { id: 'p1080', name: '10-80', score: 0 },
+            { id: 'p1080patyki', name: '10-80 patyki', score: 0 },
+            { id: 'pierwszapomoc', name: 'Pierwsza pomoc', score: 0 }
+        ];
+
+        function switchFtoView(view) {
+            const listView = document.getElementById('ftoListView');
+            const sheetView = document.getElementById('ftoSheetView');
+            const examView = document.getElementById('ftoExamView');
+            const btnList = document.getElementById('ftoSubTabListBtn');
+            const btnExam = document.getElementById('ftoSubTabExamBtn');
+
+            listView.classList.add('hidden');
+            sheetView.classList.add('hidden');
+            examView.classList.add('hidden');
+
+            if (view === 'list') {
+                listView.classList.remove('hidden');
+                btnList.className = 'px-3.5 py-2 rounded-lg bg-blue-600 text-white text-xs font-semibold flex items-center gap-1.5 transition';
+                btnExam.className = 'px-3.5 py-2 rounded-lg bg-[#141923] hover:bg-[#1c2331] border border-[#242c3d] text-slate-300 text-xs font-semibold flex items-center gap-1.5 transition';
+                renderCadetsTable();
+            } else if (view === 'sheet') {
+                sheetView.classList.remove('hidden');
+                renderActiveCadetSheet();
+            } else if (view === 'exam') {
+                examView.classList.remove('hidden');
+                btnExam.className = 'px-3.5 py-2 rounded-lg bg-blue-600 text-white text-xs font-semibold flex items-center gap-1.5 transition';
+                btnList.className = 'px-3.5 py-2 rounded-lg bg-[#141923] hover:bg-[#1c2331] border border-[#242c3d] text-slate-300 text-xs font-semibold flex items-center gap-1.5 transition';
+                populateExamCadetsSelect();
+                renderExamTable();
+            }
+            lucide.createIcons();
+        }
+
+        function renderCadetsTable() {
+            const q = (document.getElementById('cadetSearchInput')?.value || '').toLowerCase();
+            const tbody = document.getElementById('cadetsTableBody');
+            if (!tbody) return;
+
+            tbody.innerHTML = cadetsDB
+                .filter(c => `${c.badge} ${c.name} ${c.fto}`.toLowerCase().includes(q))
+                .map((c) => {
+                    const passedCount = c.trainings.filter(t => t.passed).length;
+                    const negColor = c.negativeReport === 'BRAK'
+                        ? 'bg-slate-800/80 text-slate-300 border-slate-700'
+                        : 'bg-red-950/70 text-red-300 border-red-500/40';
+
+                    return `
+                        <tr class="hover:bg-slate-800/35 transition">
+                            <td class="py-3 px-4 font-bold text-blue-400">${c.badge}</td>
+                            <td class="py-3 px-4 font-semibold text-white">${c.name}</td>
+                            <td class="py-3 px-4">
+                                <input type="text" value="${c.fto}" onchange="updateCadetField('${c.badge}', 'fto', this.value)" class="mdt-input px-2.5 py-1 rounded text-xs w-36">
+                            </td>
+                            <td class="py-3 px-4 text-center">
+                                <button onclick="openCadetSheet('${c.badge}')" class="px-3 py-1 rounded bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/40 text-blue-300 font-bold text-[11px] underline tracking-wide transition">
+                                    KLIKNIJ (${passedCount}/7)
+                                </button>
+                            </td>
+                            <td class="py-3 px-4 text-center text-slate-300">${c.joinDate}</td>
+                            <td class="py-3 px-4 text-center">
+                                <input type="checkbox" ${c.positiveReport ? 'checked' : ''} onchange="updateCadetField('${c.badge}', 'positiveReport', this.checked)" class="w-4 h-4 accent-emerald-500 rounded cursor-pointer">
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-2">
+                                    <select onchange="updateCadetField('${c.badge}', 'negativeReport', this.value)" class="px-2.5 py-1 rounded border text-[11px] font-bold ${negColor}">
+                                        <option value="BRAK" ${c.negativeReport === 'BRAK' ? 'selected' : ''}>BRAK</option>
+                                        <option value="1 NEGATYWNY" ${c.negativeReport === '1 NEGATYWNY' ? 'selected' : ''}>1 NEGATYWNY</option>
+                                        <option value="2 NEGATYWNE" ${c.negativeReport === '2 NEGATYWNE' ? 'selected' : ''}>2 NEGATYWNE</option>
+                                        <option value="DO POPRAWY" ${c.negativeReport === 'DO POPRAWY' ? 'selected' : ''}>DO POPRAWY</option>
+                                        <option value="ZAWIESZONY" ${c.negativeReport === 'ZAWIESZONY' ? 'selected' : ''}>ZAWIESZONY</option>
+                                    </select>
+                                    <input type="text" value="${c.negativeNotes || ''}" onchange="updateCadetField('${c.badge}', 'negativeNotes', this.value)" placeholder="Wpisz uwagę (+/-)..." class="mdt-input px-2.5 py-1 rounded text-xs flex-1 min-w-[140px]">
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-right">
+                                <button onclick="openCadetSheet('${c.badge}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-medium">Szkolenia</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+        }
+
+        function updateCadetField(badge, field, value) {
+            const cadet = cadetsDB.find(c => c.badge === badge);
+            if (!cadet) return;
+            cadet[field] = value;
+            renderCadetsTable();
+            showToast(`Zaktualizowano dane kadeta [${badge}] ${cadet.name}`);
+        }
+
+        function openCadetSheet(badge) {
+            activeCadetBadge = badge;
+            switchFtoView('sheet');
+        }
+
+        function renderActiveCadetSheet() {
+            const cadet = cadetsDB.find(c => c.badge === activeCadetBadge);
+            if (!cadet) return;
+
+            document.getElementById('sheetCadetBadge').textContent = `#${cadet.badge}`;
+            document.getElementById('sheetCadetName').textContent = cadet.name;
+            document.getElementById('sheetCadetFto').textContent = cadet.fto || 'Brak przypisanego';
+            document.getElementById('sheetCadetDate').textContent = cadet.joinDate;
+            document.getElementById('sheetBannerDate').textContent = cadet.joinDate;
+
+            document.getElementById('sheetPositiveCheck').checked = !!cadet.positiveReport;
+            document.getElementById('sheetPositiveNotes').value = cadet.positiveNotes || '';
+            document.getElementById('sheetNegativeStatus').value = cadet.negativeReport || 'BRAK';
+            document.getElementById('sheetNegativeNotes').value = cadet.negativeNotes || '';
+
+            const tbody = document.getElementById('cadetTrainingsBody');
+            tbody.innerHTML = cadet.trainings.map((t, idx) => `
+                <tr class="hover:bg-slate-800/30 transition">
+                    <td class="py-3.5 px-5 font-bold text-white text-sm">${t.name}</td>
+                    <td class="py-3.5 px-4 text-center">
+                        <input type="checkbox" ${t.passed ? 'checked' : ''} onchange="updateCadetTraining(${idx}, 'passed', this.checked)" class="w-4 h-4 accent-blue-500 rounded cursor-pointer">
+                    </td>
+                    <td class="py-3.5 px-4">
+                        <input type="text" value="${t.notes}" oninput="updateCadetTraining(${idx}, 'notes', this.value)" placeholder="Wpisz notatkę ze szkolenia (np. Poprawił błędy / Dobrze skoordynowany pościg)..." class="mdt-input w-full px-3 py-2 rounded-lg text-xs">
+                    </td>
+                    <td class="py-3.5 px-4 text-center">
+                        <input type="text" value="${t.signature}" oninput="updateCadetTraining(${idx}, 'signature', this.value)" placeholder="Podpis FTO" class="mdt-input w-full px-3 py-2 rounded-lg text-xs font-extrabold text-center uppercase tracking-wider text-amber-300">
+                    </td>
+                    <td class="py-3.5 px-4 text-right">
+                        <button onclick="signTrainingAsSasa(${idx})" class="px-2.5 py-1.5 rounded bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 text-blue-300 text-[11px] font-bold transition">
+                            Podpisz: SASA
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateCadetTraining(index, field, value) {
+            const cadet = cadetsDB.find(c => c.badge === activeCadetBadge);
+            if (!cadet) return;
+            cadet.trainings[index][field] = value;
+        }
+
+        function signTrainingAsSasa(index) {
+            const cadet = cadetsDB.find(c => c.badge === activeCadetBadge);
+            if (!cadet) return;
+            cadet.trainings[index].passed = true;
+            cadet.trainings[index].signature = 'SASA';
+            renderActiveCadetSheet();
+            showToast(`Podpisano szkolenie ${cadet.trainings[index].name} jako SASA!`);
+        }
+
+        function toggleCurrentCadetPositive(checked) {
+            const cadet = cadetsDB.find(c => c.badge === activeCadetBadge);
+            if (!cadet) return;
+            cadet.positiveReport = checked;
+            showToast(`Zmieniono status pozytywnego raportu dla ${cadet.name}`);
+        }
+
+        function changeCurrentCadetNegativeStatus(val) {
+            const cadet = cadetsDB.find(c => c.badge === activeCadetBadge);
+            if (!cadet) return;
+            cadet.negativeReport = val;
+            showToast(`Zmieniono status raportu negatywnego: ${val}`);
+        }
+
+        function saveCurrentCadetNotes() {
+            const cadet = cadetsDB.find(c => c.badge === activeCadetBadge);
+            if (!cadet) return;
+            cadet.positiveNotes = document.getElementById('sheetPositiveNotes').value;
+            cadet.negativeNotes = document.getElementById('sheetNegativeNotes').value;
+        }
+
+        function copyCadetSheetSummary() {
+            const cadet = cadetsDB.find(c => c.badge === activeCadetBadge);
+            if (!cadet) return;
+
+            const trainingsLines = cadet.trainings.map(t => 
+                `- ${t.name}: ${t.passed ? '[ZALICZONE]' : '[BRAK]'} | Notatka: ${t.notes || '-'} | Podpis FTO: ${t.signature || '-'}`
+            ).join('\n');
+
+            const text = `ARKUSZ SZKOLENIOWY KADETA LSPD
+Kadet: [${cadet.badge}] ${cadet.name}
+Opiekun FTO: ${cadet.fto}
+Data dołączenia: ${cadet.joinDate}
+Pozytywny raport: ${cadet.positiveReport ? 'TAK' : 'NIE'} (${cadet.positiveNotes || 'Brak uwag'})
+Raport negatywny: ${cadet.negativeReport} (${cadet.negativeNotes || 'Brak uwag'})
+
+SZKOLENIA:
+${trainingsLines}`;
+
+            copyToClipboardText(text, `Arkusz kadeta [${cadet.badge}] ${cadet.name}`);
+        }
+
+        function openAddCadetModal() {
+            document.getElementById('newCadetBadge').value = '';
+            document.getElementById('newCadetName').value = '';
+            document.getElementById('newCadetFto').value = 'Oley Sasa';
+            document.getElementById('addCadetModal').classList.remove('hidden');
+        }
+
+        function closeAddCadetModal() {
+            document.getElementById('addCadetModal').classList.add('hidden');
+        }
+
+        function saveNewCadet() {
+            const badge = document.getElementById('newCadetBadge').value.trim() || String(Math.floor(200 + Math.random() * 90));
+            const name = document.getElementById('newCadetName').value.trim();
+            const fto = document.getElementById('newCadetFto').value.trim() || 'Oley Sasa';
+            const joinDate = document.getElementById('newCadetDate').value.trim() || '16.10.2026';
+
+            if (!name) {
+                showToast('Wpisz imię i nazwisko kadeta!');
+                return;
+            }
+
+            cadetsDB.unshift({
+                badge,
+                name,
+                fto,
+                joinDate,
+                positiveReport: false,
+                negativeReport: 'BRAK',
+                positiveNotes: '',
+                negativeNotes: '',
+                trainings: defaultTrainingTemplate()
+            });
+
+            closeAddCadetModal();
+            renderCadetsTable();
+            showToast(`Dodano kadeta [${badge}] ${name} do panelu FTO!`);
+        }
+
+        // ================= EGZAMIN OFICERSKI =================
+        function populateExamCadetsSelect() {
+            const sel = document.getElementById('examCadetSelect');
+            if (!sel) return;
+            sel.innerHTML = cadetsDB.map(c => `<option value="[${c.badge}] ${c.name}" ${c.badge === activeCadetBadge ? 'selected' : ''}>[${c.badge}] ${c.name}</option>`).join('');
+        }
+
+        function goToExamWithCadet() {
+            switchFtoView('exam');
+        }
+
+        function renderExamTable() {
+            const tbody = document.getElementById('examTasksTableBody');
+            if (!tbody) return;
+
+            tbody.innerHTML = examTasks.map((task, idx) => `
+                <tr class="hover:bg-slate-800/30 transition">
+                    <td class="py-3 px-4 font-bold text-white bg-blue-600/20 text-left border-r border-[#1c2230]">${task.name}</td>
+                    ${[0, 1, 2, 3].map(pts => `
+                        <td class="py-3 px-4 border-r border-[#1c2230]">
+                            <input type="checkbox" ${task.score === pts ? 'checked' : ''} onchange="setExamTaskScore(${idx}, ${pts})" class="w-4 h-4 accent-blue-500 rounded cursor-pointer">
+                        </td>
+                    `).join('')}
+                    <td class="py-3 px-4 font-extrabold text-white bg-[#101520]">${task.score}</td>
+                </tr>
+            `).join('');
+
+            updateExamSummary();
+        }
+
+        function setExamTaskScore(taskIndex, pts) {
+            examTasks[taskIndex].score = pts;
+            renderExamTable();
+        }
+
+        function resetExamScores() {
+            examTasks.forEach(t => t.score = 0);
+            renderExamTable();
+            showToast('Zresetowano punktację egzaminu oficerskiego.');
+        }
+
+        function updateExamSummary() {
+            const total = examTasks.reduce((sum, t) => sum + t.score, 0);
+            const passed = total >= 17;
+            const statusCell = document.getElementById('examStatusCell');
+            const totalCell = document.getElementById('examTotalPointsCell');
+
+            totalCell.textContent = total;
+            if (passed) {
+                statusCell.textContent = `ZDANE (${total} / 21 pkt)`;
+                statusCell.className = 'py-4 px-4 bg-emerald-950/80 text-emerald-300 uppercase tracking-wider font-extrabold';
+            } else {
+                statusCell.textContent = `NIEZDANE (${total} / 21 pkt)`;
+                statusCell.className = 'py-4 px-4 bg-[#1a202c] text-red-400 uppercase tracking-wider font-extrabold';
+            }
+        }
+
+        function copyExamResult() {
+            const cadet = document.getElementById('examCadetSelect').value;
+            const lead = document.getElementById('examLeadOfficer').value;
+            const assist = document.getElementById('examAssistOfficer').value || 'Brak';
+            const notes = document.getElementById('examCustomNotes').value || 'Brak dodatkowych uwag';
+            const total = examTasks.reduce((sum, t) => sum + t.score, 0);
+            const resultStr = total >= 17 ? 'ZDANY' : 'NIEZDANY';
+
+            const breakdown = examTasks.map(t => `- ${t.name}: ${t.score}/3 pkt`).join('\n');
+
+            const text = `PROTOKÓŁ EGZAMINU OFICERSKIEGO LSPD
+Rekrut podchodzący do egzaminu: ${cadet}
+Funkcjonariusz prowadzący egzamin: ${lead}
+Funkcjonariusz asystujący: ${assist}
+
+PUNKTACJA:
+${breakdown}
+
+SUMA PUNKTÓW: ${total} / 21 pkt (Wymagane min. 17 pkt)
+REZULTAT KOŃCOWY: ${resultStr}
+
+NOTATKI EGZAMINATORA:
+${notes}`;
+
+            copyToClipboardText(text, `Wynik egzaminu oficerskiego (${cadet})`);
+        }
+
+        function showToast(msg) {
+            const container = document.getElementById('toastContainer');
+            const el = document.createElement('div');
+            el.className = 'px-4 py-3 rounded-xl bg-[#101829] border border-blue-500/40 text-blue-100 text-xs font-semibold shadow-xl flex items-center gap-2.5 transition-all';
+            el.innerHTML = `<span class="w-2 h-2 rounded-full bg-blue-400"></span><span>${msg}</span>`;
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 3200);
+        }
+
+        // Inicjalizacja po załadowaniu
+        window.onload = function() {
+            renderAllTables();
+            renderReportsTable();
+            renderSelectedCrimes();
+            renderCadetsTable();
+            renderExamTable();
+            // Domyślnie otwieramy od razu Twój raport ze szpitala w widoku edycji, żebyś miał wszystko pod ręką
+            openReportForEdit(309);
+            lucide.createIcons();
+        };
+    </script>
+</body>
+</html>
