@@ -3,109 +3,194 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tablet LSPD - MDT</title>
+  <title>Tablet LSPD — Mobile Data Terminal</title>
   <style>
-    :root { color-scheme: dark; }
+    :root {
+      color-scheme: dark;
+      --bg-outer: #05070b;
+      --bg-main: #0b0e15;
+      --bg-sidebar: #0e121b;
+      --bg-card: #121723;
+      --bg-input: #090c12;
+      --border: #1e2738;
+      --border-light: #2a364f;
+      --blue: #2563eb;
+      --blue-hover: #1d4ed8;
+      --blue-glow: rgba(37, 99, 235, 0.25);
+      --green: #16a34a;
+      --red: #dc2626;
+      --amber: #d97706;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+    }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       padding: 0;
-      background-color: #080b11;
-      color: #e2e8f0;
-      font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-outer);
+      color: var(--text);
+      font-family: 'Inter', 'Segoe UI', Roboto, -apple-system, sans-serif;
+      font-size: 13px;
       overflow-x: hidden;
     }
-    .mdt-app {
+    /* UKŁAD TABLETU */
+    .tablet-shell {
       display: flex;
       min-height: 100vh;
-      background-color: #0b0e14;
+      background-color: var(--bg-main);
     }
-    /* BOCZNY PANEL */
-    .mdt-sidebar {
-      width: 255px;
-      background-color: #0f131d;
-      border-right: 1px solid #1e293b;
+    /* SIDEBAR */
+    .sidebar {
+      width: 250px;
+      background-color: var(--bg-sidebar);
+      border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
+      user-select: none;
     }
-    .mdt-brand {
+    .brand-header {
       padding: 18px 16px;
-      border-bottom: 1px solid #1e293b;
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       gap: 12px;
     }
-    .mdt-logo {
-      width: 40px;
-      height: 40px;
+    .brand-seal {
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #1d4ed8, #0f172a);
-      border: 2px solid #3b82f6;
+      background: radial-gradient(circle at 30% 30%, #2563eb, #0f172a 75%);
+      border: 2px solid #60a5fa;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 800;
-      font-size: 12px;
-      color: #93c5fd;
+      font-weight: 900;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: #fff;
+      box-shadow: 0 0 15px var(--blue-glow);
+      flex-shrink: 0;
     }
-    .nav-label {
-      padding: 14px 16px 6px;
+    .nav-section-title {
+      padding: 14px 18px 6px;
       font-size: 10px;
-      font-weight: 700;
-      color: #64748b;
-      letter-spacing: 0.08em;
+      font-weight: 800;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
       text-transform: uppercase;
     }
-    .nav-btn {
+    .nav-list {
+      display: flex;
+      flex-direction: column;
+      padding: 0 10px;
+      gap: 3px;
+      flex: 1;
+    }
+    .nav-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 11px 14px;
-      margin: 2px 10px;
+      padding: 10px 12px;
       border-radius: 8px;
       font-size: 13px;
       font-weight: 600;
-      color: #94a3b8;
-      cursor: pointer;
-      border: 1px solid transparent;
+      color: var(--text-muted);
       background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
       text-align: left;
-      transition: all 0.15s;
     }
-    .nav-btn:hover { background-color: #161e2e; color: #f8fafc; }
-    .nav-btn.active {
-      background-color: #172554;
+    .nav-item:hover {
+      background-color: #151c2a;
+      color: #fff;
+    }
+    .nav-item.active {
+      background: linear-gradient(90deg, #172554 0%, #111c3d 100%);
       color: #60a5fa;
       border-color: #1e3a8a;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
-    /* GŁÓWNY OBSZAR */
-    .mdt-main {
+    .nav-counter {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 99px;
+      background-color: #1e293b;
+      color: #cbd5e1;
+      font-weight: 700;
+    }
+    .nav-item.active .nav-counter {
+      background-color: #2563eb;
+      color: #fff;
+    }
+    /* GŁÓWNY PANEL */
+    .main-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background-color: var(--bg-main);
+    }
+    .topbar {
+      height: 54px;
+      background-color: var(--bg-sidebar);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .content-scroll {
       flex: 1;
       padding: 24px;
       overflow-y: auto;
     }
-    .mdt-card {
-      background-color: #121723;
-      border: 1px solid #1e293b;
+    /* KARTY I FORMULARZE */
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: 10px;
       padding: 16px;
       margin-bottom: 16px;
     }
-    .mdt-input, .mdt-select, .mdt-textarea {
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .field-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+    .inp, .sel, .txt {
       width: 100%;
-      background-color: #090d14;
-      border: 1px solid #263248;
-      color: #f1f5f9;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-light);
+      color: var(--text);
       border-radius: 8px;
-      padding: 8px 12px;
+      padding: 9px 12px;
       font-size: 13px;
       outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      font-family: inherit;
     }
-    .mdt-input:focus, .mdt-select:focus, .mdt-textarea:focus {
+    .inp:focus, .sel:focus, .txt:focus {
       border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
     }
-    .mdt-btn {
+    /* PRZYCISKI */
+    .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -116,477 +201,1164 @@
       font-weight: 700;
       cursor: pointer;
       border: 1px solid transparent;
-      transition: all 0.15s;
+      transition: all 0.15s ease;
       color: #fff;
+      white-space: nowrap;
     }
-    .mdt-btn-blue { background-color: #2563eb; border-color: #3b82f6; }
-    .mdt-btn-blue:hover { background-color: #1d4ed8; }
-    .mdt-btn-green { background-color: #16a34a; border-color: #22c55e; }
-    .mdt-btn-green:hover { background-color: #15803d; }
-    .mdt-btn-red { background-color: #dc2626; border-color: #ef4444; }
-    .mdt-btn-red:hover { background-color: #b91c1c; }
-    .mdt-btn-gray { background-color: #1e293b; border-color: #334155; color: #cbd5e1; }
-    .mdt-btn-gray:hover { background-color: #334155; color: #fff; }
-
-    table.mdt-table {
+    .btn-sm { padding: 5px 10px; font-size: 11px; border-radius: 6px; }
+    .btn-blue { background-color: var(--blue); border-color: #3b82f6; }
+    .btn-blue:hover { background-color: var(--blue-hover); }
+    .btn-green { background-color: var(--green); border-color: #22c55e; }
+    .btn-green:hover { background-color: #15803d; }
+    .btn-red { background-color: var(--red); border-color: #ef4444; }
+    .btn-red:hover { background-color: #b91c1c; }
+    .btn-amber { background-color: var(--amber); border-color: #f59e0b; }
+    .btn-dark { background-color: #182030; border-color: #2c3a52; color: #cbd5e1; }
+    .btn-dark:hover { background-color: #232f46; color: #fff; }
+    /* TABELE */
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background-color: var(--bg-card);
+    }
+    table.tbl {
       width: 100%;
       border-collapse: collapse;
       font-size: 13px;
     }
-    table.mdt-table th {
+    table.tbl th {
       text-align: left;
-      padding: 11px 12px;
-      background-color: #0e131d;
-      color: #94a3b8;
+      padding: 11px 14px;
+      background-color: #0d111a;
+      color: var(--text-muted);
       font-size: 11px;
+      font-weight: 700;
       text-transform: uppercase;
-      border-bottom: 1px solid #1e293b;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border);
     }
-    table.mdt-table td {
-      padding: 10px 12px;
-      border-bottom: 1px solid #192130;
+    table.tbl td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #171f2e;
       vertical-align: middle;
     }
-    table.mdt-table tr:hover td { background-color: #151d2d; }
-    .hidden { display: none !important; }
-    .q-box {
-      background-color: #0c1018;
-      border: 1px solid #1e293b;
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 10px;
-    }
-    .q-ans {
-      margin-top: 8px;
-      padding: 9px 12px;
-      background-color: #111827;
-      border-left: 3px solid #3b82f6;
-      border-radius: 6px;
-      font-size: 12.5px;
-      color: #cbd5e1;
-      line-height: 1.5;
-    }
-    .lic-pill {
-      display: inline-block;
-      padding: 3px 8px;
+    table.tbl tr:last-child td { border-bottom: none; }
+    table.tbl tr:hover td { background-color: #161e2e; }
+    /* TAGI I ODZNAKI */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
       border-radius: 6px;
       font-size: 11px;
       font-weight: 700;
-      margin: 2px;
-      cursor: pointer;
-      user-select: none;
     }
-    .lic-on { background-color: #064e3b; color: #4ade80; border: 1px solid #10b981; }
-    .lic-off { background-color: #1e293b; color: #64748b; border: 1px solid #334155; }
+    .pill-blue { background: rgba(37, 99, 235, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35); }
+    .pill-green { background: rgba(22, 163, 74, 0.18); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.35); }
+    .pill-amber { background: rgba(217, 119, 6, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
+    .pill-red { background: rgba(220, 38, 38, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }
+    .pill-gray { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
+    /* ELEMENTY POWIĄZANE W RAPORCIE */
+    .chip-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 10px;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+    .chip-remove {
+      background: transparent;
+      border: none;
+      color: #ef4444;
+      font-weight: 800;
+      cursor: pointer;
+      padding: 0 4px;
+      font-size: 14px;
+    }
+    /* OKNA MODALNE */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 6, 12, 0.78);
+      backdrop-filter: blur(3px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5000;
+      padding: 20px;
+    }
+    .modal-window {
+      width: 100%;
+      max-width: 560px;
+      background-color: #111622;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      max-height: 85vh;
+    }
+    .modal-head {
+      padding: 14px 18px;
+      background-color: #0c1018;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+      font-size: 15px;
+    }
+    .modal-body {
+      padding: 16px 18px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .hidden { display: none !important; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #090c12; }
+    ::-webkit-scrollbar-thumb { background: #26334d; border-radius: 3px; }
   </style>
 </head>
 <body>
 
-<div class="mdt-app">
-  <!-- BOCZNA NAWIGACJA TABLETU -->
-  <aside class="mdt-sidebar">
-    <div class="mdt-brand">
-      <div class="mdt-logo">LSPD</div>
+<div class="tablet-shell">
+  <!-- BOCZNY PASEK NAWIGACJI (WZOROWANY NA TABLECIE LSPD Z GRY) -->
+  <aside class="sidebar">
+    <div class="brand-header">
+      <div class="brand-seal">LSPD</div>
       <div>
         <div style="font-weight: 800; font-size: 15px; color: #fff;">Tablet <span style="color: #3b82f6;">LSPD</span></div>
-        <div style="font-size: 11px; color: #64748b;">Los Santos Police Department</div>
+        <div style="font-size: 11px; color: var(--text-dim);">Los Santos Police Department</div>
       </div>
     </div>
 
-    <div class="nav-label">KATEGORIE</div>
-    <nav style="display: flex; flex-direction: column; flex: 1;">
-      <button class="nav-btn active" id="nav-szkolenia" onclick="switchTab('szkolenia')">
-        <span>🎖️ Szkolenia LSPD</span>
+    <div class="nav-section-title">KATEGORIE</div>
+    <nav class="nav-list">
+      <button class="nav-item" id="nav-dyspozytornia" onclick="switchMainView('dyspozytornia')">
+        <span>📡 Dyspozytornia</span>
+        <span class="nav-counter" id="cnt-duty">0</span>
       </button>
-      <button class="nav-btn" id="nav-kadet" onclick="switchTab('kadet')">
-        <span>🎓 Strefa Kadeta (FTO)</span>
+      <button class="nav-item active" id="nav-raporty" onclick="switchMainView('raporty')">
+        <span>📋 Raporty</span>
+        <span class="nav-counter" id="cnt-reports">0</span>
       </button>
-      <button class="nav-btn" id="nav-raporty" onclick="switchTab('raporty')">
-        <span>📋 Raporty (#309)</span>
+      <button class="nav-item" id="nav-sprawy" onclick="switchMainView('sprawy')">
+        <span>⚖️ Sprawy i Taryfikator</span>
+        <span class="nav-counter" id="cnt-cases">0</span>
       </button>
-      <button class="nav-btn" id="nav-sprawy" onclick="switchTab('sprawy')">
-        <span>⚖️ Sprawy / Taryfikator</span>
+      <button class="nav-item" id="nav-patrole" onclick="switchMainView('patrole')">
+        <span>🚓 Patrole (PWC)</span>
+        <span class="nav-counter" id="cnt-patrols">0</span>
       </button>
-      <button class="nav-btn" id="nav-funkcjonariusze" onclick="switchTab('funkcjonariusze')">
+      <button class="nav-item" id="nav-funkcjonariusze" onclick="switchMainView('funkcjonariusze')">
         <span>👮 Funkcjonariusze</span>
+        <span class="nav-counter" id="cnt-officers">0</span>
+      </button>
+
+      <div class="nav-section-title" style="padding-top: 16px;">AKADEMIA I SZKOLENIA</div>
+      <button class="nav-item" id="nav-szkolenia" onclick="switchMainView('szkolenia')">
+        <span>🎖️ Szkolenia LSPD</span>
+        <span class="nav-counter">7</span>
+      </button>
+      <button class="nav-item" id="nav-kadet" onclick="switchMainView('kadet')">
+        <span>🎓 Strefa Kadeta (FTO)</span>
+        <span class="nav-counter" id="cnt-cadets">0</span>
       </button>
     </nav>
 
-    <div style="padding: 14px; border-top: 1px solid #1e293b; background-color: #090d14; font-size: 12px;">
-      <div style="color: #64748b; font-size: 10px; text-transform: uppercase;">Zalogowany funkcjonariusz</div>
-      <div style="font-weight: 800; color: #fff; margin-top: 2px;">[923] Oley Sasa</div>
-      <div style="color: #ef4444; font-size: 11px; font-weight: 700;">AIAD / FTO / Szkoleniowiec</div>
+    <!-- PROFIL ZALOGOWANEGO FUNKCJONARIUSZA -->
+    <div style="padding: 14px; border-top: 1px solid var(--border); background-color: #090c12;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+        <span style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; font-weight: 700;">Zalogowany jako</span>
+        <button class="btn-sm btn-dark" style="padding: 2px 6px; font-size: 10px;" onclick="changeLoggedInOfficer()">Zmień</button>
+      </div>
+      <div style="font-weight: 800; font-size: 14px; color: #fff;" id="logged-officer-display">[923] Oley Sasa</div>
+      <div style="font-size: 11px; color: #ef4444; font-weight: 700; margin-top: 2px;">AIAD / FTO / Szkoleniowiec</div>
     </div>
   </aside>
 
-  <!-- GŁÓWNE OKNO -->
-  <main class="mdt-main">
-    <div id="toast" style="position: fixed; bottom: 20px; right: 20px; background: #1d4ed8; color: #fff; padding: 12px 18px; border-radius: 8px; font-size: 13px; font-weight: 700; border: 1px solid #60a5fa; display: none; z-index: 9999;"></div>
-
-    <!-- ========================================================= -->
-    <!-- 1. ZAKŁADKA: SZKOLENIA LSPD (DLA KAŻDEGO FUNKCJONARIUSZA) -->
-    <!-- ========================================================= -->
-    <section id="tab-szkolenia">
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
-        <div>
-          <h1 style="margin: 0; font-size: 21px; font-weight: 800; color: #fff;">🎖️ Szkolenia Specjalistyczne LSPD (Dla wszystkich funkcjonariuszy)</h1>
-          <p style="margin: 3px 0 0; font-size: 12.5px; color: #94a3b8;">Kursy: RTO+HRO, NEGO, SV, PWC+APWC, ASU, MERRY, SEU — pytania egzaminacyjne, próby praktyczne oraz baza licencji funkcjonariuszy</p>
-        </div>
-        <div style="display: flex; gap: 8px;">
-          <button class="mdt-btn mdt-btn-blue" id="sub-szk-egzaminator" onclick="switchTrainingSub('egzaminator')">📖 Arkusz Pytań i Egzaminowania</button>
-          <button class="mdt-btn mdt-btn-gray" id="sub-szk-wykaz" onclick="switchTrainingSub('wykaz')">👮 Wykaz Licencji Funkcjonariuszy</button>
-        </div>
+  <!-- GŁÓWNA CZĘŚĆ TABLETU -->
+  <div class="main-area">
+    <!-- GÓRNY PASEK STATUSU -->
+    <header class="topbar">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <span class="pill pill-green" id="top-duty-indicator">● NA SŁUŻBIE (10-8)</span>
+        <span id="active-patrol-timers-banner" class="pill pill-amber hidden">⏱ Aktywny stoper kadeta</span>
       </div>
-
-      <!-- PODWIDOK 1A: PRZEPROWADZANIE SZKOLENIA (7 KURSÓW) -->
-      <div id="szk-view-egzaminator">
-        <div class="mdt-card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-            <span style="font-size: 12px; font-weight: 700; color: #94a3b8;">Funkcjonariusz zdający:</span>
-            <select id="trainee-officer-select" class="mdt-select" style="width: 240px;"></select>
-          </div>
-          <div style="display: flex; gap: 8px;">
-            <button class="mdt-btn mdt-btn-green" onclick="grantCurrentLicenseToOfficer()">✅ Nadaj licencję funkcjonariuszowi</button>
-            <button class="mdt-btn mdt-btn-blue" onclick="copyTrainingProtocol()">📋 Kopiuj protokół ze szkolenia</button>
-          </div>
-        </div>
-
-        <!-- Pasek 7 przycisków szkoleń -->
-        <div id="course-buttons-bar" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;"></div>
-
-        <!-- Zawartość wybranego szkolenia -->
-        <div id="course-details-container"></div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span id="live-clock" style="font-family: monospace; font-size: 13px; color: var(--text-muted); font-weight: 700;"></span>
+        <button class="btn btn-sm btn-dark" onclick="exportAllTabletData()" title="Pobierz kopię zapasową JSON">💾 Eksport danych</button>
+        <button class="btn btn-sm btn-dark" onclick="resetFactoryDefaults()" title="Przywróć domyślne dane">🔄 Reset</button>
       </div>
+    </header>
 
-      <!-- PODWIDOK 1B: TABELA LICENCJI WSZYSTKICH FUNKCJONARIUSZY -->
-      <div id="szk-view-wykaz" class="hidden">
-        <div class="mdt-card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-          <input type="text" id="lic-officer-search" class="mdt-input" style="max-width: 300px;" placeholder="🔍 Szukaj funkcjonariusza po odznace lub nazwisku..." oninput="renderOfficersLicenseTable()" />
-          <div style="display: flex; gap: 8px;">
-            <input type="text" id="new-off-badge" class="mdt-input" style="width: 90px;" placeholder="Odznaka" />
-            <input type="text" id="new-off-name" class="mdt-input" style="width: 180px;" placeholder="Imię i nazwisko" />
-            <button class="mdt-btn mdt-btn-green" onclick="addNewOfficerToRoster()">+ Dodaj funkcjonariusza</button>
-          </div>
-        </div>
+    <!-- OBSZAR ROBOCZY -->
+    <main class="content-scroll">
+      <div id="toast-alert" style="position: fixed; bottom: 22px; right: 22px; background: #1d4ed8; color: #fff; padding: 12px 18px; border-radius: 8px; font-weight: 700; border: 1px solid #60a5fa; box-shadow: 0 10px 25px rgba(0,0,0,0.65); display: none; z-index: 9999;"></div>
 
-        <div class="mdt-card" style="padding: 0; overflow-x: auto;">
-          <table class="mdt-table">
-            <thead>
-              <tr>
-                <th>Odznaka</th>
-                <th>Funkcjonariusz</th>
-                <th>Posiadane Szkolenia (Kliknij licencję, aby nadać / odebrać)</th>
-                <th>Ostatni wpis / Egzaminator</th>
-              </tr>
-            </thead>
-            <tbody id="officers-license-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========================================================= -->
-    <!-- 2. ZAKŁADKA: STREFA KADETA (TYLKO REKRUCI + STOPER)       -->
-    <!-- ========================================================= -->
-    <section id="tab-kadet" class="hidden">
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px;">
-        <div>
-          <h1 style="margin: 0; font-size: 21px; font-weight: 800; color: #fff;">🎓 Strefa Kadeta — Panel FTO i Licznik Czasu w Patrolu</h1>
-          <p style="margin: 3px 0 0; font-size: 12.5px; color: #94a3b8;">Zarządzanie rekrutami, licznik czasu patrolowego (START/STOP), szkolenia podstawowe FTO oraz Egzamin Oficerski</p>
-        </div>
-        <div style="display: flex; gap: 8px;">
-          <button class="mdt-btn mdt-btn-blue" id="sub-fto-lista" onclick="switchFtoSub('lista')">📋 Lista Kadetów</button>
-          <button class="mdt-btn mdt-btn-gray" id="sub-fto-egzamin" onclick="switchFtoSub('egzamin')">🎯 Egzamin Oficerski (Min. 17 pkt)</button>
-        </div>
-      </div>
-
-      <!-- LISTA KADETÓW -->
-      <div id="fto-view-lista">
-        <div class="mdt-card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-          <input type="text" id="cadet-filter-inp" class="mdt-input" style="max-width: 280px;" placeholder="🔍 Szukaj kadeta lub FTO..." oninput="renderCadetsTable()" />
-          <div style="display: flex; gap: 8px;">
-            <input type="text" id="inp-c-badge" class="mdt-input" style="width: 85px;" placeholder="Odznaka" />
-            <input type="text" id="inp-c-name" class="mdt-input" style="width: 170px;" placeholder="Imię i nazwisko" />
-            <input type="text" id="inp-c-fto" class="mdt-input" style="width: 140px;" value="Oley Sasa" placeholder="FTO" />
-            <button class="mdt-btn mdt-btn-green" onclick="addCadet()">+ Dodaj kadeta</button>
-          </div>
-        </div>
-
-        <div class="mdt-card" style="padding: 0; overflow-x: auto;">
-          <table class="mdt-table">
-            <thead>
-              <tr>
-                <th>Odznaka</th>
-                <th>Kadet</th>
-                <th>FTO</th>
-                <th>Czas w patrolu (START / STOP)</th>
-                <th>Arkusz FTO</th>
-                <th>Data dołączenia</th>
-                <th>Pozytywny</th>
-                <th>Raport negatywny</th>
-              </tr>
-            </thead>
-            <tbody id="cadets-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- ARKUSZ INDYWIDUALNY KADETA -->
-      <div id="fto-view-arkusz" class="hidden">
-        <div class="mdt-card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-          <div>
-            <div style="font-size: 12px; font-weight: 800; color: #60a5fa;" id="cs-badge">#165</div>
-            <h2 style="margin: 2px 0; font-size: 22px; font-weight: 800; color: #fff;" id="cs-name">Paulo Cortez</h2>
-            <div style="font-size: 12px; color: #94a3b8;" id="cs-meta">Opiekun FTO: Oley Sasa • Data dołączenia: 03.10.2026</div>
-          </div>
-
-          <div style="display: flex; align-items: center; gap: 10px; background: #080b11; padding: 10px 14px; border-radius: 10px; border: 1px solid #1e293b;">
+      <!-- ========================================================= -->
+      <!-- 1. ZAKŁADKA: RAPORTY (LISTA + CZYSTY FORMULARZ TWORZENIA) -->
+      <!-- ========================================================= -->
+      <section id="view-raporty">
+        <!-- WIDOK 1A: LISTA RAPORTÓW -->
+        <div id="reports-list-subview">
+          <div class="card-header" style="margin-bottom: 16px;">
             <div>
-              <div style="font-size: 10px; color: #64748b; text-transform: uppercase;">Łączny czas w patrolu</div>
-              <div id="cs-timer-text" style="font-family: monospace; font-size: 18px; font-weight: 800; color: #38bdf8;">00h 00m 00s</div>
+              <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Raporty służbowe</h1>
+              <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Przeglądanie, wyszukiwanie i wystawianie raportów służbowych LSPD</p>
             </div>
-            <button id="cs-timer-btn" class="mdt-btn mdt-btn-green" onclick="toggleCadetTimer(activeCadetId)">▶ START</button>
-            <button class="mdt-btn mdt-btn-gray" onclick="addMinutesCadet(15)">+15m</button>
+            <button class="btn btn-blue" onclick="openCleanReportCreator()">+ Nowy raport</button>
           </div>
 
-          <div style="display: flex; gap: 8px;">
-            <button class="mdt-btn mdt-btn-blue" onclick="signAllCadetModules()">✍ Podpisz wszystkie (SASA)</button>
-            <button class="mdt-btn mdt-btn-gray" onclick="copyCadetSheetText()">📋 Kopiuj arkusz</button>
-            <button class="mdt-btn mdt-btn-gray" onclick="switchFtoSub('lista')">⬅ Wróć do listy</button>
+          <div class="card" style="padding: 12px 16px;">
+            <input type="text" id="report-search-inp" class="inp" placeholder="🔍 Wyszukaj po tytule, funkcjonariuszu lub numerze raportu np. #308..." oninput="renderReportsList()" />
           </div>
-        </div>
 
-        <div class="mdt-card" style="padding: 0; overflow-x: auto;">
-          <table class="mdt-table">
-            <thead>
-              <tr>
-                <th style="width: 180px;">Szkolenia Podstawowe</th>
-                <th style="width: 90px; text-align: center;">Potrafi</th>
-                <th>Notatki FTO</th>
-                <th style="width: 150px;">Podpis FTO</th>
-                <th style="width: 120px;">Szybki podpis</th>
-              </tr>
-            </thead>
-            <tbody id="cs-modules-tbody"></tbody>
-          </table>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-          <div class="mdt-card">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-              <span style="font-weight: 700; color: #4ade80;">✅ Pozytywne raporty / Pochwały</span>
-              <label style="font-size: 12px; cursor: pointer;">
-                <input type="checkbox" id="cs-pos-chk" onchange="saveCadetNotes()" /> Pozytywny raport
-              </label>
-            </div>
-            <textarea id="cs-pos-txt" rows="3" class="mdt-textarea" placeholder="Co kadet robi dobrze..." oninput="saveCadetNotes()"></textarea>
-          </div>
-          <div class="mdt-card">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-              <span style="font-weight: 700; color: #f87171;">⚠️ Negatywne raporty / Do poprawy</span>
-              <select id="cs-neg-sel" class="mdt-select" style="width: 150px; padding: 3px 8px;" onchange="saveCadetNotes()">
-                <option value="BRAK">BRAK</option>
-                <option value="1 NEGATYWNY">1 NEGATYWNY</option>
-                <option value="2 NEGATYWNE">2 NEGATYWNE</option>
-                <option value="DO POPRAWY">DO POPRAWY</option>
-                <option value="ZAWIESZONY">ZAWIESZONY</option>
-              </select>
-            </div>
-            <textarea id="cs-neg-txt" rows="3" class="mdt-textarea" placeholder="Błędy kadeta do poprawy..." oninput="saveCadetNotes()"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <!-- EGZAMIN OFICERSKI -->
-      <div id="fto-view-egzamin" class="hidden">
-        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 16px;">
-          <div class="mdt-card" style="display: flex; flex-direction: column; gap: 12px;">
-            <h3 style="margin: 0; font-size: 15px; color: #60a5fa;">Egzamin Oficerski (Próg: min. 17 pkt)</h3>
-            <div>
-              <label style="font-size: 11px; color: #94a3b8;">Rekrut podchodzący do egzaminu</label>
-              <select id="eo-cadet" class="mdt-select" style="margin-top: 4px;"></select>
-            </div>
-            <div>
-              <label style="font-size: 11px; color: #94a3b8;">Prowadzący egzamin</label>
-              <input type="text" id="eo-lead" class="mdt-input" style="margin-top: 4px;" value="[923] Oley Sasa" />
-            </div>
-            <div>
-              <label style="font-size: 11px; color: #94a3b8;">Asystujący</label>
-              <input type="text" id="eo-assist" class="mdt-input" style="margin-top: 4px;" value="[941] Gregory Solin" />
-            </div>
-            <button class="mdt-btn mdt-btn-blue" onclick="copyEoResult()">📋 Kopiuj wynik egzaminu</button>
-          </div>
-          <div class="mdt-card" style="padding: 0;">
-            <table class="mdt-table">
+          <div class="table-wrap">
+            <table class="tbl">
               <thead>
                 <tr>
-                  <th>Zadanie</th>
-                  <th style="text-align:center;">0</th>
-                  <th style="text-align:center;">1</th>
-                  <th style="text-align:center;">2</th>
-                  <th style="text-align:center;">3</th>
-                  <th style="text-align:center;">Wynik</th>
+                  <th style="width: 70px;">Nr</th>
+                  <th>Funkcjonariusz</th>
+                  <th>Tytuł</th>
+                  <th>Rodzaj</th>
+                  <th>Data sporządzenia</th>
+                  <th style="text-align: right;">Akcje</th>
                 </tr>
               </thead>
-              <tbody id="eo-tbody"></tbody>
-              <tfoot>
-                <tr style="background:#0f172a; font-weight:800;">
-                  <td style="color:#f87171;">Rezultat (min. 17 pkt)</td>
-                  <td colspan="4" style="text-align:center;" id="eo-status">NIEZDANE</td>
-                  <td style="text-align:center;" id="eo-sum">0 / 21</td>
-                </tr>
-              </tfoot>
+              <tbody id="reports-tbody"></tbody>
             </table>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- ========================================================= -->
-    <!-- 3. ZAKŁADKA: RAPORTY (#309 SZPITAL ST. FIACRE)            -->
-    <!-- ========================================================= -->
-    <section id="tab-raporty" class="hidden">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <div>
-          <h1 style="margin: 0; font-size: 20px; font-weight: 800; color: #fff;">Nowy raport służbowy (#309)</h1>
-          <p style="margin: 2px 0 0; font-size: 12px; color: #94a3b8;">Gotowy raport z akcji pod szpitalem St. Fiacre na El Burro Heights</p>
+        <!-- WIDOK 1B: CZYSTY FORMULARZ TWORZENIA / EDYCJI RAPORTU -->
+        <div id="reports-form-subview" class="hidden">
+          <div class="card-header" style="margin-bottom: 16px;">
+            <div>
+              <h1 style="margin: 0; font-size: 20px; font-weight: 800;" id="rep-form-header">Nowy raport</h1>
+              <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Tworzenie raportu służbowego</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-dark" onclick="copyCurrentReportForm()">📋 Kopiuj do schowka</button>
+              <button class="btn btn-dark" onclick="closeReportCreator()">‹ Powrót do raportów</button>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 2.2fr 1fr; gap: 16px;">
+            <!-- LEWA KOLUMNA FORMULARZA -->
+            <div>
+              <div class="card">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 14px;">
+                  <div>
+                    <label class="field-label">TYTUŁ RAPORTU</label>
+                    <input type="text" id="rf-title" class="inp" placeholder="Np. Podsumowanie akcji Sandy Shores" />
+                  </div>
+                  <div>
+                    <label class="field-label">RODZAJ RAPORTU</label>
+                    <select id="rf-type" class="sel">
+                      <option value="Podsumowanie akcji">Podsumowanie akcji</option>
+                      <option value="Patrolowy">Patrolowy</option>
+                      <option value="Pościgowy">Pościgowy</option>
+                      <option value="Operacyjny">Operacyjny</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                  <label class="field-label" style="margin: 0;">TREŚĆ RAPORTU</label>
+                  <div style="display: flex; gap: 6px;">
+                    <button type="button" class="btn btn-sm btn-dark" onclick="insertReportTemplate('akcja')">+ Szablon akcji</button>
+                    <button type="button" class="btn btn-sm btn-dark" onclick="insertReportTemplate('poscig')">+ Szablon 10-80</button>
+                    <button type="button" class="btn btn-sm btn-dark" onclick="document.getElementById('rf-body').value=''">Wyczyść</button>
+                  </div>
+                </div>
+                <textarea id="rf-body" rows="13" class="txt" placeholder="Opisz przebieg akcji, ustalenia, wnioski, użyte jednostki itd."></textarea>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="card" style="margin-bottom: 0;">
+                  <div class="card-header">
+                    <div>
+                      <div class="field-label" style="margin: 0;">OSOBY POWIĄZANE</div>
+                      <div style="font-size: 11px; color: var(--text-dim);">Bez wchodzenia w szczegóły kartoteki</div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-blue" onclick="openPickerModal('persons')">+</button>
+                  </div>
+                  <div id="rf-persons-box"></div>
+                </div>
+
+                <div class="card" style="margin-bottom: 0;">
+                  <div class="card-header">
+                    <div>
+                      <div class="field-label" style="margin: 0;">POJAZDY POWIĄZANE</div>
+                      <div style="font-size: 11px; color: var(--text-dim);">Opcjonalnie, np. pojazdy z akcji</div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-blue" onclick="openPickerModal('vehicles')">+</button>
+                  </div>
+                  <div id="rf-vehicles-box"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PRAWA KOLUMNA FORMULARZA -->
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <div class="card" style="margin-bottom: 0;">
+                <div class="field-label">AUTOR</div>
+                <div style="font-size: 15px; font-weight: 800; color: #fff;" id="rf-author">[923] Oley Sasa</div>
+              </div>
+
+              <div class="card" style="flex: 1; margin-bottom: 0;">
+                <div class="card-header">
+                  <div>
+                    <div class="field-label" style="margin: 0;">FUNKCJONARIUSZE</div>
+                    <div style="font-size: 11px; color: var(--text-dim);">Dodatkowe jednostki w raporcie</div>
+                  </div>
+                  <button type="button" class="btn btn-sm btn-blue" onclick="openPickerModal('officers')">+</button>
+                </div>
+                <div id="rf-officers-box"></div>
+              </div>
+
+              <button type="button" class="btn btn-blue" style="padding: 13px; font-size: 14px;" onclick="saveReportFromForm()">💾 Zapisz raport</button>
+            </div>
+          </div>
         </div>
-        <button class="mdt-btn mdt-btn-blue" onclick="copyMainReport()">📋 Kopiuj treść raportu</button>
-      </div>
-      <div class="mdt-card">
-        <div style="margin-bottom: 12px;">
-          <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">TYTUŁ RAPORTU</label>
-          <input type="text" id="r-title" class="mdt-input" style="margin-top: 4px;" value="Podsumowanie akcji – Alarm bombowy w St. Fiacre Hospital (El Burro Heights)" />
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 2. ZAKŁADKA: SZKOLENIA LSPD (SPECJALISTYCZNE - DLA KAŻDEGO)-->
+      <!-- ========================================================= -->
+      <section id="view-szkolenia" class="hidden">
+        <div class="card-header" style="margin-bottom: 16px;">
+          <div>
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">🎖️ Szkolenia Specjalistyczne LSPD (Dla wszystkich funkcjonariuszy)</h1>
+            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">RTO+HRO, NEGO, SV, PWC+APWC, ASU, MERRY, SEU — interaktywny egzaminator, stoper prób praktycznych, mapki oraz matryca licencji</p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-blue" id="btn-szk-exam" onclick="switchSzkMode('exam')">📖 Arkusz Egzaminacyjny</button>
+            <button class="btn btn-dark" id="btn-szk-matrix" onclick="switchSzkMode('matrix')">👮 Matryca Licencji Funkcjonariuszy</button>
+          </div>
         </div>
-        <div>
-          <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">TREŚĆ RAPORTU</label>
-          <textarea id="r-body" rows="16" class="mdt-textarea" style="margin-top: 4px; line-height: 1.55;">1. Dyspozycja i przybycie na miejsce zdarzenia:
-W dniu dzisiejszym około godziny 20:00 funkcjonariusz [923] Oley Sasa otrzymał zgłoszenie dotyczące prawdopodobnego podłożenia ładunku wybuchowego na terenie szpitala St. Fiacre Hospital na El Burro Heights. Funkcjonariusz [923] Oley Sasa wraz z funkcjonariuszką [141] Vivienne Walker niezwłocznie udali się na miejsce zdarzenia, współdziałając na kanale taktycznym LSPD Tac #3. W momencie przybycia pod budynek szpital nie był jeszcze ewakuowany, a przed wejściem panował chaos i znajdowała się liczna grupa obywateli oraz personel SAMS (m.in. [729] Jade Grayson oraz [711] Andrew Karabin).
 
-2. Rozpoznanie zagrożenia (Alarm Bombowy):
-Po przybyciu na miejsce funkcjonariusz [941] Gregory Solin oraz pracownica SAMS [729] Jade Grayson przekazali informację o lokalizacji ładunków wybuchowych wewnątrz budynku. Funkcjonariusz [923] Oley Sasa wraz z [941] Gregory Solin oraz [729] Jade Grayson weszli do holu głównego (West Reception) w celu weryfikacji zgłoszenia. Z bezpiecznej odległości potwierdzono obecność dwóch urządzeń wybuchowych umieszczonych pod krzesełkami poczekalni naprzeciwko recepcji.
+        <!-- PODWIDOK 2A: EGZAMINATOR SZKOLEŃ -->
+        <div id="szk-mode-exam">
+          <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <span style="font-weight: 700; color: var(--text-muted);">Szkolony funkcjonariusz:</span>
+              <select id="szk-officer-select" class="sel" style="width: 240px;"></select>
+            </div>
 
-3. Przejęcie dowodzenia (Supervisor), wezwanie wsparcia i zabezpieczenie terenu:
-Funkcjonariusz [923] Oley Sasa natychmiast zarządził ewakuację osób przebywających wewnątrz budynku, nadał komunikat na centrali (/d 10-21 alarm bombowy TAC 3 potwierdzone) i przejął rolę Supervisora (SV) akcji. Funkcjonariusz [923] Oley Sasa czterokrotnie wzywał wsparcie dodatkowych jednostek (raz na kanale dyspozytorni oraz trzykrotnie przez Dispatch jako 10-0), na co zareagowały zaledwie dwie dodatkowe osoby (łącznie na miejscu działało początkowo 5 funkcjonariuszy). Odgrodzono główne wejście barierkami, wyznaczono [141] Vivienne Walker oraz [941] Gregory Solin do zabezpieczenia tylnego wejścia od strony garażu/SOR-u oraz wycofano personel i cywilów za kordon przy ulicy.
+            <!-- WBUDOWANY STOPER EGZAMINACYJNY (DO ASU 0:55s, HRO 5m, RTO 10m) -->
+            <div style="display: flex; align-items: center; gap: 8px; background: var(--bg-input); padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border);">
+              <span style="font-size: 11px; color: var(--text-dim); font-weight: 700;">STOPER PRÓBY:</span>
+              <span id="trial-stopwatch-val" style="font-family: monospace; font-size: 16px; font-weight: 800; color: #38bdf8;">00:00.0</span>
+              <button class="btn btn-sm btn-green" id="trial-sw-btn" onclick="toggleTrialStopwatch()">▶ Start</button>
+              <button class="btn btn-sm btn-dark" onclick="resetTrialStopwatch()">Reset</button>
+            </div>
 
-4. Działania saperskie i neutralizacja ładunków:
-Ze względu na brak dostępnego zespołu Bomb Squad oraz SWAT, do neutralizacji wykorzystano obecnych na miejscu dwóch ochotników w kombinezonach saperskich EOD (deklarujących posiadanie licencji saperskiej). Proces rozbrajania był transmitowany na żywo w aplikacji Instapic. Po wyniesieniu ładunków w kartonowym pudle przetransportowano je na helipad, skąd policyjny śmigłowiec ([73] Chris Angel oraz [70] Matt Dick) wywiózł je nad ocean i zatopił w morzu.
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-green" onclick="assignCourseLicenseToSelected()">✅ Zapisz i nadaj licencję</button>
+              <button class="btn btn-blue" onclick="copyCourseProtocol()">📋 Kopiuj protokół</button>
+            </div>
+          </div>
 
-5. Pościg i ujęcie sprawców zamachu (Działania [27] John Cagville):
-Równolegle funkcjonariusz [27] John Cagville wraz z innymi jednostkami prowadził 40-minutowy pościg za sprawcami zamachu zidentyfikowanymi przez personel medyczny. Pościg zakończył się w morzu ujęciem dwóch osób (głównego sprawcy, który nie stanowi już zagrożenia, oraz osoby pomagającej w ucieczce). Po zatopieniu ładunków szpital został ponownie otwarty, a jednostki powróciły na MRPD.</textarea>
+          <!-- Pasek 7 kursów -->
+          <div id="szk-courses-bar" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;"></div>
+
+          <!-- Render wybranego kursu -->
+          <div id="szk-course-body"></div>
         </div>
-      </div>
-    </section>
 
-    <!-- ========================================================= -->
-    <!-- 4. ZAKŁADKA: SPRAWY / TARYFIKATOR                         -->
-    <!-- ========================================================= -->
-    <section id="tab-sprawy" class="hidden">
-      <h1 style="margin: 0 0 14px; font-size: 20px; font-weight: 800;">⚖️ Taryfikator LSPD</h1>
-      <div class="mdt-card">
-        <p style="margin: 0; font-size: 13px; color: #94a3b8;">Moduł kalkulatora wyroków i mandatów LSPD.</p>
-      </div>
-    </section>
+        <!-- PODWIDOK 2B: MATRYCA LICENCJI -->
+        <div id="szk-mode-matrix" class="hidden">
+          <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <input type="text" id="matrix-search-inp" class="inp" style="max-width: 320px;" placeholder="🔍 Szukaj funkcjonariusza..." oninput="renderLicenseMatrix()" />
+            <span style="font-size: 12px; color: var(--text-muted);">Kliknij wybraną plakietkę szkolenia przy funkcjonariuszu, aby nadać lub odebrać uprawnienie.</span>
+          </div>
+          <div class="table-wrap">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th>Odznaka</th>
+                  <th>Imię i nazwisko</th>
+                  <th>Stopień</th>
+                  <th>Uprawnienia (RTO+HRO, NEGO, SV, PWC+APWC, ASU, MERRY, SEU)</th>
+                  <th>Ostatnia zmiana</th>
+                </tr>
+              </thead>
+              <tbody id="matrix-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
 
-    <!-- ========================================================= -->
-    <!-- 5. ZAKŁADKA: FUNKCJONARIUSZE                              -->
-    <!-- ========================================================= -->
-    <section id="tab-funkcjonariusze" class="hidden">
-      <h1 style="margin: 0 0 14px; font-size: 20px; font-weight: 800;">👮 Funkcjonariusze LSPD</h1>
-      <div class="mdt-card">
-        <p style="margin: 0; font-size: 13px; color: #94a3b8;">Aby zarządzać licencjami funkcjonariuszy (`RTO+HRO`, `NEGO`, `SV`, `PWC+APWC`, `ASU`, `MERRY`, `SEU`), przejdź do zakładki <strong>🎖️ Szkolenia LSPD -> Wykaz Licencji Funkcjonariuszy</strong>.</p>
+      <!-- ========================================================= -->
+      <!-- 3. ZAKŁADKA: STREFA KADETA (FTO - TYLKO DLA REKRUTÓW)     -->
+      <!-- ========================================================= -->
+      <section id="view-kadet" class="hidden">
+        <div class="card-header" style="margin-bottom: 16px;">
+          <div>
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">🎓 Strefa Kadeta — Panel FTO</h1>
+            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Licznik czasu w patrolu (START/STOP), indywidualne arkusze FTO, raporty pozytywne/negatywne oraz Egzamin Oficerski</p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-blue" id="fto-tab-list" onclick="switchFtoView('list')">📋 Lista Kadetów</button>
+            <button class="btn btn-dark" id="fto-tab-exam" onclick="switchFtoView('exam')">🎯 Egzamin Oficerski (Min. 17 pkt)</button>
+          </div>
+        </div>
+
+        <!-- 3A: LISTA KADETÓW -->
+        <div id="fto-sub-list">
+          <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <input type="text" id="fto-search" class="inp" style="max-width: 280px;" placeholder="🔍 Szukaj kadeta lub opiekuna FTO..." oninput="renderCadets()" />
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <input type="text" id="new-c-badge" class="inp" style="width: 85px;" placeholder="Odznaka" />
+              <input type="text" id="new-c-name" class="inp" style="width: 175px;" placeholder="Imię i nazwisko kadeta" />
+              <input type="text" id="new-c-fto" class="inp" style="width: 145px;" value="Oley Sasa" placeholder="Opiekun FTO" />
+              <button class="btn btn-green" onclick="createCadet()">+ Dodaj kadeta</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th>Odznaka</th>
+                  <th>Kadet</th>
+                  <th>FTO</th>
+                  <th>Czas w patrolu (START / STOP)</th>
+                  <th>Arkusz FTO</th>
+                  <th>Data dołączenia</th>
+                  <th style="text-align: center;">Pozytywny</th>
+                  <th>Raport negatywny</th>
+                  <th style="text-align: right;">Akcje</th>
+                </tr>
+              </thead>
+              <tbody id="fto-cadets-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 3B: INDYWIDUALNY ARKUSZ KADETA -->
+        <div id="fto-sub-sheet" class="hidden">
+          <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <div>
+              <span class="pill pill-blue" id="cs-badge-pill">#165</span>
+              <h2 style="margin: 6px 0 2px; font-size: 21px; font-weight: 800;" id="cs-title-name">Paulo Cortez</h2>
+              <div style="font-size: 12px; color: var(--text-muted);" id="cs-subtitle">Opiekun FTO: Oley Sasa • Data dołączenia: 03.10.2026</div>
+            </div>
+
+            <!-- STOPER PATROLOWY KADETA -->
+            <div style="display: flex; align-items: center; gap: 8px; background: var(--bg-input); padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border);">
+              <div style="margin-right: 6px;">
+                <div style="font-size: 10px; color: var(--text-dim); font-weight: 700;">SUMA CZASU W PATROLU</div>
+                <div id="cs-live-timer" style="font-family: monospace; font-size: 18px; font-weight: 800; color: #38bdf8;">00h 00m 00s</div>
+              </div>
+              <button class="btn btn-green" id="cs-startstop-btn" onclick="toggleCadetStopwatch(currentCadetId)">▶ START</button>
+              <button class="btn btn-sm btn-dark" onclick="adjustCadetTime(15)">+15m</button>
+              <button class="btn btn-sm btn-dark" onclick="adjustCadetTime(-15)">-15m</button>
+              <button class="btn btn-sm btn-dark" onclick="resetCadetTime()">0h</button>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-blue" onclick="signAllCadetBasic()">✍ Podpisz wszystkie (SASA)</button>
+              <button class="btn btn-green" onclick="promoteCadetToOfficer()">🎖️ Awansuj na Oficera</button>
+              <button class="btn btn-dark" onclick="copyCadetSheet()">📋 Kopiuj</button>
+              <button class="btn btn-dark" onclick="switchFtoView('list')">‹ Wróć</button>
+            </div>
+          </div>
+
+          <div class="table-wrap" style="margin-bottom: 16px;">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th style="width: 180px;">Szkolenie Podstawowe</th>
+                  <th style="width: 90px; text-align: center;">Potrafi</th>
+                  <th>Notatki FTO</th>
+                  <th style="width: 150px;">Podpis FTO</th>
+                  <th style="width: 130px;">Szybki podpis</th>
+                </tr>
+              </thead>
+              <tbody id="cs-modules-body"></tbody>
+            </table>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="card" style="margin-bottom: 0;">
+              <div class="card-header">
+                <span style="font-weight: 800; color: #4ade80;">✅ Pozytywny raport / Pochwały</span>
+                <label style="cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 6px;">
+                  <input type="checkbox" id="cs-pos-check" onchange="saveCadetRemarks()" /> Zaliczony pozytywny raport
+                </label>
+              </div>
+              <textarea id="cs-pos-notes" rows="3" class="txt" placeholder="Wpisz pochwały z patrolu..." oninput="saveCadetRemarks()"></textarea>
+            </div>
+
+            <div class="card" style="margin-bottom: 0;">
+              <div class="card-header">
+                <span style="font-weight: 800; color: #f87171;">⚠️ Raport negatywny / Błędy do poprawy</span>
+                <select id="cs-neg-select" class="sel" style="width: 155px; padding: 4px 8px;" onchange="saveCadetRemarks()">
+                  <option value="BRAK">BRAK</option>
+                  <option value="1 NEGATYWNY">1 NEGATYWNY</option>
+                  <option value="2 NEGATYWNE">2 NEGATYWNE</option>
+                  <option value="DO POPRAWY">DO POPRAWY</option>
+                  <option value="ZAWIESZONY">ZAWIESZONY</option>
+                </select>
+              </div>
+              <textarea id="cs-neg-notes" rows="3" class="txt" placeholder="Wpisz co kadet musi poprawić..." oninput="saveCadetRemarks()"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3C: EGZAMIN OFICERSKI -->
+        <div id="fto-sub-exam" class="hidden">
+          <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 16px;">
+            <div class="card" style="display: flex; flex-direction: column; gap: 12px;">
+              <h3 style="margin: 0; font-size: 15px; color: #60a5fa;">Protokół Egzaminu Oficerskiego</h3>
+              <div>
+                <label class="field-label">Rekrut podchodzący do egzaminu</label>
+                <select id="exam-cadet-sel" class="sel"></select>
+              </div>
+              <div>
+                <label class="field-label">Funkcjonariusz prowadzący egzamin</label>
+                <input type="text" id="exam-lead-inp" class="inp" value="[923] Oley Sasa" />
+              </div>
+              <div>
+                <label class="field-label">Funkcjonariusz asystujący egzamin</label>
+                <input type="text" id="exam-assist-inp" class="inp" value="[941] Gregory Solin" />
+              </div>
+              <button class="btn btn-blue" onclick="copyFinalExamProtocol()">📋 Kopiuj protokół egzaminu</button>
+            </div>
+
+            <div class="table-wrap">
+              <table class="tbl">
+                <thead>
+                  <tr>
+                    <th>Zadania / Punktacja</th>
+                    <th style="text-align: center;">0 pkt</th>
+                    <th style="text-align: center;">1 pkt</th>
+                    <th style="text-align: center;">2 pkt</th>
+                    <th style="text-align: center;">3 pkt</th>
+                    <th style="text-align: center;">Wynik</th>
+                  </tr>
+                </thead>
+                <tbody id="exam-rows-tbody"></tbody>
+                <tfoot>
+                  <tr style="background: #0d121d; font-weight: 800;">
+                    <td style="color: #f87171;">Rezultat (min. 17 pkt)</td>
+                    <td colspan="4" style="text-align: center; font-size: 14px;" id="exam-verdict-cell">NIEZDANE</td>
+                    <td style="text-align: center; font-size: 15px;" id="exam-total-cell">0 / 21</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 4. ZAKŁADKA: SPRAWY I TARYFIKATOR                         -->
+      <!-- ========================================================= -->
+      <section id="view-sprawy" class="hidden">
+        <div class="card-header" style="margin-bottom: 16px;">
+          <div>
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Nowa sprawa i Taryfikator LSPD</h1>
+            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Kalkulator wyroków, grzywien oraz rejestr spraw karnych</p>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px;">
+          <div class="card">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+              <div>
+                <label class="field-label">FUNKCJONARIUSZ PROWADZĄCY</label>
+                <input type="text" class="inp" value="[923] Oley Sasa" readonly />
+              </div>
+              <div>
+                <label class="field-label">OBYWATEL (ZATRZYMANY)</label>
+                <input type="text" id="case-citizen" class="inp" placeholder="Wpisz imię i nazwisko zatrzymanego..." />
+              </div>
+            </div>
+            <div style="margin-bottom: 12px;">
+              <label class="field-label">OPIS SPRAWY</label>
+              <textarea id="case-desc" rows="4" class="txt" placeholder="Opisz pełny przebieg interwencji, zabezpieczone dowody, zachowanie obywatela..."></textarea>
+            </div>
+            <div class="card-header" style="margin-top: 14px;">
+              <span class="field-label" style="margin: 0;">PRZESTĘPSTWA (ZARZUTY Z TARYFIKATORA)</span>
+              <button class="btn btn-sm btn-dark" onclick="clearCaseCharges()">Wyczyść zarzuty</button>
+            </div>
+            <div id="case-selected-list" style="margin-bottom: 12px;"></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: 280px; overflow-y: auto; padding-right: 4px;" id="penal-grid-box"></div>
+          </div>
+
+          <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div class="field-label">PODSUMOWANIE WYROKU</div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                <div style="background: var(--bg-input); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+                  <div style="font-size: 10px; color: var(--text-dim); font-weight: 700;">PROPONOWANA ODSIADKA</div>
+                  <div id="case-sum-months" style="font-size: 22px; font-weight: 800; color: #60a5fa; margin-top: 4px;">0 mies.</div>
+                </div>
+                <div style="background: var(--bg-input); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+                  <div style="font-size: 10px; color: var(--text-dim); font-weight: 700;">PROPONOWANA GRZYWNA</div>
+                  <div id="case-sum-fine" style="font-size: 22px; font-weight: 800; color: #4ade80; margin-top: 4px;">$0</div>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-blue" style="width: 100%; padding: 12px;" onclick="copyCaseSummary()">📋 Kopiuj wyrok i zarzuty do schowka</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 5. ZAKŁADKA: PATROLE (PWC / APWC / JEDNOSTKI)             -->
+      <!-- ========================================================= -->
+      <section id="view-patrole" class="hidden">
+        <div class="card-header" style="margin-bottom: 16px;">
+          <div>
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Patrole</h1>
+            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Zarządzanie patrolami, PWC, APWC i składami jednostek (Adam, Edward, Lincoln, Eagle, Mary, Task)</p>
+          </div>
+          <button class="btn btn-blue" onclick="createNewPatrolUnit()">+ Utwórz patrol</button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+          <div class="card" style="margin-bottom: 0; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span class="pill pill-red">PWC (00)</span>
+              <div style="font-size: 16px; font-weight: 800; margin-top: 6px;" id="pwc-holder-name">[80] Henry Scott</div>
+              <div style="font-size: 11px; color: var(--text-dim);">Patrol Watch Commander</div>
+            </div>
+            <button class="btn btn-red" onclick="takeOverRole('PWC')">Przejmij</button>
+          </div>
+
+          <div class="card" style="margin-bottom: 0; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span class="pill pill-amber">APWC</span>
+              <div style="font-size: 16px; font-weight: 800; margin-top: 6px;" id="apwc-holder-name">Brak przypisanego</div>
+              <div style="font-size: 11px; color: var(--text-dim);">Assistant Patrol Watch Commander</div>
+            </div>
+            <button class="btn btn-amber" onclick="takeOverRole('APWC')">Przejmij</button>
+          </div>
+        </div>
+
+        <div id="patrols-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;"></div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 6. ZAKŁADKA: DYSPOZYTORNIA                                -->
+      <!-- ========================================================= -->
+      <section id="view-dyspozytornia" class="hidden">
+        <h1 style="margin: 0 0 14px; font-size: 20px; font-weight: 800;">Dyspozytornia — Funkcjonariusze na zmianie</h1>
+        <div class="table-wrap">
+          <table class="tbl">
+            <thead>
+              <tr><th>Odznaka</th><th>Imię i nazwisko</th><th>Stopień</th><th>Jednostka</th><th>Kanał radiowy</th><th>Status</th></tr>
+            </thead>
+            <tbody id="dispatch-officers-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 7. ZAKŁADKA: FUNKCJONARIUSZE (BAZA)                       -->
+      <!-- ========================================================= -->
+      <section id="view-funkcjonariusze" class="hidden">
+        <div class="card-header" style="margin-bottom: 16px;">
+          <div>
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Funkcjonariusze LSPD</h1>
+            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Pełny wykaz funkcjonariuszy zsynchronizowany z raportami, patrolami i szkoleniami</p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="add-off-badge" class="inp" style="width: 85px;" placeholder="Odznaka" />
+            <input type="text" id="add-off-name" class="inp" style="width: 170px;" placeholder="Imię i nazwisko" />
+            <input type="text" id="add-off-rank" class="inp" style="width: 130px;" value="Officer I" placeholder="Stopień" />
+            <button class="btn btn-green" onclick="createOfficerInDB()">+ Dodaj funkcjonariusza</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="tbl">
+            <thead>
+              <tr><th>Odznaka</th><th>Imię i nazwisko</th><th>Stopień</th><th>Posiadane licencje</th><th>Status</th><th style="text-align:right;">Akcje</th></tr>
+            </thead>
+            <tbody id="all-officers-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- MODAL WYBORU DO RAPORTU (+ FUNKCJONARIUSZE / OSOBY / POJAZDY) -->
+<div id="picker-modal" class="modal-backdrop hidden">
+  <div class="modal-window">
+    <div class="modal-head">
+      <span id="picker-modal-title">Dodaj do raportu</span>
+      <button class="btn btn-sm btn-dark" onclick="closePickerModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="text" id="picker-search-inp" class="inp" placeholder="🔍 Wyszukaj lub wpisz własną pozycję..." oninput="renderPickerItems()" style="margin-bottom: 10px;" />
+      <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+        <input type="text" id="picker-custom-inp" class="inp" placeholder="Lub wpisz ręcznie (np. [729] Jade Grayson / Czarne BMW)..." />
+        <button class="btn btn-green" onclick="addCustomPickerItem()">+ Dodaj</button>
       </div>
-    </section>
-  </main>
+      <div id="picker-list-box" style="display: flex; flex-direction: column; gap: 6px;"></div>
+    </div>
+  </div>
 </div>
 
 <script>
   /* =========================================================
-     1. BAZA 7 SZKOLEŃ SPECJALISTYCZNYCH (DLA WSZYSTKICH FP)
+     STAN GLOBALNY I BAZA DANYCH (LOCALSTORAGE)
      ========================================================= */
-  const LICENSE_KEYS = ["RTO+HRO", "NEGO", "SV", "PWC+APWC", "ASU", "MERRY", "SEU"];
+  const LICENSES = ["RTO+HRO", "NEGO", "SV", "PWC+APWC", "ASU", "MERRY", "SEU"];
+  const FTO_BASIC = ["Code 6", "FTS", "10-80", "10-80 Pieszo", "Status 7", "TCCC", "Kompendium"];
 
-  const COURSES_DB = {
+  const INITIAL_OFFICERS = [
+    { badge: "923", name: "Oley Sasa", rank: "Sergeant I", channel: "LSPD Tac #1", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "ASU": true, "MERRY": true, "SEU": true }, updated: "Szkoleniowiec" },
+    { badge: "27", name: "John Cagville", rank: "Captain I", channel: "LSPD Tac #1", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "SEU": true }, updated: "High Command" },
+    { badge: "3", name: "Jerry Black", rank: "Dep. Chief of Police", channel: "LSPD Tac #1", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "ASU": true, "SEU": true }, updated: "High Command" },
+    { badge: "80", name: "Henry Scott", rank: "Sergeant I", channel: "Dyspozytornia LSPD", status: "Na służbie", licenses: { "RTO+HRO": true, "SV": true, "PWC+APWC": true }, updated: "-" },
+    { badge: "941", name: "Gregory Solin", rank: "Officer II", channel: "LSPD Tac #2", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true }, updated: "SASA" },
+    { badge: "141", name: "Vivienne Walker", rank: "Officer I", channel: "LSPD Tac #2", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true }, updated: "SASA" },
+    { badge: "155", name: "David White", rank: "Officer I", channel: "Dyspozytornia LSPD", status: "Na służbie", licenses: { "RTO+HRO": true }, updated: "-" },
+    { badge: "115", name: "Iris Hernandez", rank: "Officer I", channel: "LSPD Tac #1", status: "Na służbie", licenses: {}, updated: "-" },
+    { badge: "73", name: "Chris Angel", rank: "Sergeant I", channel: "LSPD Tac #3", status: "Poza służbą", licenses: { "RTO+HRO": true, "ASU": true, "SV": true }, updated: "-" },
+    { badge: "70", name: "Matt Dick", rank: "Sergeant I", channel: "LSPD Tac #3", status: "Poza służbą", licenses: { "RTO+HRO": true, "ASU": true }, updated: "-" }
+  ];
+
+  const INITIAL_REPORTS = [
+    {
+      id: 308,
+      author: "[923] Oley Sasa",
+      title: "Podsumowanie akcji - Kod Czerwony w Paleto",
+      type: "Podsumowanie akcji",
+      date: "15.10.2026 02:39",
+      body: "Jednostki LSPD zareagowały na wprowadzony Kod Czerwony w rejonie Paleto Bay. Przeprowadzono zabezpieczenie terenu oraz neutralizację zagrożenia.",
+      officers: ["[27] John Cagville", "[941] Gregory Solin"],
+      persons: [],
+      vehicles: []
+    },
+    {
+      id: 307,
+      author: "[61] Pablo Taylor",
+      title: "Podsumowanie akcji ( Fleeca )",
+      type: "Podsumowanie akcji",
+      date: "14.10.2026 20:46",
+      body: "Zabezpieczenie napadu na bank Fleeca, przeprowadzenie negocjacji oraz pościg 10-80 za sprawcami.",
+      officers: ["[923] Oley Sasa"],
+      persons: [],
+      vehicles: []
+    },
+    {
+      id: 306,
+      author: "[941] Gregory Solin",
+      title: "PWC 14.10.2026",
+      type: "Podsumowanie akcji",
+      date: "14.10.2026 17:53",
+      body: "Raport z pełnienia dyżuru Patrol Watch Commandera (00). Rozdysponowano patrole ADAM oraz EDWARD.",
+      officers: [],
+      persons: [],
+      vehicles: []
+    }
+  ];
+
+  const INITIAL_CADETS = [
+    {
+      id: "165", badge: "165", name: "Paulo Cortez", fto: "Oley Sasa", joinDate: "03.10.2026",
+      sec: 0, running: false, ts: null, pos: true, posNotes: "Dobrze skoordynowany pościg pojazdem jak i pieszo.", neg: "BRAK", negNotes: "",
+      modules: {
+        "Code 6": { ok: true, note: "Poprawił błędy", sign: "SASA" },
+        "FTS": { ok: true, note: "", sign: "SASA" },
+        "10-80": { ok: true, note: "Dobrze skoordynowany pościg pojazdem jak i pieszo", sign: "Sasa" },
+        "10-80 Pieszo": { ok: true, note: "(wyżej)", sign: "SASA" },
+        "Status 7": { ok: true, note: "dobrze wykonane zatrzymanie na celach", sign: "Smith" },
+        "TCCC": { ok: true, note: "", sign: "Walker" },
+        "Kompendium": { ok: true, note: "błędy poprawione", sign: "Solin" }
+      }
+    },
+    { id: "166", badge: "166", name: "Cayden Potato", fto: "Oley Sasa", joinDate: "10.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
+    { id: "168", badge: "168", name: "Troy Stardust", fto: "Gregory Solin", joinDate: "03.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
+    { id: "169", badge: "169", name: "Mark Kochones", fto: "Hailey Sinclair", joinDate: "03.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
+    { id: "170", badge: "170", name: "Mackey Sztonowski", fto: "John Cagvill", joinDate: "03.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
+    { id: "171", badge: "171", name: "Evan Myers", fto: "Mike Smith", joinDate: "03.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
+    { id: "174", badge: "174", name: "Tony Wood", fto: "Amy Rover", joinDate: "03.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
+    { id: "176", badge: "176", name: "Bobby Bennett", fto: "Zoya Sierra", joinDate: "03.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
+    { id: "178", badge: "178", name: "Iris Bloodworth", fto: "Jacob Galahad", joinDate: "04.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
+    { id: "182", badge: "182", name: "Joe Harrah", fto: "Zoya Sierra", joinDate: "05.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
+    { id: "183", badge: "183", name: "Nathan Luke", fto: "Jack Onfire", joinDate: "05.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
+    { id: "199", badge: "199", name: "Túlio Navarro Figueiredo", fto: "Oley Sasa", joinDate: "11.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} }
+  ];
+
+  const INITIAL_PATROLS = [
+    { id: 1, type: "Adam", members: ["[3] Jerry Black", "[115] Iris Hernandez"] },
+    { id: 2, type: "Adam", members: ["[80] Henry Scott"] },
+    { id: 3, type: "Adam", members: ["[155] David White"] }
+  ];
+
+  let db = {
+    loggedOfficer: "[923] Oley Sasa",
+    pwc: "[80] Henry Scott",
+    apwc: "Brak przypisanego",
+    officers: [],
+    reports: [],
+    cadets: [],
+    patrols: []
+  };
+
+  function loadDatabase() {
+    try {
+      const raw = localStorage.getItem("lspd_mdt_complete_v4");
+      if (raw) {
+        db = JSON.parse(raw);
+      } else {
+        db.officers = JSON.parse(JSON.stringify(INITIAL_OFFICERS));
+        db.reports = JSON.parse(JSON.stringify(INITIAL_REPORTS));
+        db.cadets = JSON.parse(JSON.stringify(INITIAL_CADETS));
+        db.patrols = JSON.parse(JSON.stringify(INITIAL_PATROLS));
+      }
+    } catch (e) {
+      db.officers = JSON.parse(JSON.stringify(INITIAL_OFFICERS));
+      db.reports = JSON.parse(JSON.stringify(INITIAL_REPORTS));
+      db.cadets = JSON.parse(JSON.stringify(INITIAL_CADETS));
+      db.patrols = JSON.parse(JSON.stringify(INITIAL_PATROLS));
+    }
+    db.cadets.forEach(c => {
+      if (!c.modules) c.modules = {};
+      FTO_BASIC.forEach(m => {
+        if (!c.modules[m]) c.modules[m] = { ok: false, note: "", sign: "" };
+      });
+    });
+    updateSidebarCounters();
+  }
+
+  function saveDatabase() {
+    try {
+      localStorage.setItem("lspd_mdt_complete_v4", JSON.stringify(db));
+    } catch (e) {}
+    updateSidebarCounters();
+  }
+
+  function updateSidebarCounters() {
+    document.getElementById("cnt-duty").textContent = db.officers.filter(o => o.status === "Na służbie").length;
+    document.getElementById("cnt-reports").textContent = db.reports.length;
+    document.getElementById("cnt-officers").textContent = db.officers.length;
+    document.getElementById("cnt-cadets").textContent = db.cadets.length;
+    document.getElementById("cnt-patrols").textContent = db.patrols.length;
+    document.getElementById("logged-officer-display").textContent = db.loggedOfficer;
+  }
+
+  /* =========================================================
+     1. SYSTEM RAPORTÓW (LISTA + CZYSTY FORMULARZ + MODALE +)
+     ========================================================= */
+  let editingReportId = null;
+  let draftOfficers = [];
+  let draftPersons = [];
+  let draftVehicles = [];
+  let currentPickerType = "officers";
+
+  function renderReportsList() {
+    const tbody = document.getElementById("reports-tbody");
+    if (!tbody) return;
+    const q = (document.getElementById("report-search-inp")?.value || "").toLowerCase();
+    tbody.innerHTML = "";
+
+    const filtered = db.reports.filter(r =>
+      ("#" + r.id).includes(q) ||
+      r.title.toLowerCase().includes(q) ||
+      r.author.toLowerCase().includes(q)
+    );
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-dim); padding: 24px;">Brak raportów spełniających kryteria. Kliknij „+ Nowy raport”, aby utworzyć pierwszy dokument.</td></tr>`;
+      return;
+    }
+
+    filtered.forEach(r => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td style="font-weight:800; color:#60a5fa;">#${r.id}</td>
+        <td style="font-weight:700;">${r.author}</td>
+        <td style="color:#fff; font-weight:600;">${r.title}</td>
+        <td><span class="pill pill-amber">${r.type}</span></td>
+        <td style="color:var(--text-muted);">${r.date}</td>
+        <td style="text-align:right;">
+          <button class="btn btn-sm btn-dark" onclick="openEditReport(${r.id})">👁 Podgląd / Edytuj</button>
+          <button class="btn btn-sm btn-red" onclick="deleteReport(${r.id})">Usuń</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Otwiera w 100% CZYSTY formularz nowego raportu
+  function openCleanReportCreator() {
+    editingReportId = null;
+    document.getElementById("rep-form-header").textContent = "Nowy raport";
+    document.getElementById("rf-title").value = "";
+    document.getElementById("rf-type").value = "Podsumowanie akcji";
+    document.getElementById("rf-body").value = "";
+    document.getElementById("rf-author").textContent = db.loggedOfficer;
+    draftOfficers = [];
+    draftPersons = [];
+    draftVehicles = [];
+    renderDraftChips();
+
+    document.getElementById("reports-list-subview").classList.add("hidden");
+    document.getElementById("reports-form-subview").classList.remove("hidden");
+  }
+
+  function openEditReport(repId) {
+    const r = db.reports.find(x => x.id === repId);
+    if (!r) return;
+    editingReportId = r.id;
+    document.getElementById("rep-form-header").textContent = "Edycja raportu #" + r.id;
+    document.getElementById("rf-title").value = r.title;
+    document.getElementById("rf-type").value = r.type;
+    document.getElementById("rf-body").value = r.body;
+    document.getElementById("rf-author").textContent = r.author;
+    draftOfficers = [...(r.officers || [])];
+    draftPersons = [...(r.persons || [])];
+    draftVehicles = [...(r.vehicles || [])];
+    renderDraftChips();
+
+    document.getElementById("reports-list-subview").classList.add("hidden");
+    document.getElementById("reports-form-subview").classList.remove("hidden");
+  }
+
+  function closeReportCreator() {
+    document.getElementById("reports-form-subview").classList.add("hidden");
+    document.getElementById("reports-list-subview").classList.remove("hidden");
+    renderReportsList();
+  }
+
+  function renderDraftChips() {
+    const renderBox = (boxId, arr, typeKey, emptyMsg) => {
+      const el = document.getElementById(boxId);
+      if (!arr.length) {
+        el.innerHTML = `<div style="padding:18px; text-align:center; color:var(--text-dim); border:1px dashed var(--border); border-radius:8px; font-size:12px;">${emptyMsg}</div>`;
+        return;
+      }
+      el.innerHTML = arr.map((item, idx) => `
+        <div class="chip-item">
+          <span>${item}</span>
+          <button class="chip-remove" onclick="removeDraftChip('${typeKey}', ${idx})">×</button>
+        </div>
+      `).join("");
+    };
+    renderBox("rf-officers-box", draftOfficers, "officers", "Brak dodatkowych funkcjonariuszy");
+    renderBox("rf-persons-box", draftPersons, "persons", "Brak powiązanych osób");
+    renderBox("rf-vehicles-box", draftVehicles, "vehicles", "Brak powiązanych pojazdów");
+  }
+
+  function removeDraftChip(typeKey, idx) {
+    if (typeKey === "officers") draftOfficers.splice(idx, 1);
+    if (typeKey === "persons") draftPersons.splice(idx, 1);
+    if (typeKey === "vehicles") draftVehicles.splice(idx, 1);
+    renderDraftChips();
+  }
+
+  function openPickerModal(typeKey) {
+    currentPickerType = typeKey;
+    const titles = {
+      officers: "Dodaj funkcjonariusza do raportu",
+      persons: "Dodaj osobę powiązaną do raportu",
+      vehicles: "Dodaj pojazd powiązany do raportu"
+    };
+    document.getElementById("picker-modal-title").textContent = titles[typeKey];
+    document.getElementById("picker-search-inp").value = "";
+    document.getElementById("picker-custom-inp").value = "";
+    document.getElementById("picker-modal").classList.remove("hidden");
+    renderPickerItems();
+  }
+
+  function closePickerModal() {
+    document.getElementById("picker-modal").classList.add("hidden");
+  }
+
+  function renderPickerItems() {
+    const q = (document.getElementById("picker-search-inp").value || "").toLowerCase();
+    const box = document.getElementById("picker-list-box");
+    let pool = [];
+    if (currentPickerType === "officers") {
+      pool = db.officers.map(o => `[${o.badge}] ${o.name} (${o.rank})`);
+    } else if (currentPickerType === "persons") {
+      pool = ["[729] Jade Grayson (SAMS)", "[711] Andrew Karabin (SAMS)", "Albert Abdul (Obywatel)", "Lucas Fafikazi (Obywatel)", "Jason Parker (Obywatel)"];
+    } else {
+      pool = ["Bravado Charger LSPD", "BMW M3 Patrol Unit", "Karin Sultan RS", "Benefactor Panto", "Vapid Uranus"];
+    }
+
+    box.innerHTML = pool
+      .filter(x => x.toLowerCase().includes(q))
+      .map(item => `
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--bg-input); border:1px solid var(--border); border-radius:8px; cursor:pointer;" onclick="selectItemFromPicker('${item.replace(/'/g, "\\'")}')">
+          <span style="font-weight:600;">${item}</span>
+          <span class="pill pill-blue">+ Dodaj</span>
+        </div>
+      `).join("");
+  }
+
+  function selectItemFromPicker(val) {
+    if (currentPickerType === "officers" && !draftOfficers.includes(val)) draftOfficers.push(val);
+    if (currentPickerType === "persons" && !draftPersons.includes(val)) draftPersons.push(val);
+    if (currentPickerType === "vehicles" && !draftVehicles.includes(val)) draftVehicles.push(val);
+    renderDraftChips();
+    closePickerModal();
+  }
+
+  function addCustomPickerItem() {
+    const val = document.getElementById("picker-custom-inp").value.trim();
+    if (!val) return;
+    selectItemFromPicker(val);
+  }
+
+  function insertReportTemplate(tpl) {
+    const area = document.getElementById("rf-body");
+    if (tpl === "akcja") {
+      area.value = `1. Dyspozycja i przybycie na miejsce zdarzenia:\n\n2. Przebieg działań i podjęte czynności:\n\n3. Zabezpieczone dowody / Zatrzymani:\n\n4. Podsumowanie i wnioski końcowe:`;
+    } else if (tpl === "poscig") {
+      area.value = `1. Powód inicjacji pościgu (10-80) i lokalizacja początkowa:\n\n2. Pojazd uciekający oraz skład jednostek (U1, U2, U3):\n\n3. Przebieg trasy i użyte środki przymusu (PIT / Kolczatki):\n\n4. Zakończenie pościgu i status zatrzymanych:`;
+    }
+  }
+
+  function saveReportFromForm() {
+    const title = document.getElementById("rf-title").value.trim();
+    const type = document.getElementById("rf-type").value;
+    const body = document.getElementById("rf-body").value.trim();
+    if (!title || !body) {
+      toast("⚠️ Uzupełnij tytuł oraz treść raportu przed zapisaniem!");
+      return;
+    }
+
+    const now = new Date();
+    const dateStr = now.toLocaleDateString("pl-PL") + " " + now.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
+
+    if (editingReportId) {
+      const r = db.reports.find(x => x.id === editingReportId);
+      if (r) {
+        r.title = title;
+        r.type = type;
+        r.body = body;
+        r.officers = [...draftOfficers];
+        r.persons = [...draftPersons];
+        r.vehicles = [...draftVehicles];
+      }
+      toast("✅ Zaktualizowano raport #" + editingReportId);
+    } else {
+      const nextId = db.reports.length ? Math.max(...db.reports.map(x => x.id)) + 1 : 309;
+      db.reports.unshift({
+        id: nextId,
+        author: db.loggedOfficer,
+        title,
+        type,
+        date: dateStr,
+        body,
+        officers: [...draftOfficers],
+        persons: [...draftPersons],
+        vehicles: [...draftVehicles]
+      });
+      toast("✅ Zapisano nowy raport #" + nextId);
+    }
+    saveDatabase();
+    closeReportCreator();
+  }
+
+  function deleteReport(id) {
+    db.reports = db.reports.filter(x => x.id !== id);
+    saveDatabase();
+    renderReportsList();
+    toast("🗑️ Usunięto raport #" + id);
+  }
+
+  function copyCurrentReportForm() {
+    const title = document.getElementById("rf-title").value || "(Brak tytułu)";
+    const type = document.getElementById("rf-type").value;
+    const body = document.getElementById("rf-body").value;
+    const txt = `TYTUŁ RAPORTU: ${title}\nRODZAJ: ${type}\nAUTOR: ${db.loggedOfficer}\nFUNKCJONARIUSZE: ${draftOfficers.join(", ") || "Brak"}\nOSOBY POWIĄZANE: ${draftPersons.join(", ") || "Brak"}\nPOJAZDY POWIĄZANE: ${draftVehicles.join(", ") || "Brak"}\n\nTREŚĆ RAPORTU:\n${body}`;
+    navigator.clipboard.writeText(txt);
+    toast("📋 Skopiowano raport do schowka!");
+  }
+
+  /* =========================================================
+     2. SZKOLENIA SPECJALISTYCZNE (DLA WSZYSTKICH FP)
+     ========================================================= */
+  const COURSES_DATA = {
     "RTO+HRO": {
       name: "RTO + HRO",
-      desc: "Etap 1 Teoretyczny (min. 15/16 pkt) + Etap 2 (Pościg HRO) + Etap 3 (Pościg RTO)",
-      passScore: 15,
-      maxScore: 16,
+      reqTheory: 15, maxTheory: 16,
       questions: [
         { q: "1. Jaki jest nadrzędny cel prowadzenia radiówki podczas pościgu?", pts: 1, a: "Głównym celem jest zapewnienie świadomości sytuacyjnej innym jednostkom. Radiówka musi być prowadzona tak, aby odcięte od pościgu radiowozy mogły na podstawie samych komunikatów głosowych precyzyjnie wyliczyć trasę uciekiniera, zastawić blokadę (kolczatki) lub odciąć mu drogę ucieczki bez patrzenia na mapę." },
         { q: "2. Dlaczego jednostka prowadząca pościg nie powinna zajmować się raportowaniem na radiu?", pts: 2, a: "Ponieważ prowadzenie pościgu z dużą prędkością w mieście wymaga pełnego skupienia i koordynacji wzrokowo-ruchowej. Próba jednoczesnej orientacji (nazw ulic) i mówienia drastycznie zwiększa ryzyko wypadku i utraty uciekiniera. Odpowiedzialność tę przejmuje pasażer lub kierowca U2." },
-        { q: "3. Jakie informacje i w jakiej kolejności należy podać w „komunikacie inicjującym” (zaraz po rozpoczęciu pościgu)?", pts: 1, a: "Komunikat musi zawierać: 1) Kod pościgu i identyfikator, 2) Opis pojazdu, 3) Aktualną lokalizację i kierunek, 4) Powód pościgu (np. nr odznaki rozpoczynam 10-80 za czarnym mercedesem, nasze 10-20 to kwadraciak, powód nie zatrzymanie się do kontroli)." },
+        { q: "3. Jakie informacje i w jakiej kolejności należy podać w „komunikacie inicjującym” (zaraz po rozpoczęciu pościgu)?", pts: 1, a: "1) Kod pościgu i identyfikator, 2) Opis pojazdu, 3) Aktualną lokalizację i kierunek, 4) Powód pościgu (np. nr odznaki rozpoczynam 10-80 za czarnym mercedesem, nasze 10-20 to kwadraciak, powód nie zatrzymanie się do kontroli)." },
         { q: "4. Co oznacza pojęcie objaśnienie progresywne i jak należy je stosować?", pts: 3, a: "To technika podawania komunikatów z wyprzedzeniem. Zamiast mówić, gdzie pojazd znajduje się w danej sekundzie, operator radiowy mówi, do jakiego punktu lub skrzyżowania pojazd się zbliża (np. „Poruszamy się na zachód przez Vinewood Boulevard, zbliżamy się do skrzyżowania z Alta Street”). Daje to jednostkom z tyłu czas na reakcję." },
-        { q: "5. Jak należy prawidłowo określać kierunki jazdy w pościgu, gdy nazwy ulic szybko się zmieniają?", pts: 2, a: "Należy bezwzględnie używać kierunków świata (North, South, East, West), zamiast zwrotów „w lewo / w prawo”. Zwroty relatywne są nieczytelne dla jednostek jadących z innych stron miasta, natomiast kierunki geograficzne są uniwersalne dla każdego." },
-        { q: "6. Jak operator radiowy powinien reagować na wjazd uciekiniera w tzw. „strefę martwą” (np. tunele metra, kanały burzowe, podziemia)?", pts: 1, a: "Operator musi natychmiast podać ostatni punkt wejścia, kierunek i zasygnalizować zmianę środowiska (np. „Uciekinier wjechał do tunelu metra na Alta Street, kierunek dół, przechodzimy w pościg podziemny”). Informuje to resztę jednostek, że ikona na mapie może zniknąć lub pokazywać błędną pozycję GPS." },
-        { q: "7. W jaki sposób należy raportować zmiany prędkości i stylu jazdy uciekiniera?", pts: 2, a: "Prędkość raportuje się opisowo (np. prędkość autostradowa / średnia miejska / niska), a styl jazdy poprzez wychwytywanie anomalii (np. „uciekinier ścina krawężniki”, „jedzie chodnikiem”, „gasi światła w pojeździe”). Pozwala to (RO) na bieżąco oceniać poziom zagrożenia." },
-        { q: "8. Czym różni się „Cisza radiowa” od „Komunikacji ograniczonej”?", pts: 1, a: "Cisza radiowa to całkowity zakaz nadawania dla wszystkich (stosowany np. podczas cichego podejścia pod zakładników). Komunikacja ograniczonej (lub przeniesienie pościgu na kanał TAC) to sytuacja, w której z danego pasma korzystają wyłącznie jednostki zaangażowane w pościg, a reszta frakcji przenosi swoje codzienne rozmowy na inny kanał." },
-        { q: "9. Jaka jest rola i obowiązek jednostek dołączających do pościgu w kwestii komunikacji?", pts: 2, a: "Jednostki dołączające (jako 3., 4. czy 5. radiowóz) mają obowiązek zachować absolutną ciszę. Ich jedynym komunikatem może być krótkie zgłoszenie wejścia w szyk (np. U4 przejmuje U3 po 10-50). Zabronione jest komentowanie jazdy uciekiniera czy powtarzanie informacji, które podał już operator." },
-        { q: "10. Kiedy i w jaki sposób operator radiowy powinien ogłosić status „10-13” w trakcie pościgu?", pts: 1, a: "Taki komunikat nadaje się tylko wtedy, gdy życie funkcjonariusza jest bezpośrednio zagrożone (np. radiowóz eksplodował, oficer został ciężko postrzelony lub potrącony). Komunikat musi być rzucony natychmiast, z użyciem frazy „10-0 10-5 na 10-13 na [Lokalizacja]!”, co automatycznie zmniejsza priorytet pościgu i kieruje większą liczbę FP na ratowanie życia policjanta." }
+        { q: "5. Jak należy prawidłowo określać kierunki jazdy w pościgu, gdy nazwy ulic szybko się zmieniają?", pts: 2, a: "Należy bezwzględnie używać kierunków świata (North, South, East, West), zamiast zwrotów „w lewo / w prawo”. Kierunki geograficzne są uniwersalne dla każdego." },
+        { q: "6. Jak operator radiowy powinien reagować na wjazd uciekiniera w tzw. „strefę martwą” (tunele metra, kanały burzowe, podziemia)?", pts: 1, a: "Operator musi natychmiast podać ostatni punkt wejścia, kierunek i zasygnalizować zmianę środowiska (np. „Uciekinier wjechał do tunelu metra na Alta Street, kierunek dół, przechodzimy w pościg podziemny”)." },
+        { q: "7. W jaki sposób należy raportować zmiany prędkości i stylu jazdy uciekiniera?", pts: 2, a: "Prędkość raportuje się opisowo (np. prędkość autostradowa / średnia miejska / niska), a styl jazdy poprzez wychwytywanie anomalii (np. „uciekinier ścina krawężniki”, „jedzie chodnikiem”, „gasi światła”)." },
+        { q: "8. Czym różni się „Cisza radiowa” od „Komunikacji ograniczonej”?", pts: 1, a: "Cisza radiowa to całkowity zakaz nadawania dla wszystkich. Komunikacja ograniczona (lub kanał TAC) to sytuacja, w której z pasma korzystają wyłącznie jednostki zaangażowane w pościg." },
+        { q: "9. Jaka jest rola i obowiązek jednostek dołączających do pościgu w kwestii komunikacji?", pts: 2, a: "Jednostki dołączające (3., 4., 5. radiowóz) mają obowiązek zachować absolutną ciszę. Jedynym komunikatem może być krótkie zgłoszenie wejścia w szyk (np. U4 przejmuje U3 po 10-50)." },
+        { q: "10. Kiedy i w jaki sposób operator radiowy powinien ogłosić status „10-13” w trakcie pościgu?", pts: 1, a: "Tylko gdy życie funkcjonariusza jest bezpośrednio zagrożone (radiowóz eksplodował, oficer ciężko postrzelony lub potrącony). Komunikat: „10-0 10-5 na 10-13 na [Lokalizacja]!”." }
       ],
-      stages: [
-        "Etap 2 (Pościg HRO): Szkoleniowiec zasiada za kierownicą radiowozu i rozpoczyna ucieczkę, szkolony ma za zadanie utrzymywać pościg helikopterem za szkoleniowcem dając pełną radiówkę — w przypadku jej braku próba automatycznie jest niezdana. Szkolony musi utrzymać 2 pościgi po przynajmniej 5 minut. (Próby: 2)",
-        "Etap 3 (Pościg RTO): Szkolony pojazdem ADAM ma za zadanie ścigać szkoleniowca uciekającego pojazdem ADAM z pełną radiówką przez 10 minut. (Próby: 2)"
+      practical: [
+        "Etap 2 (Pościg HRO): Utrzymanie 2 pościgów helikopterem za radiowozem szkoleniowca po min. 5 minut z pełną radiówką (Próby: 2)",
+        "Etap 3 (Pościg RTO): Ściganie pojazdem ADAM uciekającego pojazdu ADAM z pełną radiówką przez 10 minut (Próby: 2)"
       ]
     },
     "NEGO": {
       name: "NEGO (Negocjator)",
-      desc: "Etap 1 Teoretyczny (min. 15/17 pkt) + Etap 2 Praktyczny (min. 3/4 pkt)",
-      passScore: 15,
-      maxScore: 17,
+      reqTheory: 15, maxTheory: 17,
       questions: [
         { q: "1. Czy negocjator musi się przedstawić?", pts: 1, a: "Tak, przedstawia się na początku interakcji z napastnikami." },
         { q: "2. Co jest najważniejsze dla negocjatora?", pts: 1, a: "Bezpieczeństwo i życie własne oraz zakładników." },
         { q: "3. Kiedy możemy podejść do negocjacji?", pts: 1, a: "Po zgłoszeniu na radiu „Podchodzę do negocjacji” i upewnieniu się, że ktoś nas ubezpiecza." },
-        { q: "4. Jakie są obowiązki negocjatora?", pts: 3, a: "1) Ustalenie liczby napastników i zakładników, ich stanu, posiadanej broni oraz rejestracja pojazdu napastników.\n2) Samodzielne korygowanie i akceptowanie żądań napastników.\n3) Poinformowanie SV o ostatecznych ustaleniach na koniec negocjacji." },
+        { q: "4. Jakie są obowiązki negocjatora?", pts: 3, a: "1) Ustalenie liczby napastników i zakładników, ich stanu, broni oraz rejestracji pojazdu. 2) Samodzielne korygowanie i akceptowanie żądań. 3) Poinformowanie SV o ostatecznych ustaleniach." },
         { q: "5. Ile żądań realizujemy za jednego zakładnika?", pts: 1, a: "Nie stosujemy systemu „jedynkowego” — każde negocjacje rozpatrujemy osobno." },
-        { q: "6. Co negocjator musi zrobić na początku rozmowy (między przedstawieniem a uzyskaniem informacji)?", pts: 1, a: "Zapytać, co się dzieje. Skłaniać napastników do oddania zakładników i poddania się." },
+        { q: "6. Co negocjator musi zrobić na początku rozmowy?", pts: 1, a: "Zapytać, co się dzieje. Skłaniać napastników do oddania zakładników i poddania się." },
         { q: "7. Co negocjator musi się dowiedzieć o zakładnikach i jak?", pts: 1, a: "Czy potrzebują czegoś (jedzenia, picia, pomocy medycznej) i czy czują się dobrze. Najlepiej pytać osobiście." },
         { q: "8. Czy negocjator może kłamać?", pts: 1, a: "Nie. Wyjątek: próby samobójcze." },
-        { q: "9. Czy negocjator może rozmawiać sam na sam z osobą uzbrojoną?", pts: 1, a: "Nie. Może rozmawiać sam na sam tylko z osobą próbującą popełnić samobójstwo (bez możliwości skrzywdzenia negocjatora)." },
+        { q: "9. Czy negocjator może rozmawiać sam na sam z osobą uzbrojoną?", pts: 1, a: "Nie. Tylko z osobą próbującą popełnić samobójstwo (bez możliwości skrzywdzenia negocjatora)." },
         { q: "10. W jaki sposób zwracasz się do napastnika?", pts: 1, a: "Z szacunkiem, bez względu na jego czyny." },
-        { q: "11. Jaki powinien być głos i mowa ciała negocjatora?", pts: 1, a: "Spokojny, opanowany, pewny siebie. Szczególnie podczas prób samobójczych." },
+        { q: "11. Jaki powinien być głos i mowa ciała negocjatora?", pts: 1, a: "Spokojny, opanowany, pewny siebie." },
         { q: "12. Ile jest ostrzeżeń negocjatorskich?", pts: 1, a: "3." },
-        { q: "13. Kto nakłada ostrzeżenia negocjatorskich?", pts: 1, a: "Supervisor (SV) nakłada ostrzeżenia negocjatorskie — Negocjator przekazuje tę informację napastnikom." },
+        { q: "13. Kto nakłada ostrzeżenia negocjatorskie?", pts: 1, a: "Supervisor (SV) nakłada — Negocjator przekazuje informację napastnikom." },
         { q: "14. Za co można nałożyć ostrzeżenia negocjatorskie? (2 przykłady)", pts: 1, a: "Np. zmiana żądań po ich przyklepaniu, groźby wobec zakładników, obraza negocjatora, brak stosowania się do poleceń FP." },
         { q: "15. Co się dzieje po przekroczeniu liczby ostrzeżeń?", pts: 1, a: "SV podejmuje decyzję o zerwaniu negocjacji i informuje o tym PWC." }
       ],
-      stages: [
-        "Etap 2 Praktyczny (Symulacja negocjacji na napadzie — wymagane 3/4 pkt):",
-        "• Przestrzeganie zasad negocjacji (0/1 pkt)",
-        "• Reakcja na zmieniające się warunki (0/1 pkt)",
-        "• Ogólne zachowanie podczas negocjacji (0/1 pkt)",
-        "• Profesjonalne podejście (0/1 pkt)"
+      practical: [
+        "Kryterium 1: Przestrzeganie zasad negocjacji (1 pkt)",
+        "Kryterium 2: Reakcja na zmieniające się warunki (1 pkt)",
+        "Kryterium 3: Ogólne zachowanie podczas negocjacji (1 pkt)",
+        "Kryterium 4: Profesjonalne podejście (1 pkt) — Wymagane min. 3/4 pkt"
       ]
     },
     "SV": {
       name: "SV (Supervisor)",
-      desc: "Etap 1 Teoretyczny (min. 12/14 pkt) + Etap 2 Praktyczny (min. 4/5 pkt)",
-      passScore: 12,
-      maxScore: 14,
+      reqTheory: 12, maxTheory: 14,
       questions: [
         { q: "1. Kto przejmuje rolę SV na każdej akcji?", pts: 1, a: "Osoba wyznaczona przez PWC, lub osoba ze szkoleniem, lub osoba z najwyższym stopniem na radiu." },
         { q: "2. Czy jako SV możesz zezwolić negocjatorowi na wejście do placówki?", pts: 1, a: "Nie." },
         { q: "3. Czy będziesz prowadził dwa pościgi na jednym radiu?", pts: 1, a: "Nie." },
-        { q: "4. Czy wydasz polecenie zerwania negocjacji, gdy zobaczysz na miejscu zdarzenia szansę na powodzenie odbicia zakładnika?", pts: 2, a: "Nie, chyba że nałożone byłyby 3 ostrzeżenia negocjatorskie." },
-        { q: "5. Jeśli do dyspozycji masz 2 jednostki SEU, 3 jednostki LINCOLN oraz 2 jednostki ADAM, jak rozstawisz unity pościgu wiedząc, że gonić należy jeden pojazd typu offroad oraz jeden typu sportowego?", pts: 2, a: "Akceptujemy wg uznania oczywiście tak, aby miało to jakikolwiek sens." },
-        { q: "6. Na konwoju masz 4 zatrzymanych — jakie i ile unitów przygotujesz? (Rozmieszczenie osób i zatrzymanych do danego unitu)", pts: 2, a: "Akceptujemy wg uznania oczywiście tak, aby miało to jakikolwiek sens." },
-        { q: "7. Jakie są obowiązki SV?", pts: 5, a: "1) Wyznaczanie negocjatora, osoby ubezpieczającej i innych FP.\n2) Ustalanie jednostek pościgowych i ich rozmieszczenia.\n3) Nadawanie kodów pościgowych.\n4) Uzupełnianie dispatcha w trakcie akcji.\n5) Przydzielenie funkcjonariuszy do zabezpieczenia terenu wokół akcji." }
+        { q: "4. Czy wydasz polecenie zerwania negocjacji, gdy zobaczysz szansę na powodzenie odbicia zakładnika?", pts: 2, a: "Nie, chyba że nałożone byłyby 3 ostrzeżenia negocjatorskie." },
+        { q: "5. Dysponujesz 2x SEU, 3x LINCOLN, 2x ADAM — jak rozstawisz unity wiedząc, że ucieka offroad i sport?", pts: 2, a: "Akceptujemy wg uznania, aby miało to logiczny sens taktyczny." },
+        { q: "6. Na konwoju masz 4 zatrzymanych — jakie i ile unitów przygotujesz?", pts: 2, a: "Akceptujemy wg uznania, aby miało to sens i zachowało bezpieczeństwo konwoju." },
+        { q: "7. Jakie są obowiązki SV? (5 punktów)", pts: 5, a: "1) Wyznaczanie negocjatora, ubezpieczającego i innych FP. 2) Ustalanie jednostek pościgowych i ich rozmieszczenia. 3) Nadawanie kodów pościgowych. 4) Uzupełnianie dispatcha. 5) Przydzielenie FP do zabezpieczenia terenu." }
       ],
-      stages: [
-        "Etap 2 Praktyczny (Symulacja kierowania akcją jako SV — wymagane 4/5 pkt):",
-        "• Przestrzeganie zasad działania SV (0/1 pkt)",
-        "• Przystanie na odpowiednie żądania (0/1 pkt)",
-        "• Rozmieszczenie jednostek na miejscu zdarzenia (0/1 pkt)",
-        "• Profesjonalne podejście do akcji (0/1 pkt)",
-        "• Obserwacja terenu i reagowanie na sytuację zarówno w placówce jak i wkoło (0/1 pkt)"
+      practical: [
+        "Kryterium 1: Przestrzeganie zasad działania SV (1 pkt)",
+        "Kryterium 2: Przystanie na odpowiednie żądania (1 pkt)",
+        "Kryterium 3: Rozmieszczenie jednostek na miejscu zdarzenia (1 pkt)",
+        "Kryterium 4: Profesjonalne podejście do akcji (1 pkt)",
+        "Kryterium 5: Obserwacja terenu i reagowanie na sytuację w placówce i wkoło (1 pkt) — Wymagane min. 4/5 pkt"
       ]
     },
     "PWC+APWC": {
       name: "PWC + APWC",
-      desc: "Etap 1 Teoretyczny (min. 15/17 pkt) + Etap 2 Praktyczny Code 8 (min. 3/4 pkt)",
-      passScore: 15,
-      maxScore: 17,
+      reqTheory: 15, maxTheory: 17,
       questions: [
         { q: "1. Czym się zajmują PWC / APWC?", pts: 1, a: "Dowodzenie jednostkami patrolowymi, wyznaczanie supervisorów akcji, ustalanie jednostek, pilnowanie porządku na radiu, dbanie o Dispatch." },
         { q: "2. Jaki numer ma PWC?", pts: 1, a: "00" },
@@ -601,153 +1373,103 @@ Równolegle funkcjonariusz [27] John Cagville wraz z innymi jednostkami prowadzi
         { q: "11. Czy PWC/APWC musi zostać poinformowany o zerwaniu negocjacji?", pts: 1, a: "Tak." },
         { q: "12. Co zrobić, gdy wszystkie jednostki są na jednej akcji, a pojawia się kolejna?", pts: 2, a: "W zależności od pilności – cofnąć część jednostek i przekierować na drugą akcję." }
       ],
-      stages: [
-        "Etap 2 Praktyczny (Organizacja nieoficjalnego Code 8 — wymagane 3/4 pkt):",
-        "• Poprawne przejęcie roli PWC oraz ogłoszenie Code 8 (0/1 pkt)",
-        "• Poprawny przebieg Code 8 (0/1 pkt)",
-        "• Poprawne rozdysponowanie jednostek (0/1 pkt)",
-        "• Zlecenie ewentualnej zmiany kodu z racji na sytuację na mieście (0/1 pkt)"
+      practical: [
+        "Code 8 (1/4): Poprawne przejęcie roli PWC oraz ogłoszenie Code 8 (1 pkt)",
+        "Code 8 (2/4): Poprawny przebieg Code 8 (1 pkt)",
+        "Code 8 (3/4): Poprawne rozdysponowanie jednostek (1 pkt)",
+        "Code 8 (4/4): Zlecenie ewentualnej zmiany kodu z racji na sytuację na mieście (1 pkt) — Wymagane min. 3/4 pkt"
       ]
     },
     "ASU": {
       name: "ASU (Helikopter)",
-      desc: "4 Etapy praktyczne + Mapka przelotu pod mostami (< 0:55s)",
-      passScore: 0,
-      maxScore: 0,
-      mapType: "ASU",
+      reqTheory: 0, maxTheory: 0, map: "ASU",
       questions: [],
-      stages: [
-        "Etap 1 (Free flight): Szkolony lata helikopterem przez ok. 3 minuty w trakcie których ma wystartować, opanować maszynę w locie, a na koniec wylądować na helipadzie. Przed i w trakcie lotu FTO tłumaczy zasady pilotowania śmigłowca oraz omawia kiedy jednostka może zostać użyta.",
-        "Etap 2 (Lądowania): Szkoleniowiec pokazuje szkolonemu 3 miejsca w których ten musi wylądować (trudne do lądowania, ale jednocześnie możliwe).",
-        "Etap 3 (Pościg): Szkoleniowiec zasiada za kierownicą radiowozu i rozpoczyna ucieczkę, szkolony ma za zadanie utrzymywać pościg helikopterem za szkoleniowcem dając pełną radiówkę — w przypadku jej braku próba automatycznie jest niezdana. Szkolony musi utrzymać 2 pościgi po przynajmniej 5 minut. (Próby: 3)",
-        "Etap 4 (Mapka): Szkolony ma za zadanie przelecieć wyznaczoną trasę pod mostami (mapka) w czasie poniżej 0:55 sekundy."
+      practical: [
+        "Etap 1 (Free flight): Lot ok. 3 minuty — start, opanowanie maszyny, lądowanie na helipadzie + omówienie zasad użycia ASU.",
+        "Etap 2 (Lądowania): Bezpieczne wylądowanie w 3 trudnych miejscach wskazanych przez szkoleniowca.",
+        "Etap 3 (Pościg): Utrzymanie 2 pościgów helikopterem za radiowozem po min. 5 minut z pełną radiówką (Próby: 3).",
+        "Etap 4 (Mapka): Przelot wyznaczoną trasą pod mostami w kanale LS poniżej 0:55 sekundy."
       ]
     },
     "MERRY": {
       name: "MERRY (Motocykle)",
-      desc: "4 Etapy pościgowe na motocyklu policyjnym",
-      passScore: 0,
-      maxScore: 0,
+      reqTheory: 0, maxTheory: 0,
       questions: [],
-      stages: [
-        "Etap 1 (Pościg motor-motor): Szkolony ma za zadanie ścigać motorem szkoleniowca na motocyklu przez 5 minut. Szkolony ma utrzymać pościg 2 razy. (Próby: 2)",
-        "Etap 2 (Pościg motor-auto ADAM): Szkolony ma za zadanie ścigać motorem szkoleniowca w radiowozie ADAM przez 5 minut. Szkolony ma utrzymać pościg 2 razy. (Próby: 2)",
-        "Etap 3 (Pościg motor-auto EDWARD): Szkolony ma za zadanie ścigać motorem szkoleniowca w radiowozie EDWARD przez 3 minuty. (Próby: 3)",
-        "Etap 4 (Pościg do destylacji): Szkolony ma za zadanie ścigać motorem szkoleniowca na motocyklu do czasu pełnej destylacji motoru szkoleniowca. (Próby: 1)"
+      practical: [
+        "Etap 1 (Pościg motor-motor): Ściganie motorem motocykla szkoleniowca przez 5 minut — utrzymać 2 razy (Próby: 2).",
+        "Etap 2 (Pościg motor-auto ADAM): Ściganie motorem radiowozu ADAM przez 5 minut — utrzymać 2 razy (Próby: 2).",
+        "Etap 3 (Pościg motor-auto EDWARD): Ściganie motorem radiowozu EDWARD przez 3 minuty (Próby: 3).",
+        "Etap 4 (Pościg do destylacji): Ściganie motorem motocykla szkoleniowca do pełnej destylacji (Próby: 1)."
       ]
     },
     "SEU": {
       name: "SEU (Pościgowe)",
-      desc: "4 Etapy praktyczne + Mapka Drive Skills Test",
-      passScore: 0,
-      maxScore: 0,
-      mapType: "SEU",
+      reqTheory: 0, maxTheory: 0, map: "SEU",
       questions: [],
-      stages: [
-        "Etap 1 (Drive skills test): Szkolony ma za zadanie przejechać wyznaczoną trasę (mapka) z najwyższą możliwą prędkością bez uderzenia w ani jeden inny pojazd lub infrastrukturę drogową. Tempo przejazdu ocenia szkoleniowiec. (Próby: 2)",
-        "Etap 2 (Pościg SEU-SEU): Szkolony pojazdem EDWARD ma za zadanie ścigać szkoleniowca uciekającego pojazdem EDWARD przez 5 minut. Szkolony ma utrzymać pościg 2 razy. (Próby: 2)",
-        "Etap 3 (Pościg do destylacji): Szkolony pojazdem EDWARD ma za zadanie ścigać szkoleniowca uciekającego pojazdem EDWARD do pełnej destylacji pojazdu szkoleniowca. (Próby: 1)",
-        "Etap 4 (Pościg z radiówką): Szkolony pojazdem EDWARD ma za zadanie ścigać szkoleniowca uciekającego pojazdem EDWARD z pełną radiówką przez 10 minut. (Próby: 2)"
+      practical: [
+        "Etap 1 (Drive skills test - Mapka): Przejazd wyznaczoną trasą z najwyższą prędkością bez uderzenia w żaden pojazd ani infrastrukturę (Próby: 2).",
+        "Etap 2 (Pościg SEU-SEU): Ściganie pojazdem EDWARD uciekającego pojazdu EDWARD przez 5 minut — utrzymać 2 razy (Próby: 2).",
+        "Etap 3 (Pościg do destylacji): Ściganie pojazdem EDWARD uciekającego pojazdu EDWARD do pełnej destylacji (Próby: 1).",
+        "Etap 4 (Pościg z radiówką): Ściganie pojazdem EDWARD uciekającego pojazdu EDWARD z pełną radiówką przez 10 minut (Próby: 2)."
       ]
     }
   };
 
-  /* =========================================================
-     2. BAZA FUNKCJONARIUSZY LSPD (DO LICENCJI SPECJALISTYCZNYCH)
-     ========================================================= */
-  const DEFAULT_OFFICERS = [
-    { badge: "923", name: "Oley Sasa", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "ASU": true, "MERRY": true, "SEU": true }, note: "Szkoleniowiec / AIAD" },
-    { badge: "941", name: "Gregory Solin", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "SEU": true }, note: "Nadano: SASA" },
-    { badge: "141", name: "Vivienne Walker", licenses: { "RTO+HRO": true, "NEGO": true }, note: "Nadano: SASA" },
-    { badge: "27", name: "John Cagville", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "SEU": true }, note: "High Command" },
-    { badge: "73", name: "Chris Angel", licenses: { "RTO+HRO": true, "ASU": true, "SV": true }, note: "Pilot ASU" },
-    { badge: "70", name: "Matt Dick", licenses: { "RTO+HRO": true, "ASU": true }, note: "Pilot ASU" },
-    { badge: "74", name: "James Williams", licenses: { "RTO+HRO": true, "SV": true }, note: "-" },
-    { badge: "131", name: "Valerie Raver", licenses: { "RTO+HRO": true }, note: "-" },
-    { badge: "130", name: "Santiago Bachillo", licenses: { "RTO+HRO": true }, note: "-" },
-    { badge: "149", name: "Tony Evans", licenses: {}, note: "-" },
-    { badge: "118", name: "Kavin Turner", licenses: { "RTO+HRO": true }, note: "-" }
-  ];
+  let selectedCourse = "RTO+HRO";
+  let courseScores = {};
 
-  let officersRoster = [];
-  let activeCourseKey = "RTO+HRO";
-  let courseQPoints = {};
-
-  function loadOfficersRoster() {
-    try {
-      const saved = localStorage.getItem("lspd_officers_licenses_v1");
-      officersRoster = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(DEFAULT_OFFICERS));
-    } catch (e) {
-      officersRoster = JSON.parse(JSON.stringify(DEFAULT_OFFICERS));
+  function renderSzkCourseBar() {
+    const sel = document.getElementById("szk-officer-select");
+    if (sel) {
+      sel.innerHTML = db.officers.map(o => `<option value="${o.badge}">[${o.badge}] ${o.name} (${o.rank})</option>`).join("");
     }
+    const bar = document.getElementById("szk-courses-bar");
+    bar.innerHTML = LICENSES.map(k => `
+      <button class="btn ${k === selectedCourse ? 'btn-blue' : 'btn-dark'}" onclick="selectSzkCourse('${k}')">${COURSES_DATA[k].name}</button>
+    `).join("");
+    renderSzkCourseBody();
   }
 
-  function saveOfficersRoster() {
-    try {
-      localStorage.setItem("lspd_officers_licenses_v1", JSON.stringify(officersRoster));
-    } catch (e) {}
+  function selectSzkCourse(k) {
+    selectedCourse = k;
+    renderSzkCourseBar();
   }
 
-  function renderTraineeSelect() {
-    const sel = document.getElementById("trainee-officer-select");
-    if (!sel) return;
-    sel.innerHTML = officersRoster.map(o => `<option value="${o.badge}">[${o.badge}] ${o.name}</option>`).join("");
-  }
+  function renderSzkCourseBody() {
+    const c = COURSES_DATA[selectedCourse];
+    const container = document.getElementById("szk-course-body");
+    if (!courseScores[selectedCourse]) courseScores[selectedCourse] = {};
+    const sc = courseScores[selectedCourse];
 
-  function renderCourseButtons() {
-    const bar = document.getElementById("course-buttons-bar");
-    if (!bar) return;
-    bar.innerHTML = LICENSE_KEYS.map(key => {
-      const c = COURSES_DB[key];
-      const isAct = key === activeCourseKey;
-      return `<button class="mdt-btn ${isAct ? 'mdt-btn-blue' : 'mdt-btn-gray'}" onclick="selectCourse('${key}')">${c.name}</button>`;
-    }).join("");
-    renderActiveCourseView();
-  }
-
-  function selectCourse(key) {
-    activeCourseKey = key;
-    renderCourseButtons();
-  }
-
-  function renderActiveCourseView() {
-    const box = document.getElementById("course-details-container");
-    const course = COURSES_DB[activeCourseKey];
-    if (!box || !course) return;
-
-    if (!courseQPoints[activeCourseKey]) courseQPoints[activeCourseKey] = {};
-    const ptsMap = courseQPoints[activeCourseKey];
-
-    let sumPts = 0;
-    course.questions.forEach((q, i) => { sumPts += (ptsMap[i] || 0); });
+    let sum = 0;
+    c.questions.forEach((q, idx) => { sum += (sc[idx] || 0); });
 
     let theoryHTML = "";
-    if (course.questions.length > 0) {
-      const passed = sumPts >= course.passScore;
+    if (c.questions.length > 0) {
+      const pass = sum >= c.reqTheory;
       theoryHTML = `
-        <div class="mdt-card">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
-            <div>
-              <h3 style="margin:0; font-size:16px; color:#fff;">Etap 1: Pytania Teoretyczne — ${course.name}</h3>
-              <div style="font-size:12px; color:#94a3b8;">${course.desc}</div>
-            </div>
-            <div style="padding:8px 14px; border-radius:8px; background:#090d14; border:1px solid ${passed ? '#10b981' : '#ef4444'}; font-weight:800; color:${passed ? '#4ade80' : '#f87171'};">
-              Łącznie: ${sumPts} / ${course.maxScore} pkt (Wymagane: ${course.passScore} pkt) — ${passed ? 'ZALICZONA TEORIA ✅' : 'NIEZALICZONA ❌'}
-            </div>
+        <div class="card">
+          <div class="card-header">
+            <h3 style="margin:0; font-size:15px;">Etap 1: Pytania Teoretyczne (${c.name})</h3>
+            <span class="pill ${pass ? 'pill-green' : 'pill-red'}" style="font-size:13px; padding:5px 12px;">
+              Wynik teorii: ${sum} / ${c.maxTheory} pkt (Wymagane: ${c.reqTheory} pkt) — ${pass ? 'ZALICZONA ✅' : 'NIEZALICZONA ❌'}
+            </span>
           </div>
-          ${course.questions.map((item, idx) => {
-            const cur = ptsMap[idx] || 0;
-            let btns = "";
+          ${c.questions.map((item, idx) => {
+            const cur = sc[idx] || 0;
+            let b = "";
             for (let p = 0; p <= item.pts; p++) {
-              btns += `<button class="mdt-btn ${cur === p ? 'mdt-btn-blue' : 'mdt-btn-gray'}" style="padding:4px 10px;" onclick="setCourseQuestionPts('${activeCourseKey}',${idx}, ${p})">${p} pkt</button>`;
+              b += `<button class="btn btn-sm ${cur === p ? 'btn-blue' : 'btn-dark'}" onclick="setCoursePts('${selectedCourse}', ${idx}, ${p})">${p} pkt</button>`;
             }
             return `
-              <div class="q-box">
+              <div style="background:var(--bg-input); border:1px solid var(--border); border-radius:8px; padding:12px; margin-bottom:8px;">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
-                  <div style="font-weight:700; color:#60a5fa; font-size:13.5px;">${item.q} <span style="color:#64748b;">(${item.pts} pkt)</span></div>
-                  <div style="display:flex; gap:4px; flex-shrink:0;">${btns}</div>
+                  <div style="font-weight:700; color:#60a5fa;">${item.q} <span style="color:var(--text-dim);">(${item.pts} pkt)</span></div>
+                  <div style="display:flex; gap:4px; flex-shrink:0;">${b}</div>
                 </div>
-                <div class="q-ans"><strong>Odp:</strong> ${item.a}</div>
+                <div style="margin-top:8px; padding:8px 10px; background:#111827; border-left:3px solid #3b82f6; border-radius:6px; color:#cbd5e1; font-size:12px;">
+                  <strong>Odpowiedź:</strong> ${item.a}
+                </div>
               </div>
             `;
           }).join("")}
@@ -756,280 +1478,215 @@ Równolegle funkcjonariusz [27] John Cagville wraz z innymi jednostkami prowadzi
     }
 
     let mapHTML = "";
-    if (course.mapType === "ASU") {
+    if (c.map === "ASU") {
       mapHTML = `
-        <div class="mdt-card">
-          <h3 style="margin:0 0 10px; font-size:15px; color:#38bdf8;">🗺️ Mapka ASU Etap 4 — Trasa przelotu pod mostami w kanale LS (Czas: &lt; 0:55 sekundy)</h3>
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:center;">
-            <div style="background:#090d14; border:1px solid #1e293b; border-radius:8px; padding:12px; text-align:center;">
-              <svg viewBox="0 0 300 220" style="width:100%; max-height:210px; background:#0d1520; border-radius:6px;">
-                <path d="M 175 20 Q 140 35 130 65 L 128 120 L 132 175 L 155 200" stroke="#ef4444" stroke-width="5" fill="none" stroke-linecap="round"/>
-                <circle cx="175" cy="20" r="6" fill="#22c55e"/>
-                <text x="185" y="24" fill="#4ade80" font-size="12" font-weight="bold">START (Mirror Park)</text>
-                <circle cx="155" cy="200" r="6" fill="#ef4444"/>
-                <text x="165" y="204" fill="#f87171" font-size="12" font-weight="bold">META (Port LS)</text>
-              </svg>
-            </div>
-            <div style="font-size:13px; color:#cbd5e1; line-height:1.6;">
-              <p style="margin:0 0 8px;"><strong>Przebieg trasy z mapki szkoleniowej ASU:</strong></p>
-              <div>1. <strong>START:</strong> Wlot do betonowego kanału burzowego na północny-wschód od Downtown (okolice Mirror Park / Vinewood).</div>
-              <div>2. <strong>TRASA:</strong> Lot na południe korytem kanału Los Santos pod wszystkimi mostami drogowymi i kolejowymi.</div>
-              <div>3. <strong>META:</strong> Wylot kanału do basenu portowego <em>Port of South Los Santos</em> (wymagany czas poniżej <strong>0:55s</strong>).</div>
-            </div>
+        <div class="card">
+          <h3 style="margin:0 0 8px; font-size:15px; color:#38bdf8;">🗺️ Mapka ASU Etap 4 — Kanał Los Santos (Wymagany czas: poniżej 0:55s)</h3>
+          <div style="font-size:12.5px; color:#cbd5e1; background:var(--bg-input); padding:12px; border-radius:8px; border:1px solid var(--border);">
+            <strong>START:</strong> Wlot kanału przy Mirror Park / East Vinewood ➔ <strong>TRASA:</strong> Lot na południe korytem rzeki Los Santos pod wszystkimi mostami ➔ <strong>META:</strong> Wylot kanału przy porcie Elysian Island / Port of South LS.
           </div>
         </div>
       `;
-    } else if (course.mapType === "SEU") {
+    } else if (c.map === "SEU") {
       mapHTML = `
-        <div class="mdt-card">
-          <h3 style="margin:0 0 10px; font-size:15px; color:#38bdf8;">🗺️ Mapka SEU Etap 1 — Drive Skills Test (Bezkolizyjny przejazd z najwyższą prędkością)</h3>
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:center;">
-            <div style="background:#090d14; border:1px solid #1e293b; border-radius:8px; padding:12px; text-align:center;">
-              <svg viewBox="0 0 300 220" style="width:100%; max-height:210px; background:#0d1520; border-radius:6px;">
-                <path d="M 145 200 C 90 185 80 140 85 105 C 90 85 110 75 125 75 C 110 75 112 50 120 25 C 125 15 135 20 135 32" stroke="#ef4444" stroke-width="5" fill="none" stroke-linecap="round"/>
-                <circle cx="145" cy="200" r="6" fill="#22c55e"/>
-                <text x="155" y="204" fill="#4ade80" font-size="12" font-weight="bold">START (Pacific Bluffs)</text>
-                <circle cx="135" cy="32" r="6" fill="#ef4444"/>
-                <text x="145" y="36" fill="#f87171" font-size="12" font-weight="bold">META (Fort Zancudo)</text>
-              </svg>
-            </div>
-            <div style="font-size:13px; color:#cbd5e1; line-height:1.6;">
-              <p style="margin:0 0 8px;"><strong>Przebieg trasy z mapki szkoleniowej SEU:</strong></p>
-              <div>1. <strong>START:</strong> Wybrzeże <em>Pacific Bluffs</em> (wjazd na Great Ocean Highway).</div>
-              <div>2. <strong>TRASA:</strong> Przejazd autostradą wzdłuż oceanu przez Chumash, wjazd na pętlę przy <em>Tongva Hills</em> i kontynuacja na północ przez tunel pod pasem startowym.</div>
-              <div>3. <strong>META:</strong> Nawrotka za tunelem Zancudo i dojazd pod bramę wjazdową bazy <em>Fort Zancudo</em> (0 kolizji, Próby: 2).</div>
-            </div>
+        <div class="card">
+          <h3 style="margin:0 0 8px; font-size:15px; color:#38bdf8;">🗺️ Mapka SEU Etap 1 — Drive Skills Test (Pacific Bluffs ➔ Fort Zancudo)</h3>
+          <div style="font-size:12.5px; color:#cbd5e1; background:var(--bg-input); padding:12px; border-radius:8px; border:1px solid var(--border);">
+            <strong>START:</strong> Zjazd na Great Ocean Hwy przy plaży Pacific Bluffs ➔ <strong>TRASA:</strong> Jazda na północ wzdłuż wybrzeża przez Chumash, wjazd na pętlę drogową przy Tongva Hills i powrót na autostradę przez tunel Zancudo ➔ <strong>META:</strong> Nawrotka za tunelem i dojazd pod bramę Fortu Zancudo.
           </div>
         </div>
       `;
     }
 
-    const stagesHTML = `
-      <div class="mdt-card">
-        <h3 style="margin:0 0 10px; font-size:15px; color:#4ade80;">Etapy Praktyczne — ${course.name}</h3>
-        ${course.stages.map(s => `
-          <label style="display:flex; align-items:center; gap:10px; background:#090d14; border:1px solid #1e293b; padding:10px 12px; border-radius:8px; margin-bottom:8px; cursor:pointer; font-size:13px;">
+    const pracHTML = `
+      <div class="card">
+        <h3 style="margin:0 0 10px; font-size:15px; color:#4ade80;">Etapy Praktyczne — ${c.name}</h3>
+        ${c.practical.map(p => `
+          <label style="display:flex; align-items:center; gap:10px; background:var(--bg-input); border:1px solid var(--border); padding:10px 12px; border-radius:8px; margin-bottom:6px; cursor:pointer;">
             <input type="checkbox" style="width:16px;height:16px;" />
-            <span>${s}</span>
+            <span>${p}</span>
           </label>
         `).join("")}
       </div>
     `;
 
-    box.innerHTML = theoryHTML + mapHTML + stagesHTML;
+    container.innerHTML = theoryHTML + mapHTML + pracHTML;
   }
 
-  function setCourseQuestionPts(cKey, qIdx, pts) {
-    if (!courseQPoints[cKey]) courseQPoints[cKey] = {};
-    courseQPoints[cKey][qIdx] = pts;
-    renderActiveCourseView();
+  function setCoursePts(cKey, idx, pts) {
+    courseScores[cKey][idx] = pts;
+    renderSzkCourseBody();
   }
 
-  function grantCurrentLicenseToOfficer() {
-    const badge = document.getElementById("trainee-officer-select").value;
-    const off = officersRoster.find(o => o.badge === badge);
+  function assignCourseLicenseToSelected() {
+    const badge = document.getElementById("szk-officer-select").value;
+    const off = db.officers.find(o => o.badge === badge);
     if (!off) return;
     if (!off.licenses) off.licenses = {};
-    off.licenses[activeCourseKey] = true;
-    off.note = "Zaliczył " + activeCourseKey + " (SASA)";
-    saveOfficersRoster();
-    renderOfficersLicenseTable();
-    showToast("✅ Nadano szkolenie " + activeCourseKey + " dla [" + off.badge + "] " + off.name);
+    off.licenses[selectedCourse] = true;
+    off.updated = "Nadano " + selectedCourse + " (" + db.loggedOfficer + ")";
+    saveDatabase();
+    renderLicenseMatrix();
+    toast("🎖️ Nadano licencję " + selectedCourse + " funkcjonariuszowi [" + off.badge + "] " + off.name);
   }
 
-  function copyTrainingProtocol() {
-    const badge = document.getElementById("trainee-officer-select").value;
-    const off = officersRoster.find(o => o.badge === badge);
-    const c = COURSES_DB[activeCourseKey];
-    const ptsMap = courseQPoints[activeCourseKey] || {};
+  function copyCourseProtocol() {
+    const badge = document.getElementById("szk-officer-select").value;
+    const off = db.officers.find(o => o.badge === badge);
+    const c = COURSES_DATA[selectedCourse];
+    const sc = courseScores[selectedCourse] || {};
     let sum = 0;
-    c.questions.forEach((q, i) => { sum += (ptsMap[i] || 0); });
-    const txt = `PROTOKÓŁ SZKOLENIA LSPD — ${c.name}\nFunkcjonariusz: [${off ? off.badge : badge}] ${off ? off.name : ""}\nSzkoleniowiec: [923] Oley Sasa\nWynik teorii: ${c.maxScore > 0 ? sum + "/" + c.maxScore + " pkt (Próg: " + c.passScore + " pkt)" : "Szkolenie praktyczne"}\nStatus: ZALICZONE`;
+    c.questions.forEach((q, i) => sum += (sc[i] || 0));
+    const txt = `PROTOKÓŁ SZKOLENIA LSPD — ${c.name}\nFunkcjonariusz: [${off?.badge}] ${off?.name}\nEgzaminator: ${db.loggedOfficer}\nWynik teorii: ${c.maxTheory ? sum + "/" + c.maxTheory + " pkt" : "Szkolenie praktyczne"}\nRezultat: POZYTYWNY`;
     navigator.clipboard.writeText(txt);
-    showToast("📋 Skopiowano protokół ze szkolenia " + c.name);
+    toast("📋 Skopiowano protokół ze szkolenia!");
   }
 
-  function renderOfficersLicenseTable() {
-    const tbody = document.getElementById("officers-license-tbody");
+  function renderLicenseMatrix() {
+    const tbody = document.getElementById("matrix-tbody");
     if (!tbody) return;
-    const q = (document.getElementById("lic-officer-search")?.value || "").toLowerCase();
+    const q = (document.getElementById("matrix-search-inp")?.value || "").toLowerCase();
     tbody.innerHTML = "";
 
-    officersRoster
+    db.officers
       .filter(o => o.badge.toLowerCase().includes(q) || o.name.toLowerCase().includes(q))
       .forEach(o => {
-        const tr = document.createElement("tr");
-        const pills = LICENSE_KEYS.map(k => {
+        const pills = LICENSES.map(k => {
           const has = !!(o.licenses && o.licenses[k]);
-          return `<span class="lic-pill ${has ? 'lic-on' : 'lic-off'}" onclick="toggleOfficerLicense('${o.badge}', '${k}')">${has ? '✓ ' : ''}${k}</span>`;
+          return `<span class="pill ${has ? 'pill-green' : 'pill-gray'}" style="cursor:pointer; margin-right:4px;" onclick="toggleMatrixLic('${o.badge}', '${k}')">${has ? '✓ ' : ''}${k}</span>`;
         }).join("");
-
+        const tr = document.createElement("tr");
         tr.innerHTML = `
           <td style="font-weight:800; color:#60a5fa;">[${o.badge}]</td>
-          <td style="font-weight:700; color:#fff;">${o.name}</td>
+          <td style="font-weight:700;">${o.name}</td>
+          <td style="color:var(--text-muted);">${o.rank}</td>
           <td>${pills}</td>
-          <td style="font-size:12px; color:#94a3b8;">${o.note || "-"}</td>
+          <td style="font-size:11px; color:var(--text-dim);">${o.updated || "-"}</td>
         `;
         tbody.appendChild(tr);
       });
   }
 
-  function toggleOfficerLicense(badge, licKey) {
-    const off = officersRoster.find(o => o.badge === badge);
+  function toggleMatrixLic(badge, k) {
+    const off = db.officers.find(o => o.badge === badge);
     if (!off) return;
     if (!off.licenses) off.licenses = {};
-    off.licenses[licKey] = !off.licenses[licKey];
-    off.note = (off.licenses[licKey] ? "Nadano " : "Odebrano ") + licKey + " (SASA)";
-    saveOfficersRoster();
-    renderOfficersLicenseTable();
+    off.licenses[k] = !off.licenses[k];
+    off.updated = (off.licenses[k] ? "+" : "-") + k + " (" + new Date().toLocaleTimeString("pl-PL", {hour:"2-digit",minute:"2-digit"}) + ")";
+    saveDatabase();
+    renderLicenseMatrix();
+    renderAllOfficersView();
   }
 
-  function addNewOfficerToRoster() {
-    const b = document.getElementById("new-off-badge").value.trim();
-    const n = document.getElementById("new-off-name").value.trim();
-    if (!b || !n) { showToast("⚠️ Wpisz odznakę oraz imię i nazwisko funkcjonariusza!"); return; }
-    officersRoster.unshift({ badge: b, name: n, licenses: {}, note: "Dodano do wykazu" });
-    saveOfficersRoster();
-    renderOfficersLicenseTable();
-    renderTraineeSelect();
-    document.getElementById("new-off-badge").value = "";
-    document.getElementById("new-off-name").value = "";
-    showToast("✅ Dodano funkcjonariusza [" + b + "] " + n);
+  /* STOPER PRÓB PRAKTYCZNYCH W ZAKŁADCE SZKOLEŃ */
+  let trialSwRunning = false;
+  let trialSwStart = 0;
+  let trialSwElapsed = 0;
+
+  function toggleTrialStopwatch() {
+    const btn = document.getElementById("trial-sw-btn");
+    if (trialSwRunning) {
+      trialSwElapsed += Date.now() - trialSwStart;
+      trialSwRunning = false;
+      btn.textContent = "▶ Start";
+      btn.className = "btn btn-sm btn-green";
+    } else {
+      trialSwStart = Date.now();
+      trialSwRunning = true;
+      btn.textContent = "⏹ Stop";
+      btn.className = "btn btn-sm btn-red";
+    }
+  }
+
+  function resetTrialStopwatch() {
+    trialSwRunning = false;
+    trialSwElapsed = 0;
+    document.getElementById("trial-stopwatch-val").textContent = "00:00.0";
+    const btn = document.getElementById("trial-sw-btn");
+    btn.textContent = "▶ Start";
+    btn.className = "btn btn-sm btn-green";
   }
 
   /* =========================================================
-     3. STREFA KADETA (FTO) + STOPER PATROLOWY START/STOP
+     3. STREFA KADETA (FTO) I STOPER PATROLOWY START/STOP
      ========================================================= */
-  const BASIC_FTO_MODULES = ["Code 6", "FTS", "10-80", "10-80 Pieszo", "Status 7", "TCCC", "Kompendium"];
+  let currentCadetId = "165";
 
-  const DEFAULT_CADETS = [
-    {
-      id: "165", badge: "165", name: "Paulo Cortez", fto: "Oley Sasa", joinDate: "03.10.2026",
-      totalSeconds: 0, running: false, startTs: null,
-      pos: true, posTxt: "Dobrze skoordynowany pościg pojazdem jak i pieszo.", neg: "BRAK", negTxt: "",
-      modules: {
-        "Code 6": { ok: true, note: "Poprawił błędy", sign: "SASA" },
-        "FTS": { ok: true, note: "", sign: "SASA" },
-        "10-80": { ok: true, note: "Dobrze skoordynowany pościg pojazdem jak i pieszo", sign: "Sasa" },
-        "10-80 Pieszo": { ok: true, note: "(wyżej)", sign: "SASA" },
-        "Status 7": { ok: true, note: "dobrze wykonane zatrzymanie na celach", sign: "Smith" },
-        "TCCC": { ok: true, note: "", sign: "Walker" },
-        "Kompendium": { ok: true, note: "błędy poprawione", sign: "Solin" }
-      }
-    },
-    { id: "166", badge: "166", name: "Cayden Potato", fto: "Oley Sasa", joinDate: "10.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
-    { id: "168", badge: "168", name: "Troy Stardust", fto: "Gregory Solin", joinDate: "03.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
-    { id: "169", badge: "169", name: "Mark Kochones", fto: "Hailey Sinclair", joinDate: "03.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
-    { id: "170", badge: "170", name: "Mackey Sztonowski", fto: "John Cagvill", joinDate: "03.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
-    { id: "171", badge: "171", name: "Evan Myers", fto: "Mike Smith", joinDate: "03.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
-    { id: "174", badge: "174", name: "Tony Wood", fto: "Amy Rover", joinDate: "03.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
-    { id: "176", badge: "176", name: "Bobby Bennett", fto: "Zoya Sierra", joinDate: "03.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
-    { id: "178", badge: "178", name: "Iris Bloodworth", fto: "Jacob Galahad", joinDate: "04.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
-    { id: "182", badge: "182", name: "Joe Harrah", fto: "Zoya Sierra", joinDate: "05.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
-    { id: "183", badge: "183", name: "Nathan Luke", fto: "Jack Onfire", joinDate: "05.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} },
-    { id: "199", badge: "199", name: "Túlio Navarro Figueiredo", fto: "Oley Sasa", joinDate: "11.10.2026", totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} }
-  ];
-
-  let cadetsList = [];
-  let activeCadetId = "165";
-
-  function loadCadets() {
-    try {
-      const s = localStorage.getItem("lspd_fto_cadets_v3");
-      cadetsList = s ? JSON.parse(s) : JSON.parse(JSON.stringify(DEFAULT_CADETS));
-    } catch (e) {
-      cadetsList = JSON.parse(JSON.stringify(DEFAULT_CADETS));
+  function getCadetTotalSec(c) {
+    let total = c.sec || 0;
+    if (c.running && c.ts) {
+      total += Math.max(0, Math.floor((Date.now() - c.ts) / 1000));
     }
-    cadetsList.forEach(c => {
-      if (!c.modules) c.modules = {};
-      BASIC_FTO_MODULES.forEach(m => {
-        if (!c.modules[m]) c.modules[m] = { ok: false, note: "", sign: "" };
-      });
-    });
+    return total;
   }
 
-  function saveCadets() {
-    try { localStorage.setItem("lspd_fto_cadets_v3", JSON.stringify(cadetsList)); } catch (e) {}
+  function formatHMS(s) {
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const sec = s % 60;
+    return String(h).padStart(2, "0") + "h " + String(m).padStart(2, "0") + "m " + String(sec).padStart(2, "0") + "s";
   }
 
-  function getCadetSec(c) {
-    let s = c.totalSeconds || 0;
-    if (c.running && c.startTs) {
-      s += Math.max(0, Math.floor((Date.now() - c.startTs) / 1000));
-    }
-    return s;
-  }
-
-  function fmtHMS(sec) {
-    const h = Math.floor(sec / 3600);
-    const m = Math.floor((sec % 3600) / 60);
-    const s = sec % 60;
-    return String(h).padStart(2, "0") + "h " + String(m).padStart(2, "0") + "m " + String(s).padStart(2, "0") + "s";
-  }
-
-  function toggleCadetTimer(id) {
-    const c = cadetsList.find(x => x.id === id);
+  function toggleCadetStopwatch(id) {
+    const c = db.cadets.find(x => x.id === id);
     if (!c) return;
     if (c.running) {
-      const diff = Math.max(0, Math.floor((Date.now() - c.startTs) / 1000));
-      c.totalSeconds = (c.totalSeconds || 0) + diff;
+      c.sec = getCadetTotalSec(c);
       c.running = false;
-      c.startTs = null;
-      showToast("⏹ Zatrzymano patrol [" + c.badge + "] " + c.name + " (Suma: " + fmtHMS(c.totalSeconds) + ")");
+      c.ts = null;
+      toast("⏹ Zatrzymano czas patrolu [" + c.badge + "] " + c.name + " (Łącznie: " + formatHMS(c.sec) + ")");
     } else {
       c.running = true;
-      c.startTs = Date.now();
-      showToast("▶ Start patrolu dla [" + c.badge + "] " + c.name);
+      c.ts = Date.now();
+      toast("▶ Start czasu w patrolu dla [" + c.badge + "] " + c.name);
     }
-    saveCadets();
-    renderCadetsTable();
-    updateCadetSheetTimer();
+    saveDatabase();
+    renderCadets();
+    refreshCadetSheetTimer();
   }
 
-  function addMinutesCadet(mins) {
-    const c = cadetsList.find(x => x.id === activeCadetId);
+  function adjustCadetTime(mins) {
+    const c = db.cadets.find(x => x.id === currentCadetId);
     if (!c) return;
-    c.totalSeconds = (c.totalSeconds || 0) + mins * 60;
-    saveCadets();
-    renderCadetsTable();
-    updateCadetSheetTimer();
-    showToast("Dodano +" + mins + "m dla kadeta " + c.name);
+    c.sec = Math.max(0, (c.sec || 0) + mins * 60);
+    saveDatabase();
+    renderCadets();
+    refreshCadetSheetTimer();
   }
 
-  function updateCadetSheetTimer() {
-    const c = cadetsList.find(x => x.id === activeCadetId);
+  function resetCadetTime() {
+    const c = db.cadets.find(x => x.id === currentCadetId);
     if (!c) return;
-    const tEl = document.getElementById("cs-timer-text");
-    const bEl = document.getElementById("cs-timer-btn");
-    if (tEl) tEl.textContent = fmtHMS(getCadetSec(c));
-    if (bEl) {
-      bEl.textContent = c.running ? "⏹ STOP" : "▶ START";
-      bEl.className = "mdt-btn " + (c.running ? "mdt-btn-red" : "mdt-btn-green");
+    c.sec = 0;
+    c.running = false;
+    c.ts = null;
+    saveDatabase();
+    renderCadets();
+    refreshCadetSheetTimer();
+  }
+
+  function refreshCadetSheetTimer() {
+    const c = db.cadets.find(x => x.id === currentCadetId);
+    if (!c) return;
+    const t = document.getElementById("cs-live-timer");
+    const b = document.getElementById("cs-startstop-btn");
+    if (t) t.textContent = formatHMS(getCadetTotalSec(c));
+    if (b) {
+      b.textContent = c.running ? "⏹ STOP" : "▶ START";
+      b.className = "btn " + (c.running ? "btn-red" : "btn-green");
     }
   }
 
-  setInterval(() => {
-    let any = false;
-    cadetsList.forEach(c => {
-      if (c.running) {
-        any = true;
-        const el = document.getElementById("c-time-" + c.id);
-        if (el) el.textContent = fmtHMS(getCadetSec(c));
-      }
-    });
-    if (any) updateCadetSheetTimer();
-  }, 1000);
-
-  function renderCadetsTable() {
-    const tbody = document.getElementById("cadets-tbody");
+  function renderCadets() {
+    const tbody = document.getElementById("fto-cadets-tbody");
     if (!tbody) return;
-    const q = (document.getElementById("cadet-filter-inp")?.value || "").toLowerCase();
+    const q = (document.getElementById("fto-search")?.value || "").toLowerCase();
     tbody.innerHTML = "";
 
-    cadetsList
+    db.cadets
       .filter(c => c.badge.toLowerCase().includes(q) || c.name.toLowerCase().includes(q) || c.fto.toLowerCase().includes(q))
       .forEach(c => {
-        const done = BASIC_FTO_MODULES.filter(m => c.modules[m]?.ok).length;
+        const done = FTO_BASIC.filter(m => c.modules[m]?.ok).length;
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td style="font-weight:800; color:#60a5fa;">#${c.badge}</td>
@@ -1037,206 +1694,450 @@ Równolegle funkcjonariusz [27] John Cagville wraz z innymi jednostkami prowadzi
           <td>${c.fto}</td>
           <td>
             <div style="display:flex; align-items:center; gap:8px;">
-              <span id="c-time-${c.id}" style="font-family:monospace; font-weight:700; color:${c.running ? '#4ade80' : '#38bdf8'};">${fmtHMS(getCadetSec(c))}</span>
-              <button class="mdt-btn ${c.running ? 'mdt-btn-red' : 'mdt-btn-green'}" style="padding:3px 8px; font-size:11px;" onclick="toggleCadetTimer('${c.id}')">${c.running ? '⏹ STOP' : '▶ START'}</button>
+              <span id="cad-timer-${c.id}" style="font-family:monospace; font-weight:800; color:${c.running ? '#4ade80' : '#38bdf8'};">${formatHMS(getCadetTotalSec(c))}</span>
+              <button class="btn btn-sm ${c.running ? 'btn-red' : 'btn-green'}" onclick="toggleCadetStopwatch('${c.id}')">${c.running ? '⏹ STOP' : '▶ START'}</button>
             </div>
           </td>
-          <td><button class="mdt-btn mdt-btn-blue" style="padding:4px 10px; font-size:11px;" onclick="openCadetSheet('${c.id}')">KLIKNIJ (${done}/7)</button></td>
-          <td style="color:#94a3b8;">${c.joinDate}</td>
-          <td style="text-align:center;"><input type="checkbox" ${c.pos ? 'checked' : ''} onchange="cTogglePos('${c.id}', this.checked)" /></td>
+          <td><button class="btn btn-sm btn-blue" onclick="openCadetSheetView('${c.id}')">KLIKNIJ (${done}/7)</button></td>
+          <td style="color:var(--text-muted);">${c.joinDate}</td>
+          <td style="text-align:center;"><input type="checkbox" ${c.pos ? 'checked' : ''} onchange="setCadetPos('${c.id}', this.checked)" /></td>
           <td>
-            <select class="mdt-select" style="padding:3px 6px; font-size:11px;" onchange="cChangeNeg('${c.id}', this.value)">
-              <option value="BRAK" ${c.neg === 'BRAK' ? 'selected' : ''}>BRAK</option>
-              <option value="1 NEGATYWNY" ${c.neg === '1 NEGATYWNY' ? 'selected' : ''}>1 NEGATYWNY</option>
-              <option value="2 NEGATYWNE" ${c.neg === '2 NEGATYWNE' ? 'selected' : ''}>2 NEGATYWNE</option>
-              <option value="DO POPRAWY" ${c.neg === 'DO POPRAWY' ? 'selected' : ''}>DO POPRAWY</option>
-              <option value="ZAWIESZONY" ${c.neg === 'ZAWIESZONY' ? 'selected' : ''}>ZAWIESZONY</option>
+            <select class="sel" style="padding:4px 8px; font-size:11px;" onchange="setCadetNeg('${c.id}', this.value)">
+              <option value="BRAK" ${c.neg==='BRAK'?'selected':''}>BRAK</option>
+              <option value="1 NEGATYWNY" ${c.neg==='1 NEGATYWNY'?'selected':''}>1 NEGATYWNY</option>
+              <option value="2 NEGATYWNE" ${c.neg==='2 NEGATYWNE'?'selected':''}>2 NEGATYWNE</option>
+              <option value="DO POPRAWY" ${c.neg==='DO POPRAWY'?'selected':''}>DO POPRAWY</option>
+              <option value="ZAWIESZONY" ${c.neg==='ZAWIESZONY'?'selected':''}>ZAWIESZONY</option>
             </select>
+          </td>
+          <td style="text-align:right;">
+            <button class="btn btn-sm btn-red" onclick="removeCadet('${c.id}')">✕</button>
           </td>
         `;
         tbody.appendChild(tr);
       });
 
-    const eoSel = document.getElementById("eo-cadet");
-    if (eoSel) eoSel.innerHTML = cadetsList.map(c => `<option>[${c.badge}] ${c.name}</option>`).join("");
+    const examSel = document.getElementById("exam-cadet-sel");
+    if (examSel) examSel.innerHTML = db.cadets.map(c => `<option value="${c.id}">[${c.badge}] ${c.name}</option>`).join("");
   }
 
-  function addCadet() {
-    const b = document.getElementById("inp-c-badge").value.trim();
-    const n = document.getElementById("inp-c-name").value.trim();
-    const f = document.getElementById("inp-c-fto").value.trim() || "Oley Sasa";
-    if (!b || !n) { showToast("⚠️ Podaj odznakę i nazwisko kadeta!"); return; }
-    const nc = { id: b + "_" + Date.now(), badge: b, name: n, fto: f, joinDate: new Date().toLocaleDateString("pl-PL"), totalSeconds: 0, running: false, startTs: null, pos: false, posTxt: "", neg: "BRAK", negTxt: "", modules: {} };
-    BASIC_FTO_MODULES.forEach(m => { nc.modules[m] = { ok: false, note: "", sign: "" }; });
-    cadetsList.unshift(nc);
-    saveCadets();
-    renderCadetsTable();
-    document.getElementById("inp-c-badge").value = "";
-    document.getElementById("inp-c-name").value = "";
-    showToast("✅ Dodano kadeta [" + b + "] " + n);
+  function createCadet() {
+    const badge = document.getElementById("new-c-badge").value.trim();
+    const name = document.getElementById("new-c-name").value.trim();
+    const fto = document.getElementById("new-c-fto").value.trim() || "Oley Sasa";
+    if (!badge || !name) { toast("⚠️ Podaj odznakę i imię kadeta!"); return; }
+    const nc = { id: badge + "_" + Date.now(), badge, name, fto, joinDate: new Date().toLocaleDateString("pl-PL"), sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} };
+    FTO_BASIC.forEach(m => nc.modules[m] = { ok: false, note: "", sign: "" });
+    db.cadets.unshift(nc);
+    saveDatabase();
+    renderCadets();
+    document.getElementById("new-c-badge").value = "";
+    document.getElementById("new-c-name").value = "";
+    toast("✅ Dodano kadeta [" + badge + "] " + name);
   }
 
-  function cTogglePos(id, val) { const c = cadetsList.find(x => x.id === id); if (c) { c.pos = val; saveCadets(); } }
-  function cChangeNeg(id, val) { const c = cadetsList.find(x => x.id === id); if (c) { c.neg = val; saveCadets(); } }
+  function removeCadet(id) {
+    db.cadets = db.cadets.filter(x => x.id !== id);
+    saveDatabase();
+    renderCadets();
+  }
 
-  function openCadetSheet(id) {
-    activeCadetId = id;
-    const c = cadetsList.find(x => x.id === id);
+  function setCadetPos(id, val) { const c = db.cadets.find(x => x.id === id); if (c) { c.pos = val; saveDatabase(); } }
+  function setCadetNeg(id, val) { const c = db.cadets.find(x => x.id === id); if (c) { c.neg = val; saveDatabase(); } }
+
+  function openCadetSheetView(id) {
+    currentCadetId = id;
+    const c = db.cadets.find(x => x.id === id);
     if (!c) return;
-    document.getElementById("cs-badge").textContent = "#" + c.badge;
-    document.getElementById("cs-name").textContent = c.name;
-    document.getElementById("cs-meta").textContent = "Opiekun FTO: " + c.fto + " • Data dołączenia: " + c.joinDate;
-    document.getElementById("cs-pos-chk").checked = !!c.pos;
-    document.getElementById("cs-pos-txt").value = c.posTxt || "";
-    document.getElementById("cs-neg-sel").value = c.neg || "BRAK";
-    document.getElementById("cs-neg-txt").value = c.negTxt || "";
-    updateCadetSheetTimer();
-    renderCadetModules(c);
-    switchFtoSub("arkusz");
+    document.getElementById("cs-badge-pill").textContent = "#" + c.badge;
+    document.getElementById("cs-title-name").textContent = c.name;
+    document.getElementById("cs-subtitle").textContent = "Opiekun FTO: " + c.fto + " • Data dołączenia: " + c.joinDate;
+    document.getElementById("cs-pos-check").checked = !!c.pos;
+    document.getElementById("cs-pos-notes").value = c.posNotes || "";
+    document.getElementById("cs-neg-select").value = c.neg || "BRAK";
+    document.getElementById("cs-neg-notes").value = c.negNotes || "";
+    refreshCadetSheetTimer();
+    renderCadetSheetModules(c);
+    switchFtoView("sheet");
   }
 
-  function renderCadetModules(c) {
-    const tbody = document.getElementById("cs-modules-tbody");
-    tbody.innerHTML = "";
-    BASIC_FTO_MODULES.forEach(m => {
+  function renderCadetSheetModules(c) {
+    const tbody = document.getElementById("cs-modules-body");
+    tbody.innerHTML = FTO_BASIC.map(m => {
       const mod = c.modules[m] || { ok: false, note: "", sign: "" };
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td style="font-weight:700; color:#fff;">${m}</td>
-        <td style="text-align:center;"><input type="checkbox" ${mod.ok ? 'checked' : ''} onchange="updCMod('${m}', 'ok', this.checked)" /></td>
-        <td><input type="text" class="mdt-input" value="${mod.note}" oninput="updCMod('${m}', 'note', this.value)" /></td>
-        <td><input type="text" class="mdt-input" style="text-align:center;font-weight:700;" value="${mod.sign}" oninput="updCMod('${m}', 'sign', this.value)" /></td>
-        <td><button class="mdt-btn mdt-btn-gray" style="padding:4px 8px; font-size:11px;" onclick="signCModSasa('${m}')">Podpisz: SASA</button></td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
-  function updCMod(m, field, val) {
-    const c = cadetsList.find(x => x.id === activeCadetId);
-    if (!c) return;
-    c.modules[m][field] = val;
-    saveCadets();
-    renderCadetsTable();
-  }
-
-  function signCModSasa(m) {
-    const c = cadetsList.find(x => x.id === activeCadetId);
-    if (!c) return;
-    c.modules[m].ok = true;
-    c.modules[m].sign = "SASA";
-    saveCadets();
-    renderCadetModules(c);
-    renderCadetsTable();
-  }
-
-  function signAllCadetModules() {
-    const c = cadetsList.find(x => x.id === activeCadetId);
-    if (!c) return;
-    BASIC_FTO_MODULES.forEach(m => { c.modules[m].ok = true; c.modules[m].sign = "SASA"; });
-    saveCadets();
-    renderCadetModules(c);
-    renderCadetsTable();
-    showToast("✍ Podpisano wszystkie szkolenia podstawowe jako SASA");
-  }
-
-  function saveCadetNotes() {
-    const c = cadetsList.find(x => x.id === activeCadetId);
-    if (!c) return;
-    c.pos = document.getElementById("cs-pos-chk").checked;
-    c.posTxt = document.getElementById("cs-pos-txt").value;
-    c.neg = document.getElementById("cs-neg-sel").value;
-    c.negTxt = document.getElementById("cs-neg-txt").value;
-    saveCadets();
-    renderCadetsTable();
-  }
-
-  function copyCadetSheetText() {
-    const c = cadetsList.find(x => x.id === activeCadetId);
-    if (!c) return;
-    const modTxt = BASIC_FTO_MODULES.map(m => `${c.modules[m].ok ? '[✓]' : '[ ]'} ${m} - ${c.modules[m].note || 'Brak'} (${c.modules[m].sign || '-'})`).join("\n");
-    navigator.clipboard.writeText(`ARKUSZ KADETA [${c.badge}] ${c.name}\nCzas w patrolu: ${fmtHMS(getCadetSec(c))}\n\n${modTxt}`);
-    showToast("📋 Skopiowano arkusz kadeta!");
-  }
-
-  /* EGZAMIN OFICERSKI */
-  const EO_TASKS = ["Teoria", "NTS", "FTS", "Status 7", "10-80", "10-80 patyki", "Pierwsza pomoc"];
-  let eoScores = { "Teoria": 0, "NTS": 0, "FTS": 0, "Status 7": 0, "10-80": 0, "10-80 patyki": 0, "Pierwsza pomoc": 0 };
-
-  function renderEoTable() {
-    const tb = document.getElementById("eo-tbody");
-    if (!tb) return;
-    let sum = 0;
-    tb.innerHTML = EO_TASKS.map(t => {
-      const v = eoScores[t] || 0;
-      sum += v;
       return `
         <tr>
-          <td style="font-weight:700; color:#60a5fa;">${t}</td>
-          ${[0,1,2,3].map(p => `<td style="text-align:center;"><input type="radio" name="eo-${t}" ${v===p?'checked':''} onchange="setEoScore('${t}',${p})"/></td>`).join("")}
-          <td style="text-align:center; font-weight:800;">${v}</td>
+          <td style="font-weight:700;">${m}</td>
+          <td style="text-align:center;"><input type="checkbox" ${mod.ok?'checked':''} onchange="updateCadMod('${m}','ok',this.checked)"/></td>
+          <td><input type="text" class="inp" value="${mod.note}" oninput="updateCadMod('${m}','note',this.value)"/></td>
+          <td><input type="text" class="inp" style="text-align:center;font-weight:700;" value="${mod.sign}" oninput="updateCadMod('${m}','sign',this.value)"/></td>
+          <td><button class="btn btn-sm btn-dark" onclick="quickSignCadMod('${m}')">Podpisz: SASA</button></td>
         </tr>
       `;
     }).join("");
-    document.getElementById("eo-sum").textContent = sum + " / 21";
-    const st = document.getElementById("eo-status");
-    st.textContent = sum >= 17 ? "ZDANE ✅" : "NIEZDANE ❌ (Min. 17 pkt)";
-    st.style.color = sum >= 17 ? "#4ade80" : "#f87171";
   }
 
-  function setEoScore(t, p) { eoScores[t] = p; renderEoTable(); }
-  function copyEoResult() {
-    let sum = 0;
-    EO_TASKS.forEach(t => sum += eoScores[t]);
-    navigator.clipboard.writeText(`EGZAMIN OFICERSKI — ${document.getElementById("eo-cadet").value}\nWynik: ${sum}/21 pkt (${sum>=17?'ZDANE':'NIEZDANE'})`);
-    showToast("📋 Skopiowano wynik Egzaminu Oficerskiego!");
+  function updateCadMod(m, field, val) {
+    const c = db.cadets.find(x => x.id === currentCadetId);
+    if (!c) return;
+    c.modules[m][field] = val;
+    saveDatabase();
+    renderCadets();
   }
 
-  /* NAWIGACJA GŁÓWNA */
-  function switchTab(t) {
-    ["szkolenia", "kadet", "raporty", "sprawy", "funkcjonariusze"].forEach(k => {
-      document.getElementById("tab-" + k)?.classList.add("hidden");
-      document.getElementById("nav-" + k)?.classList.remove("active");
+  function quickSignCadMod(m) {
+    const c = db.cadets.find(x => x.id === currentCadetId);
+    if (!c) return;
+    c.modules[m].ok = true;
+    c.modules[m].sign = "SASA";
+    saveDatabase();
+    renderCadetSheetModules(c);
+    renderCadets();
+  }
+
+  function signAllCadetBasic() {
+    const c = db.cadets.find(x => x.id === currentCadetId);
+    if (!c) return;
+    FTO_BASIC.forEach(m => { c.modules[m].ok = true; c.modules[m].sign = "SASA"; });
+    saveDatabase();
+    renderCadetSheetModules(c);
+    renderCadets();
+    toast("✍ Zatwierdzono wszystkie moduły jako SASA");
+  }
+
+  function saveCadetRemarks() {
+    const c = db.cadets.find(x => x.id === currentCadetId);
+    if (!c) return;
+    c.pos = document.getElementById("cs-pos-check").checked;
+    c.posNotes = document.getElementById("cs-pos-notes").value;
+    c.neg = document.getElementById("cs-neg-select").value;
+    c.negNotes = document.getElementById("cs-neg-notes").value;
+    saveDatabase();
+    renderCadets();
+  }
+
+  function promoteCadetToOfficer() {
+    const c = db.cadets.find(x => x.id === currentCadetId);
+    if (!c) return;
+    db.officers.unshift({
+      badge: c.badge,
+      name: c.name,
+      rank: "Officer I",
+      channel: "LSPD Tac #1",
+      status: "Na służbie",
+      licenses: {},
+      updated: "Awans z kadeta (SASA)"
     });
-    document.getElementById("tab-" + t)?.classList.remove("hidden");
-    document.getElementById("nav-" + t)?.classList.add("active");
+    db.cadets = db.cadets.filter(x => x.id !== currentCadetId);
+    saveDatabase();
+    renderCadets();
+    renderAllOfficersView();
+    switchFtoView("list");
+    toast("🎖️ Awansowano [" + c.badge + "] " + c.name + " na stopień Officer I!");
   }
 
-  function switchTrainingSub(sub) {
-    document.getElementById("szk-view-egzaminator").classList.toggle("hidden", sub !== "egzaminator");
-    document.getElementById("szk-view-wykaz").classList.toggle("hidden", sub !== "wykaz");
-    document.getElementById("sub-szk-egzaminator").className = "mdt-btn " + (sub === "egzaminator" ? "mdt-btn-blue" : "mdt-btn-gray");
-    document.getElementById("sub-szk-wykaz").className = "mdt-btn " + (sub === "wykaz" ? "mdt-btn-blue" : "mdt-btn-gray");
+  function copyCadetSheet() {
+    const c = db.cadets.find(x => x.id === currentCadetId);
+    if (!c) return;
+    const mods = FTO_BASIC.map(m => `${c.modules[m].ok ? '[✓]' : '[ ]'} ${m}: ${c.modules[m].note || 'Brak'} (${c.modules[m].sign || '-'})`).join("\n");
+    navigator.clipboard.writeText(`KARTA KADETA [${c.badge}] ${c.name}\nCzas w patrolu: ${formatHMS(getCadetTotalSec(c))}\n\n${mods}`);
+    toast("📋 Skopiowano kartę kadeta!");
   }
 
-  function switchFtoSub(sub) {
-    ["lista", "arkusz", "egzamin"].forEach(k => document.getElementById("fto-view-" + k)?.classList.add("hidden"));
-    document.getElementById("fto-view-" + sub)?.classList.remove("hidden");
-    document.getElementById("sub-fto-lista").className = "mdt-btn " + (sub !== "egzamin" ? "mdt-btn-blue" : "mdt-btn-gray");
-    document.getElementById("sub-fto-egzamin").className = "mdt-btn " + (sub === "egzamin" ? "mdt-btn-blue" : "mdt-btn-gray");
+  /* EGZAMIN OFICERSKI */
+  const EXAM_ITEMS = ["Teoria", "NTS", "FTS", "Status 7", "10-80", "10-80 patyki", "Pierwsza pomoc"];
+  let examScores = { "Teoria": 0, "NTS": 0, "FTS": 0, "Status 7": 0, "10-80": 0, "10-80 patyki": 0, "Pierwsza pomoc": 0 };
+
+  function renderOfficerExamTable() {
+    const tb = document.getElementById("exam-rows-tbody");
+    let total = 0;
+    tb.innerHTML = EXAM_ITEMS.map(item => {
+      const val = examScores[item] || 0;
+      total += val;
+      return `
+        <tr>
+          <td style="font-weight:700; color:#60a5fa;">${item}</td>
+          ${[0,1,2,3].map(p => `<td style="text-align:center;"><input type="radio" name="ex-${item}" ${val===p?'checked':''} onchange="setExamPts('${item}',${p})"/></td>`).join("")}
+          <td style="text-align:center; font-weight:800;">${val}</td>
+        </tr>
+      `;
+    }).join("");
+    document.getElementById("exam-total-cell").textContent = total + " / 21";
+    const v = document.getElementById("exam-verdict-cell");
+    v.textContent = total >= 17 ? "ZDANE ✅" : "NIEZDANE ❌ (Wymagane min. 17 pkt)";
+    v.style.color = total >= 17 ? "#4ade80" : "#f87171";
   }
 
-  function copyMainReport() {
-    navigator.clipboard.writeText(document.getElementById("r-body").value);
-    showToast("📋 Skopiowano treść raportu #309!");
+  function setExamPts(item, p) { examScores[item] = p; renderOfficerExamTable(); }
+  function copyFinalExamProtocol() {
+    let total = 0;
+    EXAM_ITEMS.forEach(i => total += examScores[i]);
+    navigator.clipboard.writeText(`EGZAMIN OFICERSKI LSPD\nWynik: ${total}/21 pkt — ${total >= 17 ? 'ZDANE' : 'NIEZDANE'}`);
+    toast("📋 Skopiowano wynik egzaminu!");
   }
 
-  function showToast(msg) {
-    const t = document.getElementById("toast");
-    t.textContent = msg;
-    t.style.display = "block";
-    clearTimeout(window._tt);
-    window._tt = setTimeout(() => { t.style.display = "none"; }, 3000);
+  /* =========================================================
+     4. TARYFIKATOR, PATROLE, DYSPOZYTORNIA, FUNKCJONARIUSZE
+     ========================================================= */
+  const PENAL_CODE = [
+    { name: "Morderstwo I stopnia", m: 300, f: 100000 },
+    { name: "Usiłowanie zabójstwa FP", m: 75, f: 25000 },
+    { name: "Usiłowanie zabójstwa obywatela", m: 50, f: 15000 },
+    { name: "Terroryzm", m: 350, f: 100000 },
+    { name: "Fałszywy alarm bombowy", m: 25, f: 8500 },
+    { name: "Napad na bank / jubilera", m: 45, f: 15000 },
+    { name: "Napad na sklep", m: 25, f: 5000 },
+    { name: "Ucieczka przed organami ścigania", m: 15, f: 3500 },
+    { name: "Stawianie czynnego oporu", m: 10, f: 2500 },
+    { name: "Nielegalne posiadanie broni", m: 40, f: 12000 }
+  ];
+  let activeCharges = [];
+
+  function renderPenalCalculator() {
+    const grid = document.getElementById("penal-grid-box");
+    grid.innerHTML = PENAL_CODE.map((c, idx) => `
+      <div style="background:var(--bg-input); border:1px solid var(--border); padding:9px 12px; border-radius:8px; cursor:pointer;" onclick="addCharge(${idx})">
+        <div style="font-weight:700;">${c.name}</div>
+        <div style="font-size:11px; color:#60a5fa; margin-top:2px;">${c.m} mies. • $${c.f.toLocaleString()}</div>
+      </div>
+    `).join("");
+    updateCaseTotals();
   }
+
+  function addCharge(idx) {
+    activeCharges.push(PENAL_CODE[idx]);
+    updateCaseTotals();
+  }
+
+  function clearCaseCharges() {
+    activeCharges = [];
+    updateCaseTotals();
+  }
+
+  function updateCaseTotals() {
+    let m = 0, f = 0;
+    activeCharges.forEach(c => { m += c.m; f += c.f; });
+    document.getElementById("case-sum-months").textContent = m + " mies.";
+    document.getElementById("case-sum-fine").textContent = "$" + f.toLocaleString();
+    document.getElementById("case-selected-list").innerHTML = activeCharges.length
+      ? activeCharges.map(c => `<span class="pill pill-blue" style="margin:2px;">${c.name} (${c.m}m)</span>`).join("")
+      : `<div style="color:var(--text-dim); font-size:12px;">Kliknij zarzuty poniżej, aby dodać je do sprawy...</div>`;
+  }
+
+  function copyCaseSummary() {
+    const cit = document.getElementById("case-citizen").value || "Nieznany";
+    const desc = document.getElementById("case-desc").value || "Brak opisu";
+    const m = document.getElementById("case-sum-months").textContent;
+    const f = document.getElementById("case-sum-fine").textContent;
+    navigator.clipboard.writeText(`SPRAWA KARNA LSPD\nObywatel: ${cit}\nZarzuty: ${activeCharges.map(x=>x.name).join(", ")}\nWyrok: ${m} | Grzywna: ${f}\nOpis: ${desc}`);
+    toast("📋 Skopiowano kartotekę sprawy!");
+  }
+
+  function renderPatrols() {
+    document.getElementById("pwc-holder-name").textContent = db.pwc;
+    document.getElementById("apwc-holder-name").textContent = db.apwc;
+    const grid = document.getElementById("patrols-grid");
+    grid.innerHTML = db.patrols.map((p, idx) => `
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-header">
+          <div>
+            <span style="font-weight:800; font-size:15px;">Patrol ${idx + 1}</span>
+            <span class="pill pill-blue" style="margin-left:6px;">${p.type}</span>
+          </div>
+          <button class="btn btn-sm btn-red" onclick="deletePatrol(${p.id})">Usuń</button>
+        </div>
+        <div>
+          ${p.members.map(m => `<div class="chip-item"><span>👮 ${m}</span></div>`).join("")}
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function takeOverRole(role) {
+    if (role === "PWC") db.pwc = db.loggedOfficer;
+    if (role === "APWC") db.apwc = db.loggedOfficer;
+    saveDatabase();
+    renderPatrols();
+    toast("✅ Przejęto funkcję " + role + " jako " + db.loggedOfficer);
+  }
+
+  function createNewPatrolUnit() {
+    const type = prompt("Podaj rodzaj jednostki (Adam, Edward, Lincoln, Eagle, Mary, Task):", "Adam");
+    if (!type) return;
+    const partner = prompt("Podaj skład patrolu (np. [923] Oley Sasa, [141] Vivienne Walker):", db.loggedOfficer);
+    if (!partner) return;
+    db.patrols.push({ id: Date.now(), type, members: partner.split(",").map(s => s.trim()) });
+    saveDatabase();
+    renderPatrols();
+  }
+
+  function deletePatrol(id) {
+    db.patrols = db.patrols.filter(x => x.id !== id);
+    saveDatabase();
+    renderPatrols();
+  }
+
+  function renderAllOfficersView() {
+    const dispBody = document.getElementById("dispatch-officers-tbody");
+    const allBody = document.getElementById("all-officers-tbody");
+    if (dispBody) {
+      dispBody.innerHTML = db.officers.map(o => `
+        <tr>
+          <td style="font-weight:800; color:#60a5fa;">[${o.badge}]</td>
+          <td style="font-weight:700;">${o.name}</td>
+          <td>${o.rank}</td>
+          <td>LSPD</td>
+          <td>${o.channel || "LSPD Tac #1"}</td>
+          <td><span class="pill ${o.status === 'Na służbie' ? 'pill-green' : 'pill-gray'}" style="cursor:pointer;" onclick="toggleOfficerDuty('${o.badge}')">${o.status}</span></td>
+        </tr>
+      `).join("");
+    }
+    if (allBody) {
+      allBody.innerHTML = db.officers.map(o => {
+        const lics = LICENSES.filter(k => o.licenses && o.licenses[k]).map(k => `<span class="pill pill-blue" style="margin-right:3px;">${k}</span>`).join("") || `<span style="color:var(--text-dim);">Brak</span>`;
+        return `
+          <tr>
+            <td style="font-weight:800; color:#60a5fa;">[${o.badge}]</td>
+            <td style="font-weight:700;">${o.name}</td>
+            <td>${o.rank}</td>
+            <td>${lics}</td>
+            <td><span class="pill ${o.status === 'Na służbie' ? 'pill-green' : 'pill-gray'}">${o.status}</span></td>
+            <td style="text-align:right;"><button class="btn btn-sm btn-red" onclick="deleteOfficerDB('${o.badge}')">Usuń</button></td>
+          </tr>
+        `;
+      }).join("");
+    }
+  }
+
+  function toggleOfficerDuty(badge) {
+    const o = db.officers.find(x => x.badge === badge);
+    if (!o) return;
+    o.status = o.status === "Na służbie" ? "Poza służbą" : "Na służbie";
+    saveDatabase();
+    renderAllOfficersView();
+  }
+
+  function createOfficerInDB() {
+    const b = document.getElementById("add-off-badge").value.trim();
+    const n = document.getElementById("add-off-name").value.trim();
+    const r = document.getElementById("add-off-rank").value.trim() || "Officer I";
+    if (!b || !n) { toast("⚠️ Podaj odznakę i imię funkcjonariusza!"); return; }
+    db.officers.unshift({ badge: b, name: n, rank: r, channel: "LSPD Tac #1", status: "Na służbie", licenses: {}, updated: "Nowy wpis" });
+    saveDatabase();
+    renderAllOfficersView();
+    renderLicenseMatrix();
+    renderSzkCourseBar();
+    document.getElementById("add-off-badge").value = "";
+    document.getElementById("add-off-name").value = "";
+    toast("✅ Dodano funkcjonariusza [" + b + "] " + n);
+  }
+
+  function deleteOfficerDB(badge) {
+    db.officers = db.officers.filter(x => x.badge !== badge);
+    saveDatabase();
+    renderAllOfficersView();
+    renderLicenseMatrix();
+  }
+
+  /* =========================================================
+     NAWIGACJA I ZEGARY SYSTEMOWE
+     ========================================================= */
+  function switchMainView(viewName) {
+    ["dyspozytornia", "raporty", "sprawy", "patrole", "funkcjonariusze", "szkolenia", "kadet"].forEach(v => {
+      document.getElementById("view-" + v)?.classList.add("hidden");
+      document.getElementById("nav-" + v)?.classList.remove("active");
+    });
+    document.getElementById("view-" + viewName)?.classList.remove("hidden");
+    document.getElementById("nav-" + viewName)?.classList.add("active");
+  }
+
+  function switchSzkMode(mode) {
+    document.getElementById("szk-mode-exam").classList.toggle("hidden", mode !== "exam");
+    document.getElementById("szk-mode-matrix").classList.toggle("hidden", mode !== "matrix");
+    document.getElementById("btn-szk-exam").className = "btn " + (mode === "exam" ? "btn-blue" : "btn-dark");
+    document.getElementById("btn-szk-matrix").className = "btn " + (mode === "matrix" ? "btn-blue" : "btn-dark");
+  }
+
+  function switchFtoView(sub) {
+    ["list", "sheet", "exam"].forEach(k => document.getElementById("fto-sub-" + k)?.classList.add("hidden"));
+    document.getElementById("fto-sub-" + sub)?.classList.remove("hidden");
+    document.getElementById("fto-tab-list").className = "btn " + (sub !== "exam" ? "btn-blue" : "btn-dark");
+    document.getElementById("fto-tab-exam").className = "btn " + (sub === "exam" ? "btn-blue" : "btn-dark");
+  }
+
+  function changeLoggedInOfficer() {
+    const val = prompt("Wpisz swoją odznakę i imię:", db.loggedOfficer);
+    if (val) {
+      db.loggedOfficer = val.trim();
+      saveDatabase();
+    }
+  }
+
+  function exportAllTabletData() {
+    const blob = new Blob([JSON.stringify(db, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "tablet_lspd_backup.json";
+    a.click();
+    toast("💾 Pobrano kopię zapasową danych Tabletu LSPD!");
+  }
+
+  function resetFactoryDefaults() {
+    if (!confirm("Czy na pewno chcesz zresetować dane tabletu do ustawień początkowych?")) return;
+    localStorage.removeItem("lspd_mdt_complete_v4");
+    location.reload();
+  }
+
+  function toast(msg) {
+    const box = document.getElementById("toast-alert");
+    box.textContent = msg;
+    box.style.display = "block";
+    clearTimeout(window._tTimer);
+    window._tTimer = setTimeout(() => { box.style.display = "none"; }, 3000);
+  }
+
+  // Pętla zegara i stoperów
+  setInterval(() => {
+    const now = new Date();
+    document.getElementById("live-clock").textContent = now.toLocaleDateString("pl-PL") + " • " + now.toLocaleTimeString("pl-PL");
+
+    let runningCount = 0;
+    db.cadets.forEach(c => {
+      if (c.running) {
+        runningCount++;
+        const el = document.getElementById("cad-timer-" + c.id);
+        if (el) el.textContent = formatHMS(getCadetTotalSec(c));
+      }
+    });
+    const banner = document.getElementById("active-patrol-timers-banner");
+    if (runningCount > 0) {
+      banner.classList.remove("hidden");
+      banner.textContent = `⏱ Aktywny patrol kadeta (${runningCount})`;
+      refreshCadetSheetTimer();
+    } else {
+      banner.classList.add("hidden");
+    }
+
+    if (trialSwRunning) {
+      const ms = trialSwElapsed + (Date.now() - trialSwStart);
+      const totSec = Math.floor(ms / 1000);
+      const mins = String(Math.floor(totSec / 60)).padStart(2, "0");
+      const secs = String(totSec % 60).padStart(2, "0");
+      const tenths = Math.floor((ms % 1000) / 100);
+      document.getElementById("trial-stopwatch-val").textContent = `${mins}:${secs}.${tenths}`;
+    }
+  }, 100);
 
   window.addEventListener("DOMContentLoaded", () => {
-    loadOfficersRoster();
-    loadCadets();
-    renderTraineeSelect();
-    renderCourseButtons();
-    renderOfficersLicenseTable();
-    renderCadetsTable();
-    renderEoTable();
+    loadDatabase();
+    renderReportsList();
+    renderSzkCourseBar();
+    renderLicenseMatrix();
+    renderCadets();
+    renderOfficerExamTable();
+    renderPenalCalculator();
+    renderPatrols();
+    renderAllOfficersView();
   });
 </script>
 </body>
