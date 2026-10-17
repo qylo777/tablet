@@ -58,7 +58,7 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 10px 12px; border-radius: 8px; font-size: 13px; font-weight: 600;
       color: var(--text-muted); background: transparent; border: 1px solid transparent;
-      cursor: pointer; text-align: left; width: 100%; transition: 0.15s;
+      cursor: pointer; text-align: left; width: 100%; transition: background-color 0.15s, color 0.15s;
     }
     .nav-item:hover { background-color: #151c2a; color: #fff; }
     .nav-item.active { background-color: #172554; color: #60a5fa; border-color: #1e3a8a; }
@@ -96,16 +96,16 @@
       display: inline-flex; align-items: center; justify-content: center; gap: 6px;
       padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700;
       cursor: pointer; border: 1px solid transparent; color: #fff; white-space: nowrap;
+      user-select: none; transition: filter 0.15s;
     }
+    .btn:hover { filter: brightness(1.1); }
     .btn:active { transform: translateY(1px); }
     .btn-sm { padding: 5px 10px; font-size: 11px; border-radius: 6px; }
     .btn-blue { background-color: var(--blue); border-color: #3b82f6; }
-    .btn-blue:hover { background-color: var(--blue-hover); }
     .btn-green { background-color: var(--green); border-color: #22c55e; }
     .btn-red { background-color: var(--red); border-color: #ef4444; }
     .btn-amber { background-color: var(--amber); border-color: #f59e0b; }
     .btn-dark { background-color: #182030; border-color: #2c3a52; color: #cbd5e1; }
-    .btn-dark:hover { background-color: #232f46; color: #fff; }
     .opt-group { display: flex; gap: 6px; flex-wrap: wrap; }
     .opt-btn {
       padding: 7px 12px; border-radius: 7px; font-size: 11.5px; font-weight: 700;
@@ -176,7 +176,7 @@
 <body>
 
 <div class="tablet-shell">
-  <!-- SIDEBAR -->
+  <!-- BOCZNY PASEK NAWIGACJI -->
   <aside class="sidebar">
     <div class="brand-header">
       <div class="brand-seal">LSPD</div>
@@ -234,7 +234,7 @@
     </div>
   </aside>
 
-  <!-- GŁÓWNY OBSZAR -->
+  <!-- GŁÓWNY OBSZAR ROBOCZY -->
   <div class="main-area">
     <header class="topbar">
       <div style="display: flex; align-items: center; gap: 12px;">
@@ -252,7 +252,7 @@
       <div id="toast-alert" style="position: fixed; bottom: 22px; right: 22px; background: #1d4ed8; color: #fff; padding: 12px 18px; border-radius: 8px; font-weight: 700; border: 1px solid #60a5fa; box-shadow: 0 10px 25px rgba(0,0,0,0.7); display: none; z-index: 9999;"></div>
 
       <!-- ========================================================= -->
-      <!-- 1. SPRAWY I AUTOMATYCZNY OPIS Z TARYFIKATORA              -->
+      <!-- 1. SPRAWY I AUTOMATYCZNY GENERATOR OPISU Z TARYFIKATORA   -->
       <!-- ========================================================= -->
       <section id="view-sprawy">
         <div class="card-header" style="margin-bottom: 14px;">
@@ -503,7 +503,7 @@
         <div class="card-header" style="margin-bottom: 14px;">
           <div>
             <h1 style="margin: 0; font-size: 20px; font-weight: 800;">🎖️ Szkolenia Specjalistyczne LSPD (Dla wszystkich funkcjonariuszy)</h1>
-            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">RTO+HRO, NEGO, SV, PWC+APWC, ASU, MERRY, SEU — pytania, punktacja, stoper i matryca uprawnień</p>
+            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">RTO+HRO, NEGO, SV, PWC+APWC, ASU, MERRY, SEU — pytania, punktacja, stoper, mapki i matryca uprawnień</p>
           </div>
           <div style="display: flex; gap: 8px;">
             <button type="button" class="btn btn-blue" id="btn-szk-exam" onclick="switchSzkMode('exam')">📖 Arkusz Egzaminacyjny</button>
@@ -767,6 +767,7 @@
 </div>
 
 <script>
+  /* FUNKCJE POMOCNICZE */
   const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
   const copyText = (str, msg) => {
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -781,140 +782,155 @@
     try { document.execCommand("copy"); toast(msg); } catch (e) { toast("Skopiowano!"); }
     document.body.removeChild(ta);
   }
+  function toast(msg) {
+    const box = document.getElementById("toast-alert");
+    if (!box) return;
+    box.textContent = msg; box.style.display = "block";
+    clearTimeout(window._tTimer); window._tTimer = setTimeout(() => { box.style.display = "none"; }, 3000);
+  }
 
-  /* 10 KATEGORII TARYFIKATORA Z AUTOMATYCZNYM OPISEM */
-  const FULL_PENAL_CATALOG = [
-    { category: "PRZESTĘPSTWA PRZECIWKO ŻYCIU", items: [
-      { name: "Morderstwo I stopnia", m: 300, f: 75000, desc: "dopuścił się zaplanowanego zabójstwa człowieka z premedytacją (Morderstwo I stopnia)" },
-      { name: "Współudział w morderstwie I stopnia", m: 250, f: 50000, desc: "brał czynny współudział w dokonaniu zabójstwa I stopnia" },
-      { name: "Morderstwo II stopnia", m: 200, f: 60000, desc: "dopuścił się umyślnego pozbawienia życia obywatela (Morderstwo II stopnia)" },
-      { name: "Współudział w morderstwie II stopnia", m: 180, f: 40000, desc: "współdziałał przy dokonaniu zabójstwa II stopnia" },
-      { name: "Morderstwo III stopnia", m: 120, f: 25000, desc: "spowodował śmierć człowieka w wyniku rażącego niedbalstwa (Morderstwo III stopnia)" },
-      { name: "Usiłowanie zabójstwa obywatela", m: 15, f: 2500, desc: "targnął się na życie osoby cywilnej, usiłując pozbawić ją życia" },
-      { name: "Usiłowanie zabójstwa funkcjonariusza", m: 30, f: 5000, desc: "dopuścił się bezpośredniego zamachu na życie funkcjonariusza na służbie" },
-      { name: "Doprowadzenie do samobójstwa", m: 50, f: 25000, desc: "swoim działaniem doprowadził inną osobę do targnięcia się na własne życie" }
-    ]},
-    { category: "PRZESTĘPSTWA PRZECIWKO ZDROWIU", items: [
-      { name: "Pobicie/bójka", m: 5, f: 1000, desc: "brał czynny udział w bójce lub pobiciu" },
-      { name: "Naruszenie nietykalności cielesnej", m: 3, f: 250, desc: "naruszył nietykalność cielesną innej osoby" },
-      { name: "Spowodowanie uszczerbku na zdrowiu", m: 10, f: 2500, desc: "spowodował obrażenia ciała skutkujące uszczerbkiem na zdrowiu" },
-      { name: "Spowodowanie ciężkiego uszczerbku na zdrowiu", m: 50, f: 25000, desc: "spowodował ciężki uszczerbek na zdrowiu zagrażający życiu" },
-      { name: "Udaremniona próba porwania", m: 8, f: 1250, desc: "podjął próbę uprowadzenia osoby, która została udaremniona" },
-      { name: "Nieudzielenie pomocy", m: 8, f: 5000, desc: "nie udzielił pomocy osobie w bezpośrednim zagrożeniu życia lub zdrowia" },
-      { name: "Tortury", m: 40, f: 10000, desc: "znęcał się fizycznie i psychicznie nad osobą przetrzymywaną" },
-      { name: "Tortury ze szczególnym okrucieństwem", m: 80, f: 20000, desc: "stosował wobec pokrzywdzonego tortury ze szczególnym okrucieństwem" },
-      { name: "Napaść na obywatela", m: 10, f: 2000, desc: "dopuścił się agresywnej napaści na osobę cywilną" },
-      { name: "Napaść na funkcjonariusza", m: 15, f: 5000, desc: "dopuścił się czynnej napaści na funkcjonariusza publicznego" },
-      { name: "Nękanie", m: 6, f: 1250, desc: "uporczywie nękał inną osobę" },
-      { name: "Napad na tle seksualnym", m: 20, f: 12500, desc: "dopuścił się napaści na tle seksualnym" },
-      { name: "Narażenie życia obywatela", m: 5, f: 2500, desc: "swoim zachowaniem naraził osoby postronne na bezpośrednie niebezpieczeństwo utraty życia" }
-    ]},
-    { category: "PRZESTĘPSTWA PRZECIWKO PORZĄDKOWI PUBLICZNEMU", items: [
-      { name: "Stawianie oporu funkcjonariuszowi", m: 5, f: 2500, desc: "stawiał czynny opór podczas zatrzymania przez funkcjonariuszy LSPD" },
-      { name: "Ucieczka przed organami ścigania", m: 20, f: 3500, desc: "podjął ucieczkę przed jednostkami LSPD (10-80), ignorując sygnały świetlne i dźwiękowe" },
-      { name: "Próba ucieczki przed organami ścigania", m: 15, f: 2500, desc: "podjął próbę ucieczki przed interweniującymi funkcjonariuszami" },
-      { name: "Zakłócenia porządku publicznego", m: 2, f: 1500, desc: "zakłócał spokój i porządek publiczny" },
-      { name: "Fałszywe zawiadomienie", m: 6, f: 4000, desc: "dokonał fałszywego zgłoszenia na numer alarmowy" },
-      { name: "Podszywanie się pod funkcjonariusza", m: 25, f: 7500, desc: "bezprawnie podawał się za funkcjonariusza publicznego" },
-      { name: "Fałszowanie dokumentów", m: 30, f: 10000, desc: "podrabiał dokumenty w celu użycia ich jako autentycznych" },
-      { name: "Posługiwanie się fałszywymi dokumentami", m: 20, f: 5000, desc: "posłużył się sfałszowanymi dokumentami podczas kontroli" },
-      { name: "Szantaż", m: 10, f: 3750, desc: "stosował bezprawny szantaż wobec innej osoby" },
-      { name: "Podszywanie się pod obywatela", m: 12, f: 2000, desc: "podszywał się pod tożsamość innego obywatela" },
-      { name: "Groźby", m: 12, f: 1500, desc: "kierował groźby karalne wzbudzające uzasadnioną obawę ich spełnienia" },
-      { name: "Obraza funkcjonariusza na służbie", m: 2, f: 500, desc: "znieważył słownie funkcjonariusza LSPD na służbie" },
-      { name: "Liczna obraza funkcjonariusza", m: 4, f: 1000, desc: "wielokrotnie i wulgarnie znieważał funkcjonariuszy LSPD" },
-      { name: "Utrudnianie prac służb porządkowych", m: 8, f: 1750, desc: "celowo utrudniał prowadzenie działań przez służby porządkowe" },
-      { name: "Fałszywy alarm bombowy", m: 25, f: 7500, desc: "wywołał fałszywy alarm bombowy" },
-      { name: "Niewykonywanie poleceń", m: 3, f: 375, desc: "odmawiał wykonywania zgodnych z prawem poleceń funkcjonariusza" },
-      { name: "Naruszenie praw człowieka", m: 80, f: 15000, desc: "dopuścił się rażącego naruszenia praw człowieka" },
-      { name: "Zlecenie popełnienia przestępstwa", m: 250, f: 87500, desc: "zlecił osobom trzecim dokonanie przestępstwa" },
-      { name: "Nielegalne przechwytywanie komunikacji", m: 20, f: 5000, desc: "bezprawnie przechwytywał komunikację radiową służb" }
-    ]},
-    { category: "PRZESTĘPSTWA PRZECIWKO MIENIU", items: [
-      { name: "Kradzież", m: 1, f: 500, desc: "dokonał zaboru cudzego mienia w celu przywłaszczenia" },
-      { name: "Kradzież pojazdu", m: 5, f: 1000, desc: "dokonał kradzieży cudzego pojazdu mechanicznego" },
-      { name: "Rozbój", m: 10, f: 2500, desc: "dokonał rozboju z użyciem przemocy lub groźby jej użycia" },
-      { name: "Włamanie", m: 5, f: 1000, desc: "wtargnął do zamkniętego obiektu po pokonaniu zabezpieczeń" },
-      { name: "Niszczenie mienia drugiej osoby o niskiej wartości", m: 10, f: 2500, desc: "umyślnie uszkodził cudze mienie prywatne o niskiej wartości" },
-      { name: "Niszczenie mienia drugiej osoby o wysokiej wartości", m: 30, f: 15000, desc: "umyślnie zniszczył mienie prywatne o wysokiej wartości" },
-      { name: "Niszczenie mienia użytku publicznego o niskiej wartości", m: 15, f: 4000, desc: "uszkodził mienie użytku publicznego o niskiej wartości" },
-      { name: "Niszczenie mienia użytku publicznego o wysokiej wartości", m: 25, f: 20000, desc: "dokonał poważnego uszkodzenia mienia publicznego o wysokiej wartości" },
-      { name: "Niszczenie mienia użytku publicznego o znacznej wartości", m: 50, f: 50000, desc: "spowodował zniszczenia mienia publicznego o znacznej wartości" },
-      { name: "Wtargnięcie na teren prywatny", m: 2, f: 500, desc: "wdarł się na teren prywatny i nie opuścił go mimo wezwania" },
-      { name: "Wtargnięcie na teren placówki publicznej", m: 10, f: 1000, desc: "bezprawnie wtargnął do wyłączonej strefy placówki publicznej" },
-      { name: "Kradzież pojazdu służb publicznych", m: 12, f: 2500, desc: "dokonał zaboru pojazdu należącego do służb publicznych" },
-      { name: "Udaremnienie lub uszczuplenie zaspokojenia wierzyciela", m: 8, f: 7500, desc: "ukrywał składniki majątku w celu udaremnienia spłaty wierzyciela" }
-    ]},
-    { category: "PRZESTĘPSTWA NARKOTYKOWE", items: [
-      { name: "Posiadanie narkotyków miękkich", m: 5, f: 1000, confiscate: "Narkotyki miękkie", desc: "posiadał przy sobie zabronione narkotyki miękkie" },
-      { name: "Posiadanie narkotyków twardych", m: 20, f: 2500, confiscate: "Narkotyki twarde", desc: "posiadał przy sobie nielegalne narkotyki twarde" },
-      { name: "Posiadanie hurtowej ilości narkotyków miękkich", m: 30, f: 7500, confiscate: "Hurtowa ilość narkotyków miękkich", desc: "posiadał przy sobie hurtowe ilości narkotyków miękkich" },
-      { name: "Posiadanie hurtowej ilości narkotyków twardych", m: 60, f: 20000, confiscate: "Hurtowa ilość narkotyków twardych", desc: "posiadał przy sobie hurtową ilość narkotyków twardych" },
-      { name: "Handel narkotykami miękkimi", m: 20, f: 5000, confiscate: "Narkotyki miękkie + gotówka", desc: "prowadził nielegalny handel narkotykami miękkimi" },
-      { name: "Handel narkotykami twardymi", m: 35, f: 10000, confiscate: "Narkotyki twarde + gotówka", desc: "prowadził nielegalny handel narkotykami twardymi" },
-      { name: "Produkcja narkotyków miękkich", m: 40, f: 10000, confiscate: "Surowce i narkotyki miękkie", desc: "brał udział w wytwarzaniu narkotyków miękkich" },
-      { name: "Produkcja narkotyków twardych", m: 100, f: 15000, confiscate: "Prekursory i narkotyki twarde", desc: "prowadził nielegalną produkcję narkotyków twardych" }
-    ]},
-    { category: "BROŃ I BEZPIECZEŃSTWO", items: [
-      { name: "Nielegalne posiadanie broni klasy I", m: 10, f: 2500, confiscate: "Broń klasy I", desc: "posiadał przy sobie nielegalną broń klasy I" },
-      { name: "Nielegalne posiadanie broni klasy II", m: 15, f: 7500, confiscate: "Broń palna klasy II + amunicja", desc: "posiadał bez zezwolenia broń palną krótką klasy II" },
-      { name: "Nielegalne posiadanie broni klasy III", m: 60, f: 17500, confiscate: "Broń długa klasy III + amunicja", desc: "posiadał nielegalną broń długą klasy III" },
-      { name: "Nielegalne posiadanie broni klasy IV", m: 100, f: 25000, confiscate: "Ciężka broń klasy IV", desc: "posiadał ciężkie uzbrojenie bojowe klasy IV" },
-      { name: "Handel bronią", m: 100, f: 45000, confiscate: "Broń przeznaczona na handel", desc: "prowadził nielegalny handel bronią palną" },
-      { name: "Bezpodstawne użycie broni palnej", m: 30, f: 7500, desc: "bezpodstawnie oddał strzały z broni palnej w miejscu publicznym" },
-      { name: "Nielegalne dodatki do broni", m: 4, f: 2500, confiscate: "Nielegalne dodatki do broni", desc: "posiadał zabronione dodatki do broni palnej" },
-      { name: "Handel materiałami wybuchowymi", m: 60, f: 25000, confiscate: "Materiały wybuchowe", desc: "zajmował się nielegalnym obrotem materiałami wybuchowymi" },
-      { name: "Wytwarzanie materiałów wybuchowych", m: 25, f: 15000, confiscate: "Komponenty wybuchowe", desc: "nielegalnie wytwarzał materiały wybuchowe" },
-      { name: "Posiadanie sprzętu policyjnego", m: 12, f: 5000, confiscate: "Sprzęt policyjny LSPD", desc: "bezprawnie posiadał sprzęt należący do LSPD" },
-      { name: "Nielegalna produkcja broni", m: 44, f: 17500, confiscate: "Części broni", desc: "brał udział w nielegalnej produkcji broni palnej" },
-      { name: "Niewłaściwe transportowanie broni", m: 8, f: 2500, desc: "transportował broń palną z naruszeniem przepisów" },
-      { name: "Posiadanie kontrabandy", m: 5, f: 5000, confiscate: "Kontrabanda", desc: "posiadał przy sobie nielegalną kontrabandę" }
-    ]},
-    { category: "PRZESTĘPSTWA PRZECIWKO PAŃSTWU", items: [
-      { name: "Korupcja", m: 100, f: 25000, desc: "dopuścił się przestępstwa korupcyjnego" },
-      { name: "Nadużycie władzy", m: 20, f: 10000, desc: "przekroczył uprawnienia służbowe" },
-      { name: "Zdrada stanu", m: 250, f: 75000, desc: "dopuścił się zdrady stanu" },
-      { name: "Nadużycie immunitetu", m: 35, f: 25000, desc: "bezprawnie wykorzystywał posiadany immunitet" }
-    ]},
-    { category: "PRZESTĘPCZOŚĆ ZORGANIZOWANA", items: [
-      { name: "Udział w grupie przestępczej", m: 50, f: 15000, desc: "brał udział w zorganizowanej grupie przestępczej" },
-      { name: "Kierowanie grupą przestępczą", m: 280, f: 50000, desc: "kierował zorganizowaną grupą przestępczą" }
-    ]},
-    { category: "PRZESTĘPSTWA PRZECIWKO SPRAWIEDLIWOŚCI", items: [
-      { name: "Składanie fałszywych zeznań", m: 10, f: 6250, desc: "złożył fałszywe zeznania w toku czynności" },
-      { name: "Ucieczka z konwoju", m: 35, f: 8000, desc: "podjął ucieczkę z konwoju policyjnego" },
-      { name: "Próba odbicia konwoju", m: 30, f: 10000, desc: "zaatakował konwój LSPD w celu odbicia zatrzymanego" },
-      { name: "Ucieczka z więzienia lub komendy", m: 40, f: 10000, desc: "zbiegł z terenu komendy LSPD lub więzienia" },
-      { name: "Odbicie z więzienia lub komendy", m: 70, f: 15000, desc: "brał udział w siłowym odbiciu zatrzymanego z komendy lub więzienia" },
-      { name: "Terroryzm", m: 400, f: 250000, desc: "dopuścił się aktu terrorystycznego wymierzonego w bezpieczeństwo publiczne" },
-      { name: "Krzywoprzysięstwo", m: 20, f: 7500, desc: "dopuścił się krzywoprzysięstwa" },
-      { name: "Odbicie z konwoju", m: 60, f: 15000, desc: "dokonał siłowego odbicia osoby konwojowanej" },
-      { name: "Wtargnięcie na teren więzienia lub komendy", m: 8, f: 10000, desc: "bezprawnie wtargnął na zamknięty teren komendy lub więzienia" },
-      { name: "Naruszenie praw zawartych w prawie stanowym", m: 35, f: 7500, desc: "dopuścił się rażącego naruszenia przepisów prawa stanowego" }
-    ]},
-    { category: "PORWANIE", items: [
-      { name: "Porwanie obywatela", m: 30, f: 6250, desc: "bezprawnie pozbawił wolności osobę cywilną" },
-      { name: "Porwanie obywatela dla okupu", m: 40, f: 10000, desc: "dokonał porwania obywatela dla okupu" },
-      { name: "Porwanie funkcjonariusza", m: 40, f: 15000, desc: "dopuścił się uprowadzenia funkcjonariusza publicznego" },
-      { name: "Porwanie funkcjonariusza dla okupu", m: 75, f: 22500, desc: "uprowadził funkcjonariusza na służbie w celu wymuszenia okupu" },
-      { name: "Próba porwania obywatela", m: 10, f: 3750, desc: "usiłował dokonać porwania obywatela" },
-      { name: "Próba porwania funkcjonariusza", m: 15, f: 7500, desc: "usiłował dokonać porwania funkcjonariusza publicznego" },
-      { name: "Zlecenie porwania obywatela", m: 50, f: 10000, desc: "zlecił uprowadzenie osoby cywilnej" },
-      { name: "Zlecenie porwanie funkcjonariusza", m: 80, f: 25000, desc: "zlecił uprowadzenie funkcjonariusza publicznego" },
-      { name: "Porwanie znacznej ilości osób - od 5 do 10 osób", m: 65, f: 40000, desc: "brał udział w porwaniu grupy od 5 do 10 zakładników" },
-      { name: "Porwanie znacznej ilości osób - od 11 do 20 osób", m: 115, f: 60000, desc: "brał udział w porwaniu grupy od 11 do 20 zakładników" },
-      { name: "Porwanie znacznej ilości osób - od 21 osób", m: 180, f: 90000, desc: "brał udział w masowym przetrzymywaniu powyżej 21 zakładników" }
-    ]},
-    { category: "NAPADY", items: [
-      { name: "Napad na sklep", m: 15, f: 2000, confiscate: "Gotówka z kasy sklepowej", desc: "brał czynny udział w napadzie rabunkowym na sklep" },
-      { name: "Napad na mieszkanie", m: 20, f: 3500, confiscate: "Skradzione przedmioty z mieszkania", desc: "dokonał rabunkowego włamania do mieszkania" },
-      { name: "Napad na sklep z bronią", m: 35, f: 8500, confiscate: "Skradziona broń z Ammu-Nation", desc: "brał udział w napadzie na sklep z bronią Ammu-Nation" },
-      { name: "Napad na jubilera xGem", m: 40, f: 9500, confiscate: "Kosztowności z jubilera xGem", desc: "brał udział w napadzie rabunkowym na salon jubilerski xGem" },
-      { name: "Napad na Gruppe 6", m: 45, f: 10000, confiscate: "Gotówka z furgonetki Gruppe 6", desc: "dokonał zbrojnego napadu na konwój Gruppe 6" },
-      { name: "Napad na Bobcat", m: 65, f: 15000, confiscate: "Uzbrojenie z Bobcat Security", desc: "brał udział w napadzie zbrojnym na placówkę Bobcat Security" }
-    ]}
+  /* =========================================================
+     ZOPTYMALIZOWANA BAZA TARYFIKATORA (10 KATEGORII)
+     Format: [Nazwa, Miesiące, Grzywna, OpisCzynu, KonfiskataOpcjonalna]
+     ========================================================= */
+  const PENAL_RAW = [
+    ["PRZESTĘPSTWA PRZECIWKO ŻYCIU", [
+      ["Morderstwo I stopnia", 300, 75000, "dopuścił się zaplanowanego zabójstwa człowieka z premedytacją (Morderstwo I stopnia)"],
+      ["Współudział w morderstwie I stopnia", 250, 50000, "brał czynny współudział w dokonaniu zabójstwa I stopnia"],
+      ["Morderstwo II stopnia", 200, 60000, "dopuścił się umyślnego pozbawienia życia obywatela (Morderstwo II stopnia)"],
+      ["Współudział w morderstwie II stopnia", 180, 40000, "współdziałał przy dokonaniu zabójstwa II stopnia"],
+      ["Morderstwo III stopnia", 120, 25000, "spowodował śmierć człowieka w wyniku rażącego niedbalstwa (Morderstwo III stopnia)"],
+      ["Usiłowanie zabójstwa obywatela", 15, 2500, "targnął się na życie osoby cywilnej, usiłując pozbawić ją życia"],
+      ["Usiłowanie zabójstwa funkcjonariusza", 30, 5000, "dopuścił się bezpośredniego zamachu na życie funkcjonariusza na służbie"],
+      ["Doprowadzenie do samobójstwa", 50, 25000, "swoim działaniem doprowadził inną osobę do targnięcia się na własne życie"]
+    ]],
+    ["PRZESTĘPSTWA PRZECIWKO ZDROWIU", [
+      ["Pobicie/bójka", 5, 1000, "brał czynny udział w bójce lub pobiciu"],
+      ["Naruszenie nietykalności cielesnej", 3, 250, "naruszył nietykalność cielesną innej osoby"],
+      ["Spowodowanie uszczerbku na zdrowiu", 10, 2500, "spowodował obrażenia ciała skutkujące uszczerbkiem na zdrowiu"],
+      ["Spowodowanie ciężkiego uszczerbku na zdrowiu", 50, 25000, "spowodował ciężki uszczerbek na zdrowiu zagrażający życiu"],
+      ["Udaremniona próba porwania", 8, 1250, "podjął próbę uprowadzenia osoby, która została udaremniona"],
+      ["Nieudzielenie pomocy", 8, 5000, "nie udzielił pomocy osobie w bezpośrednim zagrożeniu życia lub zdrowia"],
+      ["Tortury", 40, 10000, "znęcał się fizycznie i psychicznie nad osobą przetrzymywaną"],
+      ["Tortury ze szczególnym okrucieństwem", 80, 20000, "stosował wobec pokrzywdzonego tortury ze szczególnym okrucieństwem"],
+      ["Napaść na obywatela", 10, 2000, "dopuścił się agresywnej napaści na osobę cywilną"],
+      ["Napaść na funkcjonariusza", 15, 5000, "dopuścił się czynnej napaści na funkcjonariusza publicznego"],
+      ["Nękanie", 6, 1250, "uporczywie nękał inną osobę"],
+      ["Napad na tle seksualnym", 20, 12500, "dopuścił się napaści na tle seksualnym"],
+      ["Narażenie życia obywatela", 5, 2500, "swoim zachowaniem naraził osoby postronne na niebezpieczeństwo utraty życia"]
+    ]],
+    ["PRZESTĘPSTWA PRZECIWKO PORZĄDKOWI PUBLICZNEMU", [
+      ["Stawianie oporu funkcjonariuszowi", 5, 2500, "stawiał czynny opór podczas zatrzymania przez funkcjonariuszy LSPD"],
+      ["Ucieczka przed organami ścigania", 20, 3500, "podjął ucieczkę przed jednostkami LSPD (10-80), ignorując sygnały świetlne i dźwiękowe"],
+      ["Próba ucieczki przed organami ścigania", 15, 2500, "podjął próbę ucieczki przed interweniującymi funkcjonariuszami"],
+      ["Zakłócenia porządku publicznego", 2, 1500, "zakłócał spokój i porządek publiczny"],
+      ["Fałszywe zawiadomienie", 6, 4000, "dokonał fałszywego zgłoszenia na numer alarmowy"],
+      ["Podszywanie się pod funkcjonariusza", 25, 7500, "bezprawnie podawał się za funkcjonariusza publicznego"],
+      ["Fałszowanie dokumentów", 30, 10000, "podrabiał dokumenty w celu użycia ich jako autentycznych"],
+      ["Posługiwanie się fałszywymi dokumentami", 20, 5000, "posłużył się sfałszowanymi dokumentami podczas kontroli"],
+      ["Szantaż", 10, 3750, "stosował bezprawny szantaż wobec innej osoby"],
+      ["Podszywanie się pod obywatela", 12, 2000, "podszywał się pod tożsamość innego obywatela"],
+      ["Groźby", 12, 1500, "kierował groźby karalne wzbudzające uzasadnioną obawę ich spełnienia"],
+      ["Obraza funkcjonariusza na służbie", 2, 500, "znieważył słownie funkcjonariusza LSPD na służbie"],
+      ["Liczna obraza funkcjonariusza", 4, 1000, "wielokrotnie i wulgarnie znieważał funkcjonariuszy LSPD"],
+      ["Utrudnianie prac służb porządkowych", 8, 1750, "celowo utrudniał prowadzenie działań przez służby porządkowe"],
+      ["Fałszywy alarm bombowy", 25, 7500, "wywołał fałszywy alarm bombowy"],
+      ["Niewykonywanie poleceń", 3, 375, "odmawiał wykonywania zgodnych z prawem poleceń funkcjonariusza"],
+      ["Naruszenie praw człowieka", 80, 15000, "dopuścił się rażącego naruszenia praw człowieka"],
+      ["Zlecenie popełnienia przestępstwa", 250, 87500, "zlecił osobom trzecim dokonanie przestępstwa"],
+      ["Nielegalne przechwytywanie komunikacji", 20, 5000, "bezprawnie przechwytywał komunikację radiową służb"]
+    ]],
+    ["PRZESTĘPSTWA PRZECIWKO MIENIU", [
+      ["Kradzież", 1, 500, "dokonał zaboru cudzego mienia w celu przywłaszczenia"],
+      ["Kradzież pojazdu", 5, 1000, "dokonał kradzieży cudzego pojazdu mechanicznego"],
+      ["Rozbój", 10, 2500, "dokonał rozboju z użyciem przemocy lub groźby jej użycia"],
+      ["Włamanie", 5, 1000, "wtargnął do zamkniętego obiektu po pokonaniu zabezpieczeń"],
+      ["Niszczenie mienia drugiej osoby o niskiej wartości", 10, 2500, "umyślnie uszkodził cudze mienie prywatne o niskiej wartości"],
+      ["Niszczenie mienia drugiej osoby o wysokiej wartości", 30, 15000, "umyślnie zniszczył mienie prywatne o wysokiej wartości"],
+      ["Niszczenie mienia użytku publicznego o niskiej wartości", 15, 4000, "uszkodził mienie użytku publicznego o niskiej wartości"],
+      ["Niszczenie mienia użytku publicznego o wysokiej wartości", 25, 20000, "dokonał poważnego uszkodzenia mienia publicznego o wysokiej wartości"],
+      ["Niszczenie mienia użytku publicznego o znacznej wartości", 50, 50000, "spowodował zniszczenia mienia publicznego o znacznej wartości"],
+      ["Wtargnięcie na teren prywatny", 2, 500, "wdarł się na teren prywatny i nie opuścił go mimo wezwania"],
+      ["Wtargnięcie na teren placówki publicznej", 10, 1000, "bezprawnie wtargnął do wyłączonej strefy placówki publicznej"],
+      ["Kradzież pojazdu służb publicznych", 12, 2500, "dokonał zaboru pojazdu należącego do służb publicznych"],
+      ["Udaremnienie lub uszczuplenie zaspokojenia wierzyciela", 8, 7500, "ukrywał składniki majątku w celu udaremnienia spłaty wierzyciela"]
+    ]],
+    ["PRZESTĘPSTWA NARKOTYKOWE", [
+      ["Posiadanie narkotyków miękkich", 5, 1000, "posiadał przy sobie zabronione narkotyki miękkie", "Narkotyki miękkie"],
+      ["Posiadanie narkotyków twardych", 20, 2500, "posiadał przy sobie nielegalne narkotyki twarde", "Narkotyki twarde"],
+      ["Posiadanie hurtowej ilości narkotyków miękkich", 30, 7500, "posiadał przy sobie hurtowe ilości narkotyków miękkich", "Hurtowa ilość narkotyków miękkich"],
+      ["Posiadanie hurtowej ilości narkotyków twardych", 60, 20000, "posiadał przy sobie hurtową ilość narkotyków twardych", "Hurtowa ilość narkotyków twardych"],
+      ["Handel narkotykami miękkimi", 20, 5000, "prowadził nielegalny handel narkotykami miękkimi", "Narkotyki miękkie + gotówka"],
+      ["Handel narkotykami twardymi", 35, 10000, "prowadził nielegalny handel narkotykami twardymi", "Narkotyki twarde + gotówka"],
+      ["Produkcja narkotyków miękkich", 40, 10000, "brał udział w wytwarzaniu narkotyków miękkich", "Surowce i narkotyki miękkie"],
+      ["Produkcja narkotyków twardych", 100, 15000, "prowadził nielegalną produkcję narkotyków twardych", "Prekursory i narkotyki twarde"]
+    ]],
+    ["BROŃ I BEZPIECZEŃSTWO", [
+      ["Nielegalne posiadanie broni klasy I", 10, 2500, "posiadał przy sobie nielegalną broń klasy I", "Broń klasy I"],
+      ["Nielegalne posiadanie broni klasy II", 15, 7500, "posiadał bez zezwolenia broń palną krótką klasy II", "Broń palna klasy II + amunicja"],
+      ["Nielegalne posiadanie broni klasy III", 60, 17500, "posiadał nielegalną broń długą klasy III", "Broń długa klasy III + amunicja"],
+      ["Nielegalne posiadanie broni klasy IV", 100, 25000, "posiadał ciężkie uzbrojenie bojowe klasy IV", "Ciężka broń klasy IV"],
+      ["Handel bronią", 100, 45000, "prowadził nielegalny handel bronią palną", "Broń przeznaczona na handel"],
+      ["Bezpodstawne użycie broni palnej", 30, 7500, "bezpodstawnie oddał strzały z broni palnej w miejscu publicznym"],
+      ["Nielegalne dodatki do broni", 4, 2500, "posiadał zabronione dodatki do broni palnej", "Nielegalne dodatki do broni"],
+      ["Handel materiałami wybuchowymi", 60, 25000, "zajmował się nielegalnym obrotem materiałami wybuchowymi", "Materiały wybuchowe"],
+      ["Wytwarzanie materiałów wybuchowych", 25, 15000, "nielegalnie wytwarzał materiały wybuchowe", "Komponenty wybuchowe"],
+      ["Posiadanie sprzętu policyjnego", 12, 5000, "bezprawnie posiadał sprzęt należący do LSPD", "Sprzęt policyjny LSPD"],
+      ["Nielegalna produkcja broni", 44, 17500, "brał udział w nielegalnej produkcji broni palnej", "Części broni"],
+      ["Niewłaściwe transportowanie broni", 8, 2500, "transportował broń palną z naruszeniem przepisów"],
+      ["Posiadanie kontrabandy", 5, 5000, "posiadał przy sobie nielegalną kontrabandę", "Kontrabanda"]
+    ]],
+    ["PRZESTĘPSTWA PRZECIWKO PAŃSTWU", [
+      ["Korupcja", 100, 25000, "dopuścił się przestępstwa korupcyjnego"],
+      ["Nadużycie władzy", 20, 10000, "przekroczył uprawnienia służbowe"],
+      ["Zdrada stanu", 250, 75000, "dopuścił się zdrady stanu"],
+      ["Nadużycie immunitetu", 35, 25000, "bezprawnie wykorzystywał posiadany immunitet"]
+    ]],
+    ["PRZESTĘPCZOŚĆ ZORGANIZOWANA", [
+      ["Udział w grupie przestępczej", 50, 15000, "brał udział w zorganizowanej grupie przestępczej"],
+      ["Kierowanie grupą przestępczą", 280, 50000, "kierował zorganizowaną grupą przestępczą"]
+    ]],
+    ["PRZESTĘPSTWA PRZECIWKO SPRAWIEDLIWOŚCI", [
+      ["Składanie fałszywych zeznań", 10, 6250, "złożył fałszywe zeznania w toku czynności"],
+      ["Ucieczka z konwoju", 35, 8000, "podjął ucieczkę z konwoju policyjnego"],
+      ["Próba odbicia konwoju", 30, 10000, "zaatakował konwój LSPD w celu odbicia zatrzymanego"],
+      ["Ucieczka z więzienia lub komendy", 40, 10000, "zbiegł z terenu komendy LSPD lub więzienia"],
+      ["Odbicie z więzienia lub komendy", 70, 15000, "brał udział w siłowym odbiciu zatrzymanego z komendy lub więzienia"],
+      ["Terroryzm", 400, 250000, "dopuścił się aktu terrorystycznego wymierzonego w bezpieczeństwo publiczne"],
+      ["Krzywoprzysięstwo", 20, 7500, "dopuścił się krzywoprzysięstwa"],
+      ["Odbicie z konwoju", 60, 15000, "dokonał siłowego odbicia osoby konwojowanej"],
+      ["Wtargnięcie na teren więzienia lub komendy", 8, 10000, "bezprawnie wtargnął na zamknięty teren komendy lub więzienia"],
+      ["Naruszenie praw zawartych w prawie stanowym", 35, 7500, "dopuścił się rażącego naruszenia przepisów prawa stanowego"]
+    ]],
+    ["PORWANIE", [
+      ["Porwanie obywatela", 30, 6250, "bezprawnie pozbawił wolności osobę cywilną"],
+      ["Porwanie obywatela dla okupu", 40, 10000, "dokonał porwania obywatela dla okupu"],
+      ["Porwanie funkcjonariusza", 40, 15000, "dopuścił się uprowadzenia funkcjonariusza publicznego"],
+      ["Porwanie funkcjonariusza dla okupu", 75, 22500, "uprowadził funkcjonariusza na służbie w celu wymuszenia okupu"],
+      ["Próba porwania obywatela", 10, 3750, "usiłował dokonać porwania obywatela"],
+      ["Próba porwania funkcjonariusza", 15, 7500, "usiłował dokonać porwania funkcjonariusza publicznego"],
+      ["Zlecenie porwania obywatela", 50, 10000, "zlecił uprowadzenie osoby cywilnej"],
+      ["Zlecenie porwanie funkcjonariusza", 80, 25000, "zlecił uprowadzenie funkcjonariusza publicznego"],
+      ["Porwanie znacznej ilości osób - od 5 do 10 osób", 65, 40000, "brał udział w porwaniu grupy od 5 do 10 zakładników"],
+      ["Porwanie znacznej ilości osób - od 11 do 20 osób", 115, 60000, "brał udział w porwaniu grupy od 11 do 20 zakładników"],
+      ["Porwanie znacznej ilości osób - od 21 osób", 180, 90000, "brał udział w masowym przetrzymywaniu powyżej 21 zakładników"]
+    ]],
+    ["NAPADY", [
+      ["Napad na sklep", 15, 2000, "brał czynny udział w napadzie rabunkowym na sklep", "Gotówka z kasy sklepowej"],
+      ["Napad na mieszkanie", 20, 3500, "dokonał rabunkowego włamania do mieszkania", "Skradzione przedmioty z mieszkania"],
+      ["Napad na sklep z bronią", 35, 8500, "brał udział w napadzie na sklep z bronią Ammu-Nation", "Skradziona broń z Ammu-Nation"],
+      ["Napad na jubilera xGem", 40, 9500, "brał udział w napadzie rabunkowym na salon jubilerski xGem", "Kosztowności z jubilera xGem"],
+      ["Napad na Gruppe 6", 45, 10000, "dokonał zbrojnego napadu na konwój Gruppe 6", "Gotówka z furgonetki Gruppe 6"],
+      ["Napad na Bobcat", 65, 15000, "brał udział w napadzie zbrojnym na placówkę Bobcat Security", "Uzbrojenie z Bobcat Security"]
+    ]]
   ];
 
+  const FULL_PENAL_CATALOG = PENAL_RAW.map(([category, list]) => ({
+    category,
+    items: list.map(([name, m, f, desc, confiscate]) => ({ name, m, f, desc, confiscate: confiscate || "" }))
+  }));
+
+  /* LOGIKA AUTOMATYCZNEGO OPISU SPRAWY */
   let activeCharges = [], tempModalSelected = [], caseAssistOfficers = [], customConfiscated = [];
   let caseAttitude = "coop", caseDetention = "station";
 
@@ -951,14 +967,14 @@
     let totalM = 0, totalF = 0;
     activeCharges.forEach(c => { totalM += c.m * c.count; totalF += c.f * c.count; });
 
-    let p1 = `W dniu dzisiejszym funkcjonariusz ${lead}${assists} przeprowadził czynności procesowe wobec osoby zidentyfikowanej jako ${citizen}. W toku podjętej interwencji oraz zebranego materiału dowodowego ustalono, iż podejrzany ${actions.join(", a ponadto ")}.`;
-    let p2 = allConf.length ? ` Podczas przeszukania osobistego ujawniono oraz zabezpieczono do depozytu policyjnego: ${allConf.join(", ")}.` : ` Zatrzymanego poddano procedurze przeszukania oraz weryfikacji w systemie MDT.`;
-    let p3 = caseAttitude === "coop"
+    const p1 = `W dniu dzisiejszym funkcjonariusz ${lead}${assists} przeprowadził czynności procesowe wobec osoby zidentyfikowanej jako ${citizen}. W toku podjętej interwencji oraz zebranego materiału dowodowego ustalono, iż podejrzany ${actions.join(", a ponadto ")}.`;
+    const p2 = allConf.length ? ` Podczas przeszukania osobistego ujawniono oraz zabezpieczono do depozytu policyjnego: ${allConf.join(", ")}.` : ` Zatrzymanego poddano procedurze przeszukania oraz weryfikacji w systemie MDT.`;
+    const p3 = caseAttitude === "coop"
       ? ` Podczas wykonywanych czynności zatrzymany zachowywał spokój, w pełni współpracował z funkcjonariuszami LSPD oraz przyznał się do zarzucanych mu czynów.`
       : caseAttitude === "denied"
       ? ` W trakcie prowadzonych czynności zatrzymany nie wykazywał woli współpracy z funkcjonariuszami, do samego końca upierał się przy swojej wersji i kategorycznie nie przyznawał się do winy.`
       : ` W trakcie czynności na celach zatrzymany wykonywał polecenia funkcjonariuszy, jednak odmówił składania wyjaśnień i nie przyznał się do winy.`;
-    let p4 = caseDetention === "station"
+    const p4 = caseDetention === "station"
       ? ` Po przedstawieniu zarzutów (${names.join(", ")}) nałożono karę łączną ${totalM} mies. pozbawienia wolności oraz grzywnę $${totalF.toLocaleString()}. Obywatel zostaje zatrzymany na komendzie LSPD w celu odbycia kary.`
       : caseDetention === "prison"
       ? ` Po przedstawieniu zarzutów (${names.join(", ")}) orzeczono wyrok ${totalM} mies. pozbawienia wolności oraz grzywnę $${totalF.toLocaleString()}. Zatrzymany został przetransportowany do więzienia stanowego Bolingbroke.`
@@ -1082,9 +1098,10 @@
     const box = document.getElementById("case-assist-officers-box");
     if (!box) return;
     box.innerHTML = caseAssistOfficers.length
-      ? caseAssistOfficers.map((o, i) => `<div class="chip-item"><span>👮 ${o}</span><button type="button" class="chip-remove" onclick="caseAssistOfficers.splice(${i},1);renderCaseAssistOfficers();generateAutoCaseDescription();">×</button></div>`).join("")
+      ? caseAssistOfficers.map((o, i) => `<div class="chip-item"><span>👮 ${o}</span><button type="button" class="chip-remove" onclick="removeAssistOfficer(${i})">×</button></div>`).join("")
       : `<div style="padding:8px; text-align:center; color:var(--text-dim); border:1px dashed var(--border); border-radius:8px; font-size:12px;">Brak jednostek pomocniczych</div>`;
   }
+  function removeAssistOfficer(i) { caseAssistOfficers.splice(i, 1); renderCaseAssistOfficers(); generateAutoCaseDescription(); }
 
   function finalizeCaseAction(mode) {
     if (mode === "station") setCaseDetention("station");
@@ -1135,7 +1152,7 @@
 
   function loadDatabase() {
     try {
-      const raw = localStorage.getItem("lspd_mdt_gh_v6");
+      const raw = localStorage.getItem("lspd_mdt_gh_v7");
       if (raw) db = JSON.parse(raw);
       else {
         db.officers = JSON.parse(JSON.stringify(INITIAL_OFFICERS));
@@ -1155,7 +1172,7 @@
   }
 
   function saveDatabase() {
-    try { localStorage.setItem("lspd_mdt_gh_v6", JSON.stringify(db)); } catch (e) {}
+    try { localStorage.setItem("lspd_mdt_gh_v7", JSON.stringify(db)); } catch (e) {}
     updateSidebarCounters();
   }
 
@@ -1285,7 +1302,9 @@
     copyText(`TYTUŁ: ${document.getElementById("rf-title").value}\nAUTOR: ${db.loggedOfficer}\n\n${document.getElementById("rf-body").value}`, "📋 Skopiowano raport!");
   }
 
-  /* 7 SZKOLEŃ SPECJALISTYCZNYCH */
+  /* =========================================================
+     7 SZKOLEŃ SPECJALISTYCZNYCH (ZOPTYMALIZOWANE)
+     ========================================================= */
   const COURSES_DATA = {
     "RTO+HRO": { name: "RTO + HRO", reqTheory: 15, maxTheory: 16, questions: [
       { q: "1. Jaki jest nadrzędny cel prowadzenia radiówki podczas pościgu?", pts: 1, a: "Zapewnienie świadomości sytuacyjnej innym jednostkom, aby odcięte radiowozy mogły z samych komunikatów wyliczyć trasę, rozstawić kolczatki lub odciąć drogę bez patrzenia na mapę." },
@@ -1339,9 +1358,9 @@
       { q: "11. Czy PWC/APWC musi zostać poinformowany o zerwaniu negocjacji?", pts: 1, a: "Tak." },
       { q: "12. Co zrobić, gdy wszystkie jednostki są na jednej akcji, a pojawia się kolejna?", pts: 2, a: "Zależnie od pilności – cofnąć część jednostek na drugą akcję." }
     ], practical: ["Przejęcie PWC i ogłoszenie Code 8 (1 pkt)", "Przebieg Code 8 (1 pkt)", "Rozdysponowanie jednostek (1 pkt)", "Zlecenie zmiany kodu (1 pkt) — Wymagane 3/4 pkt"] },
-    "ASU": { name: "ASU (Helikopter)", reqTheory: 0, maxTheory: 0, questions: [], practical: ["Etap 1: Free flight (3 min)", "Etap 2: 3 trudne lądowania", "Etap 3: 2 pościgi po 5 min z radiówką (Próby: 3)", "Etap 4: Mapka pod mostami w kanale LS < 0:55s"] },
+    "ASU": { name: "ASU (Helikopter)", reqTheory: 0, maxTheory: 0, map: "ASU", questions: [], practical: ["Etap 1: Free flight (3 min)", "Etap 2: 3 trudne lądowania", "Etap 3: 2 pościgi po 5 min z radiówką (Próby: 3)", "Etap 4: Mapka pod mostami w kanale LS < 0:55s"] },
     "MERRY": { name: "MERRY (Motocykle)", reqTheory: 0, maxTheory: 0, questions: [], practical: ["Etap 1: Motor-motor 2x 5 min (Próby: 2)", "Etap 2: Motor-ADAM 2x 5 min (Próby: 2)", "Etap 3: Motor-EDWARD 3 min (Próby: 3)", "Etap 4: Pościg do destylacji motoru (Próby: 1)"] },
-    "SEU": { name: "SEU (Pościgowe)", reqTheory: 0, maxTheory: 0, questions: [], practical: ["Etap 1: Drive skills test na mapce bez kolizji (Próby: 2)", "Etap 2: Pościg SEU-SEU 2x 5 min (Próby: 2)", "Etap 3: Pościg EDWARD-EDWARD do destylacji (Próby: 1)", "Etap 4: Pościg EDWARD-EDWARD z radiówką 10 min (Próby: 2)"] }
+    "SEU": { name: "SEU (Pościgowe)", reqTheory: 0, maxTheory: 0, map: "SEU", questions: [], practical: ["Etap 1: Drive skills test na mapce bez kolizji (Próby: 2)", "Etap 2: Pościg SEU-SEU 2x 5 min (Próby: 2)", "Etap 3: Pościg EDWARD-EDWARD do destylacji (Próby: 1)", "Etap 4: Pościg EDWARD-EDWARD z radiówką 10 min (Próby: 2)"] }
   };
 
   let selectedCourse = "RTO+HRO", courseScores = {};
@@ -1349,7 +1368,13 @@
     const sel = document.getElementById("szk-officer-select");
     if (sel) sel.innerHTML = db.officers.map(o => `<option value="${o.badge}">[${o.badge}] ${o.name}</option>`).join("");
     const bar = document.getElementById("szk-courses-bar");
-    if (bar) bar.innerHTML = LICENSES.map(k => `<button type="button" class="btn ${k === selectedCourse ? 'btn-blue' : 'btn-dark'}" onclick="selectedCourse='${k}';renderSzkCourseBar();">${COURSES_DATA[k].name}</button>`).join("");
+    if (bar) bar.innerHTML = LICENSES.map(k => `<button type="button" class="btn ${k === selectedCourse ? 'btn-blue' : 'btn-dark'}" onclick="selectCourseTab('${k}')">${COURSES_DATA[k].name}</button>`).join("");
+    renderSzkCourseBody();
+  }
+  function selectCourseTab(k) { selectedCourse = k; renderSzkCourseBar(); }
+  function setCourseQuestionScore(idx, pts) {
+    if (!courseScores[selectedCourse]) courseScores[selectedCourse] = {};
+    courseScores[selectedCourse][idx] = pts;
     renderSzkCourseBody();
   }
   function renderSzkCourseBody() {
@@ -1365,12 +1390,18 @@
       tHTML = `<div class="card"><div class="card-header"><h3 style="margin:0;">Pytania Teoretyczne (${c.name})</h3><span class="pill ${pass ? 'pill-green' : 'pill-red'}">Wynik: ${sum}/${c.maxTheory} pkt (Min. ${c.reqTheory}) — ${pass ? 'ZALICZONA ✅' : 'NIEZALICZONA ❌'}</span></div>` +
         c.questions.map((it, idx) => {
           const cur = sc[idx] || 0;
-          let b = ""; for (let p = 0; p <= it.pts; p++) b += `<button type="button" class="btn btn-sm ${cur === p ? 'btn-blue' : 'btn-dark'}" onclick="courseScores['${selectedCourse}'][${idx}]=${p};renderSzkCourseBody();">${p} pkt</button>`;
+          let b = ""; for (let p = 0; p <= it.pts; p++) b += `<button type="button" class="btn btn-sm ${cur === p ? 'btn-blue' : 'btn-dark'}" onclick="setCourseQuestionScore(${idx},${p})">${p} pkt</button>`;
           return `<div style="background:var(--bg-input); border:1px solid var(--border); border-radius:8px; padding:10px; margin-bottom:8px;"><div style="display:flex; justify-content:space-between; gap:10px;"><strong style="color:#60a5fa;">${it.q}</strong><div style="display:flex; gap:4px;">${b}</div></div><div style="margin-top:6px; padding:6px 10px; background:#111827; border-left:3px solid #3b82f6; border-radius:4px; font-size:12px;"><strong>Odp:</strong> ${it.a}</div></div>`;
         }).join("") + `</div>`;
     }
+    let mapHTML = "";
+    if (c.map === "ASU") {
+      mapHTML = `<div class="card"><h3 style="margin:0 0 8px; color:#38bdf8;">🗺️ Mapka ASU Etap 4 — Kanał Los Santos (Limit: poniżej 0:55s)</h3><div style="background:var(--bg-input); padding:10px 12px; border-radius:8px; border:1px solid var(--border);"><strong>START:</strong> Wlot kanału przy Mirror Park / East Vinewood ➔ <strong>TRASA:</strong> Lot na południe korytem rzeki Los Santos pod wszystkimi mostami ➔ <strong>META:</strong> Wylot kanału przy porcie Elysian Island / Port of South LS.</div></div>`;
+    } else if (c.map === "SEU") {
+      mapHTML = `<div class="card"><h3 style="margin:0 0 8px; color:#38bdf8;">🗺️ Mapka SEU Etap 1 — Drive Skills Test (Pacific Bluffs ➔ Fort Zancudo)</h3><div style="background:var(--bg-input); padding:10px 12px; border-radius:8px; border:1px solid var(--border);"><strong>START:</strong> Wybrzeże Pacific Bluffs ➔ <strong>TRASA:</strong> Great Ocean Hwy przez Chumash, pętla przy Tongva Hills i tunel Zancudo ➔ <strong>META:</strong> Nawrotka za tunelem i dojazd pod bramę Fortu Zancudo.</div></div>`;
+    }
     const pHTML = `<div class="card"><h3 style="margin:0 0 10px; color:#4ade80;">Etapy Praktyczne — ${c.name}</h3>` + c.practical.map(p => `<label style="display:flex; align-items:center; gap:10px; background:var(--bg-input); border:1px solid var(--border); padding:9px 12px; border-radius:8px; margin-bottom:6px; cursor:pointer;"><input type="checkbox"/><span>${p}</span></label>`).join("") + `</div>`;
-    container.innerHTML = tHTML + pHTML;
+    container.innerHTML = tHTML + mapHTML + pHTML;
   }
   function assignCourseLicenseToSelected() {
     const badge = document.getElementById("szk-officer-select").value;
@@ -1379,7 +1410,8 @@
     if (!off.licenses) off.licenses = {};
     off.licenses[selectedCourse] = true;
     off.updated = "Nadano " + selectedCourse;
-    saveDatabase(); renderLicenseMatrix(); toast("🎖️ Nadano licencję " + selectedCourse + " dla [" + off.badge + "] " + off.name);
+    saveDatabase(); renderLicenseMatrix(); renderAllOfficersView();
+    toast("🎖️ Nadano licencję " + selectedCourse + " dla [" + off.badge + "] " + off.name);
   }
   function copyCourseProtocol() {
     copyText(`PROTOKÓŁ SZKOLENIA LSPD — ${COURSES_DATA[selectedCourse].name}\nSzkoleniowiec: ${db.loggedOfficer}\nStatus: ZALICZONE`, "📋 Skopiowano protokół!");
@@ -1401,14 +1433,30 @@
     saveDatabase(); renderLicenseMatrix(); renderAllOfficersView();
   }
 
-  let trialSwRunning = false, trialSwStart = 0, trialSwElapsed = 0;
+  /* STOPER PRÓB PRAKTYCZNYCH (URUCHAMIANY TYLKO GDY AKTYWNY) */
+  let trialSwRunning = false, trialSwStart = 0, trialSwElapsed = 0, trialSwInterval = null;
   function toggleTrialStopwatch() {
     const btn = document.getElementById("trial-sw-btn");
-    if (trialSwRunning) { trialSwElapsed += Date.now() - trialSwStart; trialSwRunning = false; btn.textContent = "▶ Start"; btn.className = "btn btn-sm btn-green"; }
-    else { trialSwStart = Date.now(); trialSwRunning = true; btn.textContent = "⏹ Stop"; btn.className = "btn btn-sm btn-red"; }
+    if (trialSwRunning) {
+      trialSwElapsed += Date.now() - trialSwStart;
+      trialSwRunning = false;
+      clearInterval(trialSwInterval);
+      btn.textContent = "▶ Start"; btn.className = "btn btn-sm btn-green";
+    } else {
+      trialSwStart = Date.now();
+      trialSwRunning = true;
+      btn.textContent = "⏹ Stop"; btn.className = "btn btn-sm btn-red";
+      trialSwInterval = setInterval(() => {
+        const ms = trialSwElapsed + (Date.now() - trialSwStart);
+        const totSec = Math.floor(ms / 1000);
+        setTxt("trial-stopwatch-val", `${String(Math.floor(totSec / 60)).padStart(2, "0")}:${String(totSec % 60).padStart(2, "0")}.${Math.floor((ms % 1000) / 100)}`);
+      }, 100);
+    }
   }
   function resetTrialStopwatch() {
-    trialSwRunning = false; trialSwElapsed = 0; setTxt("trial-stopwatch-val", "00:00.0");
+    trialSwRunning = false; trialSwElapsed = 0;
+    clearInterval(trialSwInterval);
+    setTxt("trial-stopwatch-val", "00:00.0");
     const btn = document.getElementById("trial-sw-btn");
     if (btn) { btn.textContent = "▶ Start"; btn.className = "btn btn-sm btn-green"; }
   }
@@ -1422,13 +1470,13 @@
     if (!c) return;
     if (c.running) { c.sec = getCadetTotalSec(c); c.running = false; c.ts = null; toast("⏹ Zatrzymano patrol [" + c.badge + "] " + c.name); }
     else { c.running = true; c.ts = Date.now(); toast("▶ Start patrolu [" + c.badge + "] " + c.name); }
-    saveDatabase(); renderCadets(); refreshCadetSheetTimer();
+    saveDatabase(); renderCadets(); refreshCadetSheetButtonState();
   }
   function adjustCadetTime(mins) {
     const c = db.cadets.find(x => x.id === currentCadetId);
-    if (c) { c.sec = Math.max(0, (c.sec || 0) + mins * 60); saveDatabase(); renderCadets(); refreshCadetSheetTimer(); }
+    if (c) { c.sec = Math.max(0, (c.sec || 0) + mins * 60); saveDatabase(); renderCadets(); refreshCadetSheetButtonState(); }
   }
-  function refreshCadetSheetTimer() {
+  function refreshCadetSheetButtonState() {
     const c = db.cadets.find(x => x.id === currentCadetId);
     if (!c) return;
     setTxt("cs-live-timer", formatHMS(getCadetTotalSec(c)));
@@ -1477,7 +1525,7 @@
     document.getElementById("cs-pos-notes").value = c.posNotes || "";
     document.getElementById("cs-neg-select").value = c.neg || "BRAK";
     document.getElementById("cs-neg-notes").value = c.negNotes || "";
-    refreshCadetSheetTimer(); renderCadetSheetModules(c); switchFtoView("sheet");
+    refreshCadetSheetButtonState(); renderCadetSheetModules(c); switchFtoView("sheet");
   }
   function renderCadetSheetModules(c) {
     const tbody = document.getElementById("cs-modules-body");
@@ -1594,34 +1642,35 @@
     const blob = new Blob([JSON.stringify(db, null, 2)], { type: "application/json" });
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "tablet_lspd_backup.json"; a.click();
   }
-  function resetFactoryDefaults() { localStorage.removeItem("lspd_mdt_gh_v6"); location.reload(); }
-  function toast(msg) {
-    const box = document.getElementById("toast-alert");
-    if (!box) return;
-    box.textContent = msg; box.style.display = "block";
-    clearTimeout(window._tTimer); window._tTimer = setTimeout(() => { box.style.display = "none"; }, 3000);
-  }
+  function resetFactoryDefaults() { localStorage.removeItem("lspd_mdt_gh_v7"); location.reload(); }
 
-  setInterval(() => {
+  /* ZOPTYMALIZOWANA PĘTLA ZEGARA (CO 1 SEKUNDĘ, BEZ PRZEBUDOWY PRZYCISKÓW DOM) */
+  function tickClock() {
     const now = new Date();
     setTxt("live-clock", now.toLocaleDateString("pl-PL") + " • " + now.toLocaleTimeString("pl-PL"));
     let runningCount = 0;
     db.cadets.forEach(c => {
-      if (c.running) { runningCount++; setTxt("cad-timer-" + c.id, formatHMS(getCadetTotalSec(c))); }
+      if (c.running) {
+        runningCount++;
+        setTxt("cad-timer-" + c.id, formatHMS(getCadetTotalSec(c)));
+        if (c.id === currentCadetId) setTxt("cs-live-timer", formatHMS(getCadetTotalSec(c)));
+      }
     });
     const banner = document.getElementById("active-patrol-timers-banner");
     if (banner) {
-      if (runningCount > 0) { banner.classList.remove("hidden"); banner.textContent = `⏱ Aktywny patrol kadeta (${runningCount})`; refreshCadetSheetTimer(); }
-      else banner.classList.add("hidden");
+      if (runningCount > 0) {
+        banner.classList.remove("hidden");
+        banner.textContent = `⏱ Aktywny patrol kadeta (${runningCount})`;
+      } else {
+        banner.classList.add("hidden");
+      }
     }
-    if (trialSwRunning) {
-      const ms = trialSwElapsed + (Date.now() - trialSwStart);
-      const totSec = Math.floor(ms / 1000);
-      setTxt("trial-stopwatch-val", `${String(Math.floor(totSec / 60)).padStart(2, "0")}:${String(totSec % 60).padStart(2, "0")}.${Math.floor((ms % 1000) / 100)}`);
-    }
-  }, 100);
+  }
+  setInterval(tickClock, 1000);
 
+  /* INICJALIZACJA */
   loadDatabase();
+  tickClock();
   renderCaseAssistOfficers();
   renderConfiscatedDisplay([]);
   updateCaseTotals();
