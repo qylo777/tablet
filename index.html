@@ -3,27 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tablet LSPD — Mobile Data Terminal v6.0</title>
+  <title>Tablet LSPD — Mobile Data Terminal</title>
   <style>
     :root {
       color-scheme: dark;
-      --bg-outer: #04060a;
-      --bg-main: #090d14;
-      --bg-sidebar: #0c1018;
-      --bg-card: rgba(18, 24, 38, 0.88);
-      --bg-card-solid: #121826;
-      --bg-input: #070a10;
-      --border: #1e293b;
-      --border-highlight: #2e3f5c;
+      --bg-outer: #05070b;
+      --bg-main: #0b0e15;
+      --bg-sidebar: #0e121b;
+      --bg-card: #121723;
+      --bg-input: #090c12;
+      --border: #1e2738;
+      --border-light: #2a364f;
       --blue: #2563eb;
-      --blue-light: #60a5fa;
+      --blue-hover: #1d4ed8;
+      --blue-glow: rgba(37, 99, 235, 0.25);
       --green: #16a34a;
-      --green-light: #4ade80;
       --red: #dc2626;
-      --red-light: #f87171;
       --amber: #d97706;
-      --amber-light: #fbbf24;
-      --text: #f8fafc;
+      --text: #f1f5f9;
       --text-muted: #94a3b8;
       --text-dim: #64748b;
     }
@@ -31,32 +28,26 @@
     body {
       margin: 0;
       padding: 0;
-      background: radial-gradient(circle at 50% 0%, #111c35 0%, #04060a 70%);
+      background-color: var(--bg-outer);
       color: var(--text);
       font-family: 'Inter', 'Segoe UI', Roboto, -apple-system, sans-serif;
       font-size: 13px;
       overflow-x: hidden;
     }
-    /* OBUDOWA TABLETU */
     .tablet-shell {
       display: flex;
       min-height: 100vh;
-      background:
-        radial-gradient(circle at 85% 15%, rgba(37, 99, 235, 0.08), transparent 40%),
-        radial-gradient(circle at 20% 85%, rgba(16, 185, 129, 0.05), transparent 40%),
-        var(--bg-main);
-      position: relative;
+      background-color: var(--bg-main);
     }
     /* SIDEBAR */
     .sidebar {
-      width: 262px;
-      background: linear-gradient(180deg, #0e131f 0%, #090c14 100%);
+      width: 250px;
+      background-color: var(--bg-sidebar);
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
       user-select: none;
-      z-index: 10;
     }
     .brand-header {
       padding: 18px 16px;
@@ -64,16 +55,25 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      background: linear-gradient(90deg, rgba(37, 99, 235, 0.12) 0%, transparent 100%);
     }
-    .brand-seal-svg {
-      width: 46px;
-      height: 46px;
+    .brand-seal {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #2563eb, #0f172a 75%);
+      border: 2px solid #60a5fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: #fff;
+      box-shadow: 0 0 15px var(--blue-glow);
       flex-shrink: 0;
-      filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.45));
     }
     .nav-section-title {
-      padding: 12px 18px 5px;
+      padding: 14px 18px 6px;
       font-size: 10px;
       font-weight: 800;
       color: var(--text-dim);
@@ -84,109 +84,76 @@
       display: flex;
       flex-direction: column;
       padding: 0 10px;
-      gap: 2px;
+      gap: 3px;
       flex: 1;
-      overflow-y: auto;
     }
     .nav-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 9px 12px;
+      padding: 10px 12px;
       border-radius: 8px;
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--text-muted);
       background: transparent;
       border: 1px solid transparent;
       cursor: pointer;
-      transition: all 0.16s ease;
+      transition: all 0.15s ease;
       text-align: left;
     }
-    .nav-item-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .nav-icon {
-      width: 16px;
-      height: 16px;
-      opacity: 0.8;
-    }
     .nav-item:hover {
-      background-color: rgba(30, 41, 59, 0.55);
+      background-color: #151c2a;
       color: #fff;
-      transform: translateX(2px);
     }
     .nav-item.active {
-      background: linear-gradient(90deg, rgba(29, 78, 216, 0.35) 0%, rgba(30, 58, 138, 0.15) 100%);
-      color: var(--blue-light);
-      border-color: rgba(59, 130, 246, 0.45);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), inset 3px 0 0 #3b82f6;
+      background: linear-gradient(90deg, #172554 0%, #111c3d 100%);
+      color: #60a5fa;
+      border-color: #1e3a8a;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
     .nav-counter {
       font-size: 10px;
       padding: 2px 7px;
       border-radius: 99px;
-      background-color: #161f30;
-      color: #94a3b8;
+      background-color: #1e293b;
+      color: #cbd5e1;
       font-weight: 700;
-      border: 1px solid #24324a;
     }
     .nav-item.active .nav-counter {
-      background-color: var(--blue);
+      background-color: #2563eb;
       color: #fff;
-      border-color: var(--blue-light);
     }
-    /* GŁÓWNY OBSZAR */
+    /* GŁÓWNY PANEL */
     .main-area {
       flex: 1;
       display: flex;
       flex-direction: column;
       min-width: 0;
-      position: relative;
+      background-color: var(--bg-main);
     }
     .topbar {
       height: 54px;
-      background: rgba(12, 16, 24, 0.9);
-      backdrop-filter: blur(8px);
+      background-color: var(--bg-sidebar);
       border-bottom: 1px solid var(--border);
       padding: 0 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      z-index: 5;
-    }
-    .pulse-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background-color: #4ade80;
-      box-shadow: 0 0 8px #4ade80;
-      display: inline-block;
-      animation: pulseAnim 2s infinite;
-    }
-    @keyframes pulseAnim {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.45; transform: scale(0.85); }
     }
     .content-scroll {
       flex: 1;
-      padding: 22px 26px;
+      padding: 24px;
       overflow-y: auto;
-      position: relative;
-      z-index: 2;
     }
-    /* KARTY */
+    /* KARTY I FORMULARZE */
     .card {
-      background: var(--bg-card);
-      backdrop-filter: blur(6px);
+      background-color: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 16px;
       margin-bottom: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
     }
     .card-header {
       display: flex;
@@ -195,21 +162,6 @@
       margin-bottom: 12px;
       gap: 10px;
       flex-wrap: wrap;
-    }
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-    .stat-box {
-      background: linear-gradient(135deg, #131b2e 0%, #0d121d 100%);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
     }
     .field-label {
       display: block;
@@ -223,18 +175,18 @@
     .inp, .sel, .txt {
       width: 100%;
       background-color: var(--bg-input);
-      border: 1px solid var(--border-highlight);
+      border: 1px solid var(--border-light);
       color: var(--text);
       border-radius: 8px;
-      padding: 9px 12px;
+      padding: 8px 12px;
       font-size: 13px;
       outline: none;
-      transition: all 0.15s;
+      transition: border-color 0.15s, box-shadow 0.15s;
       font-family: inherit;
     }
     .inp:focus, .sel:focus, .txt:focus {
       border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
     }
     /* PRZYCISKI */
     .btn {
@@ -252,54 +204,84 @@
       color: #fff;
       white-space: nowrap;
     }
-    .btn:active { transform: scale(0.98); }
     .btn-sm { padding: 5px 10px; font-size: 11px; border-radius: 6px; }
-    .btn-blue { background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%); border-color: #60a5fa; box-shadow: 0 3px 10px rgba(37, 99, 235, 0.3); }
-    .btn-blue:hover { background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%); }
-    .btn-green { background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%); border-color: #4ade80; box-shadow: 0 3px 10px rgba(22, 163, 74, 0.3); }
-    .btn-green:hover { background: linear-gradient(180deg, #16a34a 0%, #15803d 100%); }
-    .btn-red { background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%); border-color: #f87171; }
-    .btn-red:hover { background: #b91c1c; }
-    .btn-amber { background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%); border-color: #fbbf24; }
-    .btn-dark { background-color: #161f30; border-color: #283650; color: #cbd5e1; }
-    .btn-dark:hover { background-color: #212e45; color: #fff; border-color: #3b82f6; }
-    /* PRZEŁĄCZNIKI GENERATORA OPISU */
-    .opt-group { display: flex; gap: 6px; flex-wrap: wrap; }
+    .btn-blue { background-color: var(--blue); border-color: #3b82f6; }
+    .btn-blue:hover { background-color: var(--blue-hover); }
+    .btn-green { background-color: var(--green); border-color: #22c55e; }
+    .btn-green:hover { background-color: #15803d; }
+    .btn-red { background-color: var(--red); border-color: #ef4444; }
+    .btn-red:hover { background-color: #b91c1c; }
+    .btn-amber { background-color: var(--amber); border-color: #f59e0b; }
+    .btn-dark { background-color: #182030; border-color: #2c3a52; color: #cbd5e1; }
+    .btn-dark:hover { background-color: #232f46; color: #fff; }
+
+    /* OPCJE GENERATORA OPISU SPRAWY */
+    .opt-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
     .opt-btn {
-      padding: 6px 12px;
+      padding: 6px 10px;
       border-radius: 7px;
       font-size: 11.5px;
       font-weight: 700;
       cursor: pointer;
-      background-color: #0b0f18;
-      border: 1px solid #233048;
+      background-color: #0d121c;
+      border: 1px solid #243047;
       color: #94a3b8;
       transition: all 0.15s;
     }
-    .opt-btn:hover { border-color: #3b82f6; color: #fff; }
-    .opt-btn.active-green { background: rgba(22, 163, 74, 0.22); border-color: #22c55e; color: #4ade80; }
-    .opt-btn.active-red { background: rgba(220, 38, 38, 0.22); border-color: #ef4444; color: #f87171; }
-    .opt-btn.active-blue { background: rgba(37, 99, 235, 0.25); border-color: #3b82f6; color: #60a5fa; }
+    .opt-btn:hover {
+      border-color: #3b82f6;
+      color: #fff;
+    }
+    .opt-btn.active-green {
+      background-color: rgba(22, 163, 74, 0.22);
+      border-color: #22c55e;
+      color: #4ade80;
+    }
+    .opt-btn.active-red {
+      background-color: rgba(220, 38, 38, 0.22);
+      border-color: #ef4444;
+      color: #f87171;
+    }
+    .opt-btn.active-blue {
+      background-color: rgba(37, 99, 235, 0.25);
+      border-color: #3b82f6;
+      color: #60a5fa;
+    }
+    .opt-btn.active-amber {
+      background-color: rgba(217, 119, 6, 0.22);
+      border-color: #f59e0b;
+      color: #fbbf24;
+    }
+    .ctx-question-box {
+      background-color: #090d16;
+      border: 1px solid #1e2d4a;
+      border-left: 3px solid #3b82f6;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 8px;
+    }
     /* KAFELKI TARYFIKATORA */
     .penal-category-title {
       font-size: 12px;
       font-weight: 800;
-      color: #60a5fa;
+      color: #e2e8f0;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
       margin: 18px 0 10px;
-      padding-bottom: 4px;
-      border-bottom: 1px solid #1e293b;
     }
-    .penal-category-title:first-child { margin-top: 2px; }
+    .penal-category-title:first-child { margin-top: 4px; }
     .penal-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 10px;
     }
     .penal-card {
-      background: linear-gradient(145deg, #0f1420 0%, #0b0e17 100%);
-      border: 1px solid #1e2738;
+      background-color: #0d1119;
+      border: 1px solid #1e2636;
       border-radius: 10px;
       padding: 12px 14px;
       cursor: pointer;
@@ -307,91 +289,104 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 76px;
+      min-height: 74px;
       user-select: none;
     }
     .penal-card:hover {
       border-color: #3b82f6;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      background-color: #111724;
     }
     .penal-card.selected {
-      background: linear-gradient(145deg, #15254a 0%, #0f1b38 100%);
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 1px #60a5fa inset;
+      background-color: #101c38;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px #3b82f6 inset;
     }
-    .penal-card-title { font-weight: 700; font-size: 12.5px; color: #fff; line-height: 1.35; margin-bottom: 8px; }
-    .penal-card-meta { font-size: 11.5px; color: #94a3b8; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+    .penal-card-title {
+      font-weight: 700;
+      font-size: 12.5px;
+      color: #fff;
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+    .penal-card-meta {
+      font-size: 11.5px;
+      color: #94a3b8;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
     /* TABELE */
     .table-wrap {
       overflow-x: auto;
       border: 1px solid var(--border);
-      border-radius: 12px;
-      background: var(--bg-card);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      border-radius: 10px;
+      background-color: var(--bg-card);
     }
-    table.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+    table.tbl {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
     table.tbl th {
       text-align: left;
-      padding: 12px 14px;
-      background-color: #0b0f18;
+      padding: 11px 14px;
+      background-color: #0d111a;
       color: var(--text-muted);
       font-size: 11px;
-      font-weight: 800;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       border-bottom: 1px solid var(--border);
     }
-    table.tbl td { padding: 10px 14px; border-bottom: 1px solid #161f30; vertical-align: middle; }
+    table.tbl td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #171f2e;
+      vertical-align: middle;
+    }
     table.tbl tr:last-child td { border-bottom: none; }
-    table.tbl tr:hover td { background-color: rgba(30, 41, 59, 0.45); }
-    /* PLAKIETKI */
+    table.tbl tr:hover td { background-color: #161e2e; }
+    /* TAGI I ODZNAKI */
     .pill {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       padding: 3px 9px;
       border-radius: 6px;
       font-size: 11px;
       font-weight: 700;
     }
-    .pill-blue { background: rgba(37, 99, 235, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
-    .pill-green { background: rgba(22, 163, 74, 0.18); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
-    .pill-amber { background: rgba(217, 119, 6, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
-    .pill-red { background: rgba(220, 38, 38, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
-    .pill-purple { background: rgba(147, 51, 234, 0.18); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
-    .pill-gray { background: #161f30; color: #94a3b8; border: 1px solid #293853; }
+    .pill-blue { background: rgba(37, 99, 235, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35); }
+    .pill-green { background: rgba(22, 163, 74, 0.18); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.35); }
+    .pill-amber { background: rgba(217, 119, 6, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
+    .pill-red { background: rgba(220, 38, 38, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }
+    .pill-gray { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
     .chip-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 7px 11px;
+      padding: 7px 10px;
       background-color: var(--bg-input);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 7px;
       margin-bottom: 6px;
       font-size: 12px;
     }
-    .chip-remove { background: transparent; border: none; color: #ef4444; font-weight: 800; cursor: pointer; padding: 0 4px; font-size: 14px; }
-    /* KARTY DISPATCH */
-    .dispatch-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 12px;
+    .chip-remove {
+      background: transparent;
+      border: none;
+      color: #ef4444;
+      font-weight: 800;
+      cursor: pointer;
+      padding: 0 4px;
+      font-size: 14px;
     }
-    .dispatch-card {
-      background: linear-gradient(160deg, #131a29 0%, #0d121d 100%);
-      border: 1px solid #223049;
-      border-left: 4px solid #3b82f6;
-      border-radius: 10px;
-      padding: 12px 14px;
-    }
-    /* MODALE */
+    /* OKNA MODALNE */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(3, 6, 12, 0.84);
-      backdrop-filter: blur(5px);
+      background: rgba(3, 6, 12, 0.82);
+      backdrop-filter: blur(4px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -400,11 +395,11 @@
     }
     .modal-window {
       width: 100%;
-      max-width: 560px;
-      background-color: #101622;
-      border: 1px solid var(--border-highlight);
-      border-radius: 14px;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+      max-width: 580px;
+      background-color: #111622;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75);
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -413,7 +408,7 @@
     .modal-window-lg { max-width: 1040px; }
     .modal-head {
       padding: 14px 18px;
-      background-color: #0b0f18;
+      background-color: #0c1018;
       border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
@@ -421,10 +416,14 @@
       font-weight: 800;
       font-size: 15px;
     }
-    .modal-body { padding: 16px 18px; overflow-y: auto; flex: 1; }
+    .modal-body {
+      padding: 16px 18px;
+      overflow-y: auto;
+      flex: 1;
+    }
     .modal-foot {
       padding: 12px 18px;
-      background-color: #0b0f18;
+      background-color: #0c1018;
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
@@ -433,92 +432,64 @@
     }
     .hidden { display: none !important; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #070a10; }
-    ::-webkit-scrollbar-thumb { background: #263552; border-radius: 3px; }
+    ::-webkit-scrollbar-track { background: #090c12; }
+    ::-webkit-scrollbar-thumb { background: #26334d; border-radius: 3px; }
   </style>
 </head>
 <body>
 
 <div class="tablet-shell">
-  <!-- BOCZNY PANEL TABLETU Z WEKTOROWĄ TARCZĄ LSPD -->
+  <!-- BOCZNY PASEK NAWIGACJI -->
   <aside class="sidebar">
     <div class="brand-header">
-      <svg class="brand-seal-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="32" cy="32" r="30" fill="url(#sealGrad)" stroke="#60a5fa" stroke-width="2.5"/>
-        <circle cx="32" cy="32" r="25" stroke="#93c5fd" stroke-width="1" stroke-dasharray="3 2" opacity="0.7"/>
-        <polygon points="32,10 37,23 51,23 40,31 44,45 32,37 20,45 24,31 13,23 27,23" fill="#fbbf24" stroke="#f59e0b" stroke-width="1.2"/>
-        <circle cx="32" cy="30" r="8" fill="#1e3a8a" stroke="#fbbf24" stroke-width="1.5"/>
-        <text x="32" y="33" text-anchor="middle" fill="#ffffff" font-size="6.5" font-weight="900" font-family="Arial">LSPD</text>
-        <defs>
-          <linearGradient id="sealGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#1d4ed8"/>
-            <stop offset="100%" stop-color="#090d16"/>
-          </linearGradient>
-        </defs>
-      </svg>
+      <div class="brand-seal">LSPD</div>
       <div>
-        <div style="font-weight: 900; font-size: 16px; color: #fff; letter-spacing: 0.02em;">Tablet <span style="color: #3b82f6;">LSPD</span></div>
-        <div style="font-size: 11px; color: var(--text-dim); font-weight: 600;">Los Santos Police Department</div>
+        <div style="font-weight: 800; font-size: 15px; color: #fff;">Tablet <span style="color: #3b82f6;">LSPD</span></div>
+        <div style="font-size: 11px; color: var(--text-dim);">Los Santos Police Department</div>
       </div>
     </div>
 
-    <div class="nav-section-title">KATEGORIE SYSTEMOWE</div>
+    <div class="nav-section-title">KATEGORIE</div>
     <nav class="nav-list">
       <button class="nav-item" id="nav-dyspozytornia" onclick="switchMainView('dyspozytornia')">
-        <span class="nav-item-left">📡 Dyspozytornia</span>
+        <span>📡 Dyspozytornia</span>
         <span class="nav-counter" id="cnt-duty">0</span>
       </button>
-      <button class="nav-item" id="nav-obywatele" onclick="switchMainView('obywatele')">
-        <span class="nav-item-left">👥 Baza Obywateli</span>
-        <span class="nav-counter" id="cnt-citizens">0</span>
-      </button>
-      <button class="nav-item" id="nav-pojazdy" onclick="switchMainView('pojazdy')">
-        <span class="nav-item-left">🚘 Baza Pojazdów</span>
-        <span class="nav-counter" id="cnt-vehicles">0</span>
-      </button>
       <button class="nav-item" id="nav-raporty" onclick="switchMainView('raporty')">
-        <span class="nav-item-left">📋 Raporty</span>
+        <span>📋 Raporty</span>
         <span class="nav-counter" id="cnt-reports">0</span>
       </button>
       <button class="nav-item active" id="nav-sprawy" onclick="switchMainView('sprawy')">
-        <span class="nav-item-left">⚖️ Sprawy (Auto-Opis)</span>
-        <span class="nav-counter">TARYF.</span>
-      </button>
-      <button class="nav-item" id="nav-mandaty" onclick="switchMainView('mandaty')">
-        <span class="nav-item-left">✉️ Mandaty</span>
-        <span class="nav-counter" id="cnt-fines">0</span>
-      </button>
-      <button class="nav-item" id="nav-funkcjonariusze" onclick="switchMainView('funkcjonariusze')">
-        <span class="nav-item-left">👮 Funkcjonariusze</span>
-        <span class="nav-counter" id="cnt-officers">0</span>
+        <span>⚖️ Sprawy (Taryfikator)</span>
+        <span class="nav-counter">PRO</span>
       </button>
       <button class="nav-item" id="nav-patrole" onclick="switchMainView('patrole')">
-        <span class="nav-item-left">🚓 Patrole (PWC)</span>
+        <span>🚓 Patrole (PWC)</span>
         <span class="nav-counter" id="cnt-patrols">0</span>
       </button>
-      <button class="nav-item" id="nav-dispatch" onclick="switchMainView('dispatch')">
-        <span class="nav-item-left">🚨 Dispatch</span>
-        <span class="nav-counter">12</span>
+      <button class="nav-item" id="nav-funkcjonariusze" onclick="switchMainView('funkcjonariusze')">
+        <span>👮 Funkcjonariusze</span>
+        <span class="nav-counter" id="cnt-officers">0</span>
       </button>
 
-      <div class="nav-section-title" style="padding-top: 14px;">SZKOLENIA I FTO</div>
+      <div class="nav-section-title" style="padding-top: 16px;">AKADEMIA I SZKOLENIA</div>
       <button class="nav-item" id="nav-szkolenia" onclick="switchMainView('szkolenia')">
-        <span class="nav-item-left">🎖️ Szkolenia LSPD</span>
+        <span>🎖️ Szkolenia LSPD</span>
         <span class="nav-counter">7</span>
       </button>
       <button class="nav-item" id="nav-kadet" onclick="switchMainView('kadet')">
-        <span class="nav-item-left">🎓 Strefa Kadeta (FTO)</span>
+        <span>🎓 Strefa Kadeta (FTO)</span>
         <span class="nav-counter" id="cnt-cadets">0</span>
       </button>
     </nav>
 
-    <div style="padding: 14px; border-top: 1px solid var(--border); background-color: #070a10;">
+    <div style="padding: 14px; border-top: 1px solid var(--border); background-color: #090c12;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-        <span style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; font-weight: 800;">Zalogowany oficer</span>
+        <span style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; font-weight: 700;">Zalogowany jako</span>
         <button class="btn-sm btn-dark" style="padding: 2px 6px; font-size: 10px;" onclick="changeLoggedInOfficer()">Zmień</button>
       </div>
       <div style="font-weight: 800; font-size: 14px; color: #fff;" id="logged-officer-display">[923] Oley Sasa</div>
-      <div style="font-size: 11px; color: #ef4444; font-weight: 700; margin-top: 2px;">AIAD / FTO / Sergeant I</div>
+      <div style="font-size: 11px; color: #ef4444; font-weight: 700; margin-top: 2px;">AIAD / FTO / Szkoleniowiec</div>
     </div>
   </aside>
 
@@ -526,28 +497,27 @@
   <div class="main-area">
     <header class="topbar">
       <div style="display: flex; align-items: center; gap: 14px;">
-        <span class="pill pill-green"><span class="pulse-dot"></span> SŁUŻBA AKTYWNA (LSPD TAC #1)</span>
-        <span class="pill pill-blue" id="top-pwc-badge">PWC: [80] Henry Scott</span>
+        <span class="pill pill-green">● NA SŁUŻBIE (10-8)</span>
         <span id="active-patrol-timers-banner" class="pill pill-amber hidden">⏱ Aktywny stoper kadeta</span>
       </div>
       <div style="display: flex; align-items: center; gap: 10px;">
         <span id="live-clock" style="font-family: monospace; font-size: 13px; color: var(--text-muted); font-weight: 700;"></span>
-        <button class="btn btn-sm btn-dark" onclick="exportAllTabletData()">💾 Eksport JSON</button>
+        <button class="btn btn-sm btn-dark" onclick="exportAllTabletData()">💾 Eksport danych</button>
         <button class="btn btn-sm btn-dark" onclick="resetFactoryDefaults()">🔄 Reset bazy</button>
       </div>
     </header>
 
     <main class="content-scroll">
-      <div id="toast-alert" style="position: fixed; bottom: 22px; right: 22px; background: linear-gradient(135deg, #1d4ed8, #1e3a8a); color: #fff; padding: 12px 18px; border-radius: 10px; font-weight: 700; border: 1px solid #60a5fa; box-shadow: 0 12px 30px rgba(0,0,0,0.75); display: none; z-index: 9999;"></div>
+      <div id="toast-alert" style="position: fixed; bottom: 22px; right: 22px; background: #1d4ed8; color: #fff; padding: 12px 18px; border-radius: 8px; font-weight: 700; border: 1px solid #60a5fa; box-shadow: 0 10px 25px rgba(0,0,0,0.65); display: none; z-index: 9999;"></div>
 
       <!-- ========================================================= -->
-      <!-- 1. ZAKŁADKA: SPRAWY I AUTOMATYCZNY GENERATOR OPISU        -->
+      <!-- 1. ZAKŁADKA: SPRAWY I ROZBUDOWANY GENERATOR OPISU         -->
       <!-- ========================================================= -->
       <section id="view-sprawy">
         <div class="card-header" style="margin-bottom: 16px;">
           <div>
             <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Nowa sprawa</h1>
-            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Kartoteka zatrzymania, dobór zarzutów i decyzja końcowa z automatycznym generatorem opisu</p>
+            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Kartoteka zatrzymania, dobór zarzutów, pytania kontekstowe (Tracker / Broń / Pościg) i wielowariantowy generator opisu</p>
           </div>
           <div style="display: flex; gap: 8px;">
             <button class="btn btn-dark" onclick="resetCaseForm()">🗑️ Odrzuć szkic</button>
@@ -556,9 +526,11 @@
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1.75fr 1fr; gap: 16px;">
+        <div style="display: grid; grid-template-columns: 1.8fr 1fr; gap: 16px;">
+          <!-- LEWA KOLUMNA -->
           <div>
             <div class="card">
+              <!-- PROWADZĄCY I KONFISKATA -->
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
                 <div>
                   <label class="field-label">FUNKCJONARIUSZ PROWADZĄCY</label>
@@ -566,33 +538,77 @@
                 </div>
                 <div>
                   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <label class="field-label" style="margin: 0;">KONFISKATA</label>
+                    <label class="field-label" style="margin: 0;">KONFISKATA / ZABEZPIECZONE DOWODY</label>
                     <button class="btn btn-sm btn-blue" onclick="addConfiscatedItemPrompt()">+ Dodaj konfiskatę</button>
                   </div>
-                  <div id="case-confiscated-box" style="font-size: 12px; color: var(--text-dim);">Brak wpisanych konfiskat (dodają się automatycznie z zarzutów)</div>
+                  <div id="case-confiscated-box" style="font-size: 12px; color: var(--text-dim);">Brak wpisanych konfiskat</div>
                 </div>
               </div>
 
+              <!-- FUNKCJONARIUSZE POMOCNICZY (PEŁNA LISTA Z SCREENÓW) -->
               <div style="margin-bottom: 14px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                  <label class="field-label" style="margin: 0;">FUNKCJONARIUSZE POMOCNICZY</label>
-                  <button class="btn btn-sm btn-blue" onclick="openPickerModal('case_officers')">+ Dodaj jednostkę</button>
+                  <label class="field-label" style="margin: 0;">FUNKCJONARIUSZE POMOCNICZY (Z BAZY LSPD)</label>
+                  <button class="btn btn-sm btn-blue" onclick="openPickerModal('case_officers')">+ Dodaj jednostkę (66 FP w bazie)</button>
                 </div>
                 <div id="case-assist-officers-box"></div>
               </div>
 
-              <!-- PRZEŁĄCZNIKI AUTOMATYCZNEGO OPISU SPRAWY -->
-              <div style="background: linear-gradient(145deg, #0d1322 0%, #090d16 100%); border: 1px solid #22324d; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
-                  <span style="font-size: 11.5px; font-weight: 800; color: #60a5fa; text-transform: uppercase;">⚙️ Ustawienia Automatycznego Opisu Sprawy</span>
-                  <label style="font-size: 11.5px; color: #cbd5e1; display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                    <input type="checkbox" id="auto-desc-toggle" checked onchange="generateAutoCaseDescription()" />
-                    Automatycznie buduj opis po zaznaczeniu w taryfikatorze
-                  </label>
+              <!-- ROZBUDOWANY KONFIGURATOR OKOLICZNOŚCI SPRAWY -->
+              <div style="background: #0b101b; border: 1px solid #1f2b42; border-radius: 10px; padding: 14px; margin-bottom: 14px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid #1a2438; padding-bottom: 8px;">
+                  <span style="font-size: 12px; font-weight: 800; color: #60a5fa; text-transform: uppercase;">⚙️ Szczegóły Interwencji i Generator Opisu</span>
+                  <div style="display: flex; gap: 6px; align-items: center;">
+                    <span style="font-size: 11px; color: var(--text-muted); font-weight: 700;">Styl opisu:</span>
+                    <select id="desc-style-select" class="sel" style="width: 210px; padding: 4px 8px; font-size: 11.5px;" onchange="setNarrativeStyle(this.value)">
+                      <option value="0">Wariant 1: Oficjalny procesowy</option>
+                      <option value="1">Wariant 2: Chronologiczny z akcji</option>
+                      <option value="2">Wariant 3: Zwięzły raport operacyjny</option>
+                      <option value="3">Wariant 4: Protokół śledczo-dowodowy</option>
+                      <option value="4">Wariant 5: Raport patrolowy z zatrzymania</option>
+                    </select>
+                    <button type="button" class="btn btn-sm btn-amber" onclick="randomizeNarrativeStyle()">🎲 Losuj inny styl</button>
+                  </div>
                 </div>
 
-                <div style="margin-bottom: 10px;">
-                  <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;">1. CZY WSPÓŁPRACOWAŁ I PRZYZNAŁ SIĘ DO WINY:</div>
+                <!-- PYTANIE 1: CZY POSIADAŁ BROŃ I JAKĄ -->
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 11px; color: #cbd5e1; font-weight: 700; margin-bottom: 6px;">1. CZY ZATRZYMANY POSIADAŁ PRZY SOBIE BROŃ? (Możesz zaznaczyć jedną lub kilka):</div>
+                  <div class="opt-group" id="weapon-options-group">
+                    <button type="button" class="opt-btn active-green" id="wpn-none" onclick="toggleWeaponClass('NONE')">🚫 Brak broni</button>
+                    <button type="button" class="opt-btn" id="wpn-melee" onclick="toggleWeaponClass('Broń biała')">🔪 Broń biała</button>
+                    <button type="button" class="opt-btn" id="wpn-c1" onclick="toggleWeaponClass('Broń Klasy I')">🔫 Klasa I</button>
+                    <button type="button" class="opt-btn" id="wpn-c2" onclick="toggleWeaponClass('Broń Klasy II')">🔫 Klasa II</button>
+                    <button type="button" class="opt-btn" id="wpn-c3" onclick="toggleWeaponClass('Broń Klasy III')"> rifles Klasa III (Długa/SMG)</button>
+                    <button type="button" class="opt-btn" id="wpn-c4" onclick="toggleWeaponClass('Broń Klasy IV')">💥 Klasa IV (Ciężka)</button>
+                    <button type="button" class="opt-btn" id="wpn-police" onclick="toggleWeaponClass('Sprzęt policyjny')">⚡ Sprzęt policyjny / Tazer</button>
+                  </div>
+
+                  <!-- Dodatkowe szczegóły broni (pojawiają się, gdy wybrano jakąkolwiek broń) -->
+                  <div id="weapon-extra-panel" class="ctx-question-box hidden" style="margin-top: 8px;">
+                    <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 10px; align-items: center;">
+                      <div>
+                        <label style="font-size: 10.5px; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 4px;">DOKŁADNY MODEL BRONI / AMUNICJA (OPCJONALNIE):</label>
+                        <input type="text" id="weapon-model-inp" class="inp" style="padding: 6px 10px; font-size: 12px;" placeholder="Np. Pistolet Vintage + 32 szt. amunicji / Maczeta..." oninput="generateAutoCaseDescription()" />
+                      </div>
+                      <div>
+                        <label style="font-size: 10.5px; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 4px;">STATUS LICENCJI I UŻYCIA BRONI:</label>
+                        <select id="weapon-license-sel" class="sel" style="padding: 6px 10px; font-size: 12px;" onchange="generateAutoCaseDescription()">
+                          <option value="illegal">Posiadał nielegalnie (Brak licencji na broń)</option>
+                          <option value="revoked">Posiadał licencję — licencja została odebrana</option>
+                          <option value="used">Użył broni (Oddał strzały / zaatakował)</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- DYNAMICZNE PYTANIA KONTEKSTOWE DO ZARZUTÓW (Kradzież auta / Tracker, Pościg, Napad, Narkotyki, Zdrowie) -->
+                <div id="dynamic-charge-questions-container"></div>
+
+                <!-- PYTANIE 2: POSTAWA ZATRZYMANEGO -->
+                <div style="margin-bottom: 10px; margin-top: 10px;">
+                  <div style="font-size: 11px; color: #cbd5e1; font-weight: 700; margin-bottom: 6px;">2. POSTAWA ZATRZYMANEGO I PRZYZNANIE SIĘ DO WINY:</div>
                   <div class="opt-group">
                     <button type="button" class="opt-btn active-green" id="att-coop" onclick="setCaseAttitude('coop')">
                       🤝 Współpracował i przyznał się do winy
@@ -603,11 +619,15 @@
                     <button type="button" class="opt-btn" id="att-silent" onclick="setCaseAttitude('silent')">
                       😶 Wykonywał polecenia, ale odmówił składania wyjaśnień
                     </button>
+                    <button type="button" class="opt-btn" id="att-aggr" onclick="setCaseAttitude('aggr')">
+                      🤬 Był agresywny, stawiał opór i utrudniał czynności
+                    </button>
                   </div>
                 </div>
 
+                <!-- PYTANIE 3: KOMENDA / WIĘZIENIE -->
                 <div>
-                  <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;">2. CZY ZOSTANIE ZATRZYMANY NA KOMENDZIE / WIĘZIENIE:</div>
+                  <div style="font-size: 11px; color: #cbd5e1; font-weight: 700; margin-bottom: 6px;">3. DECYZJA KOŃCOWA (KOMENDA / WIĘZIENIE):</div>
                   <div class="opt-group">
                     <button type="button" class="opt-btn active-blue" id="det-station" onclick="setCaseDetention('station')">
                       🏢 Zostaje zatrzymany na komendzie (Cele LSPD)
@@ -622,37 +642,43 @@
                 </div>
               </div>
 
+              <!-- POLE OPISU SPRAWY -->
               <div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                  <label class="field-label" style="margin: 0;">OPIS SPRAWY</label>
-                  <button type="button" class="btn btn-sm btn-dark" onclick="generateAutoCaseDescription(true)">🔄 Wygeneruj ponownie z zarzutów</button>
+                  <label class="field-label" style="margin: 0;">OPIS SPRAWY (GOTOWY DO WKLEJENIA W GRZE)</label>
+                  <div style="display: flex; gap: 6px;">
+                    <button type="button" class="btn btn-sm btn-amber" onclick="randomizeNarrativeStyle()">🎲 Przeredaguj opis (Inny styl)</button>
+                    <button type="button" class="btn btn-sm btn-dark" onclick="generateAutoCaseDescription(true)">🔄 Odśwież</button>
+                  </div>
                 </div>
-                <textarea id="case-desc" rows="7" class="txt" style="line-height: 1.55;" placeholder="Kliknij poniżej „+ Dodaj wyrok”, zaznacz przestępstwa w taryfikatorze, a opis sprawy wygeneruje się sam..."></textarea>
+                <textarea id="case-desc" rows="8" class="txt" style="line-height: 1.55;" placeholder="Wybierz zarzuty z taryfikatora poniżej (+ Dodaj wyrok), odpowiedz na pytania pomocnicze, a realistyczny opis wygeneruje się sam..."></textarea>
               </div>
             </div>
 
+            <!-- KARTA WYBRANYCH PRZESTĘPSTW -->
             <div class="card" style="margin-bottom: 0;">
               <div class="card-header">
                 <div>
-                  <div class="field-label" style="margin: 0;">PRZESTĘPSTWA</div>
-                  <div style="font-size: 11px; color: var(--text-dim);">Wszystkie 10 kategorii taryfikatora LSPD</div>
+                  <div class="field-label" style="margin: 0;">PRZESTĘPSTWA (WYBRANE ZARZUTY)</div>
+                  <div style="font-size: 11px; color: var(--text-dim);">Kliknij „+ Dodaj wyrok”, aby otworzyć taryfikator (wyszukanie zarzutu odblokuje dodatkowe pytania powyżej)</div>
                 </div>
                 <div style="display: flex; gap: 8px;">
                   <button type="button" class="btn btn-sm btn-dark" onclick="clearCaseCharges()">Wyczyść</button>
-                  <button type="button" class="btn btn-blue" onclick="openPenalModal()">+ Dodaj wyrok</button>
+                  <button type="button" class="btn btn-blue" onclick="openPenalModal()">+ Dodaj wyrok (Taryfikator)</button>
                 </div>
               </div>
               <div id="case-selected-list"></div>
             </div>
           </div>
 
+          <!-- PRAWA KOLUMNA -->
           <div style="display: flex; flex-direction: column; gap: 16px;">
             <div class="card" style="margin-bottom: 0;">
               <div class="card-header">
-                <span class="field-label" style="margin: 0;">OBYWATEL</span>
-                <button class="btn btn-sm btn-blue" onclick="openPickerModal('case_citizen')">+ Wybierz z bazy</button>
+                <span class="field-label" style="margin: 0;">OBYWATEL (ZATRZYMANY)</span>
               </div>
-              <input type="text" id="case-citizen" class="inp" placeholder="Wpisz lub wybierz obywatela..." oninput="generateAutoCaseDescription()" />
+              <input type="text" id="case-citizen" class="inp" placeholder="Wpisz imię i nazwisko zatrzymanego..." oninput="generateAutoCaseDescription()" />
+              <div style="font-size: 11px; color: var(--text-dim); margin-top: 6px;">Wpisanie danych obywatela od razu wplecie je w opis sprawy.</div>
             </div>
 
             <div class="card" style="margin-bottom: 0;">
@@ -671,80 +697,164 @@
                 <button type="button" class="btn btn-blue" style="padding: 11px;" onclick="finalizeCaseAction('prison')">🔒 Wyślij do więzienia</button>
                 <button type="button" class="btn btn-green" style="padding: 11px;" onclick="finalizeCaseAction('court')">⚖️ Postępowanie sądowe</button>
                 <button type="button" class="btn btn-dark" style="padding: 11px;" onclick="finalizeCaseAction('pardon')">🕊️ Ułaskaw</button>
-                <button type="button" class="btn btn-amber" style="padding: 11px;" onclick="finalizeCaseAction('station')">🏢 Zatrzymanie</button>
+                <button type="button" class="btn btn-amber" style="padding: 11px;" onclick="finalizeCaseAction('station')">🏢 Zatrzymanie (Komenda)</button>
               </div>
             </div>
 
             <div class="card" style="margin-bottom: 0; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
               <div>
-                <div class="field-label">PODGLĄD WYROKU</div>
-                <div id="case-quick-preview" style="font-size: 12px; color: var(--text-muted); line-height: 1.5; background: var(--bg-input); padding: 12px; border-radius: 8px; border: 1px solid var(--border); min-height: 115px; white-space: pre-line;">Brak wybranych zarzutów.</div>
+                <div class="field-label">PODGLĄD PODSUMOWANIA ZARZUTÓW</div>
+                <div id="case-quick-preview" style="font-size: 12px; color: var(--text-muted); line-height: 1.5; background: var(--bg-input); padding: 12px; border-radius: 8px; border: 1px solid var(--border); min-height: 120px; white-space: pre-line;">Brak wybranych zarzutów.</div>
               </div>
-              <button type="button" class="btn btn-blue" style="width: 100%; padding: 12px; margin-top: 12px;" onclick="copyCaseTextOnly()">📋 Kopiuj sam opis sprawy (Do wklejenia w MDT)</button>
+              <button type="button" class="btn btn-blue" style="width: 100%; padding: 12px; margin-top: 12px;" onclick="copyCaseTextOnly()">📋 Kopiuj sam tekst opisu sprawy</button>
             </div>
           </div>
         </div>
       </section>
 
       <!-- ========================================================= -->
-      <!-- 2. ZAKŁADKA: FUNKCJONARIUSZE (PEŁNA LISTA 54+ OSÓB)       -->
+      <!-- 2. ZAKŁADKA: RAPORTY (LISTA + CZYSTY FORMULARZ)           -->
       <!-- ========================================================= -->
-      <section id="view-funkcjonariusze" class="hidden">
-        <div class="card-header" style="margin-bottom: 16px;">
-          <div>
-            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Funkcjonariusze LSPD</h1>
-            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Wykaz wszystkich funkcjonariuszy z nagrań, status służby, stopnie oraz posiadane licencje szkoleniowe</p>
+      <section id="view-raporty" class="hidden">
+        <div id="reports-list-subview">
+          <div class="card-header" style="margin-bottom: 16px;">
+            <div>
+              <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Raporty służbowe</h1>
+              <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Przeglądanie, wyszukiwanie i wystawianie raportów służbowych LSPD</p>
+            </div>
+            <button class="btn btn-blue" onclick="openCleanReportCreator()">+ Nowy raport</button>
           </div>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <input type="text" id="off-search-inp" class="inp" style="width: 240px;" placeholder="🔍 Szukaj odznaki lub nazwiska..." oninput="renderAllOfficersView()" />
-            <select id="off-status-filter" class="sel" style="width: 150px;" onchange="renderAllOfficersView()">
-              <option value="ALL">Wszyscy</option>
-              <option value="Na służbie">Tylko na służbie</option>
-              <option value="Poza służbą">Poza służbą</option>
-            </select>
-            <input type="text" id="add-off-badge" class="inp" style="width: 80px;" placeholder="Odznaka" />
-            <input type="text" id="add-off-name" class="inp" style="width: 160px;" placeholder="Imię i nazwisko" />
-            <input type="text" id="add-off-rank" class="inp" style="width: 125px;" value="Officer I" placeholder="Stopień" />
-            <button class="btn btn-green" onclick="createOfficerInDB()">+ Dodaj</button>
+
+          <div class="card" style="padding: 12px 16px;">
+            <input type="text" id="report-search-inp" class="inp" placeholder="🔍 Wyszukaj po tytule, funkcjonariuszu lub numerze raportu np. #308..." oninput="renderReportsList()" />
+          </div>
+
+          <div class="table-wrap">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th style="width: 70px;">Nr</th>
+                  <th>Funkcjonariusz</th>
+                  <th>Tytuł</th>
+                  <th>Rodzaj</th>
+                  <th>Data sporządzenia</th>
+                  <th style="text-align: right;">Akcje</th>
+                </tr>
+              </thead>
+              <tbody id="reports-tbody"></tbody>
+            </table>
           </div>
         </div>
-        <div class="table-wrap">
-          <table class="tbl">
-            <thead>
-              <tr>
-                <th>Odznaka</th>
-                <th>Imię i nazwisko</th>
-                <th>Stopień</th>
-                <th>Jednostka / Kanał</th>
-                <th>Posiadane Szkolenia Specjalistyczne</th>
-                <th>Status (Kliknij aby zmienić)</th>
-                <th style="text-align:right;">Akcje</th>
-              </tr>
-            </thead>
-            <tbody id="all-officers-tbody"></tbody>
-          </table>
+
+        <div id="reports-form-subview" class="hidden">
+          <div class="card-header" style="margin-bottom: 16px;">
+            <div>
+              <h1 style="margin: 0; font-size: 20px; font-weight: 800;" id="rep-form-header">Nowy raport</h1>
+              <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Tworzenie raportu służbowego</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-dark" onclick="copyCurrentReportForm()">📋 Kopiuj do schowka</button>
+              <button class="btn btn-dark" onclick="closeReportCreator()">‹ Powrót do raportów</button>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 2.2fr 1fr; gap: 16px;">
+            <div>
+              <div class="card">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 14px;">
+                  <div>
+                    <label class="field-label">TYTUŁ RAPORTU</label>
+                    <input type="text" id="rf-title" class="inp" placeholder="Np. Podsumowanie akcji Sandy Shores" />
+                  </div>
+                  <div>
+                    <label class="field-label">RODZAJ RAPORTU</label>
+                    <select id="rf-type" class="sel">
+                      <option value="Podsumowanie akcji">Podsumowanie akcji</option>
+                      <option value="Patrolowy">Patrolowy</option>
+                      <option value="Pościgowy">Pościgowy</option>
+                      <option value="Operacyjny">Operacyjny</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                  <label class="field-label" style="margin: 0;">TREŚĆ RAPORTU</label>
+                  <div style="display: flex; gap: 6px;">
+                    <button type="button" class="btn btn-sm btn-dark" onclick="insertReportTemplate('akcja')">+ Szablon akcji</button>
+                    <button type="button" class="btn btn-sm btn-dark" onclick="insertReportTemplate('poscig')">+ Szablon 10-80</button>
+                    <button type="button" class="btn btn-sm btn-dark" onclick="document.getElementById('rf-body').value=''">Wyczyść</button>
+                  </div>
+                </div>
+                <textarea id="rf-body" rows="13" class="txt" placeholder="Opisz przebieg akcji, ustalenia, wnioski, użyte jednostki itd."></textarea>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="card" style="margin-bottom: 0;">
+                  <div class="card-header">
+                    <div>
+                      <div class="field-label" style="margin: 0;">OSOBY POWIĄZANE</div>
+                      <div style="font-size: 11px; color: var(--text-dim);">Bez wchodzenia w szczegóły kartoteki</div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-blue" onclick="openPickerModal('persons')">+</button>
+                  </div>
+                  <div id="rf-persons-box"></div>
+                </div>
+
+                <div class="card" style="margin-bottom: 0;">
+                  <div class="card-header">
+                    <div>
+                      <div class="field-label" style="margin: 0;">POJAZDY POWIĄZANE</div>
+                      <div style="font-size: 11px; color: var(--text-dim);">Opcjonalnie, np. pojazdy z akcji</div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-blue" onclick="openPickerModal('vehicles')">+</button>
+                  </div>
+                  <div id="rf-vehicles-box"></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <div class="card" style="margin-bottom: 0;">
+                <div class="field-label">AUTOR</div>
+                <div style="font-size: 15px; font-weight: 800; color: #fff;" id="rf-author">[923] Oley Sasa</div>
+              </div>
+
+              <div class="card" style="flex: 1; margin-bottom: 0;">
+                <div class="card-header">
+                  <div>
+                    <div class="field-label" style="margin: 0;">FUNKCJONARIUSZE</div>
+                    <div style="font-size: 11px; color: var(--text-dim);">Dodatkowe jednostki w raporcie</div>
+                  </div>
+                  <button type="button" class="btn btn-sm btn-blue" onclick="openPickerModal('officers')">+</button>
+                </div>
+                <div id="rf-officers-box"></div>
+              </div>
+
+              <button type="button" class="btn btn-blue" style="padding: 13px; font-size: 14px;" onclick="saveReportFromForm()">💾 Zapisz raport</button>
+            </div>
+          </div>
         </div>
       </section>
 
       <!-- ========================================================= -->
-      <!-- 3. ZAKŁADKA: SZKOLENIA LSPD (Z GRAFICZNYMI MAPKAMI SVG)   -->
+      <!-- 3. ZAKŁADKA: SZKOLENIA LSPD (SPECJALISTYCZNE - DLA KAŻDEGO)-->
       <!-- ========================================================= -->
       <section id="view-szkolenia" class="hidden">
         <div class="card-header" style="margin-bottom: 16px;">
           <div>
             <h1 style="margin: 0; font-size: 20px; font-weight: 800;">🎖️ Szkolenia Specjalistyczne LSPD (Dla wszystkich funkcjonariuszy)</h1>
-            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">RTO+HRO, NEGO, SV, PWC+APWC, ASU, MERRY, SEU — interaktywny egzaminator, stoper prób, mapy taktyczne SVG oraz matryca licencji</p>
+            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">RTO+HRO, NEGO, SV, PWC+APWC, ASU, MERRY, SEU — interaktywny egzaminator, stoper prób praktycznych oraz matryca licencji</p>
           </div>
           <div style="display: flex; gap: 8px;">
             <button class="btn btn-blue" id="btn-szk-exam" onclick="switchSzkMode('exam')">📖 Arkusz Egzaminacyjny</button>
-            <button class="btn btn-dark" id="btn-szk-matrix" onclick="switchSzkMode('matrix')">👮 Matryca Licencji (Wszyscy FP)</button>
+            <button class="btn btn-dark" id="btn-szk-matrix" onclick="switchSzkMode('matrix')">👮 Matryca Licencji Funkcjonariuszy</button>
           </div>
         </div>
 
         <div id="szk-mode-exam">
           <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
             <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-              <span style="font-weight: 700; color: var(--text-muted);">Funkcjonariusz podchodzący do szkolenia:</span>
+              <span style="font-weight: 700; color: var(--text-muted);">Szkolony funkcjonariusz:</span>
               <select id="szk-officer-select" class="sel" style="width: 260px;"></select>
             </div>
 
@@ -768,7 +878,7 @@
         <div id="szk-mode-matrix" class="hidden">
           <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
             <input type="text" id="matrix-search-inp" class="inp" style="max-width: 320px;" placeholder="🔍 Szukaj funkcjonariusza po odznace lub nazwisku..." oninput="renderLicenseMatrix()" />
-            <span style="font-size: 12px; color: var(--text-muted);">Kliknij dowolną licencję przy funkcjonariuszu, aby ją aktywować lub dezaktywować.</span>
+            <span style="font-size: 12px; color: var(--text-muted);">Kliknij wybraną plakietkę szkolenia przy funkcjonariuszu, aby nadać lub odebrać uprawnienie.</span>
           </div>
           <div class="table-wrap">
             <table class="tbl">
@@ -776,9 +886,9 @@
                 <tr>
                   <th>Odznaka</th>
                   <th>Imię i nazwisko</th>
-                  <th>Stopień</th>
+                  <th>Jednostka</th>
                   <th>Uprawnienia (RTO+HRO, NEGO, SV, PWC+APWC, ASU, MERRY, SEU)</th>
-                  <th>Ostatni wpis</th>
+                  <th>Ostatnia zmiana</th>
                 </tr>
               </thead>
               <tbody id="matrix-tbody"></tbody>
@@ -788,7 +898,7 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 4. ZAKŁADKA: STREFA KADETA (FTO + STOPER START/STOP)      -->
+      <!-- 4. ZAKŁADKA: STREFA KADETA (FTO - TYLKO DLA REKRUTÓW)     -->
       <!-- ========================================================= -->
       <section id="view-kadet" class="hidden">
         <div class="card-header" style="margin-bottom: 16px;">
@@ -948,250 +1058,7 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 5. ZAKŁADKA: RAPORTY (LISTA Z GRY + CZYSTY FORMULARZ)     -->
-      <!-- ========================================================= -->
-      <section id="view-raporty" class="hidden">
-        <div id="reports-list-subview">
-          <div class="card-header" style="margin-bottom: 16px;">
-            <div>
-              <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Raporty</h1>
-              <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Wyszukiwanie raportów i podgląd podstawowych danych</p>
-            </div>
-            <button class="btn btn-blue" onclick="openCleanReportCreator()">+ Nowy raport</button>
-          </div>
-
-          <div class="card" style="padding: 12px 16px;">
-            <input type="text" id="report-search-inp" class="inp" placeholder="🔍 Wyszukaj po tytule, funkcjonariuszu lub numerze raportu np. #303..." oninput="renderReportsList()" />
-          </div>
-
-          <div class="table-wrap">
-            <table class="tbl">
-              <thead>
-                <tr>
-                  <th style="width: 70px;">Nr</th>
-                  <th>Funkcjonariusz</th>
-                  <th>Tytuł</th>
-                  <th>Rodzaj</th>
-                  <th>Data sporządzenia</th>
-                  <th style="text-align: right;">Akcje</th>
-                </tr>
-              </thead>
-              <tbody id="reports-tbody"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <div id="reports-form-subview" class="hidden">
-          <div class="card-header" style="margin-bottom: 16px;">
-            <div>
-              <h1 style="margin: 0; font-size: 20px; font-weight: 800;" id="rep-form-header">Nowy raport</h1>
-              <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Tworzenie raportu służbowego</p>
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn btn-dark" onclick="copyCurrentReportForm()">📋 Kopiuj do schowka</button>
-              <button class="btn btn-dark" onclick="closeReportCreator()">‹ Powrót do raportów</button>
-            </div>
-          </div>
-
-          <div style="display: grid; grid-template-columns: 2.2fr 1fr; gap: 16px;">
-            <div>
-              <div class="card">
-                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 14px;">
-                  <div>
-                    <label class="field-label">TYTUŁ RAPORTU</label>
-                    <input type="text" id="rf-title" class="inp" placeholder="Np. Podsumowanie akcji Sandy Shores" />
-                  </div>
-                  <div>
-                    <label class="field-label">RODZAJ RAPORTU</label>
-                    <select id="rf-type" class="sel">
-                      <option value="Podsumowanie akcji">Podsumowanie akcji</option>
-                      <option value="Patrolowy">Patrolowy</option>
-                      <option value="Pościgowy">Pościgowy</option>
-                      <option value="Operacyjny">Operacyjny</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
-                  <label class="field-label" style="margin: 0;">TREŚĆ RAPORTU</label>
-                  <div style="display: flex; gap: 6px;">
-                    <button type="button" class="btn btn-sm btn-dark" onclick="insertReportTemplate('akcja')">+ Szablon akcji</button>
-                    <button type="button" class="btn btn-sm btn-dark" onclick="insertReportTemplate('poscig')">+ Szablon 10-80</button>
-                    <button type="button" class="btn btn-sm btn-dark" onclick="document.getElementById('rf-body').value=''">Wyczyść</button>
-                  </div>
-                </div>
-                <textarea id="rf-body" rows="13" class="txt" placeholder="Opisz przebieg akcji, ustalenia, wnioski, użyte jednostki itd."></textarea>
-              </div>
-
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                <div class="card" style="margin-bottom: 0;">
-                  <div class="card-header">
-                    <div>
-                      <div class="field-label" style="margin: 0;">OSOBY POWIĄZANE</div>
-                      <div style="font-size: 11px; color: var(--text-dim);">Bez wchodzenia w szczegóły kartoteki</div>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-blue" onclick="openPickerModal('persons')">+</button>
-                  </div>
-                  <div id="rf-persons-box"></div>
-                </div>
-
-                <div class="card" style="margin-bottom: 0;">
-                  <div class="card-header">
-                    <div>
-                      <div class="field-label" style="margin: 0;">POJAZDY POWIĄZANE</div>
-                      <div style="font-size: 11px; color: var(--text-dim);">Opcjonalnie, np. pojazdy z akcji</div>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-blue" onclick="openPickerModal('vehicles')">+</button>
-                  </div>
-                  <div id="rf-vehicles-box"></div>
-                </div>
-              </div>
-            </div>
-
-            <div style="display: flex; flex-direction: column; gap: 16px;">
-              <div class="card" style="margin-bottom: 0;">
-                <div class="field-label">AUTOR</div>
-                <div style="font-size: 15px; font-weight: 800; color: #fff;" id="rf-author">[923] Oley Sasa</div>
-              </div>
-
-              <div class="card" style="flex: 1; margin-bottom: 0;">
-                <div class="card-header">
-                  <div>
-                    <div class="field-label" style="margin: 0;">FUNKCJONARIUSZE</div>
-                    <div style="font-size: 11px; color: var(--text-dim);">Dodatkowe jednostki w raporcie</div>
-                  </div>
-                  <button type="button" class="btn btn-sm btn-blue" onclick="openPickerModal('officers')">+</button>
-                </div>
-                <div id="rf-officers-box"></div>
-              </div>
-
-              <button type="button" class="btn btn-blue" style="padding: 13px; font-size: 14px;" onclick="saveReportFromForm()">💾 Zapisz raport</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ========================================================= -->
-      <!-- 6. ZAKŁADKA: DYSPOZYTORNIA                                -->
-      <!-- ========================================================= -->
-      <section id="view-dyspozytornia" class="hidden">
-        <div class="stat-grid">
-          <div class="stat-box">
-            <div>
-              <div style="font-size: 11px; color: var(--text-dim); font-weight: 700;">FUNKCJONARIUSZE NA SŁUŻBIE</div>
-              <div style="font-size: 24px; font-weight: 900; color: #4ade80; margin-top: 4px;" id="stat-duty-count">0</div>
-            </div>
-            <span class="pill pill-green">10-8</span>
-          </div>
-          <div class="stat-box">
-            <div>
-              <div style="font-size: 11px; color: var(--text-dim); font-weight: 700;">AKTYWNE PATROLE</div>
-              <div style="font-size: 24px; font-weight: 900; color: #60a5fa; margin-top: 4px;" id="stat-patrol-count">0</div>
-            </div>
-            <span class="pill pill-blue">ADAM / EDWARD</span>
-          </div>
-          <div class="stat-box">
-            <div>
-              <div style="font-size: 11px; color: var(--text-dim); font-weight: 700;">DOWODZĄCY ZMIANĄ (PWC)</div>
-              <div style="font-size: 15px; font-weight: 800; color: #fff; margin-top: 6px;" id="stat-pwc-label">[80] Henry Scott</div>
-            </div>
-            <span class="pill pill-red">00</span>
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px;">
-          <div>
-            <h3 style="margin: 0 0 10px; font-size: 15px; font-weight: 800;">Funkcjonariusze na zmianie</h3>
-            <div class="table-wrap">
-              <table class="tbl">
-                <thead>
-                  <tr><th>Odznaka</th><th>Imię i nazwisko</th><th>Stopień</th><th>Kanał radiowy</th><th>Status</th></tr>
-                </thead>
-                <tbody id="dispatch-officers-tbody"></tbody>
-              </table>
-            </div>
-          </div>
-
-          <div style="display: flex; flex-direction: column; gap: 16px;">
-            <div class="card" style="margin-bottom: 0;">
-              <h3 style="margin: 0 0 10px; font-size: 14px; font-weight: 800; color: #f87171;">Poszukiwane osoby (BOLO)</h3>
-              <div class="chip-item"><span><strong>John Ddd</strong> • SSN: 714132</span><span class="pill pill-red">Poszukiwany</span></div>
-              <div class="chip-item"><span><strong>Evil Evans</strong> • SSN: 971516</span><span class="pill pill-red">Poszukiwany</span></div>
-              <div class="chip-item"><span><strong>Richert Thompson</strong> • SSN: 736522</span><span class="pill pill-red">Poszukiwany</span></div>
-            </div>
-            <div class="card" style="margin-bottom: 0;">
-              <h3 style="margin: 0 0 10px; font-size: 14px; font-weight: 800; color: #fbbf24;">Poszukiwane pojazdy</h3>
-              <div class="chip-item"><span><strong>Asterope RS</strong> (41IJB174)</span><span class="pill pill-amber">Simen Case</span></div>
-              <div class="chip-item"><span><strong>Oracle XS</strong> (85YNH288)</span><span class="pill pill-amber">Jack Colton</span></div>
-              <div class="chip-item"><span><strong>Buffalo H</strong> (F1BLACK)</span><span class="pill pill-amber">Evil Evans</span></div>
-              <div class="chip-item"><span><strong>Argento 7F</strong> (69MRD505)</span><span class="pill pill-amber">Shiloh Bllak</span></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ========================================================= -->
-      <!-- 7. ZAKŁADKA: BAZA OBYWATELI (Z NAGRANIA)                  -->
-      <!-- ========================================================= -->
-      <section id="view-obywatele" class="hidden">
-        <div class="card-header" style="margin-bottom: 14px;">
-          <div>
-            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Baza Obywateli</h1>
-            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Wyszukiwanie obywateli i podgląd podstawowych danych kartoteki</p>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table class="tbl">
-            <thead>
-              <tr><th>Imię i nazwisko</th><th>CID</th><th>Data urodzenia</th><th>Licencje</th><th>Poszukiwany</th><th>Punkty karne</th></tr>
-            </thead>
-            <tbody id="citizens-tbody"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- ========================================================= -->
-      <!-- 8. ZAKŁADKA: BAZA POJAZDÓW (Z NAGRANIA)                   -->
-      <!-- ========================================================= -->
-      <section id="view-pojazdy" class="hidden">
-        <div class="card-header" style="margin-bottom: 14px;">
-          <div>
-            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Baza Pojazdów</h1>
-            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Wyszukiwanie pojazdów i podgląd właścicieli oraz numerów rejestracyjnych</p>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table class="tbl">
-            <thead>
-              <tr><th>Właściciel</th><th>Marka</th><th>Model</th><th>Nr Rejestracyjny</th></tr>
-            </thead>
-            <tbody id="vehicles-tbody"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- ========================================================= -->
-      <!-- 9. ZAKŁADKA: MANDATY (Z NAGRANIA)                         -->
-      <!-- ========================================================= -->
-      <section id="view-mandaty" class="hidden">
-        <div class="card-header" style="margin-bottom: 14px;">
-          <div>
-            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Mandaty</h1>
-            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Wyszukiwanie mandatów i rejestr nałożonych kar drogowych</p>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table class="tbl">
-            <thead>
-              <tr><th>Nr</th><th>Funkcjonariusz</th><th>Obywatel</th><th>Kara finansowa</th><th>Ilość punktów</th></tr>
-            </thead>
-            <tbody id="fines-tbody"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- ========================================================= -->
-      <!-- 10. ZAKŁADKA: PATROLE (PWC / APWC / JEDNOSTKI)            -->
+      <!-- 5. ZAKŁADKA: PATROLE (PWC / APWC / JEDNOSTKI)             -->
       <!-- ========================================================= -->
       <section id="view-patrole" class="hidden">
         <div class="card-header" style="margin-bottom: 16px;">
@@ -1226,29 +1093,52 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 11. ZAKŁADKA: DISPATCH (POWIADOMIENIA CENTRALI Z GRY)     -->
+      <!-- 6. ZAKŁADKA: DYSPOZYTORNIA                                -->
       <!-- ========================================================= -->
-      <section id="view-dispatch" class="hidden">
-        <div class="card-header" style="margin-bottom: 14px;">
+      <section id="view-dyspozytornia" class="hidden">
+        <h1 style="margin: 0 0 14px; font-size: 20px; font-weight: 800;">Dyspozytornia — Funkcjonariusze na zmianie</h1>
+        <div class="table-wrap">
+          <table class="tbl">
+            <thead>
+              <tr><th>Odznaka</th><th>Imię i nazwisko</th><th>Jednostka</th><th>Kanał radiowy</th><th>Status (Kliknij, aby zmienić)</th></tr>
+            </thead>
+            <tbody id="dispatch-officers-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 7. ZAKŁADKA: FUNKCJONARIUSZE (PEŁNA LISTA 66 FP)          -->
+      <!-- ========================================================= -->
+      <section id="view-funkcjonariusze" class="hidden">
+        <div class="card-header" style="margin-bottom: 16px;">
           <div>
-            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Dispatch — Historia zgłoszeń</h1>
-            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Ostatnie zgłoszenia z centrali 911 i statusy jednostek reagujących</p>
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Funkcjonariusze LSPD</h1>
+            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Pełna baza funkcjonariuszy ze zrzutów ekranu zsynchronizowana ze Sprawami, Raportami i Szkoleniami</p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <input type="text" id="filter-off-inp" class="inp" style="width: 220px;" placeholder="🔍 Szukaj odznaki lub nazwiska..." oninput="renderAllOfficersView()" />
+            <input type="text" id="add-off-badge" class="inp" style="width: 85px;" placeholder="Odznaka" />
+            <input type="text" id="add-off-name" class="inp" style="width: 170px;" placeholder="Imię i nazwisko" />
+            <button class="btn btn-green" onclick="createOfficerInDB()">+ Dodaj funkcjonariusza</button>
           </div>
         </div>
-        <div class="dispatch-grid">
-          <div class="dispatch-card"><div style="display:flex;justify-content:space-between;"><span class="pill pill-blue">10-71</span><span style="color:var(--text-dim);font-size:11px;">#5123</span></div><div style="font-weight:800;font-size:14px;margin:6px 0;">Strzały</div><div style="font-size:12px;color:var(--text-muted);">📍 Eastbourne Way, Hawick / Rockford Hills</div></div>
-          <div class="dispatch-card"><div style="display:flex;justify-content:space-between;"><span class="pill pill-amber">10-72</span><span style="color:var(--text-dim);font-size:11px;">#5122</span></div><div style="font-weight:800;font-size:14px;margin:6px 0;">Sprzedaż narkotyków</div><div style="font-size:12px;color:var(--text-muted);">📍 Prosperity St / Del Perro</div></div>
-          <div class="dispatch-card"><div style="display:flex;justify-content:space-between;"><span class="pill pill-red">10-90</span><span style="color:var(--text-dim);font-size:11px;">#5120</span></div><div style="font-weight:800;font-size:14px;margin:6px 0;">Napad na sklep z bronią</div><div style="font-size:12px;color:var(--text-muted);">📍 Innocence Blvd / Strawberry</div></div>
-          <div class="dispatch-card"><div style="display:flex;justify-content:space-between;"><span class="pill pill-amber">10-99</span><span style="color:var(--text-dim);font-size:11px;">#5118</span></div><div style="font-weight:800;font-size:14px;margin:6px 0;">Kradzież pojazdu</div><div style="font-size:12px;color:var(--text-muted);">📍 Milton Rd / West Vinewood</div></div>
-          <div class="dispatch-card"><div style="display:flex;justify-content:space-between;"><span class="pill pill-red">10-21</span><span style="color:var(--text-dim);font-size:11px;">#5115</span></div><div style="font-weight:800;font-size:14px;margin:6px 0;">Alarm Bombowy — St. Fiacre Hospital</div><div style="font-size:12px;color:var(--text-muted);">📍 Capital Blvd / El Burro Heights</div></div>
-          <div class="dispatch-card"><div style="display:flex;justify-content:space-between;"><span class="pill pill-purple">10-13B</span><span style="color:var(--text-dim);font-size:11px;">#5112</span></div><div style="font-weight:800;font-size:14px;margin:6px 0;">Ranny funkcjonariusz: Chris Angel</div><div style="font-size:12px;color:var(--text-muted);">📍 Popular St / Wschodnie Vinewood</div></div>
+        <div class="table-wrap">
+          <table class="tbl">
+            <thead>
+              <tr><th>Odznaka ↑</th><th>Imię i nazwisko</th><th>Jednostka</th><th>Posiadane licencje</th><th>Status</th><th style="text-align:right;">Akcje</th></tr>
+            </thead>
+            <tbody id="all-officers-tbody"></tbody>
+          </table>
         </div>
       </section>
     </main>
   </div>
 </div>
 
-<!-- MODAL TARYFIKATORA -->
+<!-- ========================================================= -->
+<!-- MODAL PEŁNEGO TARYFIKATORA LSPD                           -->
+<!-- ========================================================= -->
 <div id="penal-modal" class="modal-backdrop hidden">
   <div class="modal-window modal-window-lg">
     <div class="modal-head">
@@ -1262,7 +1152,7 @@
       <div id="penal-modal-summary" style="font-size: 12.5px; color: var(--text-muted); font-weight: 700;">Nie wybrano jeszcze żadnego przestępstwa</div>
       <div style="display: flex; gap: 8px;">
         <button class="btn btn-dark" onclick="closePenalModal()">✕ Anuluj</button>
-        <button class="btn btn-blue" onclick="confirmPenalSelection()">✓ Potwierdź i wygeneruj opis</button>
+        <button class="btn btn-blue" onclick="confirmPenalSelection()">✓ Potwierdź i dostosuj pytania</button>
       </div>
     </div>
   </div>
@@ -1276,7 +1166,7 @@
       <button class="btn btn-sm btn-dark" onclick="closePickerModal()">✕</button>
     </div>
     <div class="modal-body">
-      <input type="text" id="picker-search-inp" class="inp" placeholder="🔍 Wyszukaj z bazy..." oninput="renderPickerItems()" style="margin-bottom: 10px;" />
+      <input type="text" id="picker-search-inp" class="inp" placeholder="🔍 Wyszukaj po odznace lub nazwisku..." oninput="renderPickerItems()" style="margin-bottom: 10px;" />
       <div style="display: flex; gap: 8px; margin-bottom: 12px;">
         <input type="text" id="picker-custom-inp" class="inp" placeholder="Lub wpisz ręcznie..." />
         <button class="btn btn-green" onclick="addCustomPickerItem()">+ Dodaj</button>
@@ -1288,121 +1178,817 @@
 
 <script>
   /* =========================================================
-     1. PEŁNA BAZA PONAD 50 FUNKCJONARIUSZY LSPD Z NAGRANIA
+     1. PEŁNA LISTA FUNKCJONARIUSZY LSPD Z TWOICH ZRZUTÓW EKRANU
+     ========================================================= */
+  const INITIAL_OFFICERS = [
+    { badge: "1", name: "Levi Jaguar", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "2", name: "Jacob Galahad", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "3", name: "Jerry Black", rank: "LSPD", status: "Na służbie", licenses: { "RTO+HRO": true, "SV": true, "PWC+APWC": true } },
+    { badge: "3", name: "Jolero Pistolero", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "4", name: "Martin Burn", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "5", name: "Amy Rover", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "6", name: "Pablo Taylor", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "10", name: "Elliana Rover", rank: "LSPD", status: "Na służbie", licenses: {} },
+    { badge: "27", name: "John Cagville", rank: "LSPD", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "SEU": true } },
+    { badge: "56", name: "Mark Blackburn", rank: "LSPD", status: "Na służbie", licenses: {} },
+    { badge: "70", name: "Matt Dick", rank: "LSPD", status: "Na służbie", licenses: { "RTO+HRO": true, "ASU": true } },
+    { badge: "70", name: "Connor Chamberlain", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "74", name: "James Williams", rank: "LSPD", status: "Poza służbą", licenses: { "RTO+HRO": true, "SV": true } },
+    { badge: "78", name: "Mike Smith", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "79", name: "Jack Onfire", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "80", name: "Henry Scott", rank: "LSPD", status: "Na służbie", licenses: { "RTO+HRO": true, "SV": true, "PWC+APWC": true } },
+    { badge: "84", name: "Eric Waterson", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "84", name: "Gregory Taylor", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "87", name: "Tony Wayne", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "87", name: "Matteo Greco", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "88", name: "Bill Caggins", rank: "LSPD", status: "Na służbie", licenses: {} },
+    { badge: "89", name: "John Black", rank: "LSPD", status: "Na służbie", licenses: {} },
+    { badge: "91", name: "John Madox", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "92", name: "Saul Freeman", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "93", name: "Mehmed Black", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "107", name: "Kris Morris", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "109", name: "Jack Closet", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "112", name: "Kurt Cocaine", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "113", name: "Muhammad Almutahharhadi", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "115", name: "Richard Scott", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "116", name: "Jacob White", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "119", name: "Kevin Turner", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "121", name: "Valeria Rover", rank: "LSPD", status: "Na służbie", licenses: {} },
+    { badge: "137", name: "Matthew Moor", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "138", name: "Santiago Dechille", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "139", name: "Michael Papito", rank: "LSPD", status: "Na służbie", licenses: {} },
+    { badge: "141", name: "Sergio Winatello", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "141", name: "Vivienne Walker", rank: "LSPD", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true } },
+    { badge: "142", name: "Santiago Ramirez", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "143", name: "Ava Dechille", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "144", name: "John Wickney", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "145", name: "Bruce Walker", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "146", name: "Alex Turner", rank: "LSPD", status: "Na służbie", licenses: {} },
+    { badge: "147", name: "Piter Fold", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "148", name: "Tony Evans", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "149", name: "Harland Ashford", rank: "LSPD", status: "Na służbie", licenses: {} },
+    { badge: "150", name: "Abigali Joyner", rank: "LSPD", status: "Na służbie", licenses: {} },
+    { badge: "151", name: "Alexander SteelHeart", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "152", name: "Paulo Cortez", rank: "LSPD", status: "Na służbie", licenses: {} },
+    { badge: "153", name: "William Coleman", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "154", name: "Gregory Black", rank: "LSPD", status: "Na służbie", licenses: {} },
+    { badge: "155", name: "David White", rank: "LSPD", status: "Na służbie", licenses: {} },
+    { badge: "155", name: "Travis Mcflurry", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "156", name: "Iris Hernandez", rank: "LSPD", status: "Na służbie", licenses: {} },
+    { badge: "167", name: "Sergio Flores", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "169", name: "Mark Kochones", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "169", name: "Troy Stardust", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "170", name: "Mackey Sztonowski", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "171", name: "Evan Myers", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "181", name: "Simon Duarte", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "183", name: "Lucky Luke jr", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "196", name: "Sergio Kadet Bullet", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "199", name: "Tulio Navarro Figueiredo", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "700", name: "Chris Angel", rank: "LSPD", status: "Poza służbą", licenses: { "RTO+HRO": true, "ASU": true, "SV": true } },
+    { badge: "701", name: "Terry Jhons", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "753", name: "Jacob White", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "900", name: "Rose Hernandez", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "901", name: "Aizen Maraka", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "902", name: "Trevon Gamble", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "902", name: "Lucas Hernandez", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "922", name: "Zoya Sierra", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "923", name: "Oley Sasa", rank: "LSPD", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "ASU": true, "MERRY": true, "SEU": true } },
+    { badge: "941", name: "Gregory Solin", rank: "LSPD", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true } },
+    { badge: "1000", name: "Kent Brif", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "1001", name: "Donghyun Park", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "1002", name: "Kajetan Galareta", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "1005", name: "Travis White", rank: "LSPD", status: "Na służbie", licenses: {} },
+    { badge: "1006", name: "Javier Brif", rank: "LSPD", status: "Poza służbą", licenses: {} },
+    { badge: "1007", name: "Eithan Nail", rank: "LSPD", status: "Poza służbą", licenses: {} }
+  ];
+
+  /* =========================================================
+     2. PEŁNY TARYFIKATOR Z TAGAMI PYTAŃ KONTEKSTOWYCH
+     ========================================================= */
+  const FULL_PENAL_CATALOG = [
+    {
+      category: "PRZESTĘPSTWA PRZECIWKO ŻYCIU",
+      items: [
+        { name: "Morderstwo I stopnia", m: 300, f: 75000, qTag: "violence", desc: "dopuścił się zaplanowanego zabójstwa człowieka z premedytacją (Morderstwo I stopnia)" },
+        { name: "Współudział w morderstwie I stopnia", m: 250, f: 50000, qTag: "violence", desc: "brał czynny współudział w dokonaniu zabójstwa I stopnia" },
+        { name: "Morderstwo II stopnia", m: 200, f: 60000, qTag: "violence", desc: "dopuścił się umyślnego pozbawienia życia obywatela (Morderstwo II stopnia)" },
+        { name: "Współudział w morderstwie II stopnia", m: 180, f: 40000, qTag: "violence", desc: "współdziałał przy dokonaniu zabójstwa II stopnia" },
+        { name: "Morderstwo III stopnia", m: 120, f: 25000, qTag: "violence", desc: "spowodował śmierć człowieka w wyniku rażącego niedbalstwa (Morderstwo III stopnia)" },
+        { name: "Usiłowanie zabójstwa obywatela", m: 15, f: 2500, qTag: "violence", desc: "targnął się na życie osoby cywilnej, dążąc bezpośrednio do pozbawienia jej życia" },
+        { name: "Usiłowanie zabójstwa funkcjonariusza", m: 30, f: 5000, qTag: "violence", desc: "dopuścił się bezpośredniego zamachu na życie funkcjonariusza LSPD będącego na służbie" },
+        { name: "Doprowadzenie do samobójstwa", m: 50, f: 25000, desc: "poprzez celowe działania doprowadził inną osobę do targnięcia się na własne życie" }
+      ]
+    },
+    {
+      category: "PRZESTĘPSTWA PRZECIWKO ZDROWIU",
+      items: [
+        { name: "Pobicie/bójka", m: 5, f: 1000, qTag: "violence", desc: "brał czynny udział w bójce lub pobiciu, narażając zdrowie uczestników zdarzenia" },
+        { name: "Naruszenie nietykalności cielesnej", m: 3, f: 250, desc: "naruszył nietykalność cielesną innej osoby poprzez bezpośredni kontakt fizyczny" },
+        { name: "Spowodowanie uszczerbku na zdrowiu", m: 10, f: 2500, qTag: "violence", desc: "spowodował obrażenia ciała skutkujące rozstrojem zdrowia pokrzywdzonego" },
+        { name: "Spowodowanie ciężkiego uszczerbku na zdrowiu", m: 50, f: 25000, qTag: "violence", desc: "spowodował ciężki uszczerbek na zdrowiu zagrażający życiu pokrzywdzonego" },
+        { name: "Udaremniona próba porwania", m: 8, f: 1250, desc: "podjął próbę bezprawnego uprowadzenia osoby, która została udaremniona przez służby" },
+        { name: "Nieudzielenie pomocy", m: 8, f: 5000, desc: "nie udzielił pomocy osobie znajdującej się w położeniu grożącym bezpośrednim niebezpieczeństwem" },
+        { name: "Tortury", m: 40, f: 10000, qTag: "violence", desc: "znęcał się fizycznie i psychicznie nad osobą przetrzymywaną, stosując tortury" },
+        { name: "Tortury ze szczególnym okrucieństwem", m: 80, f: 20000, qTag: "violence", desc: "stosował wobec pokrzywdzonego tortury ze szczególnym okrucieństwem" },
+        { name: "Napaść na obywatela", m: 10, f: 2000, qTag: "violence", desc: "dopuścił się agresywnej napaści na osobę cywilną" },
+        { name: "Napaść na funkcjonariusza", m: 15, f: 5000, qTag: "violence", desc: "dopuścił się czynnej napaści na funkcjonariusza podczas pełnienia obowiązków służbowych" },
+        { name: "Nękanie", m: 6, f: 1250, desc: "uporczywie nękał inną osobę, wzbudzając u niej uzasadnione poczucie zagrożenia" },
+        { name: "Napad na tle seksualnym", m: 20, f: 12500, desc: "dopuścił się przestępstwa na tle seksualnym wobec pokrzywdzonej osoby" },
+        { name: "Narażenie życia obywatela", m: 5, f: 2500, desc: "swoim nieodpowiedzialnym zachowaniem naraził osoby postronne na bezpośrednie niebezpieczeństwo utraty życia" }
+      ]
+    },
+    {
+      category: "PRZESTĘPSTWA PRZECIWKO PORZĄDKOWI PUBLICZNEMU",
+      items: [
+        { name: "Stawianie oporu funkcjonariuszowi", m: 5, f: 2500, desc: "stawiał czynny oraz bierny opór podczas zatrzymania przez funkcjonariuszy LSPD" },
+        { name: "Ucieczka przed organami ścigania", m: 20, f: 3500, qTag: "chase", desc: "podjął ucieczkę przed jednostkami LSPD (10-80), ignorując sygnały świetlne i dźwiękowe nakazujące zatrzymanie" },
+        { name: "Próba ucieczki przed organami ścigania", m: 15, f: 2500, qTag: "chase", desc: "podjął próbę oddalenia się i ucieczki przed interweniującymi funkcjonariuszami" },
+        { name: "Zakłócenia porządku publicznego", m: 2, f: 1500, desc: "zakłócał spokój i porządek publiczny w miejscu ogólnodostępnym" },
+        { name: "Fałszywe zawiadomienie", m: 6, f: 4000, desc: "dokonał fałszywego zgłoszenia, wprowadzając w błąd dyspozytornię służb ratunkowych" },
+        { name: "Podszywanie się pod funkcjonariusza", m: 25, f: 7500, desc: "bezprawnie podawał się za funkcjonariusza publicznego" },
+        { name: "Fałszowanie dokumentów", m: 30, f: 10000, desc: "podrabiał lub przerabiał dokumenty w celu użycia ich jako autentycznych" },
+        { name: "Posługiwanie się fałszywymi dokumentami", m: 20, f: 5000, desc: "posłużył się sfałszowanymi dokumentami podczas legitymowania" },
+        { name: "Szantaż", m: 10, f: 3750, desc: "stosował bezprawny szantaż w celu wymuszenia określonego zachowania" },
+        { name: "Podszywanie się pod obywatela", m: 12, f: 2000, desc: "podszywał się pod tożsamość innego obywatela" },
+        { name: "Groźby", m: 12, f: 1500, desc: "kierował pod adresem innych osób groźby karalne wzbudzające obawę ich spełnienia" },
+        { name: "Obraza funkcjonariusza na służbie", m: 2, f: 500, desc: "znieważył słownie umundurowanego funkcjonariusza LSPD podczas pełnienia służby" },
+        { name: "Liczna obraza funkcjonariusza", m: 4, f: 1000, desc: "wielokrotnie i wulgarnie znieważał funkcjonariuszy LSPD wykonujących czynności służbowe" },
+        { name: "Utrudnianie prac służb porządkowych", m: 8, f: 1750, desc: "celowo utrudniał prowadzenie działań zabezpieczających i interwencyjnych przez służby" },
+        { name: "Fałszywy alarm bombowy", m: 25, f: 7500, desc: "wywołał fałszywy alarm bombowy, angażując siły LSPD oraz powodując konieczność ewakuacji" },
+        { name: "Niewykonywanie poleceń", m: 3, f: 375, desc: "mimo wielokrotnych wezwań odmawiał wykonywania zgodnych z prawem poleceń funkcjonariusza" },
+        { name: "Naruszenie praw człowieka", m: 80, f: 15000, desc: "dopuścił się rażącego naruszenia podstawowych praw i godności człowieka" },
+        { name: "Zlecenie popełnienia przestępstwa", m: 250, f: 87500, desc: "zlecił osobom trzecim dokonanie czynu zabronionego" },
+        { name: "Nielegalne przechwytywanie komunikacji", m: 20, f: 5000, desc: "bezprawnie podsłuchiwał lub przechwytywał chronioną komunikację radiową służb" }
+      ]
+    },
+    {
+      category: "PRZESTĘPSTWA PRZECIWKO MIENIU",
+      items: [
+        { name: "Kradzież", m: 1, f: 500, desc: "dokonał zaboru cudzej rzeczy ruchomej w celu przywłaszczenia" },
+        { name: "Kradzież pojazdu", m: 5, f: 1000, qTag: "car_theft", desc: "dokonał kradzieży cudzego pojazdu mechanicznego" },
+        { name: "Rozbój", m: 10, f: 2500, qTag: "violence", desc: "dokonał rozboju z użyciem przemocy lub groźby w celu zaboru mienia" },
+        { name: "Włamanie", m: 5, f: 1000, desc: "wtargnął do zamkniętego obiektu po uprzednim pokonaniu zabezpieczeń" },
+        { name: "Niszczenie mienia drugiej osoby o niskiej wartości", m: 10, f: 2500, desc: "umyślnie uszkodził cudze mienie prywatne o niskiej wartości" },
+        { name: "Niszczenie mienia drugiej osoby o wysokiej wartości", m: 30, f: 15000, desc: "umyślnie zniszczył mienie prywatne drugiej osoby powodując straty o wysokiej wartości" },
+        { name: "Niszczenie mienia użytku publicznego o niskiej wartości", m: 15, f: 4000, desc: "uszkodził infrastrukturę lub mienie użytku publicznego o niskiej wartości" },
+        { name: "Niszczenie mienia użytku publicznego o wysokiej wartości", m: 25, f: 20000, desc: "dokonał poważnego uszkodzenia mienia należącego do instytucji publicznych o wysokiej wartości" },
+        { name: "Niszczenie mienia użytku publicznego o znacznej wartości", m: 50, f: 50000, desc: "spowodował zniszczenia mienia publicznego w znacznych rozmiarach" },
+        { name: "Wtargnięcie na teren prywatny", m: 2, f: 500, desc: "wdarł się na ogrodzony teren prywatny i nie opuścił go mimo wezwania" },
+        { name: "Wtargnięcie na teren placówki publicznej", m: 10, f: 1000, desc: "bezprawnie wtargnął do wyłączonej strefy placówki publicznej" },
+        { name: "Kradzież pojazdu służb publicznych", m: 12, f: 2500, qTag: "car_theft", desc: "dokonał zaboru oznakowanego pojazdu należącego do służb publicznych (LSPD / SAMS)" },
+        { name: "Udaremnienie lub uszczuplenie zaspokojenia wierzyciela", m: 8, f: 7500, desc: "celowo ukrywał lub uszczuplał składniki majątku w celu udaremnienia egzekucji należności" }
+      ]
+    },
+    {
+      category: "PRZESTĘPSTWA NARKOTYKOWE",
+      items: [
+        { name: "Posiadanie narkotyków miękkich", m: 5, f: 1000, qTag: "drugs", confiscate: "Narkotyki miękkie", desc: "posiadał przy sobie zabronione substancje odurzające (narkotyki miękkie)" },
+        { name: "Posiadanie narkotyków twardych", m: 20, f: 2500, qTag: "drugs", confiscate: "Narkotyki twarde", desc: "posiadał przy sobie nielegalne substancje psychotropowe (narkotyki twarde)" },
+        { name: "Posiadanie hurtowej ilości narkotyków miękkich", m: 30, f: 7500, qTag: "drugs", confiscate: "Hurtowa ilość narkotyków miękkich", desc: "posiadał przy sobie hurtowe ilości narkotyków miękkich przeznaczonych do obrotu" },
+        { name: "Posiadanie hurtowej ilości narkotyków twardych", m: 60, f: 20000, qTag: "drugs", confiscate: "Hurtowa ilość narkotyków twardych", desc: "posiadał przy sobie hurtową ilość narkotyków twardych" },
+        { name: "Handel narkotykami miękkimi", m: 20, f: 5000, qTag: "drugs", confiscate: "Narkotyki miękkie + gotówka z handlu", desc: "prowadził nielegalną dystrybucję i handel narkotykami miękkimi" },
+        { name: "Handel narkotykami twardymi", m: 35, f: 10000, qTag: "drugs", confiscate: "Narkotyki twarde + gotówka z handlu", desc: "zajmował się nielegalnym handlem narkotyków twardych" },
+        { name: "Produkcja narkotyków miękkich", m: 40, f: 10000, qTag: "drugs", confiscate: "Surowce i narkotyki miękkie", desc: "brał udział w nielegalnym procesie wytwarzania narkotyków miękkich" },
+        { name: "Produkcja narkotyków twardych", m: 100, f: 15000, qTag: "drugs", confiscate: "Prekursory i narkotyki twarde", desc: "prowadził nielegalną produkcję twardych środków odurzających" }
+      ]
+    },
+    {
+      category: "BROŃ I BEZPIECZEŃSTWO",
+      items: [
+        { name: "Nielegalne posiadanie broni klasy I", m: 10, f: 2500, autoWpn: "Broń Klasy I", confiscate: "Broń klasy I + amunicja", desc: "posiadał przy sobie nielegalną broń klasy I bez wymaganego zezwolenia" },
+        { name: "Nielegalne posiadanie broni klasy II", m: 15, f: 7500, autoWpn: "Broń Klasy II", confiscate: "Broń palna klasy II + amunicja", desc: "posiadał bez wymaganej licencji broń palną krótką klasy II" },
+        { name: "Nielegalne posiadanie broni klasy III", m: 60, f: 17500, autoWpn: "Broń Klasy III", confiscate: "Broń długa klasy III + amunicja", desc: "posiadał nielegalną broń automatyczną/długą klasy III zabronioną w obrocie cywilnym" },
+        { name: "Nielegalne posiadanie broni klasy IV", m: 100, f: 25000, autoWpn: "Broń Klasy IV", confiscate: "Ciężka broń klasy IV", desc: "posiadał ciężkie uzbrojenie bojowe klasy IV" },
+        { name: "Handel bronią", m: 100, f: 45000, confiscate: "Nielegalna broń przeznaczona na handel", desc: "prowadził nielegalny obrót i handel bronią palną bez koncesji" },
+        { name: "Bezpodstawne użycie broni palnej", m: 30, f: 7500, qTag: "violence", desc: "bezpodstawnie oddał strzały z broni palnej w miejscu publicznym, stwarzając zagrożenie" },
+        { name: "Nielegalne dodatki do broni", m: 4, f: 2500, confiscate: "Nielegalne dodatki do broni", desc: "posiadał zabronione modyfikacje i dodatki taktyczne do broni palnej" },
+        { name: "Handel materiałami wybuchowymi", m: 60, f: 25000, confiscate: "Materiały wybuchowe", desc: "zajmował się nielegalnym obrotem materiałami wybuchowymi" },
+        { name: "Wytwarzanie materiałów wybuchowych", m: 25, f: 15000, confiscate: "Ładunki wybuchowe", desc: "nielegalnie konstruował i wytwarzał materiały wybuchowe" },
+        { name: "Posiadanie sprzętu policyjnego", m: 12, f: 5000, autoWpn: "Sprzęt policyjny", confiscate: "Sprzęt policyjny LSPD", desc: "bezprawnie posiadał wyposażenie należące wyłącznie do funkcjonariuszy LSPD" },
+        { name: "Nielegalna produkcja broni", m: 44, f: 17500, confiscate: "Części broni", desc: "brał udział w nielegalnym wyrabianiu broni palnej" },
+        { name: "Niewłaściwe transportowanie broni", m: 8, f: 2500, desc: "przenosił broń palną z naruszeniem zasad bezpieczeństwa" },
+        { name: "Posiadanie kontrabandy", m: 5, f: 5000, confiscate: "Kontrabanda", desc: "posiadał przy sobie nielegalną kontrabandę" }
+      ]
+    },
+    {
+      category: "PRZESTĘPSTWA PRZECIWKO PAŃSTWU",
+      items: [
+        { name: "Korupcja", m: 100, f: 25000, desc: "dopuścił się przestępstwa korupcyjnego" },
+        { name: "Nadużycie władzy", m: 20, f: 10000, desc: "przekroczył przysługujące uprawnienia służbowe" },
+        { name: "Zdrada stanu", m: 250, f: 75000, desc: "dopuścił się zdrady stanu wymierzonej w bezpieczeństwo San Andreas" },
+        { name: "Nadużycie immunitetu", m: 35, f: 25000, desc: "bezprawnie wykorzystywał posiadany immunitet" }
+      ]
+    },
+    {
+      category: "PRZESTĘPCZOŚĆ ZORGANIZOWANA",
+      items: [
+        { name: "Udział w grupie przestępczej", m: 50, f: 15000, desc: "brał czynny udział w zorganizowanej grupie przestępczej" },
+        { name: "Kierowanie grupą przestępczą", m: 280, f: 50000, desc: "kierował zorganizowaną grupą przestępczą o charakterze zbrojnym" }
+      ]
+    },
+    {
+      category: "PRZESTĘPSTWA PRZECIWKO SPRAWIEDLIWOŚCI",
+      items: [
+        { name: "Składanie fałszywych zeznań", m: 10, f: 6250, desc: "złożył fałszywe zeznania lub zataił prawdę podczas przesłuchania" },
+        { name: "Ucieczka z konwoju", m: 35, f: 8000, qTag: "chase", desc: "podjął bezprawną ucieczkę podczas transportu w konwoju policyjnym" },
+        { name: "Próba odbicia konwoju", m: 30, f: 10000, qTag: "violence", desc: "zaatakował kolumnę transportową LSPD w celu odbicia osób konwojowanych" },
+        { name: "Ucieczka z więzienia lub komendy", m: 40, f: 10000, qTag: "chase", desc: "zbiegł z terenu komendy LSPD lub zakładu karnego" },
+        { name: "Odbicie z więzienia lub komendy", m: 70, f: 15000, desc: "brał udział w siłowym uwolnieniu osoby zatrzymanej z komendy lub więzienia" },
+        { name: "Terroryzm", m: 400, f: 250000, qTag: "violence", desc: "dopuścił się aktu terrorystycznego wymierzonego w bezpieczeństwo obywateli i instytucji" },
+        { name: "Krzywoprzysięstwo", m: 20, f: 7500, desc: "dopuścił się krzywoprzysięstwa podczas oficjalnego postępowania" },
+        { name: "Odbicie z konwoju", m: 60, f: 15000, qTag: "violence", desc: "dokonał siłowego odbicia aresztanta z konwoju policyjnego" },
+        { name: "Wtargnięcie na teren więzienia lub komendy", m: 8, f: 10000, desc: "bezprawnie wtargnął do strefy zamkniętej komendy policji lub terenu więzienia" },
+        { name: "Naruszenie praw zawartych w prawie stanowym", m: 35, f: 7500, desc: "dopuścił się rażącego złamania przepisów zawartych w prawie stanowym" }
+      ]
+    },
+    {
+      category: "PORWANIE",
+      items: [
+        { name: "Porwanie obywatela", m: 30, f: 6250, qTag: "robbery", desc: "bezprawnie pozbawił wolności osobę cywilną, dokonując jej uprowadzenia" },
+        { name: "Porwanie obywatela dla okupu", m: 40, f: 10000, qTag: "robbery", desc: "dokonał porwania obywatela w celu wymuszenia okupu lub spełnienia żądań" },
+        { name: "Porwanie funkcjonariusza", m: 40, f: 15000, qTag: "robbery", desc: "dopuścił się uprowadzenia funkcjonariusza publicznego" },
+        { name: "Porwanie funkcjonariusza dla okupu", m: 75, f: 22500, qTag: "robbery", desc: "uprowadził funkcjonariusza na służbie, przetrzymując go jako zakładnika dla okupu" },
+        { name: "Próba porwania obywatela", m: 10, f: 3750, desc: "usiłował dokonać porwania obywatela" },
+        { name: "Próba porwania funkcjonariusza", m: 15, f: 7500, desc: "podjął bezpośrednią próbę uprowadzenia funkcjonariusza publicznego" },
+        { name: "Zlecenie porwania obywatela", m: 50, f: 10000, desc: "zlecił uprowadzenie osoby cywilnej" },
+        { name: "Zlecenie porwanie funkcjonariusza", m: 80, f: 25000, desc: "zlecił uprowadzenie funkcjonariusza służb państwowych" },
+        { name: "Porwanie znacznej ilości osób - od 5 do 10 osób", m: 65, f: 40000, qTag: "robbery", desc: "brał udział w masowym wzięciu zakładników (od 5 do 10 osób)" },
+        { name: "Porwanie znacznej ilości osób - od 11 do 20 osób", m: 115, f: 60000, qTag: "robbery", desc: "brał udział w masowym przetrzymywaniu grupy od 11 do 20 zakładników" },
+        { name: "Porwanie znacznej ilości osób - od 21 osób", m: 180, f: 90000, qTag: "robbery", desc: "dopuścił się masowego przetrzymywania powyżej 21 zakładników" }
+      ]
+    },
+    {
+      category: "NAPADY",
+      items: [
+        { name: "Napad na sklep", m: 15, f: 2000, qTag: "robbery", confiscate: "Gotówka z kasy sklepowej", desc: "brał czynny udział w napadzie rabunkowym na placówkę handlową (sklep)" },
+        { name: "Napad na mieszkanie", m: 20, f: 3500, qTag: "robbery", confiscate: "Skradzione przedmioty z mieszkania", desc: "dokonał rabunkowego włamania na teren prywatnego mieszkania" },
+        { name: "Napad na sklep z bronią", m: 35, f: 8500, qTag: "robbery", confiscate: "Skradziona broń z Ammu-Nation", desc: "brał udział w zorganizowanym napadzie na sklep z bronią (Ammu-Nation)" },
+        { name: "Napad na jubilera xGem", m: 40, f: 9500, qTag: "robbery", confiscate: "Kosztowności i biżuteria xGem", desc: "brał udział w napadzie rabunkowym na salon jubilerski xGem" },
+        { name: "Napad na Gruppe 6", m: 45, f: 10000, qTag: "robbery", confiscate: "Gotówka z konwoju Gruppe 6", desc: "dokonał zbrojnego napadu na opancerzony konwój Gruppe 6" },
+        { name: "Napad na Bobcat", m: 65, f: 15000, qTag: "robbery", confiscate: "Ładunki z Bobcat Security", desc: "brał udział w ciężkim napadzie zbrojnym na placówkę Bobcat Security" }
+      ]
+    }
+  ];
+
+  /* =========================================================
+     3. LOGIKA PYTAŃ KONTEKSTOWYCH, BRONI I 5 WARIANTÓW OPISU
+     ========================================================= */
+  let activeCharges = [];
+  let tempModalSelected = [];
+  let caseAssistOfficers = [];
+  let customConfiscated = [];
+
+  // Stan wybranych broni
+  let selectedWeapons = []; // np. ['Broń Klasy II', 'Broń biała']
+  let caseAttitude = "coop"; // 'coop' | 'denied' | 'silent' | 'aggr'
+  let caseDetention = "station"; // 'station' | 'prison' | 'released'
+  let narrativeStyleIdx = 0; // 0..4
+
+  // Odpowiedzi na pytania kontekstowe zależne od zarzutów
+  let ctxAnswers = {
+    carTheftMode: "tracker", // 'tracker' | 'plain' | 'traffic' | 'hotwire'
+    carTheftModel: "",
+    chaseEndMode: "pit", // 'pit' | 'spikes' | 'crash' | 'foot' | 'water'
+    robberyMode: "hostages_freed", // 'hostages_freed' | 'breach' | 'no_hostages' | 'shots_fired'
+    drugsMode: "personal", // 'personal' | 'vehicle' | 'dealing' | 'lab'
+    violenceMode: "sams" // 'sams' | 'shots_fp' | 'melee_attack' | 'prevented'
+  };
+
+  function toggleWeaponClass(wpnName) {
+    if (wpnName === "NONE") {
+      selectedWeapons = [];
+    } else {
+      const idx = selectedWeapons.indexOf(wpnName);
+      if (idx > -1) selectedWeapons.splice(idx, 1);
+      else selectedWeapons.push(wpnName);
+    }
+    updateWeaponButtonsUI();
+    generateAutoCaseDescription();
+  }
+
+  function updateWeaponButtonsUI() {
+    const mapIds = {
+      "Broń biała": "wpn-melee",
+      "Broń Klasy I": "wpn-c1",
+      "Broń Klasy II": "wpn-c2",
+      "Broń Klasy III": "wpn-c3",
+      "Broń Klasy IV": "wpn-c4",
+      "Sprzęt policyjny": "wpn-police"
+    };
+    document.getElementById("wpn-none").className = "opt-btn " + (selectedWeapons.length === 0 ? "active-green" : "");
+    Object.keys(mapIds).forEach(k => {
+      const el = document.getElementById(mapIds[k]);
+      if (el) el.className = "opt-btn " + (selectedWeapons.includes(k) ? "active-red" : "");
+    });
+    const extraPanel = document.getElementById("weapon-extra-panel");
+    if (selectedWeapons.length > 0) extraPanel.classList.remove("hidden");
+    else extraPanel.classList.add("hidden");
+  }
+
+  // Renderowanie dodatkowych pytań kontekstowych na podstawie wybranych zarzutów
+  function renderDynamicChargeQuestions() {
+    const container = document.getElementById("dynamic-charge-questions-container");
+    const activeTags = new Set(activeCharges.map(c => c.qTag).filter(Boolean));
+    let html = "";
+
+    // 1. PYTANIE O KRADZIEŻ POJAZDU (TRACKER VS ZWYKŁA KRADZIEŻ)
+    if (activeTags.has("car_theft")) {
+      html += `
+        <div class="ctx-question-box">
+          <div style="font-size:11px; font-weight:800; color:#38bdf8; margin-bottom:6px;">🚘 SZCZEGÓŁY KRADZIEŻY POJAZDU (Wykryto zarzut kradzieży pojazdu):</div>
+          <div class="opt-group" style="margin-bottom:8px;">
+            <button type="button" class="opt-btn ${ctxAnswers.carTheftMode==='tracker'?'active-blue':''}" onclick="setCtxAns('carTheftMode','tracker')">📡 Namierzony przez nadajnik GPS (Tracker)</button>
+            <button type="button" class="opt-btn ${ctxAnswers.carTheftMode==='plain'?'active-blue':''}" onclick="setCtxAns('carTheftMode','plain')">🔑 Zwykła kradzież (Złapany w skradzionym aucie)</button>
+            <button type="button" class="opt-btn ${ctxAnswers.carTheftMode==='hotwire'?'active-blue':''}" onclick="setCtxAns('carTheftMode','hotwire')">🛠️ Złapany na gorącym uczynku (Włamanie / Wytrych)</button>
+            <button type="button" class="opt-btn ${ctxAnswers.carTheftMode==='traffic'?'active-blue':''}" onclick="setCtxAns('carTheftMode','traffic')">🚓 Ujawniono podczas kontroli drogowej (10-11)</button>
+          </div>
+          <input type="text" class="inp" style="padding:5px 10px; font-size:12px;" placeholder="Opcjonalnie wpisz markę/model skradzionego pojazdu (np. Karin Sultan RS)..." value="${ctxAnswers.carTheftModel}" oninput="ctxAnswers.carTheftModel=this.value;generateAutoCaseDescription();" />
+        </div>
+      `;
+    }
+
+    // 2. PYTANIE O POŚCIG (10-80)
+    if (activeTags.has("chase")) {
+      html += `
+        <div class="ctx-question-box">
+          <div style="font-size:11px; font-weight:800; color:#fbbf24; margin-bottom:6px;">🚓 SPOSÓB ZAKOŃCZENIA POŚCIGU 10-80 (Wykryto zarzut ucieczki):</div>
+          <div class="opt-group">
+            <button type="button" class="opt-btn ${ctxAnswers.chaseEndMode==='pit'?'active-amber':''}" onclick="setCtxAns('chaseEndMode','pit')">🚓 Skuteczny manewr PIT / Box radiowozami</button>
+            <button type="button" class="opt-btn ${ctxAnswers.chaseEndMode==='spikes'?'active-amber':''}" onclick="setCtxAns('chaseEndMode','spikes')">🛞 Kolczatki (Przebicie opon na blokadzie)</button>
+            <button type="button" class="opt-btn ${ctxAnswers.chaseEndMode==='crash'?'active-amber':''}" onclick="setCtxAns('chaseEndMode','crash')">💥 Rozbicie pojazdu przez uciekiniera (10-50)</button>
+            <button type="button" class="opt-btn ${ctxAnswers.chaseEndMode==='foot'?'active-amber':''}" onclick="setCtxAns('chaseEndMode','foot')">🏃 Ucieczka pieszo i obezwładnienie tazerem</button>
+            <button type="button" class="opt-btn ${ctxAnswers.chaseEndMode==='water'?'active-amber':''}" onclick="setCtxAns('chaseEndMode','water')">🌊 Wpadnięcie do wody / Ujęcie w morzu</button>
+          </div>
+        </div>
+      `;
+    }
+
+    // 3. PYTANIE O NAPAD / PORWANIE
+    if (activeTags.has("robbery")) {
+      html += `
+        <div class="ctx-question-box">
+          <div style="font-size:11px; font-weight:800; color:#f87171; margin-bottom:6px;">🏦 PRZEBIEG NAPADU / SYTUACJA Z ZAKŁADNIKAMI:</div>
+          <div class="opt-group">
+            <button type="button" class="opt-btn ${ctxAnswers.robberyMode==='hostages_freed'?'active-red':''}" onclick="setCtxAns('robberyMode','hostages_freed')">🤝 Zakładnicy przejęci bezpiecznie (Pościg po negocjacjach)</button>
+            <button type="button" class="opt-btn ${ctxAnswers.robberyMode==='breach'?'active-red':''}" onclick="setCtxAns('robberyMode','breach')">⚡ Zerwane negocjacje — szturm jednostek LSPD</button>
+            <button type="button" class="opt-btn ${ctxAnswers.robberyMode==='no_hostages'?'active-red':''}" onclick="setCtxAns('robberyMode','no_hostages')">🚨 Ujęty bezpośrednio w obiekcie (Bez zakładników)</button>
+            <button type="button" class="opt-btn ${ctxAnswers.robberyMode==='shots_fired'?'active-red':''}" onclick="setCtxAns('robberyMode','shots_fired')">🔫 Napastnicy otworzyli ogień do kordonu LSPD</button>
+          </div>
+        </div>
+      `;
+    }
+
+    // 4. PYTANIE O NARKOTYKI
+    if (activeTags.has("drugs")) {
+      html += `
+        <div class="ctx-question-box">
+          <div style="font-size:11px; font-weight:800; color:#4ade80; margin-bottom:6px;">🌿 OKOLICZNOŚCI UJAWNIENIA NARKOTYKÓW:</div>
+          <div class="opt-group">
+            <button type="button" class="opt-btn ${ctxAnswers.drugsMode==='personal'?'active-green':''}" onclick="setCtxAns('drugsMode','personal')">🔍 Ujawnione przy przeszukaniu osobistym</button>
+            <button type="button" class="opt-btn ${ctxAnswers.drugsMode==='vehicle'?'active-green':''}" onclick="setCtxAns('drugsMode','vehicle')">🚗 Ukryte w schowku / bagażniku pojazdu</button>
+            <button type="button" class="opt-btn ${ctxAnswers.drugsMode==='dealing'?'active-green':''}" onclick="setCtxAns('drugsMode','dealing')">💸 Złapany podczas sprzedaży (Handel na gorącym uczynku)</button>
+            <button type="button" class="opt-btn ${ctxAnswers.drugsMode==='lab'?'active-green':''}" onclick="setCtxAns('drugsMode','lab')">🧪 Zatrzymany w miejscu produkcji / przerobu</button>
+          </div>
+        </div>
+      `;
+    }
+
+    // 5. PYTANIE O PRZEMOC / STRZELANINĘ / SAMS
+    if (activeTags.has("violence")) {
+      html += `
+        <div class="ctx-question-box">
+          <div style="font-size:11px; font-weight:800; color:#f87171; margin-bottom:6px;">🚑 SKUTKI NAPAŚCI / UŻYCIA PRZEMOCY:</div>
+          <div class="opt-group">
+            <button type="button" class="opt-btn ${ctxAnswers.violenceMode==='sams'?'active-red':''}" onclick="setCtxAns('violenceMode','sams')">🚑 Poszkodowanym udzielono pomocy medycznej (SAMS)</button>
+            <button type="button" class="opt-btn ${ctxAnswers.violenceMode==='shots_fp'?'active-red':''}" onclick="setCtxAns('violenceMode','shots_fp')">🔫 Sprawca oddał strzały w kierunku funkcjonariuszy LSPD</button>
+            <button type="button" class="opt-btn ${ctxAnswers.violenceMode==='melee_attack'?'active-red':''}" onclick="setCtxAns('violenceMode','melee_attack')">👊 Atak fizyczny / niebezpiecznym narzędziem</button>
+            <button type="button" class="opt-btn ${ctxAnswers.violenceMode==='prevented'?'active-red':''}" onclick="setCtxAns('violenceMode','prevented')">🛡️ Szybka pacyfikacja napastnika przez patrol</button>
+          </div>
+        </div>
+      `;
+    }
+
+    container.innerHTML = html;
+  }
+
+  function setCtxAns(key, val) {
+    ctxAnswers[key] = val;
+    renderDynamicChargeQuestions();
+    generateAutoCaseDescription();
+  }
+
+  function setCaseAttitude(mode) {
+    caseAttitude = mode;
+    document.getElementById("att-coop").className = "opt-btn " + (mode === "coop" ? "active-green" : "");
+    document.getElementById("att-denied").className = "opt-btn " + (mode === "denied" ? "active-red" : "");
+    document.getElementById("att-silent").className = "opt-btn " + (mode === "silent" ? "active-blue" : "");
+    document.getElementById("att-aggr").className = "opt-btn " + (mode === "aggr" ? "active-amber" : "");
+    generateAutoCaseDescription();
+  }
+
+  function setCaseDetention(mode) {
+    caseDetention = mode;
+    document.getElementById("det-station").className = "opt-btn " + (mode === "station" ? "active-blue" : "");
+    document.getElementById("det-prison").className = "opt-btn " + (mode === "prison" ? "active-red" : "");
+    document.getElementById("det-released").className = "opt-btn " + (mode === "released" ? "active-green" : "");
+    generateAutoCaseDescription();
+  }
+
+  function setNarrativeStyle(val) {
+    narrativeStyleIdx = parseInt(val, 10) || 0;
+    generateAutoCaseDescription();
+  }
+
+  function randomizeNarrativeStyle() {
+    narrativeStyleIdx = (narrativeStyleIdx + 1) % 5;
+    document.getElementById("desc-style-select").value = String(narrativeStyleIdx);
+    generateAutoCaseDescription(true);
+    toast("🎲 Zmieniono styl narracji opisu (Wariant " + (narrativeStyleIdx + 1) + "/5)");
+  }
+
+  /* GŁÓWNY SILNIK GENERUJĄCY ROZBUDOWANE, RÓŻNORODNE OPISY SPRAW */
+  function generateAutoCaseDescription() {
+    const citizen = document.getElementById("case-citizen").value.trim() || "zatrzymany obywatel";
+    const lead = db.loggedOfficer;
+    const assistsText = caseAssistOfficers.length
+      ? ` wraz z jednostkami wsparcia (${caseAssistOfficers.join(", ")})`
+      : "";
+
+    if (activeCharges.length === 0 && selectedWeapons.length === 0) {
+      document.getElementById("case-desc").value = "";
+      renderConfiscatedDisplay([]);
+      return;
+    }
+
+    const actionsList = activeCharges.map(c => c.desc);
+    const chargesNames = activeCharges.map(c => c.count > 1 ? `${c.name} (x${c.count})` : c.name);
+    const activeTags = new Set(activeCharges.map(c => c.qTag).filter(Boolean));
+
+    // Budowanie zdań z pytań kontekstowych
+    let ctxSentences = [];
+
+    if (activeTags.has("car_theft")) {
+      const modelTxt = ctxAnswers.carTheftModel.trim() ? ` (pojazd marki ${ctxAnswers.carTheftModel.trim()})` : "";
+      if (ctxAnswers.carTheftMode === "tracker") {
+        ctxSentences.push(`Skradziony pojazd${modelTxt} wyposażony był w aktywny nadajnik GPS (Tracker), dzięki czemu jednostki LSPD precyzyjnie namierzyły jego sygnał i ujęły kierowcę.`);
+      } else if (ctxAnswers.carTheftMode === "plain") {
+        ctxSentences.push(`Podejrzany poruszał się skradzionym pojazdem${modelTxt} bez nadajnika GPS — został rozpoznany przez patrol i zatrzymany do czynności.`);
+      } else if (ctxAnswers.carTheftMode === "hotwire") {
+        ctxSentences.push(`Sprawca został przyłapany bezpośrednio na gorącym uczynku podczas włamywania się do pojazdu${modelTxt} i próby uruchomienia stacyjki.`);
+      } else if (ctxAnswers.carTheftMode === "traffic") {
+        ctxSentences.push(`Fakt kradzieży pojazdu${modelTxt} wyszedł na jaw podczas przeprowadzania kontroli drogowej (10-11) oraz weryfikacji numerów rejestracyjnych w bazie MDT.`);
+      }
+    }
+
+    if (activeTags.has("chase")) {
+      if (ctxAnswers.chaseEndMode === "pit") {
+        ctxSentences.push(`Pościg (10-80) został skutecznie zakończony po wykonaniu autoryzowanego manewru PIT oraz zablokowaniu (Box) pojazdu uciekiniera przez radiowozy LSPD.`);
+      } else if (ctxAnswers.chaseEndMode === "spikes") {
+        ctxSentences.push(`Ucieczka została przerwana dzięki rozłożeniu kolczatek drogowych na trasie przejazdu, co doprowadziło do przebicia opon i unieruchomienia pojazdu.`);
+      } else if (ctxAnswers.chaseEndMode === "crash") {
+        ctxSentences.push(`W trakcie ucieczki kierujący stracił panowanie nad pojazdem i doprowadził do groźnej kolizji (10-50), po której został natychmiast wyciągnięty z wraku i obezwładniony.`);
+      } else if (ctxAnswers.chaseEndMode === "foot") {
+        ctxSentences.push(`Po porzuceniu pojazdu podejrzany kontynuował ucieczkę pieszo (10-80 pieszo), jednak po krótkim pościgu został trafiony z paralizatora (Tazer) i zakuty w kajdanki.`);
+      } else if (ctxAnswers.chaseEndMode === "water") {
+        ctxSentences.push(`Pościg zakończył się w momencie, gdy uciekający wpadł do zbiornika wodnego, skąd został wyłowiony i obezwładniony przez funkcjonariuszy.`);
+      }
+    }
+
+    if (activeTags.has("robbery")) {
+      if (ctxAnswers.robberyMode === "hostages_freed") {
+        ctxSentences.push(`W toku przeprowadzonych negocjacji przejęto bezpiecznie zakładników, a po spełnieniu ustaleń za odjazd rozpoczęto pościg pościgowy za sprawcami.`);
+      } else if (ctxAnswers.robberyMode === "breach") {
+        ctxSentences.push(`Ze względu na brak współpracy i przekroczenie ostrzeżeń negocjatorskich zerwano negocjacje, a jednostki LSPD przeprowadziły skuteczny szturm na obiekt.`);
+      } else if (ctxAnswers.robberyMode === "no_hostages") {
+        ctxSentences.push(`Sprawca został zaskoczony i ujęty bezpośrednio na miejscu rabunku, nie posiadając zakładników.`);
+      } else if (ctxAnswers.robberyMode === "shots_fired") {
+        ctxSentences.push(`Podczas działań pod obiektem napastnicy otworzyli ogień w stronę kordonu policyjnego, w wyniku czego zostali spacyfikowani przez funkcjonariuszy.`);
+      }
+    }
+
+    if (activeTags.has("drugs")) {
+      if (ctxAnswers.drugsMode === "personal") {
+        ctxSentences.push(`Nielegalne środki odurzające zostały ujawnione bezpośrednio w odzieży zatrzymanego w trakcie szczegółowego przeszukania osobistego.`);
+      } else if (ctxAnswers.drugsMode === "vehicle") {
+        ctxSentences.push(`Partie narkotyków ujawniono podczas dokładnego przeszukania schowka oraz przestrzeni bagażowej pojazdu, którym poruszał się zatrzymany.`);
+      } else if (ctxAnswers.drugsMode === "dealing") {
+        ctxSentences.push(`Podejrzany został ujęty na gorącym uczynku w trakcie przekazywania poporcjowanych pakietów narkotyków za gotówkę.`);
+      } else if (ctxAnswers.drugsMode === "lab") {
+        ctxSentences.push(`Zatrzymania dokonano bezpośrednio w miejscu nielegalnego wytwarzania i porcjowania substancji zabronionych.`);
+      }
+    }
+
+    if (activeTags.has("violence")) {
+      if (ctxAnswers.violenceMode === "sams") {
+        ctxSentences.push(`Osobom poszkodowanym w wyniku ataku udzielono kwalifikowanej pierwszej pomocy, a na miejsce zadysponowano zespół ratownictwa medycznego SAMS.`);
+      } else if (ctxAnswers.violenceMode === "shots_fp") {
+        ctxSentences.push(`Podejrzany oddał strzały bezpośrednio w kierunku umundurowanych funkcjonariuszy LSPD, stwarzając realne zagrożenie dla ich życia.`);
+      } else if (ctxAnswers.violenceMode === "melee_attack") {
+        ctxSentences.push(`Atak został przeprowadzony w bezpośrednim zwarciu przy użyciu siły fizycznej / niebezpiecznego narzędzia.`);
+      } else if (ctxAnswers.violenceMode === "prevented") {
+        ctxSentences.push(`Dzięki błyskawicznej reakcji patrolu agresor został obezwładniony zanim zdołał wyrządzić dalsze szkody.`);
+      }
+    }
+
+    // Budowanie opisu broni
+    let weaponSentence = "";
+    const wpnModel = document.getElementById("weapon-model-inp")?.value.trim() || "";
+    const wpnLic = document.getElementById("weapon-license-sel")?.value || "illegal";
+
+    if (selectedWeapons.length > 0) {
+      const wpnListStr = selectedWeapons.join(", ") + (wpnModel ? ` (${wpnModel})` : "");
+      if (wpnLic === "illegal") {
+        weaponSentence = `Podczas rewizji osobistej ujawniono przy zatrzymanym broń: ${wpnListStr}, na którą obywatel nie posiadał wymaganego zezwolenia — broń została natychmiast zabezpieczona do depozytu LSPD.`;
+      } else if (wpnLic === "revoked") {
+        weaponSentence = `Zatrzymany posiadał przy sobie broń: ${wpnListStr}. Ze względu na popełnione przestępstwo z użyciem niebezpiecznych narzędzi, posiadana licencja na broń została mu oficjalnie odebrana, a uzbrojenie skonfiskowane.`;
+      } else {
+        weaponSentence = `Sprawca posługiwał się w trakcie zdarzenia bronią: ${wpnListStr}, która została mu odebrana po obezwładnieniu i przekazana do policyjnego magazynu dowodowego.`;
+      }
+    } else {
+      weaponSentence = `Podczas przeszukania osobistego nie ujawniono przy zatrzymanym żadnej broni białej ani palnej.`;
+    }
+
+    // Zbieranie konfiskat
+    const autoConf = activeCharges.filter(c => c.confiscate).map(c => c.confiscate);
+    const wpnConf = selectedWeapons.map(w => w + (wpnModel ? ` (${wpnModel})` : ""));
+    const allConf = [...new Set([...wpnConf, ...autoConf, ...customConfiscated])];
+    renderConfiscatedDisplay(allConf);
+
+    const confSentence = allConf.length > 0
+      ? `W poczet materiału dowodowego skonfiskowano: ${allConf.join(", ")}.`
+      : "";
+
+    // Postawa podejrzanego
+    let attitudeSentence = "";
+    if (caseAttitude === "coop") {
+      attitudeSentence = `W toku czynności na komendzie zatrzymany zachowywał pełen spokój, współpracował z funkcjonariuszami LSPD, wykonywał polecenia oraz dobrowolnie przyznał się do zarzucanych mu czynów.`;
+    } else if (caseAttitude === "denied") {
+      attitudeSentence = `Podczas czynności procesowych na komendzie podejrzany nie wykazywał skruchy ani woli współpracy — do samego końca upierał się przy swojej wersji wydarzeń i kategorycznie nie przyznawał się do winy.`;
+    } else if (caseAttitude === "silent") {
+      attitudeSentence = `Na terenie komendy zatrzymany podporządkował się poleceniom technicznym funkcjonariuszy, jednak skorzystał z prawa do zachowania milczenia i nie przyznał się do winy.`;
+    } else if (caseAttitude === "aggr") {
+      attitudeSentence = `W trakcie całego procesu zatrzymania oraz na celach komendy podejrzany zachowywał się wulgarnie i agresywnie, utrudniał prowadzenie czynności oraz do końca wypierał się winy.`;
+    }
+
+    // Wyrok i osadzenie
+    let totalM = 0, totalF = 0;
+    activeCharges.forEach(c => { totalM += c.m * c.count; totalF += c.f * c.count; });
+
+    let detentionSentence = "";
+    if (caseDetention === "station") {
+      detentionSentence = `Po przedstawieniu zarzutów (${chargesNames.join(", ")}), wymierzono karę łączną ${totalM} mies. pozbawienia wolności oraz grzywnę $${totalF.toLocaleString()}. Obywatel zostaje zatrzymany na komendzie LSPD (Cele MRPD).`;
+    } else if (caseDetention === "prison") {
+      detentionSentence = `Po przedstawieniu zarzutów (${chargesNames.join(", ")}), orzeczono łączny wymiar kary ${totalM} mies. odsiadki oraz grzywnę $${totalF.toLocaleString()}. Skazanego przetransportowano do więzienia stanowego Bolingbroke.`;
+    } else {
+      detentionSentence = `Po przedstawieniu zarzutów (${chargesNames.join(", ")}) i opłaceniu grzywny w kwocie $${totalF.toLocaleString()}, zatrzymany został zwolniony z komendy LSPD.`;
+    }
+
+    // 5 RÓŻNYCH STYLÓW NARRACJI (Żeby opisy różniły się od siebie!)
+    const actsJoined = actionsList.length ? actionsList.join(", a także ") : "naruszył przepisy prawa stanowego";
+    const ctxBlock = ctxSentences.length ? " " + ctxSentences.join(" ") : "";
+
+    let finalReport = "";
+
+    if (narrativeStyleIdx === 0) {
+      // Wariant 1: Oficjalny procesowy
+      finalReport = `W dniu dzisiejszym funkcjonariusz ${lead}${assistsText} przeprowadził czynności procesowe wobec obywatela ${citizen}. W toku podjętej interwencji udowodniono, iż podejrzany ${actsJoined}.${ctxBlock}\n\n${weaponSentence} ${confSentence}\n\n${attitudeSentence} ${detentionSentence}`;
+    } else if (narrativeStyleIdx === 1) {
+      // Wariant 2: Chronologiczny z przebiegu akcji
+      finalReport = `Podczas pełnienia służby patrolowej jednostka pod dowództwem ${lead}${assistsText} podjęła interwencję, w wyniku której zatrzymany został ${citizen}. Zgromadzony na miejscu materiał dowodowy jednoznacznie wskazuje, że zatrzymany ${actsJoined}.${ctxBlock}\n\nPo przewiezieniu na komendę MRPD i odczytaniu praw Mirandy przystąpiono do rewizji. ${weaponSentence} ${confSentence}\n\n${attitudeSentence} ${detentionSentence}`;
+    } else if (narrativeStyleIdx === 2) {
+      // Wariant 3: Zwięzły raport operacyjny
+      finalReport = `[RAPORT ZATRZYMANIA LSPD] Funkcjonariusz prowadzący: ${lead}${assistsText}. Osoba zatrzymana: ${citizen}.\nPrzebieg zdarzenia: W trakcie działań operacyjnych ustalono, że sprawca ${actsJoined}.${ctxBlock} ${weaponSentence} ${confSentence}\nZachowanie na celach i decyzja: ${attitudeSentence} ${detentionSentence}`;
+    } else if (narrativeStyleIdx === 3) {
+      // Wariant 4: Protokół śledczo-dowodowy
+      finalReport = `Niniejsza kartoteka dotyczy zatrzymania obywatela ${citizen}, zrealizowanego przez funkcjonariusza ${lead}${assistsText}. W wyniku przeprowadzonych czynności służbowych potwierdzono, iż wyżej wymieniony ${actsJoined}.${ctxBlock}\n\nCzynności zabezpieczające: ${weaponSentence} ${confSentence}\n\nStosunek podejrzanego do zarzutów: ${attitudeSentence} ${detentionSentence}`;
+    } else {
+      // Wariant 5: Narracja patrolowa z zatrzymania
+      finalReport = `Obywatel ${citizen} został ujęty i doprowadzony na komendę LSPD przez funkcjonariusza ${lead}${assistsText}. Powodem interwencji był fakt, iż mężczyzna ${actsJoined}.${ctxBlock}\n\nW trakcie procedury przeszukania na celach sprawdzono posiadane przedmioty — ${weaponSentence.charAt(0).toLowerCase() + weaponSentence.slice(1)} ${confSentence}\n\n${attitudeSentence} ${detentionSentence}`;
+    }
+
+    document.getElementById("case-desc").value = finalReport;
+  }
+
+  function renderConfiscatedDisplay(allConf) {
+    const box = document.getElementById("case-confiscated-box");
+    if (!allConf || allConf.length === 0) {
+      box.innerHTML = `<span style="color:var(--text-dim);">Brak wpisanych konfiskat (dodają się automatycznie po wybraniu broni lub narkotyków)</span>`;
+      return;
+    }
+    box.innerHTML = allConf.map(item => `<span class="pill pill-red" style="margin:2px;">📦 ${item}</span>`).join("");
+  }
+
+  function addConfiscatedItemPrompt() {
+    const val = prompt("Wpisz skonfiskowany przedmiot (np. Krótkofalówka, Wytrych, Kamizelka kuloodporna):");
+    if (!val) return;
+    customConfiscated.push(val.trim());
+    generateAutoCaseDescription();
+  }
+
+  /* =========================================================
+     MODAL TARYFIKATORA I ZARZĄDZANIE ZARZUTAMI
+     ========================================================= */
+  function openPenalModal() {
+    tempModalSelected = JSON.parse(JSON.stringify(activeCharges));
+    document.getElementById("penal-search-inp").value = "";
+    document.getElementById("penal-modal").classList.remove("hidden");
+    renderPenalModalCatalog();
+  }
+
+  function closePenalModal() {
+    document.getElementById("penal-modal").classList.add("hidden");
+  }
+
+  function renderPenalModalCatalog() {
+    const q = (document.getElementById("penal-search-inp").value || "").toLowerCase();
+    const container = document.getElementById("penal-catalog-container");
+    let html = "";
+
+    FULL_PENAL_CATALOG.forEach(group => {
+      const matched = group.items.filter(i =>
+        i.name.toLowerCase().includes(q) || group.category.toLowerCase().includes(q)
+      );
+      if (matched.length === 0) return;
+
+      html += `<div class="penal-category-title">${group.category}</div><div class="penal-grid">`;
+      matched.forEach(item => {
+        const existing = tempModalSelected.find(x => x.name === item.name);
+        const isSel = !!existing;
+        const safeName = item.name.replace(/'/g, "\\'");
+        html += `
+          <div class="penal-card ${isSel ? 'selected' : ''}" onclick="togglePenalCardInModal('${safeName}')">
+            <div class="penal-card-title">${item.name}</div>
+            <div class="penal-card-meta">
+              <span>${item.m} mies. • $${item.f.toLocaleString()}</span>
+              ${isSel ? `<span class="pill pill-blue">✓ Wybrano (x${existing.count})</span>` : ""}
+            </div>
+          </div>
+        `;
+      });
+      html += `</div>`;
+    });
+
+    container.innerHTML = html;
+    updatePenalModalFooter();
+  }
+
+  function togglePenalCardInModal(itemName) {
+    const idx = tempModalSelected.findIndex(x => x.name === itemName);
+    if (idx > -1) {
+      tempModalSelected.splice(idx, 1);
+    } else {
+      let found = null;
+      FULL_PENAL_CATALOG.forEach(g => {
+        const m = g.items.find(i => i.name === itemName);
+        if (m) found = m;
+      });
+      if (found) {
+        tempModalSelected.push({ ...found, count: 1 });
+        // Jeśli zarzut dotyczy broni (np. Klasa I, II, III, IV), automatycznie zaznacz tę broń w konfiguratorze!
+        if (found.autoWpn && !selectedWeapons.includes(found.autoWpn)) {
+          selectedWeapons.push(found.autoWpn);
+          updateWeaponButtonsUI();
+        }
+      }
+    }
+    renderPenalModalCatalog();
+  }
+
+  function updatePenalModalFooter() {
+    const el = document.getElementById("penal-modal-summary");
+    if (tempModalSelected.length === 0) {
+      el.textContent = "Nie wybrano jeszcze żadnego przestępstwa";
+      return;
+    }
+    let m = 0, f = 0;
+    tempModalSelected.forEach(c => { m += c.m * c.count; f += c.f * c.count; });
+    el.innerHTML = `Wybrano zarzutów: <span style="color:#60a5fa;">${tempModalSelected.length}</span> • Łącznie: <span style="color:#fff;">${m} mies.</span> • Grzywna: <span style="color:#4ade80;">$${f.toLocaleString()}</span>`;
+  }
+
+  function confirmPenalSelection() {
+    activeCharges = JSON.parse(JSON.stringify(tempModalSelected));
+    closePenalModal();
+    updateCaseTotals();
+    renderDynamicChargeQuestions();
+    generateAutoCaseDescription();
+    toast("✅ Zaktualizowano zarzuty i odblokowano pytania szczegółowe!");
+  }
+
+  function changeChargeCount(idx, delta) {
+    activeCharges[idx].count += delta;
+    if (activeCharges[idx].count <= 0) {
+      activeCharges.splice(idx, 1);
+    }
+    updateCaseTotals();
+    renderDynamicChargeQuestions();
+    generateAutoCaseDescription();
+  }
+
+  function clearCaseCharges() {
+    activeCharges = [];
+    customConfiscated = [];
+    selectedWeapons = [];
+    updateWeaponButtonsUI();
+    updateCaseTotals();
+    renderDynamicChargeQuestions();
+    generateAutoCaseDescription();
+  }
+
+  function resetCaseForm() {
+    document.getElementById("case-citizen").value = "";
+    document.getElementById("weapon-model-inp").value = "";
+    caseAssistOfficers = [];
+    renderCaseAssistOfficers();
+    clearCaseCharges();
+    toast("🗑️ Wyczyszczono formularz sprawy");
+  }
+
+  function updateCaseTotals() {
+    let m = 0, f = 0;
+    activeCharges.forEach(c => { m += c.m * c.count; f += c.f * c.count; });
+    document.getElementById("case-sum-months").textContent = m + " mies.";
+    document.getElementById("case-sum-fine").textContent = "$" + f.toLocaleString();
+
+    const listEl = document.getElementById("case-selected-list");
+    const prevEl = document.getElementById("case-quick-preview");
+
+    if (activeCharges.length === 0) {
+      listEl.innerHTML = `<div style="padding:18px; text-align:center; color:var(--text-dim); border:1px dashed var(--border); border-radius:8px;">Nie dodano jeszcze przestępstw. Kliknij „+ Dodaj wyrok (Taryfikator)”.</div>`;
+      prevEl.textContent = "Brak wybranych zarzutów.";
+      return;
+    }
+
+    listEl.innerHTML = activeCharges.map((c, idx) => `
+      <div class="chip-item">
+        <div>
+          <strong style="color:#fff;">${c.name}</strong>
+          <span style="color:var(--text-muted); margin-left:8px;">(${c.m * c.count} mies. • $${(c.f * c.count).toLocaleString()})</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <button class="btn btn-sm btn-dark" onclick="changeChargeCount(${idx}, -1)">-</button>
+          <span style="font-weight:800; min-width:22px; text-align:center;">x${c.count}</span>
+          <button class="btn btn-sm btn-dark" onclick="changeChargeCount(${idx}, 1)">+</button>
+        </div>
+      </div>
+    `).join("");
+
+    prevEl.textContent = `ZARZUTY: ${activeCharges.map(c => c.count > 1 ? c.name + " x" + c.count : c.name).join(", ")}\nWYROK: ${m} miesięcy | GRZYWNA: $${f.toLocaleString()}`;
+  }
+
+  function renderCaseAssistOfficers() {
+    const box = document.getElementById("case-assist-officers-box");
+    if (!caseAssistOfficers.length) {
+      box.innerHTML = `<div style="padding:10px; text-align:center; color:var(--text-dim); border:1px dashed var(--border); border-radius:8px; font-size:12px;">Brak funkcjonariuszy pomocniczych (kliknij „+ Dodaj jednostkę”, aby wybrać z listy LSPD)</div>`;
+      return;
+    }
+    box.innerHTML = `<div style="display:flex; flex-wrap:wrap; gap:6px;">` + caseAssistOfficers.map((o, i) => `
+      <span class="pill pill-blue" style="padding:5px 10px;">
+        👮 ${o}
+        <button class="chip-remove" style="margin-left:6px;" onclick="caseAssistOfficers.splice(${i},1);renderCaseAssistOfficers();generateAutoCaseDescription();">×</button>
+      </span>
+    `).join("") + `</div>`;
+  }
+
+  function finalizeCaseAction(mode) {
+    if (mode === "station") setCaseDetention("station");
+    if (mode === "prison") setCaseDetention("prison");
+    if (mode === "pardon") setCaseDetention("released");
+    copyFullCaseRecord();
+  }
+
+  function copyCaseTextOnly() {
+    const txt = document.getElementById("case-desc").value;
+    if (!txt) { toast("⚠️ Najpierw wybierz zarzuty z taryfikatora!"); return; }
+    navigator.clipboard.writeText(txt);
+    toast("📄 Skopiowano sam opis sprawy do schowka!");
+  }
+
+  function copyFullCaseRecord() {
+    const cit = document.getElementById("case-citizen").value || "Nieznany";
+    const desc = document.getElementById("case-desc").value || "Brak opisu";
+    const m = document.getElementById("case-sum-months").textContent;
+    const f = document.getElementById("case-sum-fine").textContent;
+    const charges = activeCharges.map(c => c.count > 1 ? `${c.name} (x${c.count})` : c.name).join(", ") || "Brak";
+    const full = `KARTOTEKA SPRAWY LSPD\nObywatel: ${cit}\nProwadzący: ${db.loggedOfficer}\nPomocniczy: ${caseAssistOfficers.join(", ") || "Brak"}\nZarzuty: ${charges}\nWyrok: ${m} | Grzywna: ${f}\n\nOPIS SPRAWY:\n${desc}`;
+    navigator.clipboard.writeText(full);
+    toast("📋 Skopiowano pełną kartotekę sprawy do schowka!");
+  }
+
+  /* =========================================================
+     BAZA DANYCH, RAPORTY, SZKOLENIA I STREFA KADETA
      ========================================================= */
   const LICENSES = ["RTO+HRO", "NEGO", "SV", "PWC+APWC", "ASU", "MERRY", "SEU"];
   const FTO_BASIC = ["Code 6", "FTS", "10-80", "10-80 Pieszo", "Status 7", "TCCC", "Kompendium"];
 
-  const INITIAL_OFFICERS = [
-    { badge: "1", name: "Travis White", rank: "Dep. Chief of Police", channel: "Dyspozytornia LSPD", status: "Poza służbą", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "ASU": true, "MERRY": true, "SEU": true }, updated: "High Command" },
-    { badge: "2", name: "Jacob Galahad", rank: "Chief of Police", channel: "Dyspozytornia LSPD", status: "Poza służbą", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "ASU": true, "MERRY": true, "SEU": true }, updated: "High Command" },
-    { badge: "3", name: "Jerry Black", rank: "Dep. Chief of Police", channel: "LSPD Tac #1", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "ASU": true, "SEU": true }, updated: "High Command" },
-    { badge: "4", name: "John Mielns", rank: "Commander", channel: "LSPD Tac #1", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true }, updated: "Command" },
-    { badge: "5", name: "Amy Rover", rank: "Commander", channel: "Dyspozytornia LSPD", status: "Poza służbą", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true }, updated: "Command" },
-    { badge: "12", name: "Zoya Sierra", rank: "Lieutenant", channel: "LSPD", status: "Poza służbą", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true }, updated: "FTO" },
-    { badge: "14", name: "Martin Swift", rank: "Lieutenant", channel: "LSPD", status: "Poza służbą", licenses: { "RTO+HRO": true, "SV": true }, updated: "-" },
-    { badge: "15", name: "Jobko Plackiars", rank: "Sergeant II", channel: "LSPD", status: "Poza służbą", licenses: { "RTO+HRO": true }, updated: "-" },
-    { badge: "26", name: "John Waeles", rank: "Sergeant I", channel: "LSPD", status: "Poza służbą", licenses: { "RTO+HRO": true }, updated: "-" },
-    { badge: "27", name: "John Cagville", rank: "Captain I", channel: "LSPD Tac #1", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "SEU": true }, updated: "High Command" },
-    { badge: "40", name: "Tiago Cunta Costa", rank: "Officer III", channel: "LSPD", status: "Poza służbą", licenses: { "RTO+HRO": true }, updated: "-" },
-    { badge: "44", name: "Rafael Henrique Moreira", rank: "Officer III", channel: "LSPD", status: "Poza służbą", licenses: { "RTO+HRO": true, "SEU": true }, updated: "-" },
-    { badge: "49", name: "Jacob Taylor", rank: "Officer III", channel: "LSPD", status: "Poza służbą", licenses: { "RTO+HRO": true }, updated: "-" },
-    { badge: "61", name: "Pablo Taylor", rank: "Officer III", channel: "LSPD", status: "Poza służbą", licenses: { "RTO+HRO": true, "NEGO": true }, updated: "-" },
-    { badge: "67", name: "Matteo Grezzo", rank: "Officer II", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "69", name: "Jim Milnor", rank: "Officer III", channel: "LSPD", status: "Poza służbą", licenses: { "RTO+HRO": true }, updated: "-" },
-    { badge: "70", name: "Matt Dick", rank: "Sergeant I", channel: "LSPD Tac #3", status: "Na służbie", licenses: { "RTO+HRO": true, "ASU": true, "SV": true }, updated: "Pilot ASU" },
-    { badge: "73", name: "Chris Angel", rank: "Sergeant I", channel: "LSPD Tac #3", status: "Na służbie", licenses: { "RTO+HRO": true, "ASU": true, "SV": true, "SEU": true }, updated: "Pilot ASU" },
-    { badge: "74", name: "James Williams", rank: "Sergeant I", channel: "LSPD Tac #3", status: "Na służbie", licenses: { "RTO+HRO": true, "SV": true, "PWC+APWC": true }, updated: "-" },
-    { badge: "76", name: "Mike Smith", rank: "Sergeant I", channel: "LSPD", status: "Poza służbą", licenses: { "RTO+HRO": true, "SV": true }, updated: "FTO" },
-    { badge: "80", name: "Henry Scott", rank: "Sergeant I", channel: "Dyspozytornia LSPD", status: "Na służbie", licenses: { "RTO+HRO": true, "SV": true, "PWC+APWC": true }, updated: "PWC (00)" },
-    { badge: "85", name: "John Black", rank: "Officer II", channel: "LSPD Tac #3", status: "Na służbie", licenses: { "RTO+HRO": true }, updated: "-" },
-    { badge: "93", name: "Bill Coggins", rank: "Officer II", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "94", name: "Gregory Taylor", rank: "Officer II", channel: "LSPD", status: "Poza służbą", licenses: { "RTO+HRO": true }, updated: "-" },
-    { badge: "97", name: "Yony Wayne", rank: "Officer II", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "99", name: "Mehmed Black", rank: "Officer II", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "103", name: "Donghyun Park", rank: "Officer II", channel: "LSPD", status: "Poza służbą", licenses: { "RTO+HRO": true }, updated: "-" },
-    { badge: "105", name: "Junior Brill", rank: "Chief of Police", channel: "LSPD Tac #3", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "ASU": true, "MERRY": true, "SEU": true }, updated: "High Command" },
-    { badge: "110", name: "Elliana Raver", rank: "Officer II", channel: "LSPD", status: "Poza służbą", licenses: { "RTO+HRO": true }, updated: "-" },
-    { badge: "111", name: "Lauri Jaguar", rank: "Officer II", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "112", name: "Treivon Gamble", rank: "Officer I", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "115", name: "Iris Hernandez", rank: "Officer I", channel: "LSPD Tac #1", status: "Na służbie", licenses: { "RTO+HRO": true }, updated: "-" },
-    { badge: "118", name: "Kavin Turner", rank: "Officer III", channel: "LSPD Tac #3", status: "Na służbie", licenses: { "RTO+HRO": true, "SEU": true }, updated: "-" },
-    { badge: "130", name: "Santiago Bachillo", rank: "Officer II", channel: "LSPD Tac #3", status: "Na służbie", licenses: { "RTO+HRO": true }, updated: "-" },
-    { badge: "131", name: "Valerie Raver", rank: "Officer II", channel: "LSPD Tac #3", status: "Na służbie", licenses: { "RTO+HRO": true }, updated: "-" },
-    { badge: "141", name: "Vivienne Walker", rank: "Officer I", channel: "LSPD Tac #3", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true }, updated: "SASA" },
-    { badge: "149", name: "Tony Evans", rank: "Officer I", channel: "LSPD Tac #3", status: "Na służbie", licenses: {}, updated: "-" },
-    { badge: "155", name: "David White", rank: "Officer I", channel: "Dyspozytornia LSPD", status: "Na służbie", licenses: { "RTO+HRO": true }, updated: "-" },
-    { badge: "160", name: "Anthany Nelson", rank: "Officer I", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "161", name: "Kilo Morris", rank: "Officer I", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "163", name: "Ava Bachillo", rank: "Officer I", channel: "LSPD Tac #3", status: "Na służbie", licenses: {}, updated: "-" },
-    { badge: "167", name: "Alwaro Maniana", rank: "Officer I", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "168", name: "Troy Stardust", rank: "Recruit", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "169", name: "Mark Kochones", rank: "Recruit", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "170", name: "Mackey Sztonowski", rank: "Recruit", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "171", name: "Evan Myers", rank: "Recruit", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "176", name: "Bobby Bennett", rank: "Recruit", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "182", name: "Kurt Owcow", rank: "Recruit", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "184", name: "Javier Bolf", rank: "Officer I", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "185", name: "Jack Closet", rank: "Officer I", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "186", name: "Wacław Rączka", rank: "Recruit", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "187", name: "Eithan Rell", rank: "Officer I", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "189", name: "Kael Bolf", rank: "Officer I", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "193", name: "Kajetan Geleneta", rank: "Officer I", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "197", name: "Sergio Flores", rank: "Recruit", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "198", name: "Gergio Kadet Bulet", rank: "Recruit", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "199", name: "Túlio Navarro Figueiredo", rank: "Recruit", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "901", name: "Rose Hernandez", rank: "Officer II", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "923", name: "Oley Sasa", rank: "Sergeant I", channel: "LSPD Tac #1", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "ASU": true, "MERRY": true, "SEU": true }, updated: "AIAD / FTO" },
-    { badge: "933", name: "Lucas Hernandez", rank: "Officer II", channel: "LSPD", status: "Poza służbą", licenses: {}, updated: "-" },
-    { badge: "941", name: "Gregory Solin", rank: "Officer II", channel: "LSPD Tac #3", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "SEU": true }, updated: "FTO" }
-  ];
-
-  const INITIAL_CITIZENS = [
-    { name: "Dekster Asan", cid: "MZ5255", dob: "10/04/2004", lic: "Brak", wanted: false, pts: 0 },
-    { name: "Galian Abdulaevitc", cid: "L67165", dob: "15/03/1998", lic: "Brak", wanted: false, pts: 0 },
-    { name: "Lucas Fafikazi", cid: "I25181", dob: "24/02/2000", lic: "Brak", wanted: false, pts: 0 },
-    { name: "Albert Abdul", cid: "R38713", dob: "1/1/1904", lic: "Brak", wanted: false, pts: 0 },
-    { name: "Chael Chrkyles Abdul", cid: "P12757", dob: "1/1/1999", lic: "Brak", wanted: false, pts: 0 },
-    { name: "Ivan Tryfiłow Abdul", cid: "Y50733", dob: "1/1/1999", lic: "Brak", wanted: false, pts: 0 },
-    { name: "Dżamal Abdul", cid: "Q16027", dob: "1/1/1999", lic: "Brak", wanted: false, pts: 0 },
-    { name: "[729] Jade Grayson", cid: "SAMS729", dob: "12/05/1999", lic: "EMS / Broń", wanted: false, pts: 0 },
-    { name: "[711] Andrew Karabin", cid: "SAMS711", dob: "08/11/1995", lic: "EMS", wanted: false, pts: 0 }
-  ];
-
-  const INITIAL_VEHICLES = [
-    { owner: "Javier Afonso", brand: "Vapid", model: "Uranus", plate: "00EBF883" },
-    { owner: "ali mancini", brand: "Vapid", model: "Uranus", plate: "66KHD049" },
-    { owner: "Anthoni Bonetti", brand: "Benefactor", model: "Panto", plate: "89LJC766" },
-    { owner: "Duchian Arcki", brand: "Vapid", model: "Uranus", plate: "60UNR711" },
-    { owner: "Michal Beck", brand: "Vapid", model: "Uranus", plate: "60IYW107" },
-    { owner: "Darwit Prion", brand: "Vapid", model: "Uranus", plate: "0292148J" },
-    { owner: "Jedadiah Saufe", brand: "Bravado", model: "Dorado STX", plate: "01JSS823" },
-    { owner: "Alojzy Mleko", brand: "Vapid", model: "Uranus", plate: "01ESZ009" }
-  ];
-
-  const INITIAL_FINES = [
-    { id: 696, officer: "[44] Rafael Henrique Moreira", citizen: "Alejandro Sancho", fine: 375, pts: 4 },
-    { id: 695, officer: "[44] Rafael Henrique Moreira", citizen: "Gayman Razz", fine: 450, pts: 3 },
-    { id: 694, officer: "[44] Rafael Henrique Moreira", citizen: "Marfius Nachito", fine: 1875, pts: 18 },
-    { id: 693, officer: "[44] Rafael Henrique Moreira", citizen: "Jason Parker", fine: 500, pts: 1 },
-    { id: 692, officer: "[49] Jacob Taylor", citizen: "Jade Grayson", fine: 425, pts: 2 },
-    { id: 691, officer: "[923] Oley Sasa", citizen: "Cheryl Benklaz", fine: 250, pts: 0 },
-    { id: 690, officer: "[49] Jacob Taylor", citizen: "Leonardo Alweez", fine: 1250, pts: 4 },
-    { id: 689, officer: "[80] Henry Scott", citizen: "Douglas Pehlivan", fine: 250, pts: 0 }
-  ];
-
   const INITIAL_REPORTS = [
     { id: 308, author: "[923] Oley Sasa", title: "Podsumowanie akcji - Kod Czerwony w Paleto", type: "Podsumowanie akcji", date: "15.10.2026 02:39", body: "Jednostki LSPD zareagowały na wprowadzony Kod Czerwony w rejonie Paleto Bay. Przeprowadzono zabezpieczenie terenu oraz neutralizację zagrożenia.", officers: ["[27] John Cagville", "[941] Gregory Solin"], persons: [], vehicles: [] },
-    { id: 307, author: "[61] Pablo Taylor", title: "Podsumowanie akcji ( Fleeca )", type: "Podsumowanie akcji", date: "14.10.2026 20:46", body: "Zabezpieczenie napadu na bank Fleeca, przeprowadzenie negocjacji oraz pościg 10-80 za sprawcami.", officers: ["[923] Oley Sasa"], persons: [], vehicles: [] },
-    { id: 306, author: "[941] Gregory Solin", title: "PWC 14.10.2026", type: "Podsumowanie akcji", date: "14.10.2026 17:53", body: "Raport z pełnienia dyżuru Patrol Watch Commandera (00). Rozdysponowano patrole ADAM oraz EDWARD.", officers: [], persons: [], vehicles: [] },
-    { id: 305, author: "[69] Jim Milnor", title: "Próba samobójcza Vinewood", type: "Podsumowanie akcji", date: "05.10.2026 17:12", body: "Interwencja negocjatorska na wzgórzach Vinewood. Osobę zabezpieczono i przekazano SAMS.", officers: [], persons: [], vehicles: [] },
-    { id: 304, author: "[103] Donghyun Park", title: "ZBIERANIE/ROZŁADUNEK/NAPAD", type: "Operacyjny", date: "04.10.2026 22:14", body: "Działania operacyjne na terenie doków.", officers: [], persons: [], vehicles: [] },
-    { id: 303, author: "[923] Oley Sasa", title: "Podsumowanie akcji na budowie przy pd davis", type: "Podsumowanie akcji", date: "30.09.2026 00:36", body: "Zabezpieczenie strzelaniny na placu budowy przy Davis.", officers: [], persons: [], vehicles: [] }
+    { id: 307, author: "[6] Pablo Taylor", title: "Podsumowanie akcji ( Fleeca )", type: "Podsumowanie akcji", date: "14.10.2026 20:46", body: "Zabezpieczenie napadu na bank Fleeca, przeprowadzenie negocjacji oraz pościg 10-80 za sprawcami.", officers: ["[923] Oley Sasa"], persons: [], vehicles: [] },
+    { id: 306, author: "[941] Gregory Solin", title: "PWC 14.10.2026", type: "Podsumowanie akcji", date: "14.10.2026 17:53", body: "Raport z pełnienia dyżuru Patrol Watch Commandera (00). Rozdysponowano patrole ADAM oraz EDWARD.", officers: [], persons: [], vehicles: [] }
   ];
 
   const INITIAL_CADETS = [
     {
-      id: "165", badge: "165", name: "Paulo Cortez", fto: "Oley Sasa", joinDate: "03.10.2026",
+      id: "152", badge: "152", name: "Paulo Cortez", fto: "Oley Sasa", joinDate: "03.10.2026",
       sec: 0, running: false, ts: null, pos: true, posNotes: "Dobrze skoordynowany pościg pojazdem jak i pieszo.", neg: "BRAK", negNotes: "",
       modules: {
         "Code 6": { ok: true, note: "Poprawił błędy", sign: "SASA" },
@@ -1415,9 +2001,507 @@
       }
     },
     { id: "166", badge: "166", name: "Cayden Potato", fto: "Oley Sasa", joinDate: "10.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
-    { id: "168", badge: "168", name: "Troy Stardust", fto: "Gregory Solin", joinDate: "03.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
-    { id: "169", badge: "169", name: "Mark Kochones", fto: "Hailey Sinclair", joinDate: "03.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
-    { id: "170", badge: "170", name: "Mackey Sztonowski", fto: "John Cagvill", joinDate: "03.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
+    { id: "169_t", badge: "169", name: "Troy Stardust", fto: "Gregory Solin", joinDate: "03.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
+    { id: "169_m", badge: "169", name: "Mark Kochones", fto: "Hailey Sinclair", joinDate: "03.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
+    { id: "170", badge: "170", name: "Mackey Sztonowski", fto: "John Cagville", joinDate: "03.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
     { id: "171", badge: "171", name: "Evan Myers", fto: "Mike Smith", joinDate: "03.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
-    { id: "174", badge: "174", name: "Tony Wood", fto: "Amy Rover", joinDate: "03.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
-    { id: "176", badge: "176", name: "Bobby Bennett", fto: "Zoya Sierra", joinDate: "03.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes
+    { id: "183", badge: "183", name: "Lucky Luke jr", fto: "Jack Onfire", joinDate: "05.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
+    { id: "196", badge: "196", name: "Sergio Kadet Bullet", fto: "Oley Sasa", joinDate: "10.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
+    { id: "199", badge: "199", name: "Tulio Navarro Figueiredo", fto: "Oley Sasa", joinDate: "11.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} }
+  ];
+
+  const INITIAL_PATROLS = [
+    { id: 1, type: "Adam", members: ["[3] Jerry Black", "[156] Iris Hernandez"] },
+    { id: 2, type: "Adam", members: ["[80] Henry Scott"] },
+    { id: 3, type: "Adam", members: ["[155] David White"] }
+  ];
+
+  let db = { loggedOfficer: "[923] Oley Sasa", pwc: "[80] Henry Scott", apwc: "Brak przypisanego", officers: [], reports: [], cadets: [], patrols: [] };
+
+  function loadDatabase() {
+    try {
+      const raw = localStorage.getItem("lspd_mdt_complete_v6");
+      if (raw) {
+        db = JSON.parse(raw);
+      } else {
+        db.officers = JSON.parse(JSON.stringify(INITIAL_OFFICERS));
+        db.reports = JSON.parse(JSON.stringify(INITIAL_REPORTS));
+        db.cadets = JSON.parse(JSON.stringify(INITIAL_CADETS));
+        db.patrols = JSON.parse(JSON.stringify(INITIAL_PATROLS));
+      }
+    } catch (e) {
+      db.officers = JSON.parse(JSON.stringify(INITIAL_OFFICERS));
+      db.reports = JSON.parse(JSON.stringify(INITIAL_REPORTS));
+      db.cadets = JSON.parse(JSON.stringify(INITIAL_CADETS));
+      db.patrols = JSON.parse(JSON.stringify(INITIAL_PATROLS));
+    }
+    db.cadets.forEach(c => {
+      if (!c.modules) c.modules = {};
+      FTO_BASIC.forEach(m => { if (!c.modules[m]) c.modules[m] = { ok: false, note: "", sign: "" }; });
+    });
+    updateSidebarCounters();
+  }
+
+  function saveDatabase() {
+    try { localStorage.setItem("lspd_mdt_complete_v6", JSON.stringify(db)); } catch (e) {}
+    updateSidebarCounters();
+  }
+
+  function updateSidebarCounters() {
+    document.getElementById("cnt-duty").textContent = db.officers.filter(o => o.status === "Na służbie").length;
+    document.getElementById("cnt-reports").textContent = db.reports.length;
+    document.getElementById("cnt-officers").textContent = db.officers.length;
+    document.getElementById("cnt-cadets").textContent = db.cadets.length;
+    document.getElementById("cnt-patrols").textContent = db.patrols.length;
+    document.getElementById("logged-officer-display").textContent = db.loggedOfficer;
+    document.getElementById("case-lead-officer").textContent = db.loggedOfficer;
+  }
+
+  /* RAPORTY */
+  let editingReportId = null, draftOfficers = [], draftPersons = [], draftVehicles = [], currentPickerType = "officers";
+
+  function renderReportsList() {
+    const tbody = document.getElementById("reports-tbody");
+    if (!tbody) return;
+    const q = (document.getElementById("report-search-inp")?.value || "").toLowerCase();
+    tbody.innerHTML = "";
+    const filtered = db.reports.filter(r => ("#" + r.id).includes(q) || r.title.toLowerCase().includes(q) || r.author.toLowerCase().includes(q));
+    if (!filtered.length) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-dim); padding: 24px;">Brak raportów. Kliknij „+ Nowy raport”.</td></tr>`;
+      return;
+    }
+    filtered.forEach(r => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td style="font-weight:800; color:#60a5fa;">#${r.id}</td>
+        <td style="font-weight:700;">${r.author}</td>
+        <td style="color:#fff; font-weight:600;">${r.title}</td>
+        <td><span class="pill pill-amber">${r.type}</span></td>
+        <td style="color:var(--text-muted);">${r.date}</td>
+        <td style="text-align:right;">
+          <button class="btn btn-sm btn-dark" onclick="openEditReport(${r.id})">👁 Podgląd / Edytuj</button>
+          <button class="btn btn-sm btn-red" onclick="deleteReport(${r.id})">Usuń</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function openCleanReportCreator() {
+    editingReportId = null;
+    document.getElementById("rep-form-header").textContent = "Nowy raport";
+    document.getElementById("rf-title").value = "";
+    document.getElementById("rf-type").value = "Podsumowanie akcji";
+    document.getElementById("rf-body").value = "";
+    document.getElementById("rf-author").textContent = db.loggedOfficer;
+    draftOfficers = []; draftPersons = []; draftVehicles = [];
+    renderDraftChips();
+    document.getElementById("reports-list-subview").classList.add("hidden");
+    document.getElementById("reports-form-subview").classList.remove("hidden");
+  }
+
+  function openEditReport(repId) {
+    const r = db.reports.find(x => x.id === repId);
+    if (!r) return;
+    editingReportId = r.id;
+    document.getElementById("rep-form-header").textContent = "Edycja raportu #" + r.id;
+    document.getElementById("rf-title").value = r.title;
+    document.getElementById("rf-type").value = r.type;
+    document.getElementById("rf-body").value = r.body;
+    document.getElementById("rf-author").textContent = r.author;
+    draftOfficers = [...(r.officers || [])];
+    draftPersons = [...(r.persons || [])];
+    draftVehicles = [...(r.vehicles || [])];
+    renderDraftChips();
+    document.getElementById("reports-list-subview").classList.add("hidden");
+    document.getElementById("reports-form-subview").classList.remove("hidden");
+  }
+
+  function closeReportCreator() {
+    document.getElementById("reports-form-subview").classList.add("hidden");
+    document.getElementById("reports-list-subview").classList.remove("hidden");
+    renderReportsList();
+  }
+
+  function renderDraftChips() {
+    const renderBox = (boxId, arr, typeKey, emptyMsg) => {
+      const el = document.getElementById(boxId);
+      if (!arr.length) {
+        el.innerHTML = `<div style="padding:18px; text-align:center; color:var(--text-dim); border:1px dashed var(--border); border-radius:8px; font-size:12px;">${emptyMsg}</div>`;
+        return;
+      }
+      el.innerHTML = arr.map((item, idx) => `
+        <div class="chip-item">
+          <span>${item}</span>
+          <button class="chip-remove" onclick="removeDraftChip('${typeKey}', ${idx})">×</button>
+        </div>
+      `).join("");
+    };
+    renderBox("rf-officers-box", draftOfficers, "officers", "Brak dodatkowych funkcjonariuszy");
+    renderBox("rf-persons-box", draftPersons, "persons", "Brak powiązanych osób");
+    renderBox("rf-vehicles-box", draftVehicles, "vehicles", "Brak powiązanych pojazdów");
+  }
+
+  function removeDraftChip(typeKey, idx) {
+    if (typeKey === "officers") draftOfficers.splice(idx, 1);
+    if (typeKey === "persons") draftPersons.splice(idx, 1);
+    if (typeKey === "vehicles") draftVehicles.splice(idx, 1);
+    renderDraftChips();
+  }
+
+  function openPickerModal(typeKey) {
+    currentPickerType = typeKey;
+    document.getElementById("picker-search-inp").value = "";
+    document.getElementById("picker-custom-inp").value = "";
+    document.getElementById("picker-modal").classList.remove("hidden");
+    renderPickerItems();
+  }
+
+  function closePickerModal() {
+    document.getElementById("picker-modal").classList.add("hidden");
+  }
+
+  function renderPickerItems() {
+    const q = (document.getElementById("picker-search-inp").value || "").toLowerCase();
+    const box = document.getElementById("picker-list-box");
+    let pool = [];
+    if (currentPickerType === "officers" || currentPickerType === "case_officers") {
+      pool = db.officers.map(o => `[${o.badge}] ${o.name}`);
+    } else if (currentPickerType === "persons") {
+      pool = ["[729] Jade Grayson (SAMS)", "[711] Andrew Karabin (SAMS)", "Albert Abdul (Obywatel)", "Lucas Fafikazi (Obywatel)"];
+    } else {
+      pool = ["Bravado Charger LSPD", "BMW M3 Patrol Unit", "Karin Sultan RS", "Benefactor Panto", "Vapid Uranus"];
+    }
+    box.innerHTML = pool.filter(x => x.toLowerCase().includes(q)).map(item => {
+      const isAlreadyInCase = currentPickerType === "case_officers" && caseAssistOfficers.includes(item);
+      return `
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:${isAlreadyInCase ? '#101c38' : 'var(--bg-input)'}; border:1px solid ${isAlreadyInCase ? '#2563eb' : 'var(--border)'}; border-radius:8px; cursor:pointer;" onclick="selectItemFromPicker('${item.replace(/'/g, "\\'")}')">
+          <span style="font-weight:600; color:#fff;">${item}</span>
+          <span class="pill ${isAlreadyInCase ? 'pill-green' : 'pill-blue'}">${isAlreadyInCase ? '✓ Dodano' : '+ Dodaj'}</span>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function selectItemFromPicker(val) {
+    if (currentPickerType === "case_officers") {
+      const idx = caseAssistOfficers.indexOf(val);
+      if (idx > -1) caseAssistOfficers.splice(idx, 1);
+      else caseAssistOfficers.push(val);
+      renderCaseAssistOfficers();
+      renderPickerItems();
+      generateAutoCaseDescription();
+      return;
+    }
+    if (currentPickerType === "officers" && !draftOfficers.includes(val)) draftOfficers.push(val);
+    if (currentPickerType === "persons" && !draftPersons.includes(val)) draftPersons.push(val);
+    if (currentPickerType === "vehicles" && !draftVehicles.includes(val)) draftVehicles.push(val);
+    renderDraftChips();
+    closePickerModal();
+  }
+
+  function addCustomPickerItem() {
+    const val = document.getElementById("picker-custom-inp").value.trim();
+    if (!val) return;
+    selectItemFromPicker(val);
+    document.getElementById("picker-custom-inp").value = "";
+  }
+
+  function insertReportTemplate(tpl) {
+    const area = document.getElementById("rf-body");
+    if (tpl === "akcja") {
+      area.value = `1. Dyspozycja i przybycie na miejsce zdarzenia:\n\n2. Przebieg działań i podjęte czynności:\n\n3. Zabezpieczone dowody / Zatrzymani:\n\n4. Podsumowanie i wnioski końcowe:`;
+    } else if (tpl === "poscig") {
+      area.value = `1. Powód inicjacji pościgu (10-80) i lokalizacja początkowa:\n\n2. Pojazd uciekający oraz skład jednostek (U1, U2, U3):\n\n3. Przebieg trasy i użyte środki przymusu (PIT / Kolczatki):\n\n4. Zakończenie pościgu i status zatrzymanych:`;
+    }
+  }
+
+  function saveReportFromForm() {
+    const title = document.getElementById("rf-title").value.trim();
+    const type = document.getElementById("rf-type").value;
+    const body = document.getElementById("rf-body").value.trim();
+    if (!title || !body) { toast("⚠️ Uzupełnij tytuł oraz treść raportu!"); return; }
+    const now = new Date();
+    const dateStr = now.toLocaleDateString("pl-PL") + " " + now.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
+    if (editingReportId) {
+      const r = db.reports.find(x => x.id === editingReportId);
+      if (r) { r.title = title; r.type = type; r.body = body; r.officers = [...draftOfficers]; r.persons = [...draftPersons]; r.vehicles = [...draftVehicles]; }
+      toast("✅ Zaktualizowano raport #" + editingReportId);
+    } else {
+      const nextId = db.reports.length ? Math.max(...db.reports.map(x => x.id)) + 1 : 309;
+      db.reports.unshift({ id: nextId, author: db.loggedOfficer, title, type, date: dateStr, body, officers: [...draftOfficers], persons: [...draftPersons], vehicles: [...draftVehicles] });
+      toast("✅ Zapisano nowy raport #" + nextId);
+    }
+    saveDatabase();
+    closeReportCreator();
+  }
+
+  function deleteReport(id) {
+    db.reports = db.reports.filter(x => x.id !== id);
+    saveDatabase();
+    renderReportsList();
+  }
+
+  function copyCurrentReportForm() {
+    const title = document.getElementById("rf-title").value || "(Brak tytułu)";
+    const type = document.getElementById("rf-type").value;
+    const body = document.getElementById("rf-body").value;
+    navigator.clipboard.writeText(`TYTUŁ RAPORTU: ${title}\nRODZAJ: ${type}\nAUTOR: ${db.loggedOfficer}\n\nTREŚĆ RAPORTU:\n${body}`);
+    toast("📋 Skopiowano raport do schowka!");
+  }
+
+  /* SZKOLENIA SPECJALISTYCZNE (7 KURSÓW) */
+  const COURSES_DATA = {
+    "RTO+HRO": {
+      name: "RTO + HRO", reqTheory: 15, maxTheory: 16,
+      questions: [
+        { q: "1. Jaki jest nadrzędny cel prowadzenia radiówki podczas pościgu?", pts: 1, a: "Zapewnienie świadomości sytuacyjnej innym jednostkom, aby odcięte radiowozy mogły z samych komunikatów wyliczyć trasę, rozstawić kolczatki lub odciąć drogę bez patrzenia na mapę." },
+        { q: "2. Dlaczego jednostka prowadząca pościg nie powinna zajmować się raportowaniem na radiu?", pts: 2, a: "Prowadzenie pościgu z dużą prędkością wymaga pełnego skupienia. Jednoczesna orientacja z nazw ulic i mówienie zwiększa ryzyko wypadku. Rolę tę przejmuje pasażer lub U2." },
+        { q: "3. Jakie informacje i w jakiej kolejności należy podać w „komunikacie inicjującym”?", pts: 1, a: "1) Kod pościgu i identyfikator, 2) Opis pojazdu, 3) Aktualna lokalizacja i kierunek, 4) Powód pościgu." },
+        { q: "4. Co oznacza pojęcie objaśnienie progresywne i jak należy je stosować?", pts: 3, a: "Technika podawania komunikatów z wyprzedzeniem — do jakiego punktu lub skrzyżowania pojazd się zbliża, co daje jednostkom z tyłu czas na reakcję." },
+        { q: "5. Jak należy prawidłowo określać kierunki jazdy w pościgu, gdy nazwy ulic szybko się zmieniają?", pts: 2, a: "Bezwzględnie używać kierunków świata (North, South, East, West) zamiast zwrotów „w lewo / w prawo”." },
+        { q: "6. Jak operator radiowy powinien reagować na wjazd uciekiniera w tzw. „strefę martwą”?", pts: 1, a: "Natychmiast podać ostatni punkt wejścia, kierunek i zmianę środowiska (np. wjazd do tunelu metra, pościg podziemny)." },
+        { q: "7. W jaki sposób należy raportować zmiany prędkości i stylu jazdy uciekiniera?", pts: 2, a: "Prędkość opisowo (autostradowa/miejska/niska), a styl jazdy poprzez wychwytywanie anomalii (ścina krawężniki, jedzie chodnikiem, gasi światła)." },
+        { q: "8. Czym różni się „Cisza radiowa” od „Komunikacji ograniczonej”?", pts: 1, a: "Cisza radiowa to całkowity zakaz nadawania. Komunikacja ograniczona (lub kanał TAC) to korzystanie z pasma wyłącznie przez jednostki w pościgu." },
+        { q: "9. Jaka jest rola i obowiązek jednostek dołączających do pościgu w kwestii komunikacji?", pts: 2, a: "Zachować absolutną ciszę — jedynym komunikatem może być krótkie zgłoszenie wejścia w szyk (np. U4 przejmuje U3 po 10-50)." },
+        { q: "10. Kiedy i w jaki sposób operator radiowy powinien ogłosić status „10-13” w trakcie pościgu?", pts: 1, a: "Tylko gdy życie FP jest bezpośrednio zagrożone. Komunikat: „10-0 10-5 na 10-13 na [Lokalizacja]!”." }
+      ],
+      practical: [
+        "Etap 2 (Pościg HRO): 2 pościgi helikopterem za radiowozem po min. 5 minut z pełną radiówką (Próby: 2)",
+        "Etap 3 (Pościg RTO): Pościg pojazdem ADAM za pojazdem ADAM z pełną radiówką przez 10 minut (Próby: 2)"
+      ]
+    },
+    "NEGO": {
+      name: "NEGO (Negocjator)", reqTheory: 15, maxTheory: 17,
+      questions: [
+        { q: "1. Czy negocjator musi się przedstawić?", pts: 1, a: "Tak, na początku interakcji z napastnikami." },
+        { q: "2. Co jest najważniejsze dla negocjatora?", pts: 1, a: "Bezpieczeństwo i życie własne oraz zakładników." },
+        { q: "3. Kiedy możemy podejść do negocjacji?", pts: 1, a: "Po zgłoszeniu na radiu „Podchodzę do negocjacji” i upewnieniu się, że ktoś nas ubezpiecza." },
+        { q: "4. Jakie są obowiązki negocjatora?", pts: 3, a: "1) Ustalenie liczby napastników i zakładników, ich stanu, broni oraz rejestracji pojazdu. 2) Samodzielne korygowanie i akceptowanie żądań. 3) Poinformowanie SV o ostatecznych ustaleniach." },
+        { q: "5. Ile żądań realizujemy za jednego zakładnika?", pts: 1, a: "Nie stosujemy systemu „jedynkowego” — każde negocjacje rozpatrujemy osobno." },
+        { q: "6. Co negocjator musi zrobić na początku rozmowy?", pts: 1, a: "Zapytać, co się dzieje. Skłaniać napastników do oddania zakładników i poddania się." },
+        { q: "7. Co negocjator musi się dowiedzieć o zakładnikach i jak?", pts: 1, a: "Czy potrzebują czegoś (jedzenia, picia, pomocy medycznej) i czy czują się dobrze. Najlepiej pytać osobiście." },
+        { q: "8. Czy negocjator może kłamać?", pts: 1, a: "Nie. Wyjątek: próby samobójcze." },
+        { q: "9. Czy negocjator może rozmawiać sam na sam z osobą uzbrojoną?", pts: 1, a: "Nie. Tylko z osobą próbującą popełnić samobójstwo (bez możliwości skrzywdzenia negocjatora)." },
+        { q: "10. W jaki sposób zwracasz się do napastnika?", pts: 1, a: "Z szacunkiem, bez względu na jego czyny." },
+        { q: "11. Jaki powinien być głos i mowa ciała negocjatora?", pts: 1, a: "Spokojny, opanowany, pewny siebie." },
+        { q: "12. Ile jest ostrzeżeń negocjatorskich?", pts: 1, a: "3." },
+        { q: "13. Kto nakłada ostrzeżenia negocjatorskie?", pts: 1, a: "Supervisor (SV) nakłada — Negocjator przekazuje informację napastnikom." },
+        { q: "14. Za co można nałożyć ostrzeżenia negocjatorskie? (2 przykłady)", pts: 1, a: "Np. zmiana żądań po ich przyklepaniu, groźby wobec zakładników, obraza negocjatora, brak stosowania się do poleceń FP." },
+        { q: "15. Co się dzieje po przekroczeniu liczby ostrzeżeń?", pts: 1, a: "SV podejmuje decyzję o zerwaniu negocjacji i informuje o tym PWC." }
+      ],
+      practical: ["Przestrzeganie zasad negocjacji (1 pkt)", "Reakcja na zmieniające się warunki (1 pkt)", "Ogólne zachowanie podczas negocjacji (1 pkt)", "Profesjonalne podejście (1 pkt) — Wymagane 3/4 pkt"]
+    },
+    "SV": {
+      name: "SV (Supervisor)", reqTheory: 12, maxTheory: 14,
+      questions: [
+        { q: "1. Kto przejmuje rolę SV na każdej akcji?", pts: 1, a: "Osoba wyznaczona przez PWC, osoba ze szkoleniem lub osoba z najwyższym stopniem na radiu." },
+        { q: "2. Czy jako SV możesz zezwolić negocjatorowi na wejście do placówki?", pts: 1, a: "Nie." },
+        { q: "3. Czy będziesz prowadził dwa pościgi na jednym radiu?", pts: 1, a: "Nie." },
+        { q: "4. Czy wydasz polecenie zerwania negocjacji, gdy zobaczysz szansę na powodzenie odbicia zakładnika?", pts: 2, a: "Nie, chyba że nałożone byłyby 3 ostrzeżenia negocjatorskie." },
+        { q: "5. Masz 2x SEU, 3x LINCOLN, 2x ADAM — jak rozstawisz unity na offroad i sport?", pts: 2, a: "Akceptujemy wg uznania, aby miało to logiczny sens." },
+        { q: "6. Na konwoju masz 4 zatrzymanych — jakie i ile unitów przygotujesz?", pts: 2, a: "Akceptujemy wg uznania, aby miało to sens taktyczny." },
+        { q: "7. Jakie są obowiązki SV? (5 punktów)", pts: 5, a: "1) Wyznaczanie negocjatora, ubezpieczającego i innych FP. 2) Ustalanie jednostek pościgowych i ich rozmieszczenia. 3) Nadawanie kodów pościgowych. 4) Uzupełnianie dispatcha. 5) Przydzielenie FP do zabezpieczenia terenu." }
+      ],
+      practical: ["Przestrzeganie zasad SV (1 pkt)", "Przystanie na odpowiednie żądania (1 pkt)", "Rozmieszczenie jednostek (1 pkt)", "Profesjonalne podejście (1 pkt)", "Obserwacja terenu i reagowanie (1 pkt) — Wymagane 4/5 pkt"]
+    },
+    "PWC+APWC": {
+      name: "PWC + APWC", reqTheory: 15, maxTheory: 17,
+      questions: [
+        { q: "1. Czym się zajmują PWC / APWC?", pts: 1, a: "Dowodzenie jednostkami patrolowymi, wyznaczanie SV akcji, ustalanie jednostek, pilnowanie porządku na radiu, dbanie o Dispatch." },
+        { q: "2. Jaki numer ma PWC?", pts: 1, a: "00" },
+        { q: "3. Jak wyznaczany jest PWC lub APWC?", pts: 1, a: "Najwyższy stopniem (bez HC) lub osoba wyznaczona przez poprzedniego PWC/APWC." },
+        { q: "4. Czy PWC i APWC mogą jeździć razem w patrolu?", pts: 1, a: "Nie." },
+        { q: "5. Czy PWC może zareagować na zgłoszenie, gdy APWC jest podczas akcji?", pts: 1, a: "Nie. PWC/APWC musi zostać na radiu Main." },
+        { q: "6. Co musi zrobić PWC, gdy schodzi ze służby?", pts: 2, a: "Przekazać informacje o sytuacji w mieście: ostatnie akcje, miejsca zdarzeń, aktualny kod i powód jego wprowadzenia." },
+        { q: "7. Co powinien zrobić PWC/APWC, gdy jest niebezpiecznie, a kod to Zielony?", pts: 2, a: "Zawołać HC, poprosić o zmianę kodu i uzasadnić." },
+        { q: "8. Jak powinny być rozdzielone jednostki na mieście?", pts: 2, a: "Harmonijnie i równomiernie – nie może być samych Edwardów." },
+        { q: "9. Co zrobić, gdy funkcjonariusze popełniają błędy lub są źle rozdysponowani?", pts: 1, a: "Zrobić Code 8." },
+        { q: "10. Co zrobić, gdy funkcjonariusz popełnia poważne błędy wymagające ukarania?", pts: 2, a: "Zgłosić się do HC/AIAD jednostki i poinformować o sytuacji." },
+        { q: "11. Czy PWC/APWC musi zostać poinformowany o zerwaniu negocjacji?", pts: 1, a: "Tak." },
+        { q: "12. Co zrobić, gdy wszystkie jednostki są na jednej akcji, a pojawia się kolejna?", pts: 2, a: "W zależności od pilności – cofnąć część jednostek i przekierować na drugą akcję." }
+      ],
+      practical: ["Poprawne przejęcie roli PWC i ogłoszenie Code 8 (1 pkt)", "Poprawny przebieg Code 8 (1 pkt)", "Poprawne rozdysponowanie jednostek (1 pkt)", "Zlecenie ewentualnej zmiany kodu (1 pkt) — Wymagane 3/4 pkt"]
+    },
+    "ASU": {
+      name: "ASU (Helikopter)", reqTheory: 0, maxTheory: 0,
+      questions: [],
+      practical: ["Etap 1: Free flight (ok. 3 minuty + zasady użycia ASU)", "Etap 2: 3 trudne lądowania", "Etap 3: 2 pościgi po min. 5 minut z pełną radiówką (Próby: 3)", "Etap 4: Mapka pod mostami w kanale LS poniżej 0:55s"]
+    },
+    "MERRY": {
+      name: "MERRY (Motocykle)", reqTheory: 0, maxTheory: 0,
+      questions: [],
+      practical: ["Etap 1: Pościg motor-motor 2x 5 min (Próby: 2)", "Etap 2: Pościg motor-ADAM 2x 5 min (Próby: 2)", "Etap 3: Pościg motor-EDWARD 3 min (Próby: 3)", "Etap 4: Pościg do pełnej destylacji motoru (Próby: 1)"]
+    },
+    "SEU": {
+      name: "SEU (Pościgowe)", reqTheory: 0, maxTheory: 0,
+      questions: [],
+      practical: ["Etap 1: Drive skills test na mapce bez kolizji (Próby: 2)", "Etap 2: Pościg SEU-SEU 2x 5 min (Próby: 2)", "Etap 3: Pościg EDWARD-EDWARD do destylacji (Próby: 1)", "Etap 4: Pościg EDWARD-EDWARD z pełną radiówką 10 min (Próby: 2)"]
+    }
+  };
+
+  let selectedCourse = "RTO+HRO", courseScores = {};
+
+  function renderSzkCourseBar() {
+    const sel = document.getElementById("szk-officer-select");
+    if (sel) sel.innerHTML = db.officers.map(o => `<option value="${o.badge}_${o.name}">[${o.badge}] ${o.name}</option>`).join("");
+    const bar = document.getElementById("szk-courses-bar");
+    bar.innerHTML = LICENSES.map(k => `<button class="btn ${k === selectedCourse ? 'btn-blue' : 'btn-dark'}" onclick="selectedCourse='${k}';renderSzkCourseBar();">${COURSES_DATA[k].name}</button>`).join("");
+    renderSzkCourseBody();
+  }
+
+  function renderSzkCourseBody() {
+    const c = COURSES_DATA[selectedCourse];
+    const container = document.getElementById("szk-course-body");
+    if (!courseScores[selectedCourse]) courseScores[selectedCourse] = {};
+    const sc = courseScores[selectedCourse];
+    let sum = 0;
+    c.questions.forEach((q, idx) => { sum += (sc[idx] || 0); });
+
+    let theoryHTML = "";
+    if (c.questions.length > 0) {
+      const pass = sum >= c.reqTheory;
+      theoryHTML = `
+        <div class="card">
+          <div class="card-header">
+            <h3 style="margin:0; font-size:15px;">Etap 1: Pytania Teoretyczne (${c.name})</h3>
+            <span class="pill ${pass ? 'pill-green' : 'pill-red'}" style="font-size:13px; padding:5px 12px;">
+              Wynik teorii: ${sum} / ${c.maxTheory} pkt (Wymagane: ${c.reqTheory} pkt) — ${pass ? 'ZALICZONA ✅' : 'NIEZALICZONA ❌'}
+            </span>
+          </div>
+          ${c.questions.map((item, idx) => {
+            const cur = sc[idx] || 0;
+            let b = "";
+            for (let p = 0; p <= item.pts; p++) {
+              b += `<button class="btn btn-sm ${cur === p ? 'btn-blue' : 'btn-dark'}" onclick="courseScores['${selectedCourse}'][${idx}]=${p};renderSzkCourseBody();">${p} pkt</button>`;
+            }
+            return `
+              <div style="background:var(--bg-input); border:1px solid var(--border); border-radius:8px; padding:12px; margin-bottom:8px;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+                  <div style="font-weight:700; color:#60a5fa;">${item.q} <span style="color:var(--text-dim);">(${item.pts} pkt)</span></div>
+                  <div style="display:flex; gap:4px; flex-shrink:0;">${b}</div>
+                </div>
+                <div style="margin-top:8px; padding:8px 10px; background:#111827; border-left:3px solid #3b82f6; border-radius:6px; color:#cbd5e1; font-size:12px;">
+                  <strong>Odpowiedź:</strong> ${item.a}
+                </div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    const pracHTML = `
+      <div class="card">
+        <h3 style="margin:0 0 10px; font-size:15px; color:#4ade80;">Etapy Praktyczne — ${c.name}</h3>
+        ${c.practical.map(p => `
+          <label style="display:flex; align-items:center; gap:10px; background:var(--bg-input); border:1px solid var(--border); padding:10px 12px; border-radius:8px; margin-bottom:6px; cursor:pointer;">
+            <input type="checkbox" style="width:16px;height:16px;" />
+            <span>${p}</span>
+          </label>
+        `).join("")}
+      </div>
+    `;
+    container.innerHTML = theoryHTML + pracHTML;
+  }
+
+  function assignCourseLicenseToSelected() {
+    const val = document.getElementById("szk-officer-select").value;
+    const off = db.officers.find(o => (o.badge + "_" + o.name) === val);
+    if (!off) return;
+    if (!off.licenses) off.licenses = {};
+    off.licenses[selectedCourse] = true;
+    off.updated = "Nadano " + selectedCourse + " (" + db.loggedOfficer + ")";
+    saveDatabase(); renderLicenseMatrix(); renderAllOfficersView();
+    toast("🎖️ Nadano licencję " + selectedCourse + " funkcjonariuszowi [" + off.badge + "] " + off.name);
+  }
+
+  function copyCourseProtocol() {
+    const val = document.getElementById("szk-officer-select").value;
+    const off = db.officers.find(o => (o.badge + "_" + o.name) === val);
+    const c = COURSES_DATA[selectedCourse];
+    navigator.clipboard.writeText(`PROTOKÓŁ SZKOLENIA LSPD — ${c.name}\nFunkcjonariusz: [${off?.badge}] ${off?.name}\nEgzaminator: ${db.loggedOfficer}\nStatus: ZALICZONE`);
+    toast("📋 Skopiowano protokół ze szkolenia!");
+  }
+
+  function renderLicenseMatrix() {
+    const tbody = document.getElementById("matrix-tbody");
+    if (!tbody) return;
+    const q = (document.getElementById("matrix-search-inp")?.value || "").toLowerCase();
+    tbody.innerHTML = "";
+    db.officers.filter(o => o.badge.toLowerCase().includes(q) || o.name.toLowerCase().includes(q)).forEach((o, idx) => {
+      const pills = LICENSES.map(k => {
+        const has = !!(o.licenses && o.licenses[k]);
+        return `<span class="pill ${has ? 'pill-green' : 'pill-gray'}" style="cursor:pointer; margin-right:4px;" onclick="toggleMatrixLic(${idx}, '${k}')">${has ? '✓ ' : ''}${k}</span>`;
+      }).join("");
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td style="font-weight:800; color:#60a5fa;">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td style="color:var(--text-muted);">${o.rank}</td><td>${pills}</td><td style="font-size:11px; color:var(--text-dim);">${o.updated || "-"}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function toggleMatrixLic(idx, k) {
+    const off = db.officers[idx];
+    if (!off) return;
+    if (!off.licenses) off.licenses = {};
+    off.licenses[k] = !off.licenses[k];
+    saveDatabase(); renderLicenseMatrix(); renderAllOfficersView();
+  }
+
+  let trialSwRunning = false, trialSwStart = 0, trialSwElapsed = 0;
+  function toggleTrialStopwatch() {
+    const btn = document.getElementById("trial-sw-btn");
+    if (trialSwRunning) {
+      trialSwElapsed += Date.now() - trialSwStart; trialSwRunning = false;
+      btn.textContent = "▶ Start"; btn.className = "btn btn-sm btn-green";
+    } else {
+      trialSwStart = Date.now(); trialSwRunning = true;
+      btn.textContent = "⏹ Stop"; btn.className = "btn btn-sm btn-red";
+    }
+  }
+  function resetTrialStopwatch() {
+    trialSwRunning = false; trialSwElapsed = 0;
+    document.getElementById("trial-stopwatch-val").textContent = "00:00.0";
+    const btn = document.getElementById("trial-sw-btn");
+    btn.textContent = "▶ Start"; btn.className = "btn btn-sm btn-green";
+  }
+
+  /* STREFA KADETA (FTO) + STOPER */
+  let currentCadetId = "152";
+  function getCadetTotalSec(c) {
+    let total = c.sec || 0;
+    if (c.running && c.ts) total += Math.max(0, Math.floor((Date.now() - c.ts) / 1000));
+    return total;
+  }
+  function formatHMS(s) {
+    const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+    return String(h).padStart(2, "0") + "h " + String(m).padStart(2, "0") + "m " + String(sec).padStart(2, "0") + "s";
+  }
+  function toggleCadetStopwatch(id) {
+    const c = db.cadets.find(x => x.id === id);
+    if (!c) return;
+    if (c.running) {
+      c.sec = getCadetTotalSec(c); c.running = false; c.ts = null;
+      toast("⏹ Zatrzymano czas patrolu [" + c.badge + "] " + c.name + " (Łącznie: " + formatHMS(c.sec) + ")");
+    } else {
+      c.running = true; c.ts = Date.now();
+      toast("▶ Start czasu w patrolu dla [" + c.badge + "] " + c.name);
+    }
+    saveDatabase(); renderCadets(); refreshCadetSheetTimer();
+  }
+  function adjustCadetTime(mins) {
+    const c = db.cadets.find(x => x.id === currentCadetId);
+    if (!c) return;
+    c.sec = Math.max(0, (c.sec || 0) + mins * 60);
+    saveDatabase(); renderCadets(); refreshCadetSheetTimer();
+  }
+  function resetCadetTime() {
+    const c = db.cadets.find(x => x.id === currentCadetId);
+    if (!c) return;
+    c.sec = 0; c.running = false; c.ts = null;
+    saveDatabase(); renderCadets(); refreshCadetSheetTimer();
+  }
+  function refreshCadetSheetTimer() {
+    const c = db.cadets.find(x => x.id === currentCadetId);
+    if (!c) return;
+    const t = document.getElementById("cs-live-timer"), b = document.get
