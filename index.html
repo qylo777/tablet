@@ -14,9 +14,12 @@
       --bg-input: #070a10;
       --border: #1d2638;
       --border-light: #2a3752;
-      --blue: #2563eb;
-      --blue-bright: #3b82f6;
-      --blue-glow: rgba(59, 130, 246, 0.35);
+      /* Motyw domyślny: LSPD Blue */
+      --accent: #2563eb;
+      --accent-bright: #3b82f6;
+      --accent-light: #60a5fa;
+      --accent-glow: rgba(59, 130, 246, 0.35);
+      --accent-soft: rgba(37, 99, 235, 0.18);
       --green: #10b981;
       --green-glow: rgba(16, 185, 129, 0.35);
       --red: #ef4444;
@@ -26,6 +29,31 @@
       --text-muted: #94a3b8;
       --text-dim: #64748b;
     }
+    /* MOTYW: AIAD CRIMSON */
+    body.theme-aiad {
+      --accent: #dc2626;
+      --accent-bright: #ef4444;
+      --accent-light: #f87171;
+      --accent-glow: rgba(239, 68, 68, 0.38);
+      --accent-soft: rgba(220, 38, 38, 0.2);
+    }
+    /* MOTYW: SASP AMBER */
+    body.theme-sasp {
+      --accent: #d97706;
+      --accent-bright: #f59e0b;
+      --accent-light: #fbbf24;
+      --accent-glow: rgba(245, 158, 11, 0.35);
+      --accent-soft: rgba(217, 119, 6, 0.2);
+    }
+    /* MOTYW: SWAT TACTICAL */
+    body.theme-swat {
+      --accent: #059669;
+      --accent-bright: #10b981;
+      --accent-light: #34d399;
+      --accent-glow: rgba(16, 185, 129, 0.35);
+      --accent-soft: rgba(5, 150, 105, 0.2);
+    }
+
     * { box-sizing: border-box; }
     body {
       margin: 0; padding: 0;
@@ -36,7 +64,7 @@
       overflow-x: hidden;
     }
     @keyframes fadeSlideIn {
-      from { opacity: 0; transform: translateY(8px); }
+      from { opacity: 0; transform: translateY(7px); }
       to { opacity: 1; transform: translateY(0); }
     }
     @keyframes modalPop {
@@ -48,17 +76,18 @@
       70% { box-shadow: 0 0 0 7px rgba(16, 185, 129, 0); }
       100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
     }
-    @keyframes pulseBlue {
-      0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.55); }
-      70% { box-shadow: 0 0 0 6px rgba(59, 130, 246, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+    @keyframes pulseAccent {
+      0% { box-shadow: 0 0 0 0 var(--accent-glow); }
+      70% { box-shadow: 0 0 0 6px rgba(0, 0, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
     }
+
     .view-animate { animation: fadeSlideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .tablet-shell { display: flex; min-height: 100vh; background-color: var(--bg-main); }
 
     /* SIDEBAR */
     .sidebar {
-      width: 256px; background-color: var(--bg-sidebar);
+      width: 258px; background-color: var(--bg-sidebar);
       border-right: 1px solid var(--border);
       display: flex; flex-direction: column; flex-shrink: 0; user-select: none;
     }
@@ -68,16 +97,17 @@
     }
     .brand-seal {
       width: 42px; height: 42px; border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #2563eb, #0b132b 75%);
-      border: 2px solid #60a5fa;
+      background: radial-gradient(circle at 30% 30%, var(--accent), #0b132b 75%);
+      border: 2px solid var(--accent-light);
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 0 16px var(--blue-glow); flex-shrink: 0;
+      box-shadow: 0 0 16px var(--accent-glow); flex-shrink: 0;
+      transition: all 0.3s ease;
     }
     .nav-section-title {
-      padding: 16px 18px 6px; font-size: 10px; font-weight: 800;
+      padding: 15px 18px 6px; font-size: 10px; font-weight: 800;
       color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase;
     }
-    .nav-list { display: flex; flex-direction: column; padding: 0 10px; gap: 4px; flex: 1; }
+    .nav-list { display: flex; flex-direction: column; padding: 0 10px; gap: 3px; flex: 1; }
     .nav-item {
       display: flex; align-items: center; justify-content: space-between;
       padding: 10px 12px; border-radius: 9px; font-size: 13px; font-weight: 600;
@@ -89,16 +119,16 @@
     .nav-item svg { width: 17px; height: 17px; stroke: currentColor; transition: transform 0.2s; }
     .nav-item:hover { background-color: #141c2b; color: #fff; transform: translateX(3px); }
     .nav-item.active {
-      background: linear-gradient(90deg, rgba(37, 99, 235, 0.22) 0%, rgba(37, 99, 235, 0.05) 100%);
-      color: #60a5fa; border-color: rgba(59, 130, 246, 0.4);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      background: linear-gradient(90deg, var(--accent-soft) 0%, rgba(15, 23, 42, 0.05) 100%);
+      color: var(--accent-light); border-color: var(--accent-bright);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
     }
-    .nav-item.active svg { transform: scale(1.1); stroke: #60a5fa; }
+    .nav-item.active svg { transform: scale(1.1); stroke: var(--accent-light); }
     .nav-counter {
       font-size: 10px; padding: 2px 7px; border-radius: 99px;
       background-color: #1a2333; color: #cbd5e1; font-weight: 700;
     }
-    .nav-item.active .nav-counter { background-color: var(--blue); color: #fff; }
+    .nav-item.active .nav-counter { background-color: var(--accent); color: #fff; }
 
     /* MAIN AREA */
     .main-area { flex: 1; display: flex; flex-direction: column; min-width: 0; }
@@ -113,7 +143,7 @@
     .card {
       background-color: var(--bg-card); border: 1px solid var(--border);
       border-radius: 12px; padding: 16px; margin-bottom: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.22);
     }
     .card-header {
       display: flex; justify-content: space-between; align-items: center;
@@ -130,8 +160,8 @@
       outline: none; font-family: inherit; transition: all 0.18s;
     }
     .inp:focus, .sel:focus, .txt:focus {
-      border-color: var(--blue-bright);
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+      border-color: var(--accent-bright);
+      box-shadow: 0 0 0 3px var(--accent-soft);
     }
 
     /* BUTTONS */
@@ -145,7 +175,7 @@
     .btn:hover { transform: translateY(-1px); filter: brightness(1.1); }
     .btn:active { transform: translateY(1px); }
     .btn-sm { padding: 5px 10px; font-size: 11px; border-radius: 7px; }
-    .btn-blue { background: linear-gradient(135deg, #2563eb, #1d4ed8); border-color: #3b82f6; }
+    .btn-blue { background: linear-gradient(135deg, var(--accent), #1e3a8a); border-color: var(--accent-bright); }
     .btn-green { background: linear-gradient(135deg, #10b981, #059669); border-color: #34d399; }
     .btn-red { background: linear-gradient(135deg, #ef4444, #dc2626); border-color: #f87171; }
     .btn-amber { background: linear-gradient(135deg, #f59e0b, #d97706); border-color: #fbbf24; }
@@ -162,16 +192,16 @@
       cursor: pointer; user-select: none;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .blip-pill:hover { border-color: #3b82f6; color: #fff; transform: translateY(-1px); background-color: #111927; }
+    .blip-pill:hover { border-color: var(--accent-bright); color: #fff; transform: translateY(-1px); background-color: #111927; }
     .blip-dot {
       width: 9px; height: 9px; border-radius: 50%;
       background-color: #334155; transition: all 0.2s ease; flex-shrink: 0;
     }
     .blip-pill.active-blue {
-      background-color: rgba(37, 99, 235, 0.16); border-color: #3b82f6; color: #93c5fd;
-      box-shadow: 0 0 14px rgba(59, 130, 246, 0.2);
+      background-color: var(--accent-soft); border-color: var(--accent-bright); color: var(--accent-light);
+      box-shadow: 0 0 14px var(--accent-glow);
     }
-    .blip-pill.active-blue .blip-dot { background-color: #60a5fa; box-shadow: 0 0 8px #3b82f6; animation: pulseBlue 2s infinite; }
+    .blip-pill.active-blue .blip-dot { background-color: var(--accent-light); box-shadow: 0 0 8px var(--accent-bright); animation: pulseAccent 2s infinite; }
     .blip-pill.active-green {
       background-color: rgba(16, 185, 129, 0.16); border-color: #10b981; color: #6ee7b7;
       box-shadow: 0 0 14px rgba(16, 185, 129, 0.2);
@@ -202,19 +232,31 @@
       cursor: pointer; user-select: none;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .blip-node:hover { border-color: #60a5fa; color: #fff; transform: scale(1.08); }
+    .blip-node:hover { border-color: var(--accent-light); color: #fff; transform: scale(1.08); }
     .blip-node.selected-zero {
       background-color: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #fca5a5;
       box-shadow: 0 0 10px var(--red-glow);
     }
     .blip-node.selected-pts {
-      background: radial-gradient(circle at 30% 30%, #2563eb, #1e3a8a);
-      border-color: #60a5fa; color: #fff; box-shadow: 0 0 12px var(--blue-glow); transform: scale(1.08);
+      background: radial-gradient(circle at 30% 30%, var(--accent), #1e3a8a);
+      border-color: var(--accent-light); color: #fff; box-shadow: 0 0 12px var(--accent-glow); transform: scale(1.08);
     }
     .blip-node.selected-max {
       background: radial-gradient(circle at 30% 30%, #10b981, #065f46);
       border-color: #34d399; color: #fff; box-shadow: 0 0 12px var(--green-glow); transform: scale(1.08);
     }
+
+    /* Kropki wyboru motywu w topbarze */
+    .theme-swatches {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #080c13; padding: 4px 8px; border-radius: 99px; border: 1px solid var(--border);
+    }
+    .theme-dot {
+      width: 16px; height: 16px; border-radius: 50%; cursor: pointer;
+      border: 2px solid transparent; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .theme-dot:hover { transform: scale(1.18); }
+    .theme-dot.active { border-color: #fff; box-shadow: 0 0 8px currentColor; transform: scale(1.15); }
 
     .question-blip-row {
       background-color: #0b1019; border: 1px solid var(--border);
@@ -231,7 +273,7 @@
     }
     .progress-fill {
       height: 100%; border-radius: 99px;
-      background: linear-gradient(90deg, #2563eb, #10b981);
+      background: linear-gradient(90deg, var(--accent), #10b981);
       transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -240,27 +282,23 @@
       display: grid; grid-template-columns: 360px 1fr; gap: 18px; align-items: center;
       background: #0b1019; border: 1px solid #1f2b42; border-radius: 12px; padding: 14px;
     }
-    @media (max-width: 900px) {
-      .training-map-wrapper { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 900px) { .training-map-wrapper { grid-template-columns: 1fr; } }
     .map-frame {
       position: relative; width: 100%; height: 340px; border-radius: 10px;
       overflow: hidden; border: 2px solid #26344d; background: #141c2b;
       cursor: zoom-in; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
     }
-    .map-frame img, .map-frame svg {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-    }
+    .map-frame img, .map-frame svg { width: 100%; height: 100%; object-fit: cover; display: block; }
     .map-zoom-badge {
       position: absolute; bottom: 10px; right: 10px;
-      background: rgba(9, 13, 20, 0.85); border: 1px solid #3b82f6;
-      color: #93c5fd; padding: 4px 10px; border-radius: 99px;
+      background: rgba(9, 13, 20, 0.85); border: 1px solid var(--accent-bright);
+      color: var(--accent-light); padding: 4px 10px; border-radius: 99px;
       font-size: 11px; font-weight: 700; pointer-events: none;
     }
 
-    /* TARYFIKATOR (BLIP-PILLS W MODALNYM OKNIE) */
+    /* TARYFIKATOR (BLIP-PILLS) */
     .penal-category-title {
-      font-size: 11px; font-weight: 800; color: #60a5fa;
+      font-size: 11px; font-weight: 800; color: var(--accent-light);
       text-transform: uppercase; letter-spacing: 0.08em;
       margin: 16px 0 8px; display: flex; align-items: center; gap: 6px;
     }
@@ -271,10 +309,10 @@
       justify-content: space-between; gap: 8px; user-select: none;
       transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .penal-blip-item:hover { border-color: #3b82f6; background-color: #111927; transform: translateY(-1px); }
+    .penal-blip-item:hover { border-color: var(--accent-bright); background-color: #111927; transform: translateY(-1px); }
     .penal-blip-item.selected {
-      background-color: rgba(37, 99, 235, 0.18); border-color: #3b82f6;
-      box-shadow: 0 0 12px rgba(59, 130, 246, 0.22);
+      background-color: var(--accent-soft); border-color: var(--accent-bright);
+      box-shadow: 0 0 12px var(--accent-glow);
     }
 
     /* TABELE */
@@ -289,7 +327,7 @@
     table.tbl tr:hover td { background-color: #141c2b; }
 
     .pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 99px; font-size: 11px; font-weight: 700; }
-    .pill-blue { background: rgba(37, 99, 235, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35); }
+    .pill-blue { background: var(--accent-soft); color: var(--accent-light); border: 1px solid var(--accent-bright); }
     .pill-green { background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
     .pill-amber { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
     .pill-red { background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }
@@ -338,10 +376,10 @@
   <aside class="sidebar">
     <div class="brand-header">
       <div class="brand-seal">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#93c5fd" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
       </div>
       <div>
-        <div style="font-weight: 800; font-size: 15px; color: #fff; letter-spacing: 0.02em;">Tablet <span style="color: #3b82f6;">LSPD</span></div>
+        <div style="font-weight: 800; font-size: 15px; color: #fff; letter-spacing: 0.02em;">Tablet <span style="color: var(--accent-light);">LSPD</span></div>
         <div style="font-size: 11px; color: var(--text-dim);">Mobile Data Terminal</div>
       </div>
     </div>
@@ -362,6 +400,14 @@
           <span>Raporty służbowe</span>
         </span>
         <span class="nav-counter" id="cnt-reports">0</span>
+      </button>
+
+      <button type="button" class="nav-item" id="nav-aiad" onclick="switchMainView('aiad')">
+        <span class="nav-item-left">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>Wydział AIAD</span>
+        </span>
+        <span class="nav-counter" id="cnt-aiad" style="background:#7f1d1d; color:#fca5a5;">0</span>
       </button>
 
       <button type="button" class="nav-item" id="nav-dyspozytornia" onclick="switchMainView('dyspozytornia')">
@@ -423,7 +469,7 @@
   <!-- GŁÓWNY OBSZAR ROBOCZY -->
   <div class="main-area">
     <header class="topbar">
-      <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
         <span class="blip-pill active-green" style="cursor: default; padding: 4px 11px;">
           <span class="blip-dot"></span>
           <span>10-8 NA SŁUŻBIE</span>
@@ -432,22 +478,32 @@
           <span class="blip-dot"></span>
           <span id="active-patrol-banner-txt">Aktywny stoper kadeta</span>
         </span>
+
+        <!-- PRZEŁĄCZNIK MOTYWÓW KOLORYSTYCZNYCH (UI/UX UPDATE) -->
+        <div class="theme-swatches" title="Zmień motyw kolorystyczny tabletu">
+          <span style="font-size:10px; font-weight:800; color:var(--text-dim); margin-right:2px;">MOTYW:</span>
+          <div class="theme-dot active" id="th-lspd" style="background:#3b82f6; color:#3b82f6;" onclick="setTabletTheme('lspd')" title="LSPD Classic Blue"></div>
+          <div class="theme-dot" id="th-aiad" style="background:#ef4444; color:#ef4444;" onclick="setTabletTheme('aiad')" title="AIAD Internal Affairs Crimson"></div>
+          <div class="theme-dot" id="th-sasp" style="background:#f59e0b; color:#f59e0b;" onclick="setTabletTheme('sasp')" title="SASP Gold Amber"></div>
+          <div class="theme-dot" id="th-swat" style="background:#10b981; color:#10b981;" onclick="setTabletTheme('swat')" title="SWAT Tactical Emerald"></div>
+        </div>
+
+        <!-- BLIP DŹWIĘKÓW INTERFEJSU SFX -->
+        <div class="blip-pill active-blue" id="sfx-toggle-blip" style="padding: 4px 10px; font-size: 11px;" onclick="toggleSfx()">
+          <span class="blip-dot"></span>
+          <span id="sfx-toggle-txt">Dźwięki SFX: ON</span>
+        </div>
       </div>
+
       <div style="display: flex; align-items: center; gap: 10px;">
         <span id="live-clock" style="font-family: monospace; font-size: 13px; color: var(--text-muted); font-weight: 700;"></span>
-        <button type="button" class="btn btn-sm btn-dark" onclick="exportAllTabletData()">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span>Eksport JSON</span>
-        </button>
-        <button type="button" class="btn btn-sm btn-dark" onclick="resetFactoryDefaults()">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-          <span>Reset</span>
-        </button>
+        <button type="button" class="btn btn-sm btn-dark" onclick="exportAllTabletData()">Eksport JSON</button>
+        <button type="button" class="btn btn-sm btn-dark" onclick="resetFactoryDefaults()">Reset</button>
       </div>
     </header>
 
     <main class="content-scroll">
-      <div id="toast-alert" style="position: fixed; bottom: 22px; right: 22px; background: #1e3a8a; color: #fff; padding: 12px 18px; border-radius: 10px; font-weight: 700; border: 1px solid #60a5fa; box-shadow: 0 10px 25px rgba(0,0,0,0.75); display: none; z-index: 9999;"></div>
+      <div id="toast-alert" style="position: fixed; bottom: 22px; right: 22px; background: #111827; color: #fff; padding: 12px 18px; border-radius: 10px; font-weight: 700; border: 1px solid var(--accent-bright); box-shadow: 0 10px 25px rgba(0,0,0,0.8); display: none; z-index: 9999;"></div>
 
       <!-- ========================================================= -->
       <!-- 1. SPRAWY I AUTOMATYCZNY GENERATOR OPISU (BLIP SYSTEM)    -->
@@ -460,10 +516,7 @@
           </div>
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
             <button type="button" class="btn btn-dark" onclick="resetCaseForm()">Wyczyść szkic</button>
-            <button type="button" class="btn btn-blue" onclick="copyCaseTextOnly()">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-              <span>Kopiuj sam opis</span>
-            </button>
+            <button type="button" class="btn btn-blue" onclick="copyCaseTextOnly()">Kopiuj sam opis</button>
             <button type="button" class="btn btn-green" onclick="copyFullCaseRecord()">Kopiuj pełną kartotekę</button>
           </div>
         </div>
@@ -497,14 +550,13 @@
               <!-- BLIPY PYTAŃ DO AUTOMATYCZNEGO OPISU SPRAWY -->
               <div style="background: #0b1019; border: 1px solid #1f2b42; border-radius: 12px; padding: 14px; margin-bottom: 14px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
-                  <span style="font-size: 11.5px; font-weight: 800; color: #60a5fa; text-transform: uppercase; letter-spacing: 0.05em;">⚡ Blipy Przesłuchania i Decyzji Procesowej</span>
+                  <span style="font-size: 11.5px; font-weight: 800; color: var(--accent-light); text-transform: uppercase; letter-spacing: 0.05em;">⚡ Blipy Przesłuchania i Decyzji Procesowej</span>
                   <div class="blip-pill active-green" id="auto-toggle-blip" onclick="toggleAutoDescBlip()" style="padding: 4px 10px; font-size: 11px;">
                     <span class="blip-dot"></span>
                     <span>Auto-opis aktywny</span>
                   </div>
                 </div>
 
-                <!-- PYTANIE 1: CZY WSPÓŁPRACOWAŁ? -->
                 <div style="margin-bottom: 11px;">
                   <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;">1. Czy podejrzany współpracował podczas czynności?</div>
                   <div class="blip-row">
@@ -520,7 +572,6 @@
                   </div>
                 </div>
 
-                <!-- PYTANIE 2: STOSUNEK DO WINY -->
                 <div style="margin-bottom: 11px;">
                   <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;">2. Stosunek do winy (Czy przyznał się do zarzutów?):</div>
                   <div class="blip-row">
@@ -533,7 +584,6 @@
                   </div>
                 </div>
 
-                <!-- PYTANIE 3: DODATKOWE OKOLICZNOŚCI (ADWOKAT / SAMS / REDUKCJA) -->
                 <div style="margin-bottom: 11px;">
                   <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;">3. Dodatkowe czynności procesowe (Wielokrotny wybór blipów):</div>
                   <div class="blip-row">
@@ -549,7 +599,6 @@
                   </div>
                 </div>
 
-                <!-- PYTANIE 4: CZY ZATRZYMANY NA KOMENDZIE? -->
                 <div>
                   <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;">4. Czy zostaje zatrzymany na komendzie?</div>
                   <div class="blip-row">
@@ -600,7 +649,7 @@
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
                 <div style="background: var(--bg-input); padding: 14px; border-radius: 10px; border: 1px solid var(--border);">
                   <div style="font-size: 10px; color: var(--text-dim); font-weight: 700;">PROPONOWANA ODSIADKA</div>
-                  <div id="case-sum-months" style="font-size: 22px; font-weight: 800; color: #60a5fa; margin-top: 4px;">0 mies.</div>
+                  <div id="case-sum-months" style="font-size: 22px; font-weight: 800; color: var(--accent-light); margin-top: 4px;">0 mies.</div>
                 </div>
                 <div style="background: var(--bg-input); padding: 14px; border-radius: 10px; border: 1px solid var(--border);">
                   <div style="font-size: 10px; color: var(--text-dim); font-weight: 700;">PROPONOWANA GRZYWNA</div>
@@ -623,6 +672,91 @@
               </div>
               <button type="button" class="btn btn-blue" style="width: 100%; padding: 12px; margin-top: 12px;" onclick="copyCaseTextOnly()">Kopiuj sam opis sprawy</button>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- NOWOŚĆ: ZAKŁADKA AIAD / INTERNAL AFFAIRS (ŚLEDZTWA WEWN.) -->
+      <!-- ========================================================= -->
+      <section id="view-aiad" class="hidden view-animate">
+        <div class="card-header" style="margin-bottom: 14px;">
+          <div>
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800; color: #f87171;">🛡️ Administrative Internal Affairs Division (AIAD)</h1>
+            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Wewnętrzne postępowania dyscyplinarne, protokoły z „dywaników”, zawieszenia i notatki służbowe funkcjonariuszy LSPD</p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn btn-dark" onclick="resetAiadForm()">Wyczyść formularz</button>
+            <button type="button" class="btn btn-blue" onclick="copyAiadProtocol()">Kopiuj protokół AIAD</button>
+            <button type="button" class="btn btn-red" onclick="saveAiadCase()">Zapisz w aktach AIAD</button>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.35fr 1fr; gap: 16px; margin-bottom: 16px;">
+          <div class="card" style="margin-bottom: 0; border-color: rgba(239, 68, 68, 0.3);">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+              <div>
+                <label class="field-label">FUNKCJONARIUSZ OBJĘTY POSTĘPOWANIEM</label>
+                <input type="text" id="aiad-officer-inp" class="inp" list="aiad-officers-datalist" placeholder="Np. [147] Peter Fals..." oninput="generateAiadAutoText()" />
+                <datalist id="aiad-officers-datalist"></datalist>
+              </div>
+              <div>
+                <label class="field-label">INSPEKTOR PROWADZĄCY (AIAD)</label>
+                <input type="text" id="aiad-inspector-inp" class="inp" value="[923] Oley Sasa" readonly />
+              </div>
+            </div>
+
+            <!-- BLIPY PRZEWINIEŃ AIAD -->
+            <div style="background: #0b1019; border: 1px solid #2d1b24; border-radius: 11px; padding: 12px; margin-bottom: 12px;">
+              <div style="font-size: 11px; color: #f87171; font-weight: 800; text-transform: uppercase; margin-bottom: 8px;">1. PRZEDMIOT POSTĘPOWANIA (BLIPY PRZEWINIEŃ — WIELOKROTNY WYBÓR):</div>
+              <div class="blip-row" id="aiad-offenses-bar"></div>
+
+              <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin: 12px 0 6px;">2. TRYB WSZCZĘCIA INTERWENCJI AIAD:</div>
+              <div class="blip-row">
+                <div class="blip-pill active-blue" id="aiad-mode-self" onclick="setAiadMode('self')">
+                  <span class="blip-dot"></span><span>Samodzielne zgłoszenie się FP („Na dywanik”)</span>
+                </div>
+                <div class="blip-pill" id="aiad-mode-complaint" onclick="setAiadMode('complaint')">
+                  <span class="blip-dot"></span><span>Skarga obywatela / Innego funkcjonariusza</span>
+                </div>
+                <div class="blip-pill" id="aiad-mode-observed" onclick="setAiadMode('observed')">
+                  <span class="blip-dot"></span><span>Własna obserwacja inspektora AIAD na akcji</span>
+                </div>
+              </div>
+
+              <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin: 12px 0 6px;">3. DECYZJA DYSCYPLINARNA / WYMIERZONA SANKCJA:</div>
+              <div class="blip-row">
+                <div class="blip-pill active-green" id="aiad-sanc-warn" onclick="setAiadSanction('warn')">
+                  <span class="blip-dot"></span><span>Pouczenie ustne (Brak kary)</span>
+                </div>
+                <div class="blip-pill" id="aiad-sanc-strike" onclick="setAiadSanction('strike')">
+                  <span class="blip-dot"></span><span>Upomnienie pisemne do akt (1/3)</span>
+                </div>
+                <div class="blip-pill" id="aiad-sanc-fine" onclick="setAiadSanction('fine')">
+                  <span class="blip-dot"></span><span>Nagana + Kara finansowa</span>
+                </div>
+                <div class="blip-pill" id="aiad-sanc-suspend" onclick="setAiadSanction('suspend')">
+                  <span class="blip-dot"></span><span>Zawieszenie w czynnościach (Suspension)</span>
+                </div>
+                <div class="blip-pill" id="aiad-sanc-fire" onclick="setAiadSanction('fire')">
+                  <span class="blip-dot"></span><span>Wydalenie ze służby / Degradacja</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label class="field-label">TREŚĆ PROTOKOŁU WEWNĘTRZNEGO AIAD</label>
+              <textarea id="aiad-desc-txt" rows="6" class="txt" style="line-height: 1.55;" placeholder="Wybierz funkcjonariusza oraz blipy powyżej — protokół AIAD wygeneruje się automatycznie..."></textarea>
+            </div>
+          </div>
+
+          <!-- REJESTR SPRAW AIAD -->
+          <div class="card" style="margin-bottom: 0; display: flex; flex-direction: column;">
+            <div class="card-header">
+              <span style="font-weight: 800; font-size: 14px; color: #f87171;">Rejestr Postępowań AIAD</span>
+              <span class="pill pill-red" id="aiad-total-badge">0 wpisów</span>
+            </div>
+            <div style="flex: 1; overflow-y: auto; max-height: 430px;" id="aiad-cases-list"></div>
           </div>
         </div>
       </section>
@@ -761,7 +895,6 @@
             </div>
           </div>
 
-          <!-- PASEK BLIPÓW WYBORU SZKOLENIA -->
           <div id="szk-courses-bar" class="blip-row" style="margin-bottom: 16px;"></div>
           <div id="szk-course-body"></div>
         </div>
@@ -878,7 +1011,7 @@
         <div id="fto-sub-exam" class="hidden">
           <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 16px;">
             <div class="card">
-              <h3 style="margin: 0 0 12px; font-size: 15px; color: #60a5fa;">Egzamin Oficerski</h3>
+              <h3 style="margin: 0 0 12px; font-size: 15px; color: var(--accent-light);">Egzamin Oficerski</h3>
               <label class="field-label">Rekrut</label>
               <select id="exam-cadet-sel" class="sel" style="margin-bottom: 10px;"></select>
               <label class="field-label">Egzaminator prowadzący</label>
@@ -985,7 +1118,7 @@
   </div>
 </div>
 
-<!-- MODAL POWIĘKSZENIA MAPKI SZKOLENIOWEJ (PEŁNY EKRAN) -->
+<!-- MODAL POWIĘKSZENIA MAPKI SZKOLENIOWEJ -->
 <div id="map-zoom-modal" class="modal-backdrop hidden" onclick="closeMapZoomModal()">
   <div class="modal-window modal-window-lg" style="max-width: 820px;" onclick="event.stopPropagation()">
     <div class="modal-head">
@@ -1013,10 +1146,57 @@
   </div>
 </div>
 
-<!-- UKRYTY INPUT DO WGRYWANIA WŁASNEGO PLIKU MAPKI -->
 <input type="file" id="hidden-map-file-inp" accept="image/*" class="hidden" onchange="handleMapFileUpload(event)" />
 
 <script>
+  /* =========================================================
+     SYNTEZATOR DŹWIĘKÓW UI (WEB AUDIO API) + SYSTEM MOTYWÓW
+     ========================================================= */
+  let sfxEnabled = true;
+  let audioCtx = null;
+
+  function playUiBeep(freq = 820, duration = 0.035, type = "sine") {
+    if (!sfxEnabled) return;
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.035, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    } catch (e) {}
+  }
+
+  document.addEventListener("click", (e) => {
+    if (e.target.closest(".blip-pill, .blip-node, .penal-blip-item")) {
+      playUiBeep(960, 0.04, "sine");
+    } else if (e.target.closest(".nav-item, .btn, .theme-dot")) {
+      playUiBeep(680, 0.03, "triangle");
+    }
+  });
+
+  function toggleSfx() {
+    sfxEnabled = !sfxEnabled;
+    const blip = document.getElementById("sfx-toggle-blip");
+    if (blip) blip.className = "blip-pill " + (sfxEnabled ? "active-blue" : "");
+    setTxt("sfx-toggle-txt", "Dźwięki SFX: " + (sfxEnabled ? "ON" : "OFF"));
+    if (sfxEnabled) playUiBeep(1050, 0.05);
+  }
+
+  function setTabletTheme(themeKey) {
+    document.body.className = themeKey === "lspd" ? "" : "theme-" + themeKey;
+    ["lspd", "aiad", "sasp", "swat"].forEach(k => {
+      document.getElementById("th-" + k)?.classList.toggle("active", k === themeKey);
+    });
+    if (db) { db.theme = themeKey; saveDatabase(); }
+  }
+
   const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
   const copyText = (str, msg) => {
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1034,6 +1214,160 @@
     if (!box) return;
     box.textContent = msg; box.style.display = "block";
     clearTimeout(window._tTimer); window._tTimer = setTimeout(() => { box.style.display = "none"; }, 3000);
+  }
+
+  /* =========================================================
+     NOWOŚĆ: LOGIKA WYDZIAŁU AIAD / INTERNAL AFFAIRS
+     ========================================================= */
+  const AIAD_OFFENSES = [
+    { id: "offduty_gun", label: "Użycie broni służbowej poza służbą", text: "użył broni służbowej będąc poza służbą (Off-Duty)" },
+    { id: "insubordination", label: "Niesubordynacja wobec SV / PWC", text: "dopuścił się niesubordynacji oraz zignorowania poleceń dowódcy akcji (SV / PWC)" },
+    { id: "no_backup", label: "Brak reakcji na wezwania 10-0", text: "nie zareagował na wielokrotne wezwania wsparcia priorytetowego (10-0) na kanale dyspozytorni" },
+    { id: "proc_breach", label: "Naruszenie procedur bezpieczeństwa", text: "naruszył procedury operacyjne LSPD podczas zabezpieczania miejsca zdarzenia" },
+    { id: "vehicle_dmg", label: "Rozbicie śmigłowca ASU / Radiowozu", text: "doprowadził do zniszczenia mienia departamentu (rozbicie jednostki powietrznej ASU / radiowozu)" },
+    { id: "unethical", label: "Naruszenie etyki / Agresja wobec obywatela", text: "zachował się w sposób nieetyczny i nieprofesjonalny wobec obywateli" }
+  ];
+
+  let selectedAiadOffenses = ["offduty_gun"];
+  let aiadMode = "self";      // 'self' | 'complaint' | 'observed'
+  let aiadSanction = "warn";  // 'warn' | 'strike' | 'fine' | 'suspend' | 'fire'
+
+  function renderAiadOffensesBlips() {
+    const bar = document.getElementById("aiad-offenses-bar");
+    if (!bar) return;
+    bar.innerHTML = AIAD_OFFENSES.map(o => {
+      const act = selectedAiadOffenses.includes(o.id);
+      return `
+        <div class="blip-pill ${act ? 'active-red' : ''}" onclick="toggleAiadOffense('${o.id}')">
+          <span class="blip-dot"></span><span>${o.label}</span>
+        </div>`;
+    }).join("");
+    const dl = document.getElementById("aiad-officers-datalist");
+    if (dl && db.officers) {
+      dl.innerHTML = db.officers.map(o => `<option value="[${o.badge}] ${o.name}">`).join("") + `<option value="[147] Peter Fals">`;
+    }
+  }
+
+  function toggleAiadOffense(id) {
+    const idx = selectedAiadOffenses.indexOf(id);
+    if (idx > -1) selectedAiadOffenses.splice(idx, 1);
+    else selectedAiadOffenses.push(id);
+    renderAiadOffensesBlips();
+    generateAiadAutoText();
+  }
+
+  function setAiadMode(m) {
+    aiadMode = m;
+    document.getElementById("aiad-mode-self").className = "blip-pill " + (m === "self" ? "active-blue" : "");
+    document.getElementById("aiad-mode-complaint").className = "blip-pill " + (m === "complaint" ? "active-amber" : "");
+    document.getElementById("aiad-mode-observed").className = "blip-pill " + (m === "observed" ? "active-red" : "");
+    generateAiadAutoText();
+  }
+
+  function setAiadSanction(s) {
+    aiadSanction = s;
+    document.getElementById("aiad-sanc-warn").className = "blip-pill " + (s === "warn" ? "active-green" : "");
+    document.getElementById("aiad-sanc-strike").className = "blip-pill " + (s === "strike" ? "active-amber" : "");
+    document.getElementById("aiad-sanc-fine").className = "blip-pill " + (s === "fine" ? "active-amber" : "");
+    document.getElementById("aiad-sanc-suspend").className = "blip-pill " + (s === "suspend" ? "active-red" : "");
+    document.getElementById("aiad-sanc-fire").className = "blip-pill " + (s === "fire" ? "active-red" : "");
+    generateAiadAutoText();
+  }
+
+  function generateAiadAutoText() {
+    const offName = document.getElementById("aiad-officer-inp")?.value.trim() || "[Nieznany funkcjonariusz]";
+    const inspector = db.loggedOfficer || "[923] Oley Sasa";
+    const chosen = AIAD_OFFENSES.filter(o => selectedAiadOffenses.includes(o.id)).map(o => o.text);
+    const offenseStr = chosen.length ? chosen.join(", a ponadto ") : "dopuścił się uchybienia regulaminowego wymagającego weryfikacji przez wydział wewnętrzny";
+
+    const modeStr = aiadMode === "self"
+      ? `Funkcjonariusz ${offName} zgłosił się dobrowolnie na rozmowę wyjaśniającą („dywanik”) do inspektora AIAD ${inspector}, informując o zaistniałym incydencie.`
+      : aiadMode === "complaint"
+      ? `Postępowanie wewnętrzne wobec funkcjonariusza ${offName} zostało wszczęte przez inspektora AIAD ${inspector} po wpłynięciu oficjalnego zawiadomienia/skargi.`
+      : `Postępowanie wobec funkcjonariusza ${offName} zostało wszczęte bezpośrednio przez inspektora AIAD ${inspector} na podstawie własnych ustaleń podczas działań służbowych.`;
+
+    const sancMap = {
+      warn: "Po przeanalizowaniu okoliczności sprawy oraz wysłuchaniu wyjaśnień funkcjonariusza, inspektor AIAD zakończył czynności na pouczeniu ustnym i przypomnieniu obowiązujących zasad służby, odstępując od wymierzenia kary dyscyplinarnej.",
+      strike: "W związku ze stwierdzonym naruszeniem procedur, na funkcjonariusza nałożono oficjalne upomnienie pisemne wpisywane do akt osobowych (1/3).",
+      fine: "Decyzją wydziału AIAD na funkcjonariusza nałożono naganę służbową połączoną z karą finansową potrącenia z premii służbowej.",
+      suspend: "Decyzją wydziału AIAD funkcjonariusz zostaje natychmiastowo zawieszony w czynnościach służbowych (Suspension) do czasu pełnego zakończenia postępowania wyjaśniającego oraz zdania broni służbowej.",
+      fire: "Ze względu na rażące naruszenie regulaminu LSPD, wydział AIAD wnioskuje o natychmiastowe wydalenie funkcjonariusza ze służby (lub degradację ze stanowiska)."
+    };
+
+    const fullText = `PROTOKÓŁ POSTĘPOWANIA WEWNĘTRZNEGO AIAD\nInspektor prowadzący: ${inspector}\nFunkcjonariusz objęty czynnościami: ${offName}\n\n1. Okoliczności wszczęcia czynności:\n${modeStr} W toku rozmowy ustalono, iż funkcjonariusz ${offenseStr}.\n\n2. Postanowienie końcowe AIAD:\n${sancMap[aiadSanction]}`;
+    const area = document.getElementById("aiad-desc-txt");
+    if (area) area.value = fullText;
+  }
+
+  function saveAiadCase() {
+    const offName = document.getElementById("aiad-officer-inp").value.trim() || "[147] Peter Fals";
+    const body = document.getElementById("aiad-desc-txt").value.trim();
+    if (!body) { toast("Najpierw wygeneruj lub wpisz treść protokołu AIAD!"); return; }
+    const sancLabels = { warn: "POUCZENIE", strike: "UPOMNIENIE 1/3", fine: "KARA FINANSOWA", suspend: "ZAWIESZONY", fire: "WYDALENIE" };
+    const now = new Date();
+    const dStr = now.toLocaleDateString("pl-PL") + " " + now.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
+    if (!db.aiadCases) db.aiadCases = [];
+    db.aiadCases.unshift({
+      id: Date.now(),
+      officer: offName,
+      inspector: db.loggedOfficer,
+      sanction: sancLabels[aiadSanction] || "POUCZENIE",
+      sanctionKey: aiadSanction,
+      date: dStr,
+      body
+    });
+    saveDatabase();
+    renderAiadCasesList();
+    toast("Zapisano protokół w rejestrze AIAD!");
+  }
+
+  function renderAiadCasesList() {
+    const box = document.getElementById("aiad-cases-list");
+    if (!box) return;
+    const list = db.aiadCases || [];
+    setTxt("aiad-total-badge", list.length + " wpisów");
+    setTxt("cnt-aiad", list.length);
+    if (!list.length) {
+      box.innerHTML = `<div style="padding:20px; text-align:center; color:var(--text-dim); border:1px dashed var(--border); border-radius:10px;">Brak zapisanych spraw AIAD.</div>`;
+      return;
+    }
+    box.innerHTML = list.map(item => {
+      const pCls = item.sanctionKey === "warn" ? "pill-green" : (item.sanctionKey === "suspend" || item.sanctionKey === "fire" ? "pill-red" : "pill-amber");
+      return `
+        <div style="background:var(--bg-input); border:1px solid var(--border); border-radius:10px; padding:11px 13px; margin-bottom:8px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <strong style="color:#fff; font-size:13px;">${item.officer}</strong>
+            <span class="pill ${pCls}">${item.sanction}</span>
+          </div>
+          <div style="font-size:11px; color:var(--text-dim); margin-bottom:8px;">Inspektor: ${item.inspector} • ${item.date}</div>
+          <div style="font-size:12px; color:var(--text-muted); white-space:pre-line; max-height:80px; overflow-y:auto; margin-bottom:8px;">${item.body}</div>
+          <div style="display:flex; justify-content:flex-end; gap:6px;">
+            <button type="button" class="btn btn-sm btn-dark" onclick="copySingleAiad(${item.id})">Kopiuj</button>
+            <button type="button" class="btn btn-sm btn-red" onclick="deleteAiadCase(${item.id})">Usuń</button>
+          </div>
+        </div>`;
+    }).join("");
+  }
+
+  function copySingleAiad(id) {
+    const item = (db.aiadCases || []).find(x => x.id === id);
+    if (item) copyText(item.body, "Skopiowano protokół AIAD z archiwum!");
+  }
+  function deleteAiadCase(id) {
+    db.aiadCases = (db.aiadCases || []).filter(x => x.id !== id);
+    saveDatabase();
+    renderAiadCasesList();
+  }
+  function resetAiadForm() {
+    document.getElementById("aiad-officer-inp").value = "";
+    selectedAiadOffenses = [];
+    renderAiadOffensesBlips();
+    generateAiadAutoText();
+  }
+  function copyAiadProtocol() {
+    const txt = document.getElementById("aiad-desc-txt").value;
+    if (!txt) { toast("Protokół AIAD jest pusty!"); return; }
+    copyText(txt, "Skopiowano protokół AIAD do schowka!");
   }
 
   /* 10 KATEGORII TARYFIKATORA */
@@ -1177,9 +1511,7 @@
   /* LOGIKA BLIPÓW AUTOMATYCZNEGO OPISU SPRAWY */
   let activeCharges = [], tempModalSelected = [], caseAssistOfficers = [], customConfiscated = [];
   let autoDescEnabled = true;
-  let caseCoop = "yes";       // 'yes' | 'passive' | 'no'
-  let caseGuilt = "admitted"; // 'admitted' | 'denied'
-  let caseDetention = "station"; // 'station' | 'prison' | 'released'
+  let caseCoop = "yes", caseGuilt = "admitted", caseDetention = "station";
   let caseExtras = { lawyer: false, sams: false, reduced: false };
 
   function toggleAutoDescBlip() {
@@ -1188,7 +1520,6 @@
     if (el) el.className = "blip-pill " + (autoDescEnabled ? "active-green" : "");
     if (autoDescEnabled) generateAutoCaseDescription();
   }
-
   function setCaseCoop(val) {
     caseCoop = val;
     document.getElementById("blip-coop-yes").className = "blip-pill " + (val === "yes" ? "active-green" : "");
@@ -1196,14 +1527,12 @@
     document.getElementById("blip-coop-no").className = "blip-pill " + (val === "no" ? "active-red" : "");
     generateAutoCaseDescription();
   }
-
   function setCaseGuilt(val) {
     caseGuilt = val;
     document.getElementById("blip-guilt-admitted").className = "blip-pill " + (val === "admitted" ? "active-green" : "");
     document.getElementById("blip-guilt-denied").className = "blip-pill " + (val === "denied" ? "active-red" : "");
     generateAutoCaseDescription();
   }
-
   function toggleCaseExtra(key) {
     caseExtras[key] = !caseExtras[key];
     document.getElementById("blip-extra-lawyer").className = "blip-pill " + (caseExtras.lawyer ? "active-amber" : "");
@@ -1212,7 +1541,6 @@
     updateCaseTotals();
     generateAutoCaseDescription();
   }
-
   function setCaseDetention(mode) {
     caseDetention = mode;
     document.getElementById("blip-det-station").className = "blip-pill " + (mode === "station" ? "active-blue" : "");
@@ -1220,14 +1548,12 @@
     document.getElementById("blip-det-released").className = "blip-pill " + (mode === "released" ? "active-green" : "");
     generateAutoCaseDescription();
   }
-
   function getCalculatedTotals() {
     let rawM = 0, totalF = 0;
     activeCharges.forEach(c => { rawM += c.m * c.count; totalF += c.f * c.count; });
     const finalM = caseExtras.reduced ? Math.max(1, Math.round(rawM * 0.8)) : rawM;
     return { rawM, finalM, totalF };
   }
-
   function generateAutoCaseDescription(force = false) {
     if (!autoDescEnabled && !force) return;
     const citizen = document.getElementById("case-citizen").value.trim() || "zatrzymany obywatel";
@@ -1236,7 +1562,6 @@
     const autoConf = activeCharges.filter(c => c.confiscate).map(c => c.confiscate);
     const allConf = [...new Set([...autoConf, ...customConfiscated])];
     renderConfiscatedDisplay(allConf);
-
     if (!activeCharges.length) { document.getElementById("case-desc").value = ""; return; }
 
     const actions = activeCharges.map(c => c.desc);
@@ -1245,29 +1570,19 @@
 
     const p1 = `W dniu dzisiejszym funkcjonariusz ${lead}${assists} przeprowadził czynności procesowe wobec osoby zidentyfikowanej jako ${citizen}. W toku podjętej interwencji oraz zebranego materiału dowodowego ustalono, iż podejrzany ${actions.join(", a ponadto ")}.`;
     const p2 = allConf.length ? ` Podczas przeszukania osobistego ujawniono oraz zabezpieczono do depozytu policyjnego: ${allConf.join(", ")}.` : ` Zatrzymanego poddano procedurze przeszukania oraz weryfikacji w systemie MDT.`;
-
     let extraSentences = "";
-    if (caseExtras.sams) {
-      extraSentences += " Przed osadzeniem w celi zatrzymanemu zapewniono niezbędną pomoc medyczną ze strony personelu SAMS.";
-    }
-    if (caseExtras.lawyer) {
-      extraSentences += " Na wyraźne żądanie zatrzymanego wezwano adwokata i umożliwiono przeprowadzenie konsultacji prawnej na terenie komendy.";
-    }
+    if (caseExtras.sams) extraSentences += " Przed osadzeniem w celi zatrzymanemu zapewniono niezbędną pomoc medyczną ze strony personelu SAMS.";
+    if (caseExtras.lawyer) extraSentences += " Na wyraźne żądanie zatrzymanego wezwano adwokata i umożliwiono przeprowadzenie konsultacji prawnej na terenie komendy.";
 
     const coopTxt = caseCoop === "yes"
       ? "Podczas wykonywanych czynności zatrzymany zachowywał spokój i w pełni współpracował z funkcjonariuszami LSPD"
       : caseCoop === "passive"
       ? "W trakcie czynności zatrzymany wykonywał polecenia techniczne funkcjonariuszy, jednak zachowywał postawę bierną i odmówił składania wyjaśnień"
       : "W trakcie prowadzonych czynności zatrzymany nie wykazywał woli współpracy z funkcjonariuszami i utrudniał czynności procesowe";
-
     const guiltTxt = caseGuilt === "admitted"
       ? ", a po przedstawieniu materiału dowodowego przyznał się do zarzucanych mu czynów."
       : ", natomiast do samego końca upierał się przy swojej wersji wydarzeń i kategorycznie nie przyznawał się do winy.";
-
-    const redTxt = caseExtras.reduced
-      ? ` Ze względu na postawę podejrzanego zastosowano złagodzenie wymiaru kary pozbawienia wolności (z ${rawM} mies. do ${finalM} mies.).`
-      : "";
-
+    const redTxt = caseExtras.reduced ? ` Ze względu na postawę podejrzanego zastosowano złagodzenie wymiaru kary pozbawienia wolności (z ${rawM} mies. do ${finalM} mies.).` : "";
     const p4 = caseDetention === "station"
       ? ` Po odczytaniu praw Mirandy i przedstawieniu zarzutów (${names.join(", ")}) nałożono karę łączną ${finalM} mies. pozbawienia wolności oraz grzywnę $${totalF.toLocaleString()}.${redTxt} Obywatel zostaje zatrzymany na komendzie LSPD w celu odbycia kary.`
       : caseDetention === "prison"
@@ -1284,15 +1599,11 @@
       ? allConf.map(i => `<span class="pill pill-red" style="margin:2px;">${i}</span>`).join("")
       : `<span style="color:var(--text-dim);">Brak konfiskat (dodają się automatycznie z zarzutów)</span>`;
   }
-
   function addConfiscatedInline() {
     const inp = document.getElementById("confiscate-inline-inp");
     if (!inp || !inp.value.trim()) return;
-    customConfiscated.push(inp.value.trim());
-    inp.value = "";
-    generateAutoCaseDescription();
+    customConfiscated.push(inp.value.trim()); inp.value = ""; generateAutoCaseDescription();
   }
-
   function openPenalModal() {
     tempModalSelected = JSON.parse(JSON.stringify(activeCharges));
     document.getElementById("penal-search-inp").value = "";
@@ -1300,7 +1611,6 @@
     renderPenalModalCatalog();
   }
   function closePenalModal() { document.getElementById("penal-modal").classList.add("hidden"); }
-
   function renderPenalModalCatalog() {
     const q = (document.getElementById("penal-search-inp").value || "").toLowerCase();
     const container = document.getElementById("penal-catalog-container");
@@ -1314,7 +1624,7 @@
         html += `
           <div class="penal-blip-item ${ex ? 'selected' : ''}" onclick="togglePenalByIdx(${item.gIdx}, ${item.iIdx})">
             <div style="display:flex; align-items:center; gap:8px; min-width:0;">
-              <span class="blip-dot" style="background:${ex ? '#60a5fa' : '#334155'}; box-shadow:${ex ? '0 0 8px #3b82f6' : 'none'};"></span>
+              <span class="blip-dot" style="background:${ex ? 'var(--accent-light)' : '#334155'}; box-shadow:${ex ? '0 0 8px var(--accent-bright)' : 'none'};"></span>
               <div>
                 <div style="font-weight:700; font-size:12px; color:#fff;">${item.name}</div>
                 <div style="font-size:10.5px; color:var(--text-muted);">${item.m} mies. • $${item.f.toLocaleString()}</div>
@@ -1329,10 +1639,9 @@
     let m = 0, f = 0;
     tempModalSelected.forEach(c => { m += c.m * c.count; f += c.f * c.count; });
     document.getElementById("penal-modal-summary").innerHTML = tempModalSelected.length
-      ? `Wybrano blipów: <span style="color:#60a5fa;">${tempModalSelected.length}</span> • Wyrok: <span style="color:#fff;">${m} mies.</span> • Grzywna: <span style="color:#34d399;">$${f.toLocaleString()}</span>`
+      ? `Wybrano blipów: <span style="color:var(--accent-light);">${tempModalSelected.length}</span> • Wyrok: <span style="color:#fff;">${m} mies.</span> • Grzywna: <span style="color:#34d399;">$${f.toLocaleString()}</span>`
       : "Nie wybrano przestępstw";
   }
-
   function togglePenalByIdx(gIdx, iIdx) {
     const item = FULL_PENAL_CATALOG[gIdx].items[iIdx];
     const idx = tempModalSelected.findIndex(x => x.name === item.name);
@@ -1340,33 +1649,22 @@
     else tempModalSelected.push({ ...item, count: 1 });
     renderPenalModalCatalog();
   }
-
   function confirmPenalSelection() {
     activeCharges = JSON.parse(JSON.stringify(tempModalSelected));
-    closePenalModal();
-    updateCaseTotals();
-    generateAutoCaseDescription();
+    closePenalModal(); updateCaseTotals(); generateAutoCaseDescription();
     toast("Zaktualizowano zarzuty i wygenerowano opis sprawy!");
   }
-
   function changeChargeCount(idx, d) {
     activeCharges[idx].count += d;
     if (activeCharges[idx].count <= 0) activeCharges.splice(idx, 1);
-    updateCaseTotals();
-    generateAutoCaseDescription();
-  }
-
-  function clearCaseCharges() {
-    activeCharges = []; customConfiscated = [];
     updateCaseTotals(); generateAutoCaseDescription();
   }
-
+  function clearCaseCharges() { activeCharges = []; customConfiscated = []; updateCaseTotals(); generateAutoCaseDescription(); }
   function resetCaseForm() {
     document.getElementById("case-citizen").value = "";
     caseAssistOfficers = []; renderCaseAssistOfficers(); clearCaseCharges();
     toast("Wyczyszczono szkic sprawy");
   }
-
   function updateCaseTotals() {
     const { finalM, totalF } = getCalculatedTotals();
     setTxt("case-sum-months", finalM + " mies.");
@@ -1375,13 +1673,12 @@
     const prevEl = document.getElementById("case-quick-preview");
     if (!activeCharges.length) {
       listEl.innerHTML = `<div style="padding:14px; text-align:center; color:var(--text-dim); border:1px dashed var(--border); border-radius:10px;">Kliknij „+ Dodaj wyrok (Taryfikator)”, aby wybrać blipy zarzutów.</div>`;
-      prevEl.textContent = "Brak wybranych zarzutów.";
-      return;
+      prevEl.textContent = "Brak wybranych zarzutów."; return;
     }
     listEl.innerHTML = activeCharges.map((c, idx) => `
       <div class="chip-item">
         <div style="display:flex; align-items:center; gap:8px;">
-          <span class="blip-dot" style="background:#60a5fa; box-shadow:0 0 6px #3b82f6;"></span>
+          <span class="blip-dot" style="background:var(--accent-light);"></span>
           <strong>${c.name}</strong>
           <span style="color:var(--text-muted);">(${c.m * c.count} mies. • $${(c.f * c.count).toLocaleString()})</span>
         </div>
@@ -1393,7 +1690,6 @@
       </div>`).join("");
     prevEl.textContent = `ZARZUTY: ${activeCharges.map(c => c.count > 1 ? c.name + " x" + c.count : c.name).join(", ")}\nWYROK: ${finalM} mies. | GRZYWNA: $${totalF.toLocaleString()}`;
   }
-
   function renderCaseAssistOfficers() {
     const box = document.getElementById("case-assist-officers-box");
     if (!box) return;
@@ -1402,7 +1698,6 @@
       : `<div style="padding:8px; text-align:center; color:var(--text-dim); border:1px dashed var(--border); border-radius:99px; font-size:12px;">Brak jednostek pomocniczych</div>`;
   }
   function removeAssistOfficer(i) { caseAssistOfficers.splice(i, 1); renderCaseAssistOfficers(); generateAutoCaseDescription(); }
-
   function finalizeCaseAction(mode) {
     if (mode === "station") setCaseDetention("station");
     if (mode === "prison") setCaseDetention("prison");
@@ -1423,76 +1718,21 @@
     copyText(`KARTOTEKA SPRAWY LSPD\nObywatel: ${cit}\nProwadzący: ${db.loggedOfficer}\nZarzuty: ${ch}\nWyrok: ${m} | Grzywna: ${f}\n\nOPIS SPRAWY:\n${desc}`, "Skopiowano pełną kartotekę sprawy!");
   }
 
-  /* =========================================================
-     GRAFIKI MAPEK SZKOLENIOWYCH ASU (image_7f9838.jpg) I SEU (image_7f9876.jpg)
-     ========================================================= */
+  /* GRAFIKI MAPEK SZKOLENIOWYCH ASU I SEU */
   let uploadingMapTarget = "ASU";
-
   function getAsuMapSvgMarkup() {
-    return `
-      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-        <rect width="400" height="400" fill="#a8c5db"/>
-        <!-- Ląd Los Santos i wzgórza wschodnie -->
-        <path d="M 0 0 L 400 0 L 400 320 Q 340 310 315 345 L 250 345 L 245 390 L 160 390 L 145 325 L 70 315 L 0 265 Z" fill="#d4d6d8"/>
-        <path d="M 195 0 L 400 0 L 400 315 Q 340 310 315 335 Q 275 315 265 250 Q 250 180 205 110 Z" fill="#8fb369"/>
-        <!-- Siatka ulic Downtown / South LS -->
-        <g stroke="#ffffff" stroke-width="2.5" opacity="0.75">
-          <line x1="20" y1="60" x2="180" y2="60"/><line x1="20" y1="100" x2="210" y2="100"/>
-          <line x1="20" y1="145" x2="220" y2="145"/><line x1="20" y1="195" x2="220" y2="195"/>
-          <line x1="20" y1="245" x2="220" y2="245"/><line x1="60" y1="20" x2="60" y2="280"/>
-          <line x1="105" y1="20" x2="105" y2="290"/><line x1="145" y1="20" x2="145" y2="310"/>
-        </g>
-        <!-- Autostrady (żółte) -->
-        <path d="M 0 80 L 195 85 L 235 160 L 245 310 M 0 160 L 290 155 L 400 100" stroke="#f3e596" stroke-width="5" fill="none"/>
-        <!-- Kanał burzowy LS -->
-        <path d="M 225 55 Q 190 70 175 85 L 170 160 L 178 220 L 172 295 L 208 332" stroke="#7ba6c7" stroke-width="7" fill="none"/>
-        <!-- CZERWONA TRASA Z TWOJEGO ZDJĘCIA (ASU) -->
-        <path d="M 225 55 Q 195 72 176 85 L 170 155 L 178 220 L 172 295 L 208 332" stroke="#e11d48" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-        <!-- Strzałki kierunkowe wzdłuż kanału -->
-        <path d="M 164 115 L 170 127 L 176 115 M 164 150 L 170 162 L 176 150 M 172 195 L 178 207 L 184 195 M 168 245 L 174 257 L 180 245 M 166 280 L 172 292 L 178 280" stroke="#e11d48" stroke-width="3" fill="none"/>
-        <!-- Punkt Start i Meta -->
-        <circle cx="225" cy="55" r="6" fill="#e11d48"/>
-        <text x="235" y="60" fill="#be123c" font-size="16" font-weight="900">Start</text>
-        <circle cx="208" cy="332" r="6" fill="#e11d48"/>
-        <text x="218" y="337" fill="#be123c" font-size="16" font-weight="900">Meta</text>
-      </svg>`;
+    return `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="400" fill="#a8c5db"/><path d="M 0 0 L 400 0 L 400 320 Q 340 310 315 345 L 250 345 L 245 390 L 160 390 L 145 325 L 70 315 L 0 265 Z" fill="#d4d6d8"/><path d="M 195 0 L 400 0 L 400 315 Q 340 310 315 335 Q 275 315 265 250 Q 250 180 205 110 Z" fill="#8fb369"/><g stroke="#ffffff" stroke-width="2.5" opacity="0.75"><line x1="20" y1="60" x2="180" y2="60"/><line x1="20" y1="100" x2="210" y2="100"/><line x1="20" y1="145" x2="220" y2="145"/><line x1="20" y1="195" x2="220" y2="195"/><line x1="20" y1="245" x2="220" y2="245"/><line x1="60" y1="20" x2="60" y2="280"/><line x1="105" y1="20" x2="105" y2="290"/><line x1="145" y1="20" x2="145" y2="310"/></g><path d="M 0 80 L 195 85 L 235 160 L 245 310 M 0 160 L 290 155 L 400 100" stroke="#f3e596" stroke-width="5" fill="none"/><path d="M 225 55 Q 190 70 175 85 L 170 160 L 178 220 L 172 295 L 208 332" stroke="#7ba6c7" stroke-width="7" fill="none"/><path d="M 225 55 Q 195 72 176 85 L 170 155 L 178 220 L 172 295 L 208 332" stroke="#e11d48" stroke-width="4.5" fill="none" stroke-linecap="round"/><path d="M 164 115 L 170 127 L 176 115 M 164 150 L 170 162 L 176 150 M 172 195 L 178 207 L 184 195 M 168 245 L 174 257 L 180 245 M 166 280 L 172 292 L 178 280" stroke="#e11d48" stroke-width="3" fill="none"/><circle cx="225" cy="55" r="6" fill="#e11d48"/><text x="235" y="60" fill="#be123c" font-size="16" font-weight="900">Start</text><circle cx="208" cy="332" r="6" fill="#e11d48"/><text x="218" y="337" fill="#be123c" font-size="16" font-weight="900">Meta</text></svg>`;
   }
-
   function getSeuMapSvgMarkup() {
-    return `
-      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-        <rect width="400" height="400" fill="#5da9d6"/>
-        <!-- Wybrzeże zachodnie, Chumash i Góry -->
-        <path d="M 185 0 L 400 0 L 400 400 L 200 400 Q 170 385 115 360 Q 105 315 100 280 Q 85 240 112 195 Q 125 160 148 145 L 145 95 L 130 75 L 165 40 Z" fill="#8fb369"/>
-        <!-- Plaża (żółty brzeg) -->
-        <path d="M 180 0 L 165 40 L 130 75 L 145 95 L 148 145 Q 115 170 105 220 Q 95 280 115 360 L 195 400" stroke="#ebe09d" stroke-width="8" fill="none"/>
-        <!-- Lotnisko Fort Zancudo -->
-        <polygon points="135,75 235,105 225,130 125,95" fill="#9ca3af" stroke="#fff" stroke-width="1.5"/>
-        <line x1="140" y1="84" x2="225" y2="112" stroke="#ffffff" stroke-width="3" stroke-dasharray="6,4"/>
-        <!-- CZERWONA TRASA Z TWOJEGO ZDJĘCIA (SEU) -->
-        <path d="M 192 382 L 120 342 L 114 295 L 106 238 L 116 190 L 146 158 C 172 152 172 165 148 160 L 158 80 L 166 46 C 172 44 176 55 176 66" stroke="#dc2626" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <!-- Punkt Start i Meta -->
-        <circle cx="192" cy="382" r="6" fill="#dc2626"/>
-        <text x="202" y="387" fill="#b91c1c" font-size="16" font-weight="900">Start</text>
-        <circle cx="176" cy="66" r="6" fill="#dc2626"/>
-        <text x="186" y="70" fill="#b91c1c" font-size="16" font-weight="900">Meta</text>
-      </svg>`;
+    return `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="400" fill="#5da9d6"/><path d="M 185 0 L 400 0 L 400 400 L 200 400 Q 170 385 115 360 Q 105 315 100 280 Q 85 240 112 195 Q 125 160 148 145 L 145 95 L 130 75 L 165 40 Z" fill="#8fb369"/><path d="M 180 0 L 165 40 L 130 75 L 145 95 L 148 145 Q 115 170 105 220 Q 95 280 115 360 L 195 400" stroke="#ebe09d" stroke-width="8" fill="none"/><polygon points="135,75 235,105 225,130 125,95" fill="#9ca3af" stroke="#fff" stroke-width="1.5"/><line x1="140" y1="84" x2="225" y2="112" stroke="#ffffff" stroke-width="3" stroke-dasharray="6,4"/><path d="M 192 382 L 120 342 L 114 295 L 106 238 L 116 190 L 146 158 C 172 152 172 165 148 160 L 158 80 L 166 46 C 172 44 176 55 176 66" stroke="#dc2626" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="192" cy="382" r="6" fill="#dc2626"/><text x="202" y="387" fill="#b91c1c" font-size="16" font-weight="900">Start</text><circle cx="176" cy="66" r="6" fill="#dc2626"/><text x="186" y="70" fill="#b91c1c" font-size="16" font-weight="900">Meta</text></svg>`;
   }
-
   function getTrainingMapVisualHTML(mapType) {
     const savedCustomImg = db.customMaps && db.customMaps[mapType];
     const defaultFileName = mapType === "ASU" ? "image_7f9838.jpg" : "image_7f9876.jpg";
     const svgFallback = mapType === "ASU" ? getAsuMapSvgMarkup() : getSeuMapSvgMarkup();
-
-    if (savedCustomImg) {
-      return `<img src="${savedCustomImg}" alt="Mapa ${mapType}" />`;
-    }
-    return `
-      <img src="${defaultFileName}" alt="Mapa ${mapType}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
-      <div style="display:none; width:100%; height:100%;">${svgFallback}</div>
-    `;
+    if (savedCustomImg) return `<img src="${savedCustomImg}" alt="Mapa ${mapType}" />`;
+    return `<img src="${defaultFileName}" alt="Mapa ${mapType}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" /><div style="display:none; width:100%; height:100%;">${svgFallback}</div>`;
   }
-
   function openMapZoomModal(mapType) {
     document.getElementById("map-zoom-title").textContent = mapType === "ASU"
       ? "Mapa Szkoleniowa ASU — Przelot pod mostami w kanale LS (Limit: < 0:55s)"
@@ -1500,16 +1740,8 @@
     document.getElementById("map-zoom-body").innerHTML = `<div style="width:100%; max-width:620px; height:520px;">${getTrainingMapVisualHTML(mapType)}</div>`;
     document.getElementById("map-zoom-modal").classList.remove("hidden");
   }
-
-  function closeMapZoomModal() {
-    document.getElementById("map-zoom-modal").classList.add("hidden");
-  }
-
-  function triggerCustomMapUpload(mapType) {
-    uploadingMapTarget = mapType;
-    document.getElementById("hidden-map-file-inp").click();
-  }
-
+  function closeMapZoomModal() { document.getElementById("map-zoom-modal").classList.add("hidden"); }
+  function triggerCustomMapUpload(mapType) { uploadingMapTarget = mapType; document.getElementById("hidden-map-file-inp").click(); }
   function handleMapFileUpload(e) {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
@@ -1517,8 +1749,7 @@
     reader.onload = function(ev) {
       if (!db.customMaps) db.customMaps = {};
       db.customMaps[uploadingMapTarget] = ev.target.result;
-      saveDatabase();
-      renderSzkCourseBody();
+      saveDatabase(); renderSzkCourseBody();
       toast("Wgrano i zapisano oryginalne zdjęcie mapki " + uploadingMapTarget + "!");
     };
     reader.readAsDataURL(file);
@@ -1549,32 +1780,40 @@
     { id: "199", badge: "199", name: "Túlio Navarro Figueiredo", fto: "Oley Sasa", joinDate: "11.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} }
   ];
 
-  let db = { loggedOfficer: "[923] Oley Sasa", pwc: "[80] Henry Scott", apwc: "Brak przypisanego", officers: [], reports: [], cadets: [], patrols: [{ id: 1, type: "Adam", members: ["[923] Oley Sasa", "[141] Vivienne Walker"] }], customMaps: {} };
+  const INITIAL_AIAD = [
+    { id: 1, officer: "[147] Peter Fals", inspector: "[923] Oley Sasa", sanction: "POUCZENIE", sanctionKey: "warn", date: "15.10.2026 17:42", body: "Funkcjonariusz [147] Peter Fals zgłosił się dobrowolnie na rozmowę do AIAD w sprawie użycia broni służbowej poza służbą w celu pacyfikacji napastnika strzelającego do ludzi pod szpitalem. Zakończono na pouczeniu." }
+  ];
+
+  let db = { loggedOfficer: "[923] Oley Sasa", theme: "lspd", pwc: "[80] Henry Scott", apwc: "Brak przypisanego", officers: [], reports: [], cadets: [], patrols: [{ id: 1, type: "Adam", members: ["[923] Oley Sasa", "[141] Vivienne Walker"] }], aiadCases: [], customMaps: {} };
 
   function loadDatabase() {
     try {
-      const raw = localStorage.getItem("lspd_mdt_gh_v9");
+      const raw = localStorage.getItem("lspd_mdt_gh_v10");
       if (raw) db = JSON.parse(raw);
       else {
         db.officers = JSON.parse(JSON.stringify(INITIAL_OFFICERS));
         db.reports = JSON.parse(JSON.stringify(INITIAL_REPORTS));
         db.cadets = JSON.parse(JSON.stringify(INITIAL_CADETS));
+        db.aiadCases = JSON.parse(JSON.stringify(INITIAL_AIAD));
       }
     } catch (e) {
       db.officers = JSON.parse(JSON.stringify(INITIAL_OFFICERS));
       db.reports = JSON.parse(JSON.stringify(INITIAL_REPORTS));
       db.cadets = JSON.parse(JSON.stringify(INITIAL_CADETS));
+      db.aiadCases = JSON.parse(JSON.stringify(INITIAL_AIAD));
     }
     if (!db.customMaps) db.customMaps = {};
+    if (!db.aiadCases) db.aiadCases = JSON.parse(JSON.stringify(INITIAL_AIAD));
     db.cadets.forEach(c => {
       if (!c.modules) c.modules = {};
       FTO_BASIC.forEach(m => { if (!c.modules[m]) c.modules[m] = { ok: false, note: "", sign: "" }; });
     });
+    if (db.theme) setTabletTheme(db.theme);
     updateSidebarCounters();
   }
 
   function saveDatabase() {
-    try { localStorage.setItem("lspd_mdt_gh_v9", JSON.stringify(db)); } catch (e) {}
+    try { localStorage.setItem("lspd_mdt_gh_v10", JSON.stringify(db)); } catch (e) {}
     updateSidebarCounters();
   }
 
@@ -1584,8 +1823,11 @@
     setTxt("cnt-officers", db.officers.length);
     setTxt("cnt-cadets", db.cadets.length);
     setTxt("cnt-patrols", db.patrols.length);
+    setTxt("cnt-aiad", (db.aiadCases || []).length);
     setTxt("logged-officer-display", db.loggedOfficer);
     setTxt("case-lead-officer", db.loggedOfficer);
+    const aiadInsp = document.getElementById("aiad-inspector-inp");
+    if (aiadInsp) aiadInsp.value = db.loggedOfficer;
   }
 
   /* RAPORTY */
@@ -1597,7 +1839,7 @@
     const filtered = db.reports.filter(r => ("#" + r.id).includes(q) || r.title.toLowerCase().includes(q) || r.author.toLowerCase().includes(q));
     tbody.innerHTML = filtered.length ? filtered.map(r => `
       <tr>
-        <td style="font-weight:800; color:#60a5fa;">#${r.id}</td>
+        <td style="font-weight:800; color:var(--accent-light);">#${r.id}</td>
         <td style="font-weight:700;">${r.author}</td>
         <td style="color:#fff;">${r.title}</td>
         <td><span class="pill pill-amber">${r.type}</span></td>
@@ -1704,9 +1946,7 @@
     copyText(`TYTUŁ: ${document.getElementById("rf-title").value}\nAUTOR: ${db.loggedOfficer}\n\n${document.getElementById("rf-body").value}`, "Skopiowano raport!");
   }
 
-  /* =========================================================
-     7 SZKOLEŃ SPECJALISTYCZNYCH Z BLIPAMI I MAPKAMI
-     ========================================================= */
+  /* 7 SZKOLEŃ SPECJALISTYCZNYCH Z BLIPAMI I MAPKAMI */
   const COURSES_DATA = {
     "RTO+HRO": { name: "RTO + HRO", reqTheory: 15, maxTheory: 16, questions: [
       { q: "1. Jaki jest nadrzędny cel prowadzenia radiówki podczas pościgu?", pts: 1, a: "Zapewnienie świadomości sytuacyjnej innym jednostkom, aby odcięte radiowozy mogły z samych komunikatów wyliczyć trasę, rozstawić kolczatki lub odciąć drogę bez patrzenia na mapę." },
@@ -1773,10 +2013,8 @@
     if (bar) {
       bar.innerHTML = LICENSES.map(k => `
         <div class="blip-pill ${k === selectedCourse ? 'active-blue' : ''}" onclick="selectCourseTab('${k}')">
-          <span class="blip-dot"></span>
-          <span>${COURSES_DATA[k].name}</span>
-        </div>
-      `).join("");
+          <span class="blip-dot"></span><span>${COURSES_DATA[k].name}</span>
+        </div>`).join("");
     }
     renderSzkCourseBody();
   }
@@ -1791,15 +2029,13 @@
     practicalChecks[selectedCourse][idx] = !practicalChecks[selectedCourse][idx];
     renderSzkCourseBody();
   }
-
   function renderSzkCourseBody() {
     const c = COURSES_DATA[selectedCourse];
     const container = document.getElementById("szk-course-body");
     if (!container || !c) return;
     if (!courseScores[selectedCourse]) courseScores[selectedCourse] = {};
     if (!practicalChecks[selectedCourse]) practicalChecks[selectedCourse] = {};
-    const sc = courseScores[selectedCourse];
-    const pr = practicalChecks[selectedCourse];
+    const sc = courseScores[selectedCourse], pr = practicalChecks[selectedCourse];
     let sum = 0; c.questions.forEach((q, idx) => { sum += (sc[idx] || 0); });
 
     let tHTML = "";
@@ -1814,20 +2050,17 @@
               <div style="font-size:11.5px; color:var(--text-muted); margin-top:2px;">Kliknij okrągły blip punktowy po prawej stronie każdego pytania</div>
             </div>
             <div class="blip-pill ${pass ? 'active-green' : 'active-red'}" style="cursor:default;">
-              <span class="blip-dot"></span>
-              <span>${sum} / ${c.maxTheory} pkt (Min. ${c.reqTheory}) — ${pass ? 'ZALICZONA' : 'NIEZALICZONA'}</span>
+              <span class="blip-dot"></span><span>${sum} / ${c.maxTheory} pkt (Min. ${c.reqTheory}) — ${pass ? 'ZALICZONA' : 'NIEZALICZONA'}</span>
             </div>
           </div>
-          <div class="progress-track" style="margin-bottom:14px;">
-            <div class="progress-fill" style="width:${pct}%;"></div>
-          </div>
+          <div class="progress-track" style="margin-bottom:14px;"><div class="progress-fill" style="width:${pct}%;"></div></div>
       ` + c.questions.map((it, idx) => {
         const cur = sc[idx] !== undefined ? sc[idx] : 0;
         let nodes = "";
         for (let p = 0; p <= it.pts; p++) {
           let cls = "";
           if (cur === p) cls = p === 0 ? "selected-zero" : (p === it.pts ? "selected-max" : "selected-pts");
-          nodes += `<div class="blip-node ${cls}" onclick="setCourseQuestionScore(${idx},${p})" title="${p} pkt">${p}</div>`;
+          nodes += `<div class="blip-node ${cls}" onclick="setCourseQuestionScore(${idx},${p})">${p}</div>`;
         }
         return `
           <div class="question-blip-row ${cur > 0 ? 'scored-positive' : 'scored-zero'}">
@@ -1835,8 +2068,8 @@
               <div style="font-weight:700; color:#e2e8f0; font-size:13px;">${it.q} <span style="color:var(--text-dim); font-size:11px;">(Max ${it.pts} pkt)</span></div>
               <div class="blip-nodes-group">${nodes}</div>
             </div>
-            <div style="margin-top:8px; padding:7px 11px; background:#070a10; border-left:2px solid #3b82f6; border-radius:6px; font-size:12px; color:var(--text-muted);">
-              <strong style="color:#93c5fd;">Odp:</strong> ${it.a}
+            <div style="margin-top:8px; padding:7px 11px; background:#070a10; border-left:2px solid var(--accent-bright); border-radius:6px; font-size:12px; color:var(--text-muted);">
+              <strong style="color:var(--accent-light);">Odp:</strong> ${it.a}
             </div>
           </div>`;
       }).join("") + `</div>`;
@@ -1849,12 +2082,8 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h3 style="margin:0; font-size:15px; color:#38bdf8;">
-                ${isAsu ? "Mapa Szkoleniowa ASU (Etap 4 — Przelot pod mostami < 0:55s)" : "Mapa Szkoleniowa SEU (Etap 1 — Drive Skills Test)"}
-              </h3>
-              <div style="font-size:11.5px; color:var(--text-muted); margin-top:2px;">
-                Kliknij na mapkę, aby powiększyć ją na pełny ekran, lub podmień plik obrazu z dysku
-              </div>
+              <h3 style="margin:0; font-size:15px; color:#38bdf8;">${isAsu ? "Mapa Szkoleniowa ASU (Etap 4 — Przelot pod mostami < 0:55s)" : "Mapa Szkoleniowa SEU (Etap 1 — Drive Skills Test)"}</h3>
+              <div style="font-size:11.5px; color:var(--text-muted); margin-top:2px;">Kliknij na mapkę, aby powiększyć ją na pełny ekran, lub podmień plik obrazu z dysku</div>
             </div>
             <div style="display:flex; gap:8px;">
               <button type="button" class="btn btn-sm btn-dark" onclick="triggerCustomMapUpload('${c.map}')">Wgraj / Podmień zdjęcie mapki</button>
@@ -1889,16 +2118,12 @@
             const isOk = !!pr[idx];
             return `
               <div class="blip-pill ${isOk ? 'active-green' : ''}" style="border-radius:10px; padding:10px 14px; justify-content:space-between;" onclick="togglePracticalStageBlip(${idx})">
-                <div style="display:flex; align-items:center; gap:10px;">
-                  <span class="blip-dot"></span>
-                  <span>${p}</span>
-                </div>
+                <div style="display:flex; align-items:center; gap:10px;"><span class="blip-dot"></span><span>${p}</span></div>
                 <span class="pill ${isOk ? 'pill-green' : 'pill-gray'}">${isOk ? 'ZALICZONE' : 'DO WYKONANIA'}</span>
               </div>`;
           }).join("")}
         </div>
       </div>`;
-
     container.innerHTML = tHTML + mapHTML + pHTML;
   }
 
@@ -1924,7 +2149,7 @@
         const has = !!(o.licenses && o.licenses[k]);
         return `<div class="blip-pill ${has ? 'active-green' : ''}" style="padding:3px 9px; font-size:11px; margin:2px;" onclick="toggleMatrixLic('${o.badge}','${k}')"><span class="blip-dot"></span><span>${k}</span></div>`;
       }).join("");
-      return `<tr><td style="font-weight:800; color:#60a5fa;">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${pills}</td><td style="color:var(--text-dim); font-size:11px;">${o.updated || "-"}</td></tr>`;
+      return `<tr><td style="font-weight:800; color:var(--accent-light);">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${pills}</td><td style="color:var(--text-dim); font-size:11px;">${o.updated || "-"}</td></tr>`;
     }).join("");
   }
   function toggleMatrixLic(badge, k) {
@@ -1939,13 +2164,10 @@
   function toggleTrialStopwatch() {
     const btn = document.getElementById("trial-sw-btn");
     if (trialSwRunning) {
-      trialSwElapsed += Date.now() - trialSwStart;
-      trialSwRunning = false;
-      clearInterval(trialSwInterval);
-      btn.textContent = "Start"; btn.className = "btn btn-sm btn-green";
+      trialSwElapsed += Date.now() - trialSwStart; trialSwRunning = false;
+      clearInterval(trialSwInterval); btn.textContent = "Start"; btn.className = "btn btn-sm btn-green";
     } else {
-      trialSwStart = Date.now();
-      trialSwRunning = true;
+      trialSwStart = Date.now(); trialSwRunning = true;
       btn.textContent = "Stop"; btn.className = "btn btn-sm btn-red";
       trialSwInterval = setInterval(() => {
         const ms = trialSwElapsed + (Date.now() - trialSwStart);
@@ -1955,8 +2177,7 @@
     }
   }
   function resetTrialStopwatch() {
-    trialSwRunning = false; trialSwElapsed = 0;
-    clearInterval(trialSwInterval);
+    trialSwRunning = false; trialSwElapsed = 0; clearInterval(trialSwInterval);
     setTxt("trial-stopwatch-val", "00:00.0");
     const btn = document.getElementById("trial-sw-btn");
     if (btn) { btn.textContent = "Start"; btn.className = "btn btn-sm btn-green"; }
@@ -1991,7 +2212,7 @@
     tbody.innerHTML = db.cadets.filter(c => c.badge.toLowerCase().includes(q) || c.name.toLowerCase().includes(q) || c.fto.toLowerCase().includes(q)).map(c => {
       const done = FTO_BASIC.filter(m => c.modules[m]?.ok).length;
       return `<tr>
-        <td style="font-weight:800; color:#60a5fa;">#${c.badge}</td>
+        <td style="font-weight:800; color:var(--accent-light);">#${c.badge}</td>
         <td style="font-weight:700;">${c.name}</td>
         <td>${c.fto}</td>
         <td><div style="display:flex; align-items:center; gap:8px;"><span id="cad-timer-${c.id}" style="font-family:monospace; font-weight:800; color:${c.running ? '#34d399' : '#38bdf8'};">${formatHMS(getCadetTotalSec(c))}</span><button type="button" class="btn btn-sm ${c.running ? 'btn-red' : 'btn-green'}" onclick="toggleCadetStopwatch('${c.id}')" style="border-radius:99px;">${c.running ? 'STOP' : 'START'}</button></div></td>
@@ -2094,7 +2315,7 @@
         return `<div class="blip-node ${cls}" onclick="setExamPts(${idx},${p})">${p}</div>`;
       }).join("");
       return `<tr>
-        <td style="font-weight:700; color:#60a5fa;">${item}</td>
+        <td style="font-weight:700; color:var(--accent-light);">${item}</td>
         <td><div class="blip-nodes-group">${nodes}</div></td>
         <td style="text-align:center; font-weight:800; font-size:14px;">${val} pkt</td>
       </tr>`;
@@ -2126,10 +2347,10 @@
   }
   function renderAllOfficersView() {
     const dispBody = document.getElementById("dispatch-officers-tbody"), allBody = document.getElementById("all-officers-tbody");
-    if (dispBody) dispBody.innerHTML = db.officers.map(o => `<tr><td style="font-weight:800; color:#60a5fa;">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${o.channel || "LSPD Tac #1"}</td><td><div class="blip-pill ${o.status === 'Na służbie' ? 'active-green' : ''}" style="padding:3px 10px; font-size:11px;" onclick="toggleOfficerDuty('${o.badge}')"><span class="blip-dot"></span><span>${o.status}</span></div></td></tr>`).join("");
+    if (dispBody) dispBody.innerHTML = db.officers.map(o => `<tr><td style="font-weight:800; color:var(--accent-light);">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${o.channel || "LSPD Tac #1"}</td><td><div class="blip-pill ${o.status === 'Na służbie' ? 'active-green' : ''}" style="padding:3px 10px; font-size:11px;" onclick="toggleOfficerDuty('${o.badge}')"><span class="blip-dot"></span><span>${o.status}</span></div></td></tr>`).join("");
     if (allBody) allBody.innerHTML = db.officers.map(o => {
       const lics = LICENSES.filter(k => o.licenses && o.licenses[k]).map(k => `<span class="pill pill-blue" style="margin-right:3px;">${k}</span>`).join("") || `<span style="color:var(--text-dim);">Brak</span>`;
-      return `<tr><td style="font-weight:800; color:#60a5fa;">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${lics}</td><td><span class="pill ${o.status === 'Na służbie' ? 'pill-green' : 'pill-gray'}">${o.status}</span></td><td style="text-align:right;"><button type="button" class="btn btn-sm btn-red" onclick="deleteOfficer('${o.badge}')">Usuń</button></td></tr>`;
+      return `<tr><td style="font-weight:800; color:var(--accent-light);">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${lics}</td><td><span class="pill ${o.status === 'Na służbie' ? 'pill-green' : 'pill-gray'}">${o.status}</span></td><td style="text-align:right;"><button type="button" class="btn btn-sm btn-red" onclick="deleteOfficer('${o.badge}')">Usuń</button></td></tr>`;
     }).join("");
   }
   function deleteOfficer(b) { db.officers = db.officers.filter(x => x.badge !== b); saveDatabase(); renderAllOfficersView(); renderLicenseMatrix(); }
@@ -2138,14 +2359,14 @@
     const b = document.getElementById("add-off-badge").value.trim(), n = document.getElementById("add-off-name").value.trim(), r = document.getElementById("add-off-rank").value.trim() || "Officer I";
     if (!b || !n) { toast("Wpisz odznakę i imię!"); return; }
     db.officers.unshift({ badge: b, name: n, rank: r, channel: "LSPD Tac #1", status: "Na służbie", licenses: {}, updated: "Nowy" });
-    saveDatabase(); renderAllOfficersView(); renderLicenseMatrix(); renderSzkCourseBar();
+    saveDatabase(); renderAllOfficersView(); renderLicenseMatrix(); renderSzkCourseBar(); renderAiadOffensesBlips();
     document.getElementById("add-off-badge").value = ""; document.getElementById("add-off-name").value = "";
     toast("Dodano funkcjonariusza [" + b + "] " + n);
   }
 
   /* NAWIGACJA */
   function switchMainView(v) {
-    ["sprawy", "raporty", "dyspozytornia", "patrole", "funkcjonariusze", "szkolenia", "kadet"].forEach(k => {
+    ["sprawy", "raporty", "aiad", "dyspozytornia", "patrole", "funkcjonariusze", "szkolenia", "kadet"].forEach(k => {
       document.getElementById("view-" + k)?.classList.add("hidden");
       document.getElementById("nav-" + k)?.classList.remove("active");
     });
@@ -2167,14 +2388,14 @@
   function toggleOfficerEditBox() { document.getElementById("officer-edit-box").classList.toggle("hidden"); }
   function saveLoggedOfficer() {
     const val = document.getElementById("logged-officer-inp").value.trim();
-    if (val) { db.loggedOfficer = val; saveDatabase(); generateAutoCaseDescription(); }
+    if (val) { db.loggedOfficer = val; saveDatabase(); generateAutoCaseDescription(); generateAiadAutoText(); }
     document.getElementById("officer-edit-box").classList.add("hidden");
   }
   function exportAllTabletData() {
     const blob = new Blob([JSON.stringify(db, null, 2)], { type: "application/json" });
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "tablet_lspd_backup.json"; a.click();
   }
-  function resetFactoryDefaults() { localStorage.removeItem("lspd_mdt_gh_v9"); location.reload(); }
+  function resetFactoryDefaults() { localStorage.removeItem("lspd_mdt_gh_v10"); location.reload(); }
 
   /* ZEGAR SYSTEMOWY */
   function tickClock() {
@@ -2205,6 +2426,9 @@
   renderCaseAssistOfficers();
   renderConfiscatedDisplay([]);
   updateCaseTotals();
+  renderAiadOffensesBlips();
+  generateAiadAutoText();
+  renderAiadCasesList();
   renderReportsList();
   renderSzkCourseBar();
   renderLicenseMatrix();
