@@ -47,12 +47,8 @@
       font-size: 13px; overflow-x: hidden;
     }
     @keyframes fadeSlideIn {
-      from { opacity: 0; transform: translateY(7px); }
+      from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes modalPop {
-      from { opacity: 0; transform: scale(0.96) translateY(10px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
     }
     @keyframes pulseRadar {
       0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
@@ -64,12 +60,12 @@
       70% { box-shadow: 0 0 0 6px rgba(0, 0, 0, 0); }
       100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
     }
-    .view-animate { animation: fadeSlideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .view-animate { animation: fadeSlideIn 0.2s ease forwards; }
     .tablet-shell { display: flex; min-height: 100vh; background-color: var(--bg-main); }
 
     /* SIDEBAR */
     .sidebar {
-      width: 256px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border);
+      width: 254px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border);
       display: flex; flex-direction: column; flex-shrink: 0; user-select: none;
     }
     .brand-header {
@@ -81,31 +77,29 @@
       background: radial-gradient(circle at 30% 30%, var(--accent), #0b132b 75%);
       border: 2px solid var(--accent-light);
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 0 16px var(--accent-glow); flex-shrink: 0;
+      box-shadow: 0 0 15px var(--accent-glow); flex-shrink: 0;
     }
     .nav-section-title {
-      padding: 12px 18px 4px; font-size: 10px; font-weight: 800;
+      padding: 12px 16px 4px; font-size: 10px; font-weight: 800;
       color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase;
     }
-    .nav-list { display: flex; flex-direction: column; padding: 0 10px; gap: 2px; flex: 1; }
+    .nav-list { display: flex; flex-direction: column; padding: 0 10px; gap: 3px; flex: 1; }
     .nav-item {
       display: flex; align-items: center; justify-content: space-between;
       padding: 9px 12px; border-radius: 9px; font-size: 12.5px; font-weight: 600;
       color: var(--text-muted); background: transparent; border: 1px solid transparent;
-      cursor: pointer; text-align: left; width: 100%;
-      transition: all 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer; text-align: left; width: 100%; transition: all 0.15s ease;
     }
-    .nav-item-left { display: flex; align-items: center; gap: 9px; }
-    .nav-item svg { width: 16px; height: 16px; stroke: currentColor; transition: transform 0.2s; }
-    .nav-item:hover { background-color: #141c2b; color: #fff; transform: translateX(3px); }
+    .nav-item-left { display: flex; align-items: center; gap: 9px; pointer-events: none; }
+    .nav-item svg { width: 16px; height: 16px; stroke: currentColor; flex-shrink: 0; }
+    .nav-item:hover { background-color: #141c2b; color: #fff; transform: translateX(2px); }
     .nav-item.active {
       background: linear-gradient(90deg, var(--accent-soft) 0%, rgba(15, 23, 42, 0.05) 100%);
       color: var(--accent-light); border-color: var(--accent-bright);
     }
-    .nav-item.active svg { transform: scale(1.1); stroke: var(--accent-light); }
     .nav-counter {
       font-size: 10px; padding: 2px 7px; border-radius: 99px;
-      background-color: #1a2333; color: #cbd5e1; font-weight: 700;
+      background-color: #1a2333; color: #cbd5e1; font-weight: 700; pointer-events: none;
     }
     .nav-item.active .nav-counter { background-color: var(--accent); color: #fff; }
 
@@ -122,24 +116,23 @@
     .card {
       background-color: var(--bg-card); border: 1px solid var(--border);
       border-radius: 12px; padding: 15px; margin-bottom: 15px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.22);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22);
     }
     .card-header {
       display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 12px; gap: 10px; flex-wrap: wrap;
     }
     .field-label {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 11px; font-weight: 700; color: var(--text-muted);
+      display: block; font-size: 11px; font-weight: 700; color: var(--text-muted);
       text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;
     }
     .inp, .sel, .txt {
       width: 100%; background-color: var(--bg-input); border: 1px solid var(--border-light);
       color: var(--text); border-radius: 8px; padding: 8px 12px; font-size: 13px;
-      outline: none; font-family: inherit; transition: all 0.18s;
+      outline: none; font-family: inherit; transition: border-color 0.15s;
     }
     .inp:focus, .sel:focus, .txt:focus {
-      border-color: var(--accent-bright); box-shadow: 0 0 0 3px var(--accent-soft);
+      border-color: var(--accent-bright); box-shadow: 0 0 0 2px var(--accent-soft);
     }
 
     /* BUTTONS */
@@ -147,9 +140,9 @@
       display: inline-flex; align-items: center; justify-content: center; gap: 6px;
       padding: 8px 13px; border-radius: 8px; font-size: 12px; font-weight: 700;
       cursor: pointer; border: 1px solid transparent; color: #fff; white-space: nowrap;
-      user-select: none; transition: all 0.16s ease;
+      user-select: none; transition: all 0.15s ease;
     }
-    .btn:hover { transform: translateY(-1px); filter: brightness(1.1); }
+    .btn:hover { filter: brightness(1.12); transform: translateY(-1px); }
     .btn:active { transform: translateY(1px); }
     .btn-sm { padding: 5px 10px; font-size: 11px; border-radius: 7px; }
     .btn-blue { background: linear-gradient(135deg, var(--accent), #1e3a8a); border-color: var(--accent-bright); }
@@ -159,21 +152,21 @@
     .btn-dark { background-color: #172030; border-color: #2b3954; color: #cbd5e1; }
     .btn-dark:hover { background-color: #1f2b40; color: #fff; }
 
-    /* SYSTEM INTERAKTYWNYCH BLIPÓW */
+    /* BLIP SYSTEM */
     .blip-row { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
     .blip-pill {
       display: inline-flex; align-items: center; gap: 7px;
-      padding: 5px 12px; border-radius: 999px;
+      padding: 6px 12px; border-radius: 999px;
       background-color: #0b101a; border: 1px solid #233047;
       color: var(--text-muted); font-size: 11.5px; font-weight: 700;
-      cursor: pointer; user-select: none;
-      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer; user-select: none; transition: all 0.16s ease;
     }
-    .blip-pill:hover { border-color: var(--accent-bright); color: #fff; transform: translateY(-1px); background-color: #111927; }
+    .blip-pill:hover { border-color: var(--accent-bright); color: #fff; background-color: #111927; }
     .blip-dot {
       width: 8px; height: 8px; border-radius: 50%;
-      background-color: #334155; transition: all 0.2s ease; flex-shrink: 0;
+      background-color: #334155; transition: all 0.2s ease; flex-shrink: 0; pointer-events: none;
     }
+    .blip-pill span { pointer-events: none; }
     .blip-pill.active-blue {
       background-color: var(--accent-soft); border-color: var(--accent-bright); color: var(--accent-light);
       box-shadow: 0 0 12px var(--accent-glow);
@@ -195,17 +188,13 @@
     }
     .blip-pill.active-amber .blip-dot { background-color: #fbbf24; box-shadow: 0 0 8px #f59e0b; }
 
-    /* Sekcja dynamicznych pytań kontekstowych dla wybranych zarzutów */
     .context-blip-card {
-      background: linear-gradient(180deg, rgba(37, 99, 235, 0.08) 0%, rgba(11, 16, 25, 0.95) 100%);
-      border: 1px solid var(--accent-bright);
-      border-radius: 10px;
-      padding: 11px 13px;
-      margin-top: 10px;
-      animation: fadeSlideIn 0.2s ease forwards;
+      background: linear-gradient(180deg, rgba(37, 99, 235, 0.09) 0%, rgba(11, 16, 25, 0.95) 100%);
+      border: 1px solid var(--accent-bright); border-radius: 10px;
+      padding: 11px 13px; margin-top: 10px; animation: fadeSlideIn 0.2s ease forwards;
     }
 
-    /* Okrągłe Blipy Punktowe (0, 1, 2, 3 pkt) */
+    /* OKRĄGŁE BLIPY PUNKTOWE (0, 1, 2, 3 PKT) */
     .blip-nodes-group {
       display: inline-flex; align-items: center; gap: 6px;
       background: #080c13; padding: 4px 7px; border-radius: 999px; border: 1px solid #1c2638;
@@ -215,10 +204,10 @@
       display: inline-flex; align-items: center; justify-content: center;
       font-size: 12px; font-weight: 800; color: var(--text-muted);
       background-color: #101724; border: 1.5px solid #26344d;
-      cursor: pointer; user-select: none; transition: all 0.18s ease;
+      cursor: pointer; user-select: none; transition: all 0.16s ease;
     }
     .blip-node:hover { border-color: var(--accent-light); color: #fff; transform: scale(1.08); }
-    .blip-node.selected-zero { background-color: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #fca5a5; }
+    .blip-node.selected-zero { background-color: rgba(239, 68, 68, 0.22); border-color: #ef4444; color: #fca5a5; }
     .blip-node.selected-pts { background: radial-gradient(circle at 30% 30%, var(--accent), #1e3a8a); border-color: var(--accent-light); color: #fff; transform: scale(1.08); }
     .blip-node.selected-max { background: radial-gradient(circle at 30% 30%, #10b981, #065f46); border-color: #34d399; color: #fff; transform: scale(1.08); }
 
@@ -237,7 +226,7 @@
     .question-blip-row.scored-zero { border-left: 3px solid #334155; }
 
     .progress-track { width: 100%; height: 7px; background: #080b11; border-radius: 99px; overflow: hidden; border: 1px solid #1b2436; margin-top: 8px; }
-    .progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), #10b981); transition: width 0.35s ease; }
+    .progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), #10b981); transition: width 0.3s ease; }
 
     .training-map-wrapper {
       display: grid; grid-template-columns: 340px 1fr; gap: 16px; align-items: center;
@@ -252,7 +241,7 @@
     .map-zoom-badge {
       position: absolute; bottom: 10px; right: 10px;
       background: rgba(9, 13, 20, 0.85); border: 1px solid var(--accent-bright);
-      color: var(--accent-light); padding: 4px 10px; border-radius: 99px; font-size: 11px; font-weight: 700;
+      color: var(--accent-light); padding: 4px 10px; border-radius: 99px; font-size: 11px; font-weight: 700; pointer-events: none;
     }
 
     .penal-category-title {
@@ -263,7 +252,7 @@
     .penal-blip-item {
       background-color: #0b1018; border: 1px solid #1e283a; border-radius: 999px;
       padding: 8px 13px; cursor: pointer; display: flex; align-items: center;
-      justify-content: space-between; gap: 8px; user-select: none; transition: all 0.16s ease;
+      justify-content: space-between; gap: 8px; user-select: none; transition: all 0.15s ease;
     }
     .penal-blip-item:hover { border-color: var(--accent-bright); background-color: #111927; }
     .penal-blip-item.selected { background-color: var(--accent-soft); border-color: var(--accent-bright); box-shadow: 0 0 12px var(--accent-glow); }
@@ -301,7 +290,6 @@
       border: 1px solid var(--border-light); border-radius: 14px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85); overflow: hidden;
       display: flex; flex-direction: column; max-height: 88vh;
-      animation: modalPop 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .modal-window-lg { max-width: 1040px; }
     .modal-head {
@@ -336,7 +324,7 @@
 
     <div class="nav-section-title">OPERACYJNE</div>
     <nav class="nav-list">
-      <button type="button" class="nav-item active" id="nav-sprawy" onclick="switchMainView('sprawy')">
+      <button type="button" class="nav-item active" id="nav-sprawy" onclick="window.switchMainView('sprawy')">
         <span class="nav-item-left">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
           <span>Sprawy (Taryfikator)</span>
@@ -344,7 +332,7 @@
         <span class="nav-counter">AUTO</span>
       </button>
 
-      <button type="button" class="nav-item" id="nav-raporty" onclick="switchMainView('raporty')">
+      <button type="button" class="nav-item" id="nav-raporty" onclick="window.switchMainView('raporty')">
         <span class="nav-item-left">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
           <span>Raporty służbowe</span>
@@ -352,7 +340,7 @@
         <span class="nav-counter" id="cnt-reports">0</span>
       </button>
 
-      <button type="button" class="nav-item" id="nav-pojazdy" onclick="switchMainView('pojazdy')">
+      <button type="button" class="nav-item" id="nav-pojazdy" onclick="window.switchMainView('pojazdy')">
         <span class="nav-item-left">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
           <span>Pojazdy i Mandaty</span>
@@ -360,7 +348,7 @@
         <span class="nav-counter" id="cnt-vehicles">0</span>
       </button>
 
-      <button type="button" class="nav-item" id="nav-dispatch" onclick="switchMainView('dispatch')">
+      <button type="button" class="nav-item" id="nav-dispatch" onclick="window.switchMainView('dispatch')">
         <span class="nav-item-left">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
           <span>Dispatch i Radio</span>
@@ -368,7 +356,7 @@
         <span class="nav-counter">911</span>
       </button>
 
-      <button type="button" class="nav-item" id="nav-aiad" onclick="switchMainView('aiad')">
+      <button type="button" class="nav-item" id="nav-aiad" onclick="window.switchMainView('aiad')">
         <span class="nav-item-left">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           <span>Wydział AIAD</span>
@@ -376,7 +364,7 @@
         <span class="nav-counter" id="cnt-aiad" style="background:#7f1d1d; color:#fca5a5;">0</span>
       </button>
 
-      <button type="button" class="nav-item" id="nav-dyspozytornia" onclick="switchMainView('dyspozytornia')">
+      <button type="button" class="nav-item" id="nav-dyspozytornia" onclick="window.switchMainView('dyspozytornia')">
         <span class="nav-item-left">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49"/></svg>
           <span>Dyspozytornia</span>
@@ -384,7 +372,7 @@
         <span class="nav-counter" id="cnt-duty">0</span>
       </button>
 
-      <button type="button" class="nav-item" id="nav-patrole" onclick="switchMainView('patrole')">
+      <button type="button" class="nav-item" id="nav-patrole" onclick="window.switchMainView('patrole')">
         <span class="nav-item-left">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/><path d="M5 17H3v-5l2-4h9l4 4h3v5h-2"/></svg>
           <span>Patrole (PWC)</span>
@@ -392,7 +380,7 @@
         <span class="nav-counter" id="cnt-patrols">0</span>
       </button>
 
-      <button type="button" class="nav-item" id="nav-funkcjonariusze" onclick="switchMainView('funkcjonariusze')">
+      <button type="button" class="nav-item" id="nav-funkcjonariusze" onclick="window.switchMainView('funkcjonariusze')">
         <span class="nav-item-left">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
           <span>Funkcjonariusze</span>
@@ -401,7 +389,7 @@
       </button>
 
       <div class="nav-section-title" style="padding-top: 10px;">AKADEMIA I SZKOLENIA</div>
-      <button type="button" class="nav-item" id="nav-szkolenia" onclick="switchMainView('szkolenia')">
+      <button type="button" class="nav-item" id="nav-szkolenia" onclick="window.switchMainView('szkolenia')">
         <span class="nav-item-left">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
           <span>Szkolenia LSPD</span>
@@ -409,7 +397,7 @@
         <span class="nav-counter">7</span>
       </button>
 
-      <button type="button" class="nav-item" id="nav-kadet" onclick="switchMainView('kadet')">
+      <button type="button" class="nav-item" id="nav-kadet" onclick="window.switchMainView('kadet')">
         <span class="nav-item-left">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
           <span>Strefa Kadeta (FTO)</span>
@@ -421,12 +409,12 @@
     <div style="padding: 12px 14px; border-top: 1px solid var(--border); background-color: #070a10;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
         <span style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; font-weight: 700;">Zalogowany funkcjonariusz</span>
-        <button type="button" class="btn btn-sm btn-dark" style="padding: 2px 7px; font-size: 10px;" onclick="toggleOfficerEditBox()">Zmień</button>
+        <button type="button" class="btn btn-sm btn-dark" style="padding: 2px 7px; font-size: 10px;" onclick="window.toggleOfficerEditBox()">Zmień</button>
       </div>
       <div style="font-weight: 800; font-size: 13.5px; color: #fff;" id="logged-officer-display">[923] Oley Sasa</div>
       <div id="officer-edit-box" class="hidden" style="margin-top: 6px; display: flex; gap: 4px;">
         <input type="text" id="logged-officer-inp" class="inp" style="padding: 4px 8px; font-size: 12px;" value="[923] Oley Sasa" />
-        <button type="button" class="btn btn-sm btn-blue" onclick="saveLoggedOfficer()">OK</button>
+        <button type="button" class="btn btn-sm btn-blue" onclick="window.saveLoggedOfficer()">OK</button>
       </div>
       <div style="font-size: 11px; color: #ef4444; font-weight: 700; margin-top: 2px;">AIAD / FTO / Szkoleniowiec</div>
     </div>
@@ -436,26 +424,25 @@
   <div class="main-area">
     <header class="topbar">
       <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-        <!-- BLIP KODU ZAGROŻENIA NA MIEŚCIE -->
-        <div class="blip-pill active-green" id="city-code-blip" onclick="cycleCityThreatCode()" title="Kliknij, aby zmienić Kod Miasta i skopiować komunikat /d">
+        <div class="blip-pill active-green" id="city-code-blip" onclick="window.cycleCityThreatCode()" title="Kliknij, aby zmienić Kod Miasta i skopiować komunikat /d">
           <span class="blip-dot"></span>
           <span id="city-code-txt">KOD ZIELONY</span>
         </div>
 
-        <span id="active-patrol-timers-banner" class="blip-pill active-blue hidden" onclick="switchMainView('kadet')">
+        <span id="active-patrol-timers-banner" class="blip-pill active-blue hidden" onclick="window.switchMainView('kadet')">
           <span class="blip-dot"></span>
           <span id="active-patrol-banner-txt">Aktywny stoper kadeta</span>
         </span>
 
         <div class="theme-swatches" title="Zmień motyw kolorystyczny tabletu">
           <span style="font-size:10px; font-weight:800; color:var(--text-dim); margin-right:2px;">MOTYW:</span>
-          <div class="theme-dot active" id="th-lspd" style="background:#3b82f6; color:#3b82f6;" onclick="setTabletTheme('lspd')"></div>
-          <div class="theme-dot" id="th-aiad" style="background:#ef4444; color:#ef4444;" onclick="setTabletTheme('aiad')"></div>
-          <div class="theme-dot" id="th-sasp" style="background:#f59e0b; color:#f59e0b;" onclick="setTabletTheme('sasp')"></div>
-          <div class="theme-dot" id="th-swat" style="background:#10b981; color:#10b981;" onclick="setTabletTheme('swat')"></div>
+          <div class="theme-dot active" id="th-lspd" style="background:#3b82f6; color:#3b82f6;" onclick="window.setTabletTheme('lspd')"></div>
+          <div class="theme-dot" id="th-aiad" style="background:#ef4444; color:#ef4444;" onclick="window.setTabletTheme('aiad')"></div>
+          <div class="theme-dot" id="th-sasp" style="background:#f59e0b; color:#f59e0b;" onclick="window.setTabletTheme('sasp')"></div>
+          <div class="theme-dot" id="th-swat" style="background:#10b981; color:#10b981;" onclick="window.setTabletTheme('swat')"></div>
         </div>
 
-        <div class="blip-pill active-blue" id="sfx-toggle-blip" style="padding: 4px 10px; font-size: 11px;" onclick="toggleSfx()">
+        <div class="blip-pill active-blue" id="sfx-toggle-blip" style="padding: 4px 10px; font-size: 11px;" onclick="window.toggleSfx()">
           <span class="blip-dot"></span>
           <span id="sfx-toggle-txt">SFX: ON</span>
         </div>
@@ -463,8 +450,8 @@
 
       <div style="display: flex; align-items: center; gap: 8px;">
         <span id="live-clock" style="font-family: monospace; font-size: 13px; color: var(--text-muted); font-weight: 700;"></span>
-        <button type="button" class="btn btn-sm btn-dark" onclick="exportAllTabletData()">Eksport JSON</button>
-        <button type="button" class="btn btn-sm btn-dark" onclick="resetFactoryDefaults()">Reset</button>
+        <button type="button" class="btn btn-sm btn-dark" onclick="window.exportAllTabletData()">Eksport JSON</button>
+        <button type="button" class="btn btn-sm btn-dark" onclick="window.resetFactoryDefaults()">Reset</button>
       </div>
     </header>
 
@@ -481,9 +468,9 @@
             <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Po wybraniu zarzutów (np. Kradzież pojazdu, 10-80, Broń, Narkotyki, Napad) pojawią się dedykowane pytania blipowe (np. o Tracker GPS)</p>
           </div>
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button type="button" class="btn btn-dark" onclick="resetCaseForm()">Wyczyść szkic</button>
-            <button type="button" class="btn btn-blue" onclick="copyCaseTextOnly()">Kopiuj sam opis</button>
-            <button type="button" class="btn btn-green" onclick="copyFullCaseRecord()">Kopiuj pełną kartotekę</button>
+            <button type="button" class="btn btn-dark" onclick="window.resetCaseForm()">Wyczyść szkic</button>
+            <button type="button" class="btn btn-blue" onclick="window.copyCaseTextOnly()">Kopiuj sam opis</button>
+            <button type="button" class="btn btn-green" onclick="window.copyFullCaseRecord()">Kopiuj pełną kartotekę</button>
           </div>
         </div>
 
@@ -499,7 +486,7 @@
                   <label class="field-label">KONFISKATA / ZABEZPIECZONE DOWODY</label>
                   <div style="display: flex; gap: 6px; margin-bottom: 6px;">
                     <input type="text" id="confiscate-inline-inp" class="inp" style="padding: 6px 10px;" placeholder="Np. Pistolet Vintage, 10x Marihuana..." />
-                    <button type="button" class="btn btn-sm btn-blue" onclick="addConfiscatedInline()">+ Dodaj</button>
+                    <button type="button" class="btn btn-sm btn-blue" onclick="window.addConfiscatedInline()">+ Dodaj</button>
                   </div>
                   <div id="case-confiscated-box" style="font-size: 12px; color: var(--text-dim);"></div>
                 </div>
@@ -508,7 +495,7 @@
               <div style="margin-bottom: 14px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                   <label class="field-label" style="margin: 0;">FUNKCJONARIUSZE POMOCNICZY</label>
-                  <button type="button" class="btn btn-sm btn-blue" onclick="openPickerModal('case_officers')">+ Dodaj jednostkę</button>
+                  <button type="button" class="btn btn-sm btn-blue" onclick="window.openPickerModal('case_officers')">+ Dodaj jednostkę</button>
                 </div>
                 <div id="case-assist-officers-box"></div>
               </div>
@@ -517,11 +504,11 @@
               <div style="background: #0b1019; border: 1px solid #1f2b42; border-radius: 12px; padding: 14px; margin-bottom: 14px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
                   <span style="font-size: 11.5px; font-weight: 800; color: var(--accent-light); text-transform: uppercase;">⚡ Blipy Przesłuchania i Decyzji Procesowej</span>
-                  <div style="display: flex; gap: 6px;">
-                    <div class="blip-pill" id="show-all-ctx-blip" onclick="toggleShowAllContextBlips()" style="padding: 4px 10px; font-size: 11px;">
+                  <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <div class="blip-pill" id="show-all-ctx-blip" onclick="window.toggleShowAllContextBlips()" style="padding: 4px 10px; font-size: 11px;">
                       <span class="blip-dot"></span><span>Pokaż wszystkie pytania szczegółowe</span>
                     </div>
-                    <div class="blip-pill active-green" id="auto-toggle-blip" onclick="toggleAutoDescBlip()" style="padding: 4px 10px; font-size: 11px;">
+                    <div class="blip-pill active-green" id="auto-toggle-blip" onclick="window.toggleAutoDescBlip()" style="padding: 4px 10px; font-size: 11px;">
                       <span class="blip-dot"></span><span>Auto-opis aktywny</span>
                     </div>
                   </div>
@@ -531,13 +518,13 @@
                 <div style="margin-bottom: 10px;">
                   <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 5px;">1. Czy podejrzany współpracował podczas czynności?</div>
                   <div class="blip-row">
-                    <div class="blip-pill active-green" id="blip-coop-yes" onclick="setCaseCoop('yes')">
+                    <div class="blip-pill active-green" id="blip-coop-yes" onclick="window.setCaseCoop('yes')">
                       <span class="blip-dot"></span><span>Współpracował z FP</span>
                     </div>
-                    <div class="blip-pill" id="blip-coop-passive" onclick="setCaseCoop('passive')">
+                    <div class="blip-pill" id="blip-coop-passive" onclick="window.setCaseCoop('passive')">
                       <span class="blip-dot"></span><span>Bierny / Odmówił zeznań</span>
                     </div>
-                    <div class="blip-pill" id="blip-coop-no" onclick="setCaseCoop('no')">
+                    <div class="blip-pill" id="blip-coop-no" onclick="window.setCaseCoop('no')">
                       <span class="blip-dot"></span><span>Nie współpracował / Agresywny</span>
                     </div>
                   </div>
@@ -547,10 +534,10 @@
                 <div style="margin-bottom: 10px;">
                   <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 5px;">2. Stosunek do winy (Czy przyznał się do zarzutów?):</div>
                   <div class="blip-row">
-                    <div class="blip-pill active-green" id="blip-guilt-admitted" onclick="setCaseGuilt('admitted')">
+                    <div class="blip-pill active-green" id="blip-guilt-admitted" onclick="window.setCaseGuilt('admitted')">
                       <span class="blip-dot"></span><span>Przyznał się do winy</span>
                     </div>
-                    <div class="blip-pill" id="blip-guilt-denied" onclick="setCaseGuilt('denied')">
+                    <div class="blip-pill" id="blip-guilt-denied" onclick="window.setCaseGuilt('denied')">
                       <span class="blip-dot"></span><span>Do końca upierał się i nie przyznawał się do winy</span>
                     </div>
                   </div>
@@ -560,13 +547,13 @@
                 <div style="margin-bottom: 10px;">
                   <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 5px;">3. Dodatkowe czynności procesowe:</div>
                   <div class="blip-row">
-                    <div class="blip-pill" id="blip-extra-lawyer" onclick="toggleCaseExtra('lawyer')">
+                    <div class="blip-pill" id="blip-extra-lawyer" onclick="window.toggleCaseExtra('lawyer')">
                       <span class="blip-dot"></span><span>Żądał adwokata (Konsultacja prawna)</span>
                     </div>
-                    <div class="blip-pill" id="blip-extra-sams" onclick="toggleCaseExtra('sams')">
+                    <div class="blip-pill" id="blip-extra-sams" onclick="window.toggleCaseExtra('sams')">
                       <span class="blip-dot"></span><span>Udzielono pomocy medycznej SAMS</span>
                     </div>
-                    <div class="blip-pill" id="blip-extra-reduced" onclick="toggleCaseExtra('reduced')">
+                    <div class="blip-pill" id="blip-extra-reduced" onclick="window.toggleCaseExtra('reduced')">
                       <span class="blip-dot"></span><span>Złagodzono wyrok za współpracę (-20% mies.)</span>
                     </div>
                   </div>
@@ -576,26 +563,26 @@
                 <div>
                   <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 5px;">4. Czy zostaje zatrzymany na komendzie?</div>
                   <div class="blip-row">
-                    <div class="blip-pill active-blue" id="blip-det-station" onclick="setCaseDetention('station')">
+                    <div class="blip-pill active-blue" id="blip-det-station" onclick="window.setCaseDetention('station')">
                       <span class="blip-dot"></span><span>Tak — Zatrzymany na komendzie (Cele LSPD)</span>
                     </div>
-                    <div class="blip-pill" id="blip-det-prison" onclick="setCaseDetention('prison')">
+                    <div class="blip-pill" id="blip-det-prison" onclick="window.setCaseDetention('prison')">
                       <span class="blip-dot"></span><span>Więzienie stanowe (Bolingbroke)</span>
                     </div>
-                    <div class="blip-pill" id="blip-det-released" onclick="setCaseDetention('released')">
+                    <div class="blip-pill" id="blip-det-released" onclick="window.setCaseDetention('released')">
                       <span class="blip-dot"></span><span>Nie — Zwolniony po opłaceniu grzywny</span>
                     </div>
                   </div>
                 </div>
 
-                <!-- DYNAMICZNE PYTANIA KONTEKSTOWE ZALEŻNE OD WYBRANYCH ZARZUTÓW (NP. TRACKER GPS PRZY KRADZIEŻY POJAZDU) -->
+                <!-- DYNAMICZNE PYTANIA KONTEKSTOWE ZALEŻNE OD WYBRANYCH ZARZUTÓW -->
                 <div id="dynamic-context-blips-container"></div>
               </div>
 
               <div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                   <label class="field-label" style="margin: 0;">OPIS SPRAWY</label>
-                  <button type="button" class="btn btn-sm btn-dark" onclick="generateAutoCaseDescription(true)">Odśwież opis</button>
+                  <button type="button" class="btn btn-sm btn-dark" onclick="window.generateAutoCaseDescription(true)">Odśwież opis</button>
                 </div>
                 <textarea id="case-desc" rows="8" class="txt" style="line-height: 1.55;" placeholder="Kliknij „+ Dodaj wyrok (Taryfikator)” poniżej. Po wybraniu zarzutów pojawią się dodatkowe blipy szczegółowe (np. czy skradziony pojazd miał Tracker GPS), a pełny opis sprawy wygeneruje się automatycznie..."></textarea>
               </div>
@@ -608,8 +595,8 @@
                   <div style="font-size: 11px; color: var(--text-dim);">Pełny taryfikator LSPD (10 kategorii)</div>
                 </div>
                 <div style="display: flex; gap: 8px;">
-                  <button type="button" class="btn btn-sm btn-dark" onclick="clearCaseCharges()">Wyczyść</button>
-                  <button type="button" class="btn btn-blue" onclick="openPenalModal()">+ Dodaj wyrok (Taryfikator)</button>
+                  <button type="button" class="btn btn-sm btn-dark" onclick="window.clearCaseCharges()">Wyczyść</button>
+                  <button type="button" class="btn btn-blue" onclick="window.openPenalModal()">+ Dodaj wyrok (Taryfikator)</button>
                 </div>
               </div>
               <div id="case-selected-list"></div>
@@ -619,7 +606,7 @@
           <div style="display: flex; flex-direction: column; gap: 16px;">
             <div class="card" style="margin-bottom: 0;">
               <label class="field-label">OBYWATEL (ZATRZYMANY)</label>
-              <input type="text" id="case-citizen" class="inp" placeholder="Wpisz imię i nazwisko obywatela..." oninput="generateAutoCaseDescription()" />
+              <input type="text" id="case-citizen" class="inp" placeholder="Wpisz imię i nazwisko obywatela..." oninput="window.generateAutoCaseDescription()" />
             </div>
 
             <div class="card" style="margin-bottom: 0;">
@@ -635,10 +622,10 @@
               </div>
 
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <button type="button" class="btn btn-blue" style="padding: 11px;" onclick="finalizeCaseAction('prison')">Wyślij do więzienia</button>
-                <button type="button" class="btn btn-green" style="padding: 11px;" onclick="finalizeCaseAction('court')">Postępowanie sądowe</button>
-                <button type="button" class="btn btn-dark" style="padding: 11px;" onclick="finalizeCaseAction('pardon')">Ułaskaw</button>
-                <button type="button" class="btn btn-amber" style="padding: 11px;" onclick="finalizeCaseAction('station')">Zatrzymaj na komendzie</button>
+                <button type="button" class="btn btn-blue" style="padding: 11px;" onclick="window.finalizeCaseAction('prison')">Wyślij do więzienia</button>
+                <button type="button" class="btn btn-green" style="padding: 11px;" onclick="window.finalizeCaseAction('court')">Postępowanie sądowe</button>
+                <button type="button" class="btn btn-dark" style="padding: 11px;" onclick="window.finalizeCaseAction('pardon')">Ułaskaw</button>
+                <button type="button" class="btn btn-amber" style="padding: 11px;" onclick="window.finalizeCaseAction('station')">Zatrzymaj na komendzie</button>
               </div>
             </div>
 
@@ -647,14 +634,14 @@
                 <div class="field-label">PODSUMOWANIE ZARZUTÓW</div>
                 <div id="case-quick-preview" style="font-size: 12px; color: var(--text-muted); line-height: 1.5; background: var(--bg-input); padding: 12px; border-radius: 8px; border: 1px solid var(--border); min-height: 110px; white-space: pre-line;">Brak wybranych zarzutów.</div>
               </div>
-              <button type="button" class="btn btn-blue" style="width: 100%; padding: 12px; margin-top: 12px;" onclick="copyCaseTextOnly()">Kopiuj sam opis sprawy</button>
+              <button type="button" class="btn btn-blue" style="width: 100%; padding: 12px; margin-top: 12px;" onclick="window.copyCaseTextOnly()">Kopiuj sam opis sprawy</button>
             </div>
           </div>
         </div>
       </section>
 
       <!-- ========================================================= -->
-      <!-- NOWOŚĆ: POJAZDY (TRACKER / IMPOUND) I MANDATY DROGOWE     -->
+      <!-- 2. POJAZDY (TRACKER / IMPOUND) I MANDATY DROGOWE          -->
       <!-- ========================================================= -->
       <section id="view-pojazdy" class="hidden view-animate">
         <div class="card-header" style="margin-bottom: 14px;">
@@ -665,7 +652,6 @@
         </div>
 
         <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px;">
-          <!-- LEWA: BAZA POJAZDÓW I STATUSY -->
           <div class="card" style="margin-bottom: 0;">
             <div class="card-header">
               <span style="font-weight: 800; color: var(--accent-light);">Rejestr Pojazdów (Poszukiwane / Odholowane)</span>
@@ -680,7 +666,7 @@
                 <option value="ODHOLOWANY (IMPOUND)">ODHOLOWANY (IMPOUND)</option>
                 <option value="POSZUKIWANY (10-80)">POSZUKIWANY (10-80)</option>
               </select>
-              <button type="button" class="btn btn-blue" onclick="addVehicleRecord()">+ Dodaj pojazd</button>
+              <button type="button" class="btn btn-blue" onclick="window.addVehicleRecord()">+ Dodaj pojazd</button>
             </div>
             <div class="table-wrap">
               <table class="tbl">
@@ -690,11 +676,10 @@
             </div>
           </div>
 
-          <!-- PRAWA: SZYBKI GENERATOR MANDATÓW -->
           <div class="card" style="margin-bottom: 0;">
             <div class="card-header">
               <span style="font-weight: 800; color: #34d399;">Wystawianie Mandatu Drogowego (Traffic Stop)</span>
-              <button type="button" class="btn btn-sm btn-green" onclick="saveAndCopyTicket()">Wystaw i kopiuj mandat</button>
+              <button type="button" class="btn btn-sm btn-green" onclick="window.saveAndCopyTicket()">Wystaw i kopiuj mandat</button>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
               <div>
@@ -726,7 +711,7 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- NOWOŚĆ: DISPATCH I GENERATOR KOMUNIKATÓW RADIOWYCH (/d)   -->
+      <!-- 3. DISPATCH I GENERATOR KOMUNIKATÓW RADIOWYCH (/d)        -->
       <!-- ========================================================= -->
       <section id="view-dispatch" class="hidden view-animate">
         <div class="card-header" style="margin-bottom: 14px;">
@@ -742,30 +727,30 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
               <div>
                 <label class="field-label">OPIS POJAZDU UCIEKAJĄCEGO</label>
-                <input type="text" id="rad-veh" class="inp" placeholder="Np. Czarny Mercedes..." oninput="updateRadioPreview()" />
+                <input type="text" id="rad-veh" class="inp" placeholder="Np. Czarny Mercedes..." oninput="window.updateRadioPreview()" />
               </div>
               <div>
                 <label class="field-label">LOKALIZACJA (10-20) I KIERUNEK</label>
-                <input type="text" id="rad-loc" class="inp" placeholder="Np. Alta St, kierunek North..." oninput="updateRadioPreview()" />
+                <input type="text" id="rad-loc" class="inp" placeholder="Np. Alta St, kierunek North..." oninput="window.updateRadioPreview()" />
               </div>
             </div>
             <div style="margin-bottom: 10px;">
               <label class="field-label">POWÓD / RODZAJ AKCJI (BLIP):</label>
               <div class="blip-row">
-                <div class="blip-pill active-blue" onclick="setRadioPreset('10-80 brak zatrzymania do kontroli drogowej (Code 6)')"><span class="blip-dot"></span><span>10-80 Pościg z Code 6</span></div>
-                <div class="blip-pill" onclick="setRadioPreset('10-80 skradziony pojazd z aktywnym nadajnikiem Tracker GPS')"><span class="blip-dot"></span><span>10-80 Kradzież (Tracker)</span></div>
-                <div class="blip-pill" onclick="setRadioPreset('10-90 Napad na placówkę, potrzebne jednostki na TAC 1')"><span class="blip-dot"></span><span>10-90 Napad</span></div>
-                <div class="blip-pill" onclick="setRadioPreset('10-0 10-5 na 10-13! Ranny funkcjonariusz, potrzebne wszystkie jednostki!')"><span class="blip-dot"></span><span>10-13 Ranny FP</span></div>
+                <div class="blip-pill active-blue" onclick="window.setRadioPreset('10-80 brak zatrzymania do kontroli drogowej (Code 6)')"><span class="blip-dot"></span><span>10-80 Pościg z Code 6</span></div>
+                <div class="blip-pill" onclick="window.setRadioPreset('10-80 skradziony pojazd z aktywnym nadajnikiem Tracker GPS')"><span class="blip-dot"></span><span>10-80 Kradzież (Tracker)</span></div>
+                <div class="blip-pill" onclick="window.setRadioPreset('10-90 Napad na placówkę, potrzebne jednostki na TAC 1')"><span class="blip-dot"></span><span>10-90 Napad</span></div>
+                <div class="blip-pill" onclick="window.setRadioPreset('10-0 10-5 na 10-13! Ranny funkcjonariusz, potrzebne wszystkie jednostki!')"><span class="blip-dot"></span><span>10-13 Ranny FP</span></div>
               </div>
             </div>
             <textarea id="rad-output" rows="4" class="txt" style="font-family: monospace; margin-bottom: 10px;"></textarea>
-            <button type="button" class="btn btn-blue" style="width: 100%;" onclick="copyText(document.getElementById('rad-output').value, 'Skopiowano meldunek radiowy!')">Kopiuj komunikat do wklejenia w grze</button>
+            <button type="button" class="btn btn-blue" style="width: 100%;" onclick="window.copyRadioOutput()">Kopiuj komunikat do wklejenia w grze</button>
           </div>
 
           <div class="card" style="margin-bottom: 0;">
             <div class="card-header">
               <span style="font-weight: 800;">Rejestr Zgłoszeń Dispatch (Aktywne akcje)</span>
-              <button type="button" class="btn btn-sm btn-blue" onclick="addDispatchCall()">+ Dodaj wezwanie</button>
+              <button type="button" class="btn btn-sm btn-blue" onclick="window.addDispatchCall()">+ Dodaj wezwanie</button>
             </div>
             <div style="display: flex; gap: 6px; margin-bottom: 10px;">
               <input type="text" id="disp-code-inp" class="inp" style="width: 90px;" placeholder="Kod (10-90)" />
@@ -777,7 +762,7 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 2. WYDZIAŁ AIAD / INTERNAL AFFAIRS                        -->
+      <!-- 4. WYDZIAŁ AIAD / INTERNAL AFFAIRS                        -->
       <!-- ========================================================= -->
       <section id="view-aiad" class="hidden view-animate">
         <div class="card-header" style="margin-bottom: 14px;">
@@ -786,9 +771,9 @@
             <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Wewnętrzne postępowania dyscyplinarne, protokoły z „dywaników”, zawieszenia i notatki służbowe funkcjonariuszy LSPD</p>
           </div>
           <div style="display: flex; gap: 8px;">
-            <button type="button" class="btn btn-dark" onclick="resetAiadForm()">Wyczyść formularz</button>
-            <button type="button" class="btn btn-blue" onclick="copyAiadProtocol()">Kopiuj protokół AIAD</button>
-            <button type="button" class="btn btn-red" onclick="saveAiadCase()">Zapisz w aktach AIAD</button>
+            <button type="button" class="btn btn-dark" onclick="window.resetAiadForm()">Wyczyść formularz</button>
+            <button type="button" class="btn btn-blue" onclick="window.copyAiadProtocol()">Kopiuj protokół AIAD</button>
+            <button type="button" class="btn btn-red" onclick="window.saveAiadCase()">Zapisz w aktach AIAD</button>
           </div>
         </div>
 
@@ -797,7 +782,7 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
               <div>
                 <label class="field-label">FUNKCJONARIUSZ OBJĘTY POSTĘPOWANIEM</label>
-                <input type="text" id="aiad-officer-inp" class="inp" list="aiad-officers-datalist" placeholder="Np. [147] Peter Fals..." oninput="generateAiadAutoText()" />
+                <input type="text" id="aiad-officer-inp" class="inp" list="aiad-officers-datalist" placeholder="Np. [147] Peter Fals..." oninput="window.generateAiadAutoText()" />
                 <datalist id="aiad-officers-datalist"></datalist>
               </div>
               <div>
@@ -812,32 +797,32 @@
 
               <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin: 12px 0 6px;">2. TRYB WSZCZĘCIA INTERWENCJI AIAD:</div>
               <div class="blip-row">
-                <div class="blip-pill active-blue" id="aiad-mode-self" onclick="setAiadMode('self')">
+                <div class="blip-pill active-blue" id="aiad-mode-self" onclick="window.setAiadMode('self')">
                   <span class="blip-dot"></span><span>Samodzielne zgłoszenie się FP („Na dywanik”)</span>
                 </div>
-                <div class="blip-pill" id="aiad-mode-complaint" onclick="setAiadMode('complaint')">
+                <div class="blip-pill" id="aiad-mode-complaint" onclick="window.setAiadMode('complaint')">
                   <span class="blip-dot"></span><span>Skarga obywatela / Innego FP</span>
                 </div>
-                <div class="blip-pill" id="aiad-mode-observed" onclick="setAiadMode('observed')">
+                <div class="blip-pill" id="aiad-mode-observed" onclick="window.setAiadMode('observed')">
                   <span class="blip-dot"></span><span>Obserwacja własna AIAD</span>
                 </div>
               </div>
 
               <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin: 12px 0 6px;">3. DECYZJA DYSCYPLINARNA / SANKCJA:</div>
               <div class="blip-row">
-                <div class="blip-pill active-green" id="aiad-sanc-warn" onclick="setAiadSanction('warn')">
+                <div class="blip-pill active-green" id="aiad-sanc-warn" onclick="window.setAiadSanction('warn')">
                   <span class="blip-dot"></span><span>Pouczenie ustne</span>
                 </div>
-                <div class="blip-pill" id="aiad-sanc-strike" onclick="setAiadSanction('strike')">
+                <div class="blip-pill" id="aiad-sanc-strike" onclick="window.setAiadSanction('strike')">
                   <span class="blip-dot"></span><span>Upomnienie do akt (1/3)</span>
                 </div>
-                <div class="blip-pill" id="aiad-sanc-fine" onclick="setAiadSanction('fine')">
+                <div class="blip-pill" id="aiad-sanc-fine" onclick="window.setAiadSanction('fine')">
                   <span class="blip-dot"></span><span>Kara finansowa</span>
                 </div>
-                <div class="blip-pill" id="aiad-sanc-suspend" onclick="setAiadSanction('suspend')">
+                <div class="blip-pill" id="aiad-sanc-suspend" onclick="window.setAiadSanction('suspend')">
                   <span class="blip-dot"></span><span>Zawieszenie (Suspension)</span>
                 </div>
-                <div class="blip-pill" id="aiad-sanc-fire" onclick="setAiadSanction('fire')">
+                <div class="blip-pill" id="aiad-sanc-fire" onclick="window.setAiadSanction('fire')">
                   <span class="blip-dot"></span><span>Wydalenie / Degradacja</span>
                 </div>
               </div>
@@ -860,7 +845,7 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 3. RAPORTY (LISTA + CZYSTY FORMULARZ)                     -->
+      <!-- 5. RAPORTY (LISTA + CZYSTY FORMULARZ)                     -->
       <!-- ========================================================= -->
       <section id="view-raporty" class="hidden view-animate">
         <div id="reports-list-subview">
@@ -869,10 +854,10 @@
               <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Raporty służbowe</h1>
               <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Rejestr raportów LSPD</p>
             </div>
-            <button type="button" class="btn btn-blue" onclick="openCleanReportCreator()">+ Nowy raport</button>
+            <button type="button" class="btn btn-blue" onclick="window.openCleanReportCreator()">+ Nowy raport</button>
           </div>
           <div class="card" style="padding: 12px 16px;">
-            <input type="text" id="report-search-inp" class="inp" placeholder="Szukaj po tytule, autorze lub numerze..." oninput="renderReportsList()" />
+            <input type="text" id="report-search-inp" class="inp" placeholder="Szukaj po tytule, autorze lub numerze..." oninput="window.renderReportsList()" />
           </div>
           <div class="table-wrap">
             <table class="tbl">
@@ -891,8 +876,8 @@
               <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Tworzenie czystego raportu służbowego</p>
             </div>
             <div style="display: flex; gap: 8px;">
-              <button type="button" class="btn btn-dark" onclick="copyCurrentReportForm()">Kopiuj do schowka</button>
-              <button type="button" class="btn btn-dark" onclick="closeReportCreator()">‹ Powrót do listy</button>
+              <button type="button" class="btn btn-dark" onclick="window.copyCurrentReportForm()">Kopiuj do schowka</button>
+              <button type="button" class="btn btn-dark" onclick="window.closeReportCreator()">‹ Powrót do listy</button>
             </div>
           </div>
 
@@ -917,8 +902,8 @@
                 <div style="margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
                   <label class="field-label" style="margin: 0;">TREŚĆ RAPORTU</label>
                   <div style="display: flex; gap: 6px;">
-                    <button type="button" class="btn btn-sm btn-dark" onclick="insertReportTemplate('akcja')">+ Szablon akcji</button>
-                    <button type="button" class="btn btn-sm btn-dark" onclick="insertReportTemplate('poscig')">+ Szablon 10-80</button>
+                    <button type="button" class="btn btn-sm btn-dark" onclick="window.insertReportTemplate('akcja')">+ Szablon akcji</button>
+                    <button type="button" class="btn btn-sm btn-dark" onclick="window.insertReportTemplate('poscig')">+ Szablon 10-80</button>
                   </div>
                 </div>
                 <textarea id="rf-body" rows="12" class="txt" placeholder="Opisz przebieg akcji, ustalenia, wnioski, użyte jednostki itd."></textarea>
@@ -928,14 +913,14 @@
                 <div class="card" style="margin-bottom: 0;">
                   <div class="card-header">
                     <span class="field-label" style="margin: 0;">OSOBY POWIĄZANE</span>
-                    <button type="button" class="btn btn-sm btn-blue" onclick="openPickerModal('persons')">+</button>
+                    <button type="button" class="btn btn-sm btn-blue" onclick="window.openPickerModal('persons')">+</button>
                   </div>
                   <div id="rf-persons-box"></div>
                 </div>
                 <div class="card" style="margin-bottom: 0;">
                   <div class="card-header">
                     <span class="field-label" style="margin: 0;">POJAZDY POWIĄZANE</span>
-                    <button type="button" class="btn btn-sm btn-blue" onclick="openPickerModal('vehicles')">+</button>
+                    <button type="button" class="btn btn-sm btn-blue" onclick="window.openPickerModal('vehicles')">+</button>
                   </div>
                   <div id="rf-vehicles-box"></div>
                 </div>
@@ -950,18 +935,18 @@
               <div class="card" style="flex: 1; margin-bottom: 0;">
                 <div class="card-header">
                   <span class="field-label" style="margin: 0;">FUNKCJONARIUSZE</span>
-                  <button type="button" class="btn btn-sm btn-blue" onclick="openPickerModal('officers')">+</button>
+                  <button type="button" class="btn btn-sm btn-blue" onclick="window.openPickerModal('officers')">+</button>
                 </div>
                 <div id="rf-officers-box"></div>
               </div>
-              <button type="button" class="btn btn-blue" style="padding: 13px; font-size: 14px;" onclick="saveReportFromForm()">Zapisz raport</button>
+              <button type="button" class="btn btn-blue" style="padding: 13px; font-size: 14px;" onclick="window.saveReportFromForm()">Zapisz raport</button>
             </div>
           </div>
         </div>
       </section>
 
       <!-- ========================================================= -->
-      <!-- 4. SZKOLENIA LSPD (BLIPY PUNKTACJI + ZDJĘCIA MAPEK)       -->
+      <!-- 6. SZKOLENIA LSPD (BLIPY PUNKTACJI + ZDJĘCIA MAPEK)       -->
       <!-- ========================================================= -->
       <section id="view-szkolenia" class="hidden view-animate">
         <div class="card-header" style="margin-bottom: 14px;">
@@ -970,8 +955,8 @@
             <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Wybierz szkolenie z paska blipów, oceniaj pytania na okrągłych blipach i korzystaj z wbudowanych mapek tras ASU oraz SEU</p>
           </div>
           <div style="display: flex; gap: 8px;">
-            <button type="button" class="btn btn-blue" id="btn-szk-exam" onclick="switchSzkMode('exam')">Arkusz Pytań i Mapki</button>
-            <button type="button" class="btn btn-dark" id="btn-szk-matrix" onclick="switchSzkMode('matrix')">Matryca Licencji FP</button>
+            <button type="button" class="btn btn-blue" id="btn-szk-exam" onclick="window.switchSzkMode('exam')">Arkusz Pytań i Mapki</button>
+            <button type="button" class="btn btn-dark" id="btn-szk-matrix" onclick="window.switchSzkMode('matrix')">Matryca Licencji FP</button>
           </div>
         </div>
 
@@ -984,12 +969,12 @@
             <div style="display: flex; align-items: center; gap: 8px; background: var(--bg-input); padding: 6px 12px; border-radius: 99px; border: 1px solid var(--border);">
               <span style="font-size: 11px; color: var(--text-dim); font-weight: 700;">STOPER PRÓBY:</span>
               <span id="trial-stopwatch-val" style="font-family: monospace; font-size: 15px; font-weight: 800; color: #38bdf8;">00:00.0</span>
-              <button type="button" class="btn btn-sm btn-green" id="trial-sw-btn" onclick="toggleTrialStopwatch()" style="border-radius:99px;">Start</button>
-              <button type="button" class="btn btn-sm btn-dark" onclick="resetTrialStopwatch()" style="border-radius:99px;">Reset</button>
+              <button type="button" class="btn btn-sm btn-green" id="trial-sw-btn" onclick="window.toggleTrialStopwatch()" style="border-radius:99px;">Start</button>
+              <button type="button" class="btn btn-sm btn-dark" onclick="window.resetTrialStopwatch()" style="border-radius:99px;">Reset</button>
             </div>
             <div style="display: flex; gap: 8px;">
-              <button type="button" class="btn btn-green" onclick="assignCourseLicenseToSelected()">Nadaj licencję</button>
-              <button type="button" class="btn btn-blue" onclick="copyCourseProtocol()">Kopiuj protokół</button>
+              <button type="button" class="btn btn-green" onclick="window.assignCourseLicenseToSelected()">Nadaj licencję</button>
+              <button type="button" class="btn btn-blue" onclick="window.copyCourseProtocol()">Kopiuj protokół</button>
             </div>
           </div>
 
@@ -999,7 +984,7 @@
 
         <div id="szk-mode-matrix" class="hidden">
           <div class="card">
-            <input type="text" id="matrix-search-inp" class="inp" style="max-width: 320px;" placeholder="Szukaj funkcjonariusza..." oninput="renderLicenseMatrix()" />
+            <input type="text" id="matrix-search-inp" class="inp" style="max-width: 320px;" placeholder="Szukaj funkcjonariusza..." oninput="window.renderLicenseMatrix()" />
           </div>
           <div class="table-wrap">
             <table class="tbl">
@@ -1013,7 +998,7 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 5. STREFA KADETA (FTO + BLIPY SZKOLEŃ I EGZAMINU)         -->
+      <!-- 7. STREFA KADETA (FTO + BLIPY SZKOLEŃ I EGZAMINU)         -->
       <!-- ========================================================= -->
       <section id="view-kadet" class="hidden view-animate">
         <div class="card-header" style="margin-bottom: 14px;">
@@ -1022,19 +1007,19 @@
             <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Licznik czasu w patrolu (START/STOP), blipy zaliczeń FTO oraz Egzamin Oficerski</p>
           </div>
           <div style="display: flex; gap: 8px;">
-            <button type="button" class="btn btn-blue" id="fto-tab-list" onclick="switchFtoView('list')">Lista Kadetów</button>
-            <button type="button" class="btn btn-dark" id="fto-tab-exam" onclick="switchFtoView('exam')">Egzamin Oficerski (Blipy 0-3)</button>
+            <button type="button" class="btn btn-blue" id="fto-tab-list" onclick="window.switchFtoView('list')">Lista Kadetów</button>
+            <button type="button" class="btn btn-dark" id="fto-tab-exam" onclick="window.switchFtoView('exam')">Egzamin Oficerski (Blipy 0-3)</button>
           </div>
         </div>
 
         <div id="fto-sub-list">
           <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-            <input type="text" id="fto-search" class="inp" style="max-width: 260px;" placeholder="Szukaj kadeta lub FTO..." oninput="renderCadets()" />
+            <input type="text" id="fto-search" class="inp" style="max-width: 260px;" placeholder="Szukaj kadeta lub FTO..." oninput="window.renderCadets()" />
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
               <input type="text" id="new-c-badge" class="inp" style="width: 85px;" placeholder="Odznaka" />
               <input type="text" id="new-c-name" class="inp" style="width: 170px;" placeholder="Imię i nazwisko" />
               <input type="text" id="new-c-fto" class="inp" style="width: 140px;" value="Oley Sasa" placeholder="FTO" />
-              <button type="button" class="btn btn-green" onclick="createCadet()">+ Dodaj kadeta</button>
+              <button type="button" class="btn btn-green" onclick="window.createCadet()">+ Dodaj kadeta</button>
             </div>
           </div>
           <div class="table-wrap">
@@ -1059,15 +1044,15 @@
                 <div style="font-size: 9px; color: var(--text-dim); font-weight: 700;">CZAS W PATROLU</div>
                 <div id="cs-live-timer" style="font-family: monospace; font-size: 16px; font-weight: 800; color: #38bdf8;">00h 00m 00s</div>
               </div>
-              <button type="button" class="btn btn-sm btn-green" id="cs-startstop-btn" onclick="toggleCadetStopwatch(currentCadetId)" style="border-radius:99px;">START</button>
-              <button type="button" class="btn btn-sm btn-dark" onclick="adjustCadetTime(15)" style="border-radius:99px;">+15m</button>
-              <button type="button" class="btn btn-sm btn-dark" onclick="adjustCadetTime(-15)" style="border-radius:99px;">-15m</button>
+              <button type="button" class="btn btn-sm btn-green" id="cs-startstop-btn" onclick="window.toggleCadetStopwatch(window.currentCadetId)" style="border-radius:99px;">START</button>
+              <button type="button" class="btn btn-sm btn-dark" onclick="window.adjustCadetTime(15)" style="border-radius:99px;">+15m</button>
+              <button type="button" class="btn btn-sm btn-dark" onclick="window.adjustCadetTime(-15)" style="border-radius:99px;">-15m</button>
             </div>
             <div style="display: flex; gap: 8px;">
-              <button type="button" class="btn btn-blue" onclick="signAllCadetBasic()">Podpisz wszystkie (SASA)</button>
-              <button type="button" class="btn btn-green" onclick="promoteCadetToOfficer()">Awansuj na Oficera</button>
-              <button type="button" class="btn btn-dark" onclick="copyCadetSheet()">Kopiuj</button>
-              <button type="button" class="btn btn-dark" onclick="switchFtoView('list')">‹ Wróć</button>
+              <button type="button" class="btn btn-blue" onclick="window.signAllCadetBasic()">Podpisz wszystkie (SASA)</button>
+              <button type="button" class="btn btn-green" onclick="window.promoteCadetToOfficer()">Awansuj na Oficera</button>
+              <button type="button" class="btn btn-dark" onclick="window.copyCadetSheet()">Kopiuj</button>
+              <button type="button" class="btn btn-dark" onclick="window.switchFtoView('list')">‹ Wróć</button>
             </div>
           </div>
 
@@ -1084,16 +1069,16 @@
             <div class="card" style="margin-bottom: 0;">
               <div class="card-header">
                 <span style="font-weight: 800; color: #34d399;">Pozytywny raport / Pochwały</span>
-                <div class="blip-pill" id="cs-pos-blip" onclick="toggleSheetPosBlip()">
+                <div class="blip-pill" id="cs-pos-blip" onclick="window.toggleSheetPosBlip()">
                   <span class="blip-dot"></span><span>Pozytywny raport</span>
                 </div>
               </div>
-              <textarea id="cs-pos-notes" rows="3" class="txt" placeholder="Pochwały..." oninput="saveCadetRemarks()"></textarea>
+              <textarea id="cs-pos-notes" rows="3" class="txt" placeholder="Pochwały..." oninput="window.saveCadetRemarks()"></textarea>
             </div>
             <div class="card" style="margin-bottom: 0;">
               <div class="card-header">
                 <span style="font-weight: 800; color: #f87171;">Raport negatywny</span>
-                <select id="cs-neg-select" class="sel" style="width: 150px; padding: 4px 8px;" onchange="saveCadetRemarks()">
+                <select id="cs-neg-select" class="sel" style="width: 150px; padding: 4px 8px;" onchange="window.saveCadetRemarks()">
                   <option value="BRAK">BRAK</option>
                   <option value="1 NEGATYWNY">1 NEGATYWNY</option>
                   <option value="2 NEGATYWNE">2 NEGATYWNE</option>
@@ -1101,7 +1086,7 @@
                   <option value="ZAWIESZONY">ZAWIESZONY</option>
                 </select>
               </div>
-              <textarea id="cs-neg-notes" rows="3" class="txt" placeholder="Błędy do poprawy..." oninput="saveCadetRemarks()"></textarea>
+              <textarea id="cs-neg-notes" rows="3" class="txt" placeholder="Błędy do poprawy..." oninput="window.saveCadetRemarks()"></textarea>
             </div>
           </div>
         </div>
@@ -1114,7 +1099,7 @@
               <select id="exam-cadet-sel" class="sel" style="margin-bottom: 10px;"></select>
               <label class="field-label">Egzaminator prowadzący</label>
               <input type="text" id="exam-lead-inp" class="inp" value="[923] Oley Sasa" style="margin-bottom: 12px;" />
-              <button type="button" class="btn btn-blue" style="width:100%;" onclick="copyFinalExamProtocol()">Kopiuj protokół egzaminu</button>
+              <button type="button" class="btn btn-blue" style="width:100%;" onclick="window.copyFinalExamProtocol()">Kopiuj protokół egzaminu</button>
             </div>
             <div class="table-wrap">
               <table class="tbl">
@@ -1136,7 +1121,7 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 6. PATROLE, DYSPOZYTORNIA I FUNKCJONARIUSZE               -->
+      <!-- 8. PATROLE, DYSPOZYTORNIA I FUNKCJONARIUSZE               -->
       <!-- ========================================================= -->
       <section id="view-patrole" class="hidden view-animate">
         <div class="card-header">
@@ -1151,17 +1136,17 @@
               <option value="Task">Task</option>
             </select>
             <input type="text" id="new-patrol-members" class="inp" style="width: 240px;" placeholder="Skład (np. [923] Oley Sasa)..." />
-            <button type="button" class="btn btn-blue" onclick="createNewPatrolUnit()">+ Utwórz patrol</button>
+            <button type="button" class="btn btn-blue" onclick="window.createNewPatrolUnit()">+ Utwórz patrol</button>
           </div>
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
           <div class="card" style="margin-bottom:0; display:flex; justify-content:space-between; align-items:center;">
             <div><span class="pill pill-red">PWC (00)</span><div style="font-size:16px; font-weight:800; margin-top:6px;" id="pwc-holder-name">[80] Henry Scott</div></div>
-            <button type="button" class="btn btn-red" onclick="takeOverRole('PWC')">Przejmij PWC</button>
+            <button type="button" class="btn btn-red" onclick="window.takeOverRole('PWC')">Przejmij PWC</button>
           </div>
           <div class="card" style="margin-bottom:0; display:flex; justify-content:space-between; align-items:center;">
             <div><span class="pill pill-amber">APWC</span><div style="font-size:16px; font-weight:800; margin-top:6px;" id="apwc-holder-name">Brak przypisanego</div></div>
-            <button type="button" class="btn btn-amber" onclick="takeOverRole('APWC')">Przejmij APWC</button>
+            <button type="button" class="btn btn-amber" onclick="window.takeOverRole('APWC')">Przejmij APWC</button>
           </div>
         </div>
         <div id="patrols-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px;"></div>
@@ -1184,7 +1169,7 @@
             <input type="text" id="add-off-badge" class="inp" style="width: 85px;" placeholder="Odznaka" />
             <input type="text" id="add-off-name" class="inp" style="width: 170px;" placeholder="Imię i nazwisko" />
             <input type="text" id="add-off-rank" class="inp" style="width: 130px;" value="Officer I" />
-            <button type="button" class="btn btn-green" onclick="createOfficerInDB()">+ Dodaj</button>
+            <button type="button" class="btn btn-green" onclick="window.createOfficerInDB()">+ Dodaj</button>
           </div>
         </div>
         <div class="table-wrap">
@@ -1202,26 +1187,26 @@
 <div id="penal-modal" class="modal-backdrop hidden">
   <div class="modal-window modal-window-lg">
     <div class="modal-head">
-      <input type="text" id="penal-search-inp" class="inp" style="max-width: 420px;" placeholder="Wyszukaj zarzut lub kategorię..." oninput="renderPenalModalCatalog()" />
-      <button type="button" class="btn btn-dark" onclick="closePenalModal()">‹ Powrót</button>
+      <input type="text" id="penal-search-inp" class="inp" style="max-width: 420px;" placeholder="Wyszukaj zarzut lub kategorię..." oninput="window.renderPenalModalCatalog()" />
+      <button type="button" class="btn btn-dark" onclick="window.closePenalModal()">‹ Powrót</button>
     </div>
     <div class="modal-body" id="penal-catalog-container"></div>
     <div class="modal-foot">
       <div id="penal-modal-summary" style="font-weight: 700; color: var(--text-muted);">Nie wybrano przestępstw</div>
       <div style="display: flex; gap: 8px;">
-        <button type="button" class="btn btn-dark" onclick="closePenalModal()">Anuluj</button>
-        <button type="button" class="btn btn-blue" onclick="confirmPenalSelection()">✓ Potwierdź i wygeneruj opis</button>
+        <button type="button" class="btn btn-dark" onclick="window.closePenalModal()">Anuluj</button>
+        <button type="button" class="btn btn-blue" onclick="window.confirmPenalSelection()">✓ Potwierdź i wygeneruj opis</button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- MODAL POWIĘKSZENIA MAPKI SZKOLENIOWEJ -->
-<div id="map-zoom-modal" class="modal-backdrop hidden" onclick="closeMapZoomModal()">
+<div id="map-zoom-modal" class="modal-backdrop hidden" onclick="window.closeMapZoomModal()">
   <div class="modal-window modal-window-lg" style="max-width: 820px;" onclick="event.stopPropagation()">
     <div class="modal-head">
       <span id="map-zoom-title">Mapa Szkoleniowa LSPD</span>
-      <button type="button" class="btn btn-sm btn-dark" onclick="closeMapZoomModal()">✕ Zamknij</button>
+      <button type="button" class="btn btn-sm btn-dark" onclick="window.closeMapZoomModal()">✕ Zamknij</button>
     </div>
     <div class="modal-body" id="map-zoom-body" style="padding: 0; background: #0c121e; display: flex; justify-content: center; align-items: center; min-height: 520px;"></div>
   </div>
@@ -1232,23 +1217,42 @@
   <div class="modal-window">
     <div class="modal-head">
       <span>Dodaj pozycję</span>
-      <button type="button" class="btn btn-sm btn-dark" onclick="closePickerModal()">✕</button>
+      <button type="button" class="btn btn-sm btn-dark" onclick="window.closePickerModal()">✕</button>
     </div>
     <div class="modal-body">
       <div style="display: flex; gap: 8px; margin-bottom: 12px;">
         <input type="text" id="picker-custom-inp" class="inp" placeholder="Wpisz ręcznie i kliknij Dodaj..." />
-        <button type="button" class="btn btn-green" onclick="addCustomPickerItem()">+ Dodaj</button>
+        <button type="button" class="btn btn-green" onclick="window.addCustomPickerItem()">+ Dodaj</button>
       </div>
       <div id="picker-list-box" style="display: flex; flex-direction: column; gap: 6px;"></div>
     </div>
   </div>
 </div>
 
-<input type="file" id="hidden-map-file-inp" accept="image/*" class="hidden" onchange="handleMapFileUpload(event)" />
+<input type="file" id="hidden-map-file-inp" accept="image/*" class="hidden" onchange="window.handleMapFileUpload(event)" />
 
 <script>
-  /* DŹWIĘKI UI + MOTYWY + KOD MIASTA */
+(function() {
+  /* POMOCNICZE I DŹWIĘKI UI */
   let sfxEnabled = true, audioCtx = null;
+  function setTxt(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
+  function toast(msg) {
+    const box = document.getElementById("toast-alert");
+    if (!box) return;
+    box.textContent = msg; box.style.display = "block";
+    clearTimeout(window._tTimer); window._tTimer = setTimeout(() => { box.style.display = "none"; }, 3000);
+  }
+  function fallbackCopy(str, msg) {
+    const ta = document.createElement("textarea");
+    ta.value = str; document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); toast(msg); } catch (e) { toast("Skopiowano!"); }
+    document.body.removeChild(ta);
+  }
+  function copyText(str, msg) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(str).then(() => toast(msg)).catch(() => fallbackCopy(str, msg));
+    } else { fallbackCopy(str, msg); }
+  }
   function playUiBeep(freq = 820, duration = 0.035, type = "sine") {
     if (!sfxEnabled) return;
     try {
@@ -1256,7 +1260,7 @@
       if (audioCtx.state === "suspended") audioCtx.resume();
       const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
       osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-      gain.gain.setValueAtTime(0.035, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
       osc.connect(gain); gain.connect(audioCtx.destination);
       osc.start(); osc.stop(audioCtx.currentTime + duration);
@@ -1266,17 +1270,19 @@
     if (e.target.closest(".blip-pill, .blip-node, .penal-blip-item")) playUiBeep(960, 0.04, "sine");
     else if (e.target.closest(".nav-item, .btn, .theme-dot")) playUiBeep(680, 0.03, "triangle");
   });
-  function toggleSfx() {
+
+  window.toggleSfx = function() {
     sfxEnabled = !sfxEnabled;
     const blip = document.getElementById("sfx-toggle-blip");
     if (blip) blip.className = "blip-pill " + (sfxEnabled ? "active-blue" : "");
     setTxt("sfx-toggle-txt", "SFX: " + (sfxEnabled ? "ON" : "OFF"));
-  }
-  function setTabletTheme(themeKey) {
+  };
+
+  window.setTabletTheme = function(themeKey) {
     document.body.className = themeKey === "lspd" ? "" : "theme-" + themeKey;
     ["lspd", "aiad", "sasp", "swat"].forEach(k => document.getElementById("th-" + k)?.classList.toggle("active", k === themeKey));
     if (db) { db.theme = themeKey; saveDatabase(); }
-  }
+  };
 
   const CITY_CODES = [
     { name: "KOD ZIELONY", cls: "active-green", cmd: "/d [LSPD] Na mieście obowiązuje Kod Zielony — standardowe patrole." },
@@ -1285,43 +1291,21 @@
     { name: "KOD CZARNY", cls: "active-red", cmd: "/d [LSPD] UWAGA! Wprowadzono KOD CZARNY — stan wyjątkowy!" }
   ];
   let cityCodeIdx = 0;
-  function cycleCityThreatCode() {
+  window.cycleCityThreatCode = function() {
     cityCodeIdx = (cityCodeIdx + 1) % CITY_CODES.length;
     const c = CITY_CODES[cityCodeIdx];
     const blip = document.getElementById("city-code-blip");
     if (blip) blip.className = "blip-pill " + c.cls;
     setTxt("city-code-txt", c.name);
-    copyText(c.cmd, `Zmieniono na ${c.name} (Skopiowano komunikat /d)!`);
-  }
-
-  const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-  const copyText = (str, msg) => {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(str).then(() => toast(msg)).catch(() => fallbackCopy(str, msg));
-    } else { fallbackCopy(str, msg); }
+    copyText(c.cmd, "Zmieniono na " + c.name + " (Skopiowano /d)!");
   };
-  function fallbackCopy(str, msg) {
-    const ta = document.createElement("textarea");
-    ta.value = str; document.body.appendChild(ta); ta.select();
-    try { document.execCommand("copy"); toast(msg); } catch (e) { toast("Skopiowano!"); }
-    document.body.removeChild(ta);
-  }
-  function toast(msg) {
-    const box = document.getElementById("toast-alert");
-    if (!box) return;
-    box.textContent = msg; box.style.display = "block";
-    clearTimeout(window._tTimer); window._tTimer = setTimeout(() => { box.style.display = "none"; }, 3000);
-  }
 
-  /* =========================================================
-     SYSTEM DYNAMICZNYCH BLIPÓW KONTEKSTOWYCH DO TARYFIKATORA
-     (Np. Tracker przy Kradzieży Pojazdu, 10-80, Broń, Narkotyki, Napady)
-     ========================================================= */
+  /* DYNAMICZNE BLIPY KONTEKSTOWE DO ZARZUTÓW (TRACKER GPS, 10-80, BROŃ, NARKOTYKI, NAPADY) */
   const CONTEXT_BLIP_RULES = [
     {
       id: "ctx_tracker",
       title: "🚗 Kradzież Pojazdu — Czy skradziony pojazd posiadał nadajnik GPS (Tracker)?",
-      match: (names, cats) => names.some(n => n.includes("Kradzież pojazdu")),
+      match: (names) => names.some(n => n.includes("Kradzież pojazdu")),
       options: [
         { key: "tracker_yes", label: "Aktywny Tracker GPS (Namierzono nadajnik)", text: "Skradziony pojazd posiadał aktywny nadajnik lokalizacyjny GPS (Tracker), dzięki czemu jednostki LSPD precyzyjnie namierzyły jego pozycję w terenie." },
         { key: "tracker_no", label: "Brak Trackera (Zwykła kradzież pojazdu)", text: "Skradziony pojazd nie posiadał aktywnego nadajnika GPS (brak Trackera), a jego identyfikacja nastąpiła bezpośrednio podczas działań patrolowych." },
@@ -1331,7 +1315,7 @@
     {
       id: "ctx_pursuit",
       title: "🚓 Ucieczka (10-80) — W jaki sposób zakończono pościg?",
-      match: (names, cats) => names.some(n => n.includes("Ucieczka") || n.includes("Próba ucieczki")),
+      match: (names) => names.some(n => n.includes("Ucieczka") || n.includes("Próba ucieczki")),
       options: [
         { key: "pit_box", label: "Manewr PIT / Zablokowanie (Box)", text: "Pościg 10-80 został skutecznie zakończony po wykonaniu autoryzowanego manewru taktycznego PIT oraz zablokowaniu (Box) pojazdu uciekiniera." },
         { key: "spikes", label: "Kolczatki (Spike Strips)", text: "W trakcie pościgu 10-80 jednostki rozstawiły kolczatki drogowe (Spike Strips), co doprowadziło do przebicia opon i unieruchomienia pojazdu." },
@@ -1392,7 +1376,7 @@
     {
       id: "ctx_bomb",
       title: "💣 Zagrożenie Wybuchowe / Terroryzm — Działania zabezpieczające:",
-      match: (names, cats) => names.some(n => n.includes("wybuch") || n.includes("bomb") || n.includes("Terroryzm")),
+      match: (names) => names.some(n => n.includes("wybuch") || n.includes("bomb") || n.includes("Terroryzm")),
       options: [
         { key: "bomb_evac", label: "Ewakuacja obiektu i kordon bezpieczeństwa", text: "Na miejscu zdarzenia natychmiast zarządzono ewakuację cywilów oraz rozstawiono kordon bezpieczeństwa LSPD." },
         { key: "bomb_defused", label: "Neutralizacja / Rozbrojenie ładunku", text: "Ujawnione ładunki wybuchowe zostały zabezpieczone i pomyślnie zneutralizowane." },
@@ -1401,56 +1385,33 @@
     }
   ];
 
-  let selectedContextAnswers = {}; // { ctx_tracker: 'tracker_yes', ... }
-  let showAllContextBlips = false;
-
-  function toggleShowAllContextBlips() {
+  let selectedContextAnswers = {}, showAllContextBlips = false;
+  window.toggleShowAllContextBlips = function() {
     showAllContextBlips = !showAllContextBlips;
     const el = document.getElementById("show-all-ctx-blip");
     if (el) el.className = "blip-pill " + (showAllContextBlips ? "active-blue" : "");
     renderContextualChargeBlips();
-  }
-
-  function selectContextBlipOption(ruleId, optKey) {
-    if (selectedContextAnswers[ruleId] === optKey) {
-      delete selectedContextAnswers[ruleId];
-    } else {
-      selectedContextAnswers[ruleId] = optKey;
-    }
+  };
+  window.selectContextBlipOption = function(ruleId, optKey) {
+    if (selectedContextAnswers[ruleId] === optKey) delete selectedContextAnswers[ruleId];
+    else selectedContextAnswers[ruleId] = optKey;
     renderContextualChargeBlips();
-    generateAutoCaseDescription();
-  }
-
+    window.generateAutoCaseDescription();
+  };
   function renderContextualChargeBlips() {
     const box = document.getElementById("dynamic-context-blips-container");
     if (!box) return;
-    const names = activeCharges.map(c => c.name);
-    const cats = activeCharges.map(c => c.category || "");
-
+    const names = activeCharges.map(c => c.name), cats = activeCharges.map(c => c.category || "");
     const activeRules = CONTEXT_BLIP_RULES.filter(r => showAllContextBlips || r.match(names, cats));
-    if (!activeRules.length) {
-      box.innerHTML = "";
-      return;
-    }
-
+    if (!activeRules.length) { box.innerHTML = ""; return; }
     box.innerHTML = activeRules.map(rule => {
       const currentAns = selectedContextAnswers[rule.id] || "";
-      const pills = rule.options.map(opt => {
-        const isSel = currentAns === opt.key;
-        return `
-          <div class="blip-pill ${isSel ? 'active-amber' : ''}" onclick="selectContextBlipOption('${rule.id}', '${opt.key}')">
-            <span class="blip-dot"></span><span>${opt.label}</span>
-          </div>`;
-      }).join("");
-      return `
-        <div class="context-blip-card">
-          <div style="font-size:11.5px; font-weight:800; color:#fbbf24; margin-bottom:7px;">${rule.title}</div>
-          <div class="blip-row">${pills}</div>
-        </div>`;
+      const pills = rule.options.map(opt => `<div class="blip-pill ${currentAns === opt.key ? 'active-amber' : ''}" onclick="window.selectContextBlipOption('${rule.id}', '${opt.key}')"><span class="blip-dot"></span><span>${opt.label}</span></div>`).join("");
+      return `<div class="context-blip-card"><div style="font-size:11.5px; font-weight:800; color:#fbbf24; margin-bottom:7px;">${rule.title}</div><div class="blip-row">${pills}</div></div>`;
     }).join("");
   }
 
-  /* 10 KATEGORII TARYFIKATORA */
+  /* PEŁNY TARYFIKATOR (10 KATEGORII) */
   const PENAL_RAW = [
     ["PRZESTĘPSTWA PRZECIWKO ŻYCIU", [
       ["Morderstwo I stopnia", 300, 75000, "dopuścił się zaplanowanego zabójstwa człowieka z premedytacją (Morderstwo I stopnia)"],
@@ -1589,43 +1550,42 @@
   }));
 
   let activeCharges = [], tempModalSelected = [], caseAssistOfficers = [], customConfiscated = [];
-  let autoDescEnabled = true;
-  let caseCoop = "yes", caseGuilt = "admitted", caseDetention = "station";
+  let autoDescEnabled = true, caseCoop = "yes", caseGuilt = "admitted", caseDetention = "station";
   let caseExtras = { lawyer: false, sams: false, reduced: false };
 
-  function toggleAutoDescBlip() {
+  window.toggleAutoDescBlip = function() {
     autoDescEnabled = !autoDescEnabled;
     const el = document.getElementById("auto-toggle-blip");
     if (el) el.className = "blip-pill " + (autoDescEnabled ? "active-green" : "");
-    if (autoDescEnabled) generateAutoCaseDescription();
-  }
-  function setCaseCoop(val) {
+    if (autoDescEnabled) window.generateAutoCaseDescription();
+  };
+  window.setCaseCoop = function(val) {
     caseCoop = val;
     document.getElementById("blip-coop-yes").className = "blip-pill " + (val === "yes" ? "active-green" : "");
     document.getElementById("blip-coop-passive").className = "blip-pill " + (val === "passive" ? "active-blue" : "");
     document.getElementById("blip-coop-no").className = "blip-pill " + (val === "no" ? "active-red" : "");
-    generateAutoCaseDescription();
-  }
-  function setCaseGuilt(val) {
+    window.generateAutoCaseDescription();
+  };
+  window.setCaseGuilt = function(val) {
     caseGuilt = val;
     document.getElementById("blip-guilt-admitted").className = "blip-pill " + (val === "admitted" ? "active-green" : "");
     document.getElementById("blip-guilt-denied").className = "blip-pill " + (val === "denied" ? "active-red" : "");
-    generateAutoCaseDescription();
-  }
-  function toggleCaseExtra(key) {
+    window.generateAutoCaseDescription();
+  };
+  window.toggleCaseExtra = function(key) {
     caseExtras[key] = !caseExtras[key];
     document.getElementById("blip-extra-lawyer").className = "blip-pill " + (caseExtras.lawyer ? "active-amber" : "");
     document.getElementById("blip-extra-sams").className = "blip-pill " + (caseExtras.sams ? "active-blue" : "");
     document.getElementById("blip-extra-reduced").className = "blip-pill " + (caseExtras.reduced ? "active-green" : "");
-    updateCaseTotals(); generateAutoCaseDescription();
-  }
-  function setCaseDetention(mode) {
+    updateCaseTotals(); window.generateAutoCaseDescription();
+  };
+  window.setCaseDetention = function(mode) {
     caseDetention = mode;
     document.getElementById("blip-det-station").className = "blip-pill " + (mode === "station" ? "active-blue" : "");
     document.getElementById("blip-det-prison").className = "blip-pill " + (mode === "prison" ? "active-red" : "");
     document.getElementById("blip-det-released").className = "blip-pill " + (mode === "released" ? "active-green" : "");
-    generateAutoCaseDescription();
-  }
+    window.generateAutoCaseDescription();
+  };
   function getCalculatedTotals() {
     let rawM = 0, totalF = 0;
     activeCharges.forEach(c => { rawM += c.m * c.count; totalF += c.f * c.count; });
@@ -1633,9 +1593,9 @@
     return { rawM, finalM, totalF };
   }
 
-  function generateAutoCaseDescription(force = false) {
+  window.generateAutoCaseDescription = function(force = false) {
     if (!autoDescEnabled && !force) return;
-    const citizen = document.getElementById("case-citizen").value.trim() || "zatrzymany obywatel";
+    const citizen = document.getElementById("case-citizen")?.value.trim() || "zatrzymany obywatel";
     const lead = db.loggedOfficer;
     const assists = caseAssistOfficers.length ? ` przy wsparciu jednostek (${caseAssistOfficers.join(", ")})` : "";
     const autoConf = activeCharges.filter(c => c.confiscate).map(c => c.confiscate);
@@ -1647,7 +1607,6 @@
     const names = activeCharges.map(c => c.count > 1 ? `${c.name} (x${c.count})` : c.name);
     const { rawM, finalM, totalF } = getCalculatedTotals();
 
-    // Zbieranie zdań z dynamicznych blipów kontekstowych (np. Tracker GPS, 10-80, Broń, Narkotyki)
     let contextSentences = [];
     CONTEXT_BLIP_RULES.forEach(rule => {
       const selKey = selectedContextAnswers[rule.id];
@@ -1680,7 +1639,7 @@
       : ` Po przedstawieniu zarzutów (${names.join(", ")}) i opłaceniu grzywny w wysokości $${totalF.toLocaleString()}, zatrzymany został zwolniony z komendy.`;
 
     document.getElementById("case-desc").value = p1 + p2 + extraSentences + "\n\n" + coopTxt + guiltTxt + p4;
-  }
+  };
 
   function renderConfiscatedDisplay(allConf) {
     const box = document.getElementById("case-confiscated-box");
@@ -1689,19 +1648,19 @@
       ? allConf.map(i => `<span class="pill pill-red" style="margin:2px;">${i}</span>`).join("")
       : `<span style="color:var(--text-dim);">Brak konfiskat (dodają się automatycznie z zarzutów)</span>`;
   }
-  function addConfiscatedInline() {
+  window.addConfiscatedInline = function() {
     const inp = document.getElementById("confiscate-inline-inp");
     if (!inp || !inp.value.trim()) return;
-    customConfiscated.push(inp.value.trim()); inp.value = ""; generateAutoCaseDescription();
-  }
-  function openPenalModal() {
+    customConfiscated.push(inp.value.trim()); inp.value = ""; window.generateAutoCaseDescription();
+  };
+  window.openPenalModal = function() {
     tempModalSelected = JSON.parse(JSON.stringify(activeCharges));
     document.getElementById("penal-search-inp").value = "";
     document.getElementById("penal-modal").classList.remove("hidden");
-    renderPenalModalCatalog();
-  }
-  function closePenalModal() { document.getElementById("penal-modal").classList.add("hidden"); }
-  function renderPenalModalCatalog() {
+    window.renderPenalModalCatalog();
+  };
+  window.closePenalModal = function() { document.getElementById("penal-modal").classList.add("hidden"); };
+  window.renderPenalModalCatalog = function() {
     const q = (document.getElementById("penal-search-inp").value || "").toLowerCase();
     const container = document.getElementById("penal-catalog-container");
     let html = "";
@@ -1711,17 +1670,7 @@
       html += `<div class="penal-category-title"><span>●</span><span>${group.category}</span></div><div class="penal-grid">`;
       matched.forEach(item => {
         const ex = tempModalSelected.find(x => x.name === item.name);
-        html += `
-          <div class="penal-blip-item ${ex ? 'selected' : ''}" onclick="togglePenalByIdx(${item.gIdx},${item.iIdx})">
-            <div style="display:flex; align-items:center; gap:8px; min-width:0;">
-              <span class="blip-dot" style="background:${ex ? 'var(--accent-light)' : '#334155'}; box-shadow:${ex ? '0 0 8px var(--accent-bright)' : 'none'};"></span>
-              <div>
-                <div style="font-weight:700; font-size:12px; color:#fff;">${item.name}</div>
-                <div style="font-size:10.5px; color:var(--text-muted);">${item.m} mies. • $${item.f.toLocaleString()}</div>
-              </div>
-            </div>
-            ${ex ? `<span class="pill pill-blue">x${ex.count}</span>` : ""}
-          </div>`;
+        html += `<div class="penal-blip-item ${ex ? 'selected' : ''}" onclick="window.togglePenalByIdx(${item.gIdx}, ${item.iIdx})"><div style="display:flex; align-items:center; gap:8px; min-width:0;"><span class="blip-dot" style="background:${ex ? 'var(--accent-light)' : '#334155'};"></span><div><div style="font-weight:700; font-size:12px; color:#fff;">${item.name}</div><div style="font-size:10.5px; color:var(--text-muted);">${item.m} mies. • $${item.f.toLocaleString()}</div></div></div>${ex ? `<span class="pill pill-blue">x${ex.count}</span>` : ""}</div>`;
       });
       html += `</div>`;
     });
@@ -1731,37 +1680,37 @@
     document.getElementById("penal-modal-summary").innerHTML = tempModalSelected.length
       ? `Wybrano blipów: <span style="color:var(--accent-light);">${tempModalSelected.length}</span> • Wyrok: <span style="color:#fff;">${m} mies.</span> • Grzywna: <span style="color:#34d399;">$${f.toLocaleString()}</span>`
       : "Nie wybrano przestępstw";
-  }
-  function togglePenalByIdx(gIdx, iIdx) {
+  };
+  window.togglePenalByIdx = function(gIdx, iIdx) {
     const item = FULL_PENAL_CATALOG[gIdx].items[iIdx];
     const idx = tempModalSelected.findIndex(x => x.name === item.name);
     if (idx > -1) tempModalSelected.splice(idx, 1);
     else tempModalSelected.push({ ...item, count: 1 });
-    renderPenalModalCatalog();
-  }
-  function confirmPenalSelection() {
+    window.renderPenalModalCatalog();
+  };
+  window.confirmPenalSelection = function() {
     activeCharges = JSON.parse(JSON.stringify(tempModalSelected));
-    closePenalModal();
+    window.closePenalModal();
     renderContextualChargeBlips();
     updateCaseTotals();
-    generateAutoCaseDescription();
+    window.generateAutoCaseDescription();
     toast("Zaktualizowano zarzuty i pytania kontekstowe!");
-  }
-  function changeChargeCount(idx, d) {
+  };
+  window.changeChargeCount = function(idx, d) {
     activeCharges[idx].count += d;
     if (activeCharges[idx].count <= 0) activeCharges.splice(idx, 1);
     renderContextualChargeBlips();
-    updateCaseTotals(); generateAutoCaseDescription();
-  }
-  function clearCaseCharges() {
+    updateCaseTotals(); window.generateAutoCaseDescription();
+  };
+  window.clearCaseCharges = function() {
     activeCharges = []; customConfiscated = []; selectedContextAnswers = {};
-    renderContextualChargeBlips(); updateCaseTotals(); generateAutoCaseDescription();
-  }
-  function resetCaseForm() {
+    renderContextualChargeBlips(); updateCaseTotals(); window.generateAutoCaseDescription();
+  };
+  window.resetCaseForm = function() {
     document.getElementById("case-citizen").value = "";
-    caseAssistOfficers = []; renderCaseAssistOfficers(); clearCaseCharges();
+    caseAssistOfficers = []; renderCaseAssistOfficers(); window.clearCaseCharges();
     toast("Wyczyszczono szkic sprawy");
-  }
+  };
   function updateCaseTotals() {
     const { finalM, totalF } = getCalculatedTotals();
     setTxt("case-sum-months", finalM + " mies.");
@@ -1772,52 +1721,38 @@
       listEl.innerHTML = `<div style="padding:14px; text-align:center; color:var(--text-dim); border:1px dashed var(--border); border-radius:10px;">Kliknij „+ Dodaj wyrok (Taryfikator)”, aby wybrać blipy zarzutów.</div>`;
       prevEl.textContent = "Brak wybranych zarzutów."; return;
     }
-    listEl.innerHTML = activeCharges.map((c, idx) => `
-      <div class="chip-item">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <span class="blip-dot" style="background:var(--accent-light);"></span>
-          <strong>${c.name}</strong>
-          <span style="color:var(--text-muted);">(${c.m * c.count} mies. • $${(c.f * c.count).toLocaleString()})</span>
-        </div>
-        <div style="display:flex; align-items:center; gap:6px;">
-          <button type="button" class="btn btn-sm btn-dark" onclick="changeChargeCount(${idx}, -1)" style="border-radius:99px;">-</button>
-          <span style="font-weight:800;">x${c.count}</span>
-          <button type="button" class="btn btn-sm btn-dark" onclick="changeChargeCount(${idx}, 1)" style="border-radius:99px;">+</button>
-        </div>
-      </div>`).join("");
-    prevEl.textContent = `ZARZUTY: ${activeCharges.map(c => c.count > 1 ? c.name + " x" + c.count : c.name).join(", ")}\nWYROK: ${finalM} mies. \vert{} GRZYWNA:$${totalF.toLocaleString()}`;
+    listEl.innerHTML = activeCharges.map((c, idx) => `<div class="chip-item"><div style="display:flex; align-items:center; gap:8px;"><span class="blip-dot" style="background:var(--accent-light);"></span><strong>${c.name}</strong><span style="color:var(--text-muted);">(${c.m * c.count} mies. • $${(c.f * c.count).toLocaleString()})</span></div><div style="display:flex; align-items:center; gap:6px;"><button type="button" class="btn btn-sm btn-dark" onclick="window.changeChargeCount(${idx}, -1)" style="border-radius:99px;">-</button><span style="font-weight:800;">x${c.count}</span><button type="button" class="btn btn-sm btn-dark" onclick="window.changeChargeCount(${idx}, 1)" style="border-radius:99px;">+</button></div></div>`).join("");
+    prevEl.textContent = `ZARZUTY: ${activeCharges.map(c => c.count > 1 ? c.name + " x" + c.count : c.name).join(", ")}\nWYROK: ${finalM} mies. | GRZYWNA: $${totalF.toLocaleString()}`;
   }
   function renderCaseAssistOfficers() {
     const box = document.getElementById("case-assist-officers-box");
     if (!box) return;
     box.innerHTML = caseAssistOfficers.length
-      ? caseAssistOfficers.map((o, i) => `<div class="chip-item"><span>${o}</span><button type="button" class="chip-remove" onclick="removeAssistOfficer(${i})">×</button></div>`).join("")
+      ? caseAssistOfficers.map((o, i) => `<div class="chip-item"><span>${o}</span><button type="button" class="chip-remove" onclick="window.removeAssistOfficer(${i})">×</button></div>`).join("")
       : `<div style="padding:8px; text-align:center; color:var(--text-dim); border:1px dashed var(--border); border-radius:99px; font-size:12px;">Brak jednostek pomocniczych</div>`;
   }
-  function removeAssistOfficer(i) { caseAssistOfficers.splice(i, 1); renderCaseAssistOfficers(); generateAutoCaseDescription(); }
-  function finalizeCaseAction(mode) {
-    if (mode === "station") setCaseDetention("station");
-    if (mode === "prison") setCaseDetention("prison");
-    if (mode === "pardon") setCaseDetention("released");
-    copyFullCaseRecord();
-  }
-  function copyCaseTextOnly() {
+  window.removeAssistOfficer = function(i) { caseAssistOfficers.splice(i, 1); renderCaseAssistOfficers(); window.generateAutoCaseDescription(); };
+  window.finalizeCaseAction = function(mode) {
+    if (mode === "station") window.setCaseDetention("station");
+    if (mode === "prison") window.setCaseDetention("prison");
+    if (mode === "pardon") window.setCaseDetention("released");
+    window.copyFullCaseRecord();
+  };
+  window.copyCaseTextOnly = function() {
     const txt = document.getElementById("case-desc").value;
     if (!txt) { toast("Najpierw wybierz zarzuty z taryfikatora!"); return; }
     copyText(txt, "Skopiowano sam opis sprawy!");
-  }
-  function copyFullCaseRecord() {
+  };
+  window.copyFullCaseRecord = function() {
     const cit = document.getElementById("case-citizen").value || "Nieznany";
     const desc = document.getElementById("case-desc").value || "Brak opisu";
     const m = document.getElementById("case-sum-months").textContent;
     const f = document.getElementById("case-sum-fine").textContent;
     const ch = activeCharges.map(c => c.count > 1 ? `${c.name} (x${c.count})` : c.name).join(", ") || "Brak";
-    copyText(`KARTOTEKA SPRAWY LSPD\nObywatel: ${cit}\nProwadzący: ${db.loggedOfficer}\nZarzuty: ${ch}\nWyrok:${m} | Grzywna: ${f}\n\nOPIS SPRAWY:\n${desc}`, "Skopiowano pełną kartotekę sprawy!");
-  }
+    copyText(`KARTOTEKA SPRAWY LSPD\nObywatel: ${cit}\nProwadzący: ${db.loggedOfficer}\nZarzuty: ${ch}\nWyrok: ${m} | Grzywna: ${f}\n\nOPIS SPRAWY:\n${desc}`, "Skopiowano pełną kartotekę sprawy!");
+  };
 
-  /* =========================================================
-     NOWOŚĆ: POJAZDY (IMPOUND / TRACKER) I MANDATY + DISPATCH
-     ========================================================= */
+  /* POJAZDY (IMPOUND / TRACKER) I MANDATY + DISPATCH */
   const TRAFFIC_OFFENSES = [
     { name: "Przekroczenie prędkości", fine: 750, pts: 4 },
     { name: "Brawurowa jazda", fine: 1500, pts: 8 },
@@ -1827,7 +1762,6 @@
     { name: "Spowodowanie kolizji (10-50)", fine: 1000, pts: 6 }
   ];
   let selectedTrafficIdxs = [];
-
   function renderVehiclesAndTickets() {
     const vBody = document.getElementById("vehicles-db-tbody");
     const vList = db.vehicles || [];
@@ -1835,27 +1769,21 @@
     if (vBody) {
       vBody.innerHTML = vList.map((v, idx) => {
         const cls = v.status.includes("TRACKER") ? "pill-red" : (v.status.includes("IMPOUND") ? "pill-amber" : "pill-blue");
-        return `<tr><td style="font-weight:700;">${v.model}</td><td style="font-family:monospace; color:var(--accent-light);">${v.plate}</td><td>${v.owner}</td><td><span class="pill ${cls}">${v.status}</span></td><td><button type="button" class="btn btn-sm btn-red" onclick="removeVehicleRecord(${idx})">✕</button></td></tr>`;
+        return `<tr><td style="font-weight:700;">${v.model}</td><td style="font-family:monospace; color:var(--accent-light);">${v.plate}</td><td>${v.owner}</td><td><span class="pill ${cls}">${v.status}</span></td><td><button type="button" class="btn btn-sm btn-red" onclick="window.removeVehicleRecord(${idx})">✕</button></td></tr>`;
       }).join("");
     }
     const tBox = document.getElementById("traffic-blips-box");
     if (tBox) {
-      tBox.innerHTML = TRAFFIC_OFFENSES.map((t, i) => {
-        const act = selectedTrafficIdxs.includes(i);
-        return `<div class="blip-pill ${act ? 'active-green' : ''}" onclick="toggleTrafficBlip(${i})"><span class="blip-dot"></span><span>${t.name} ($${t.fine} /${t.pts}pkt)</span></div>`;
-      }).join("");
+      tBox.innerHTML = TRAFFIC_OFFENSES.map((t, i) => `<div class="blip-pill ${selectedTrafficIdxs.includes(i) ? 'active-green' : ''}" onclick="window.toggleTrafficBlip(${i})"><span class="blip-dot"></span><span>${t.name} ($${t.fine} / ${t.pts}pkt)</span></div>`).join("");
     }
     let tf = 0, tp = 0;
     selectedTrafficIdxs.forEach(i => { tf += TRAFFIC_OFFENSES[i].fine; tp += TRAFFIC_OFFENSES[i].pts; });
     setTxt("tkt-fine-val", "$" + tf.toLocaleString());
     setTxt("tkt-pts-val", tp + " pkt");
-
     const hBox = document.getElementById("tickets-history-box");
-    if (hBox) {
-      hBox.innerHTML = (db.tickets || []).map(tk => `<div class="chip-item"><span><strong>${tk.citizen}</strong> (${tk.plate}) — <span style="color:#34d399;">$${tk.fine}</span> /${tk.pts} pkt</span></div>`).join("");
-    }
+    if (hBox) hBox.innerHTML = (db.tickets || []).map(tk => `<div class="chip-item"><span><strong>${tk.citizen}</strong> (${tk.plate}) — <span style="color:#34d399;">$${tk.fine}</span> / ${tk.pts} pkt</span></div>`).join("");
   }
-  function addVehicleRecord() {
+  window.addVehicleRecord = function() {
     const m = document.getElementById("veh-model-inp").value.trim() || "Karin Sultan";
     const p = document.getElementById("veh-plate-inp").value.trim() || "BRAK";
     const o = document.getElementById("veh-owner-inp").value.trim() || "Nieznany";
@@ -1863,14 +1791,14 @@
     if (!db.vehicles) db.vehicles = [];
     db.vehicles.unshift({ model: m, plate: p.toUpperCase(), owner: o, status: s });
     saveDatabase(); renderVehiclesAndTickets(); toast("Dodano pojazd do bazy LSPD!");
-  }
-  function removeVehicleRecord(idx) { db.vehicles.splice(idx, 1); saveDatabase(); renderVehiclesAndTickets(); }
-  function toggleTrafficBlip(i) {
+  };
+  window.removeVehicleRecord = function(idx) { db.vehicles.splice(idx, 1); saveDatabase(); renderVehiclesAndTickets(); };
+  window.toggleTrafficBlip = function(i) {
     const idx = selectedTrafficIdxs.indexOf(i);
     if (idx > -1) selectedTrafficIdxs.splice(idx, 1); else selectedTrafficIdxs.push(i);
     renderVehiclesAndTickets();
-  }
-  function saveAndCopyTicket() {
+  };
+  window.saveAndCopyTicket = function() {
     const cit = document.getElementById("tkt-citizen").value.trim() || "Obywatel";
     const pl = document.getElementById("tkt-plate").value.trim() || "Brak rej.";
     let tf = 0, tp = 0;
@@ -1878,44 +1806,33 @@
     if (!db.tickets) db.tickets = [];
     db.tickets.unshift({ citizen: cit, plate: pl, fine: tf, pts: tp });
     saveDatabase(); renderVehiclesAndTickets();
-    copyText(`MANDAT DROGOWY LSPD\nObywatel: ${cit} \vert{} Pojazd:${pl}\nWykroczenia: ${names.join(", ") \vert{}\vert{} "Wykroczenie drogowe"}\nKwota: $${tf} | Punkty karne: ${tp} pkt\nWystawił: ${db.loggedOfficer}`, "Wystawiono i skopiowano mandat!");
-  }
+    copyText(`MANDAT DROGOWY LSPD\nObywatel: ${cit} | Pojazd: ${pl}\nWykroczenia: ${names.join(", ") || "Wykroczenie drogowe"}\nKwota: $${tf} | Punkty karne: ${tp} pkt\nWystawił: ${db.loggedOfficer}`, "Wystawiono i skopiowano mandat!");
+  };
 
-  /* DISPATCH & RADIO */
   let currentRadioReason = "10-80 brak zatrzymania do kontroli drogowej (Code 6)";
-  function setRadioPreset(r) { currentRadioReason = r; updateRadioPreview(); }
-  function updateRadioPreview() {
+  window.setRadioPreset = function(r) { currentRadioReason = r; window.updateRadioPreview(); };
+  window.updateRadioPreview = function() {
     const veh = document.getElementById("rad-veh")?.value.trim() || "czarnym pojazdem";
     const loc = document.getElementById("rad-loc")?.value.trim() || "Downtown, kierunek North";
     const out = document.getElementById("rad-output");
-    if (out) out.value = `${db.loggedOfficer} rozpoczynam${currentRadioReason}, pojazd: ${veh}, nasze 10-20 to${loc}, potrzebne wsparcie jednostek!`;
-  }
+    if (out) out.value = `${db.loggedOfficer} rozpoczynam ${currentRadioReason}, pojazd: ${veh}, nasze 10-20 to ${loc}, potrzebne wsparcie jednostek!`;
+  };
+  window.copyRadioOutput = function() { copyText(document.getElementById("rad-output").value, "Skopiowano meldunek radiowy!"); };
   function renderDispatchCalls() {
     const box = document.getElementById("dispatch-calls-box");
     if (!box) return;
-    const list = db.dispatchCalls || [];
-    box.innerHTML = list.map((c, i) => `
-      <div style="background:var(--bg-input); border:1px solid var(--border); border-left:3px solid var(--accent-bright); border-radius:8px; padding:10px 12px; display:flex; justify-content:space-between; align-items:center;">
-        <div><span class="pill pill-red" style="margin-right:6px;">${c.code}</span><strong>${c.title}</strong><div style="font-size:11px; color:var(--text-dim); margin-top:3px;">Zgłoszono: ${c.time} • Reaguje: ${c.unit}</div></div>
-        <div style="display:flex; gap:6px;">
-          <button type="button" class="btn btn-sm btn-blue" onclick="respondDispatchCall(${i})">10-4 Reaguj</button>
-          <button type="button" class="btn btn-sm btn-red" onclick="db.dispatchCalls.splice(${i},1);saveDatabase();renderDispatchCalls();">✕</button>
-        </div>
-      </div>`).join("");
+    box.innerHTML = (db.dispatchCalls || []).map((c, i) => `<div style="background:var(--bg-input); border:1px solid var(--border); border-left:3px solid var(--accent-bright); border-radius:8px; padding:10px 12px; display:flex; justify-content:space-between; align-items:center;"><div><span class="pill pill-red" style="margin-right:6px;">${c.code}</span><strong>${c.title}</strong><div style="font-size:11px; color:var(--text-dim); margin-top:3px;">Zgłoszono: ${c.time} • Reaguje: ${c.unit}</div></div><div style="display:flex; gap:6px;"><button type="button" class="btn btn-sm btn-blue" onclick="window.respondDispatchCall(${i})">10-4 Reaguj</button><button type="button" class="btn btn-sm btn-red" onclick="window.removeDispatchCall(${i})">✕</button></div></div>`).join("");
   }
-  function addDispatchCall() {
+  window.addDispatchCall = function() {
     const code = document.getElementById("disp-code-inp").value.trim() || "10-90";
     const title = document.getElementById("disp-title-inp").value.trim() || "Zgłoszenie centrali LSPD";
     if (!db.dispatchCalls) db.dispatchCalls = [];
     db.dispatchCalls.unshift({ code, title, time: new Date().toLocaleTimeString("pl-PL", {hour:"2-digit",minute:"2-digit"}), unit: "Brak" });
     document.getElementById("disp-title-inp").value = "";
     saveDatabase(); renderDispatchCalls();
-  }
-  function respondDispatchCall(i) {
-    db.dispatchCalls[i].unit = db.loggedOfficer;
-    saveDatabase(); renderDispatchCalls();
-    toast("Przypisano " + db.loggedOfficer + " do zgłoszenia " + db.dispatchCalls[i].code);
-  }
+  };
+  window.respondDispatchCall = function(i) { db.dispatchCalls[i].unit = db.loggedOfficer; saveDatabase(); renderDispatchCalls(); toast("Przypisano " + db.loggedOfficer + " do wezwania!"); };
+  window.removeDispatchCall = function(i) { db.dispatchCalls.splice(i, 1); saveDatabase(); renderDispatchCalls(); };
 
   /* AIAD / INTERNAL AFFAIRS */
   const AIAD_OFFENSES = [
@@ -1930,4 +1847,594 @@
   function renderAiadOffensesBlips() {
     const bar = document.getElementById("aiad-offenses-bar");
     if (!bar) return;
-    bar.innerHTML = AIAD_OFFENSES.map(o => `<div class="blip-pill ${selectedAiadOffenses.includes(o.id) ? 'active-
+    bar.innerHTML = AIAD_OFFENSES.map(o => `<div class="blip-pill ${selectedAiadOffenses.includes(o.id) ? 'active-red' : ''}" onclick="window.toggleAiadOffense('${o.id}')"><span class="blip-dot"></span><span>${o.label}</span></div>`).join("");
+    const dl = document.getElementById("aiad-officers-datalist");
+    if (dl && db.officers) dl.innerHTML = db.officers.map(o => `<option value="[${o.badge}] ${o.name}">`).join("") + `<option value="[147] Peter Fals">`;
+  }
+  window.toggleAiadOffense = function(id) {
+    const idx = selectedAiadOffenses.indexOf(id);
+    if (idx > -1) selectedAiadOffenses.splice(idx, 1); else selectedAiadOffenses.push(id);
+    renderAiadOffensesBlips(); window.generateAiadAutoText();
+  };
+  window.setAiadMode = function(m) {
+    aiadMode = m;
+    document.getElementById("aiad-mode-self").className = "blip-pill " + (m === "self" ? "active-blue" : "");
+    document.getElementById("aiad-mode-complaint").className = "blip-pill " + (m === "complaint" ? "active-amber" : "");
+    document.getElementById("aiad-mode-observed").className = "blip-pill " + (m === "observed" ? "active-red" : "");
+    window.generateAiadAutoText();
+  };
+  window.setAiadSanction = function(s) {
+    aiadSanction = s;
+    ["warn", "strike", "fine", "suspend", "fire"].forEach(k => {
+      const cls = k === "warn" ? "active-green" : (k === "strike" || k === "fine" ? "active-amber" : "active-red");
+      document.getElementById("aiad-sanc-" + k).className = "blip-pill " + (s === k ? cls : "");
+    });
+    window.generateAiadAutoText();
+  };
+  window.generateAiadAutoText = function() {
+    const offName = document.getElementById("aiad-officer-inp")?.value.trim() || "[Nieznany funkcjonariusz]";
+    const inspector = db.loggedOfficer || "[923] Oley Sasa";
+    const chosen = AIAD_OFFENSES.filter(o => selectedAiadOffenses.includes(o.id)).map(o => o.text);
+    const offenseStr = chosen.length ? chosen.join(", a ponadto ") : "dopuścił się uchybienia regulaminowego wymagającego weryfikacji przez wydział wewnętrzny";
+    const modeStr = aiadMode === "self"
+      ? `Funkcjonariusz ${offName} zgłosił się dobrowolnie na rozmowę wyjaśniającą („dywanik”) do inspektora AIAD ${inspector}, informując o zaistniałym incydencie.`
+      : aiadMode === "complaint"
+      ? `Postępowanie wewnętrzne wobec funkcjonariusza ${offName} zostało wszczęte przez inspektora AIAD ${inspector} po wpłynięciu oficjalnego zawiadomienia/skargi.`
+      : `Postępowanie wobec funkcjonariusza ${offName} zostało wszczęte bezpośrednio przez inspektora AIAD ${inspector} na podstawie własnych ustaleń podczas działań służbowych.`;
+    const sancMap = {
+      warn: "Po przeanalizowaniu okoliczności sprawy oraz wysłuchaniu wyjaśnień funkcjonariusza, inspektor AIAD zakończył czynności na pouczeniu ustnym.",
+      strike: "W związku ze stwierdzonym naruszeniem procedur, na funkcjonariusza nałożono oficjalne upomnienie pisemne wpisywane do akt osobowych (1/3).",
+      fine: "Decyzją wydziału AIAD na funkcjonariusza nałożono naganę służbową połączoną z karą finansową.",
+      suspend: "Decyzją wydziału AIAD funkcjonariusz zostaje natychmiastowo zawieszony w czynnościach służbowych (Suspension) do czasu zakończenia postępowania.",
+      fire: "Ze względu na rażące naruszenie regulaminu LSPD, wydział AIAD wnioskuje o natychmiastowe wydalenie funkcjonariusza ze służby."
+    };
+    const area = document.getElementById("aiad-desc-txt");
+    if (area) area.value = `PROTOKÓŁ POSTĘPOWANIA WEWNĘTRZNEGO AIAD\nInspektor prowadzący: ${inspector}\nFunkcjonariusz objęty czynnościami: ${offName}\n\n1. Okoliczności wszczęcia czynności:\n${modeStr} W toku rozmowy ustalono, iż funkcjonariusz ${offenseStr}.\n\n2. Postanowienie końcowe AIAD:\n${sancMap[aiadSanction]}`;
+  };
+  window.saveAiadCase = function() {
+    const offName = document.getElementById("aiad-officer-inp").value.trim() || "[147] Peter Fals";
+    const body = document.getElementById("aiad-desc-txt").value.trim();
+    const sancLabels = { warn: "POUCZENIE", strike: "UPOMNIENIE 1/3", fine: "KARA FINANSOWA", suspend: "ZAWIESZONY", fire: "WYDALENIE" };
+    const now = new Date(), dStr = now.toLocaleDateString("pl-PL") + " " + now.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
+    if (!db.aiadCases) db.aiadCases = [];
+    db.aiadCases.unshift({ id: Date.now(), officer: offName, inspector: db.loggedOfficer, sanction: sancLabels[aiadSanction], sanctionKey: aiadSanction, date: dStr, body });
+    saveDatabase(); renderAiadCasesList(); toast("Zapisano protokół w rejestrze AIAD!");
+  };
+  function renderAiadCasesList() {
+    const box = document.getElementById("aiad-cases-list");
+    if (!box) return;
+    const list = db.aiadCases || [];
+    setTxt("aiad-total-badge", list.length + " wpisów"); setTxt("cnt-aiad", list.length);
+    box.innerHTML = list.length ? list.map(item => `<div style="background:var(--bg-input); border:1px solid var(--border); border-radius:10px; padding:11px 13px; margin-bottom:8px;"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><strong style="color:#fff;">${item.officer}</strong><span class="pill pill-red">${item.sanction}</span></div><div style="font-size:11px; color:var(--text-dim); margin-bottom:6px;">Inspektor: ${item.inspector} • ${item.date}</div><div style="font-size:12px; color:var(--text-muted); white-space:pre-line; max-height:75px; overflow-y:auto; margin-bottom:8px;">${item.body}</div><div style="display:flex; justify-content:flex-end; gap:6px;"><button type="button" class="btn btn-sm btn-dark" onclick="window.copySingleAiad(${item.id})">Kopiuj</button><button type="button" class="btn btn-sm btn-red" onclick="window.deleteAiadCase(${item.id})">Usuń</button></div></div>`).join("") : `<div style="padding:20px; text-align:center; color:var(--text-dim);">Brak spraw AIAD.</div>`;
+  }
+  window.copySingleAiad = function(id) { const it = (db.aiadCases || []).find(x => x.id === id); if (it) copyText(it.body, "Skopiowano protokół AIAD!"); };
+  window.deleteAiadCase = function(id) { db.aiadCases = (db.aiadCases || []).filter(x => x.id !== id); saveDatabase(); renderAiadCasesList(); };
+  window.resetAiadForm = function() { document.getElementById("aiad-officer-inp").value = ""; selectedAiadOffenses = []; renderAiadOffensesBlips(); window.generateAiadAutoText(); };
+  window.copyAiadProtocol = function() { copyText(document.getElementById("aiad-desc-txt").value, "Skopiowano protokół AIAD!"); };
+
+  /* GRAFIKI MAPEK SZKOLENIOWYCH ASU I SEU */
+  let uploadingMapTarget = "ASU";
+  function getAsuMapSvgMarkup() {
+    return `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="400" fill="#a8c5db"/><path d="M 0 0 L 400 0 L 400 320 Q 340 310 315 345 L 250 345 L 245 390 L 160 390 L 145 325 L 70 315 L 0 265 Z" fill="#d4d6d8"/><path d="M 195 0 L 400 0 L 400 315 Q 340 310 315 335 Q 275 315 265 250 Q 250 180 205 110 Z" fill="#8fb369"/><path d="M 225 55 Q 190 70 175 85 L 170 160 L 178 220 L 172 295 L 208 332" stroke="#7ba6c7" stroke-width="7" fill="none"/><path d="M 225 55 Q 195 72 176 85 L 170 155 L 178 220 L 172 295 L 208 332" stroke="#e11d48" stroke-width="4.5" fill="none" stroke-linecap="round"/><circle cx="225" cy="55" r="6" fill="#e11d48"/><text x="235" y="60" fill="#be123c" font-size="16" font-weight="900">Start</text><circle cx="208" cy="332" r="6" fill="#e11d48"/><text x="218" y="337" fill="#be123c" font-size="16" font-weight="900">Meta</text></svg>`;
+  }
+  function getSeuMapSvgMarkup() {
+    return `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="400" fill="#5da9d6"/><path d="M 185 0 L 400 0 L 400 400 L 200 400 Q 170 385 115 360 Q 105 315 100 280 Q 85 240 112 195 Q 125 160 148 145 L 145 95 L 130 75 L 165 40 Z" fill="#8fb369"/><polygon points="135,75 235,105 225,130 125,95" fill="#9ca3af" stroke="#fff" stroke-width="1.5"/><path d="M 192 382 L 120 342 L 114 295 L 106 238 L 116 190 L 146 158 C 172 152 172 165 148 160 L 158 80 L 166 46 C 172 44 176 55 176 66" stroke="#dc2626" stroke-width="4.5" fill="none" stroke-linecap="round"/><circle cx="192" cy="382" r="6" fill="#dc2626"/><text x="202" y="387" fill="#b91c1c" font-size="16" font-weight="900">Start</text><circle cx="176" cy="66" r="6" fill="#dc2626"/><text x="186" y="70" fill="#b91c1c" font-size="16" font-weight="900">Meta</text></svg>`;
+  }
+  function getTrainingMapVisualHTML(mapType) {
+    const savedCustomImg = db.customMaps && db.customMaps[mapType];
+    const defaultFileName = mapType === "ASU" ? "image_7f9838.jpg" : "image_7f9876.jpg";
+    const svgFallback = mapType === "ASU" ? getAsuMapSvgMarkup() : getSeuMapSvgMarkup();
+    if (savedCustomImg) return `<img src="${savedCustomImg}" alt="Mapa ${mapType}" />`;
+    return `<img src="${defaultFileName}" alt="Mapa ${mapType}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" /><div style="display:none; width:100%; height:100%;">${svgFallback}</div>`;
+  }
+  window.openMapZoomModal = function(mapType) {
+    setTxt("map-zoom-title", mapType === "ASU" ? "Mapa ASU — Kanał LS (< 0:55s)" : "Mapa SEU — Drive Skills Test");
+    document.getElementById("map-zoom-body").innerHTML = `<div style="width:100%; max-width:620px; height:520px;">${getTrainingMapVisualHTML(mapType)}</div>`;
+    document.getElementById("map-zoom-modal").classList.remove("hidden");
+  };
+  window.closeMapZoomModal = function() { document.getElementById("map-zoom-modal").classList.add("hidden"); };
+  window.triggerCustomMapUpload = function(mapType) { uploadingMapTarget = mapType; document.getElementById("hidden-map-file-inp").click(); };
+  window.handleMapFileUpload = function(e) {
+    const file = e.target.files && e.target.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      if (!db.customMaps) db.customMaps = {};
+      db.customMaps[uploadingMapTarget] = ev.target.result;
+      saveDatabase(); renderSzkCourseBody(); toast("Zapisano zdjęcie mapki " + uploadingMapTarget + "!");
+    };
+    reader.readAsDataURL(file);
+  };
+
+  /* BAZA DANYCH */
+  const LICENSES = ["RTO+HRO", "NEGO", "SV", "PWC+APWC", "ASU", "MERRY", "SEU"];
+  const FTO_BASIC = ["Code 6", "FTS", "10-80", "10-80 Pieszo", "Status 7", "TCCC", "Kompendium"];
+  const INITIAL_OFFICERS = [
+    { badge: "923", name: "Oley Sasa", rank: "Sergeant I", channel: "LSPD Tac #1", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "ASU": true, "MERRY": true, "SEU": true }, updated: "Szkoleniowiec" },
+    { badge: "27", name: "John Cagville", rank: "Captain I", channel: "LSPD Tac #1", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "SEU": true }, updated: "HC" },
+    { badge: "3", name: "Jerry Black", rank: "Dep. Chief of Police", channel: "LSPD Tac #1", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "ASU": true, "SEU": true }, updated: "HC" },
+    { badge: "80", name: "Henry Scott", rank: "Sergeant I", channel: "Dyspozytornia LSPD", status: "Na służbie", licenses: { "RTO+HRO": true, "SV": true, "PWC+APWC": true }, updated: "-" },
+    { badge: "941", name: "Gregory Solin", rank: "Officer II", channel: "LSPD Tac #2", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true }, updated: "SASA" },
+    { badge: "141", name: "Vivienne Walker", rank: "Officer I", channel: "LSPD Tac #2", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true }, updated: "SASA" }
+  ];
+  const INITIAL_REPORTS = [
+    { id: 308, author: "[923] Oley Sasa", title: "Podsumowanie akcji - Kod Czerwony w Paleto", type: "Podsumowanie akcji", date: "15.10.2026 02:39", body: "Jednostki LSPD zareagowały na Kod Czerwony w rejonie Paleto Bay.", officers: ["[27] John Cagville"], persons: [], vehicles: [] }
+  ];
+  const INITIAL_CADETS = [
+    { id: "165", badge: "165", name: "Paulo Cortez", fto: "Oley Sasa", joinDate: "03.10.2026", sec: 0, running: false, ts: null, pos: true, posNotes: "Dobry pościg.", neg: "BRAK", negNotes: "", modules: { "Code 6": { ok: true, note: "Poprawił błędy", sign: "SASA" }, "FTS": { ok: true, note: "", sign: "SASA" }, "10-80": { ok: true, note: "Dobry pościg", sign: "Sasa" }, "10-80 Pieszo": { ok: true, note: "(wyżej)", sign: "SASA" }, "Status 7": { ok: true, note: "OK", sign: "Smith" }, "TCCC": { ok: true, note: "", sign: "Walker" }, "Kompendium": { ok: true, note: "OK", sign: "Solin" } } },
+    { id: "166", badge: "166", name: "Cayden Potato", fto: "Oley Sasa", joinDate: "10.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} },
+    { id: "199", badge: "199", name: "Túlio Navarro Figueiredo", fto: "Oley Sasa", joinDate: "11.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} }
+  ];
+  const INITIAL_AIAD = [
+    { id: 1, officer: "[147] Peter Fals", inspector: "[923] Oley Sasa", sanction: "POUCZENIE", sanctionKey: "warn", date: "15.10.2026 17:42", body: "Funkcjonariusz [147] Peter Fals zgłosił się dobrowolnie do AIAD w sprawie użycia broni służbowej poza służbą w celu pacyfikacji napastnika pod szpitalem. Zakończono na pouczeniu." }
+  ];
+  const INITIAL_VEHICLES = [
+    { model: "Karin Futo", plate: "68LCE795", owner: "Albert Abdul", status: "POSZUKIWANY (10-80)" },
+    { model: "Benefactor Panto", plate: "49LJC766", owner: "Anthoni Benetii", status: "SKRADZIONY (TRACKER)" }
+  ];
+  const INITIAL_DISPATCH = [
+    { code: "10-90", title: "Napad na sklep — Innocence Blvd / Elgin Ave", time: "21:15", unit: "[923] Oley Sasa" },
+    { code: "10-72", title: "Sprzedaż narkotyków — Forum Dr / Strawberry", time: "21:18", unit: "Brak" }
+  ];
+
+  let db = { loggedOfficer: "[923] Oley Sasa", theme: "lspd", pwc: "[80] Henry Scott", apwc: "Brak przypisanego", officers: [], reports: [], cadets: [], patrols: [{ id: 1, type: "Adam", members: ["[923] Oley Sasa", "[141] Vivienne Walker"] }], aiadCases: [], vehicles: [], tickets: [], dispatchCalls: [], customMaps: {} };
+
+  function loadDatabase() {
+    try {
+      const raw = localStorage.getItem("lspd_mdt_gh_v11");
+      if (raw) db = JSON.parse(raw);
+      else {
+        db.officers = JSON.parse(JSON.stringify(INITIAL_OFFICERS));
+        db.reports = JSON.parse(JSON.stringify(INITIAL_REPORTS));
+        db.cadets = JSON.parse(JSON.stringify(INITIAL_CADETS));
+        db.aiadCases = JSON.parse(JSON.stringify(INITIAL_AIAD));
+        db.vehicles = JSON.parse(JSON.stringify(INITIAL_VEHICLES));
+        db.dispatchCalls = JSON.parse(JSON.stringify(INITIAL_DISPATCH));
+      }
+    } catch (e) {
+      db.officers = JSON.parse(JSON.stringify(INITIAL_OFFICERS));
+      db.reports = JSON.parse(JSON.stringify(INITIAL_REPORTS));
+      db.cadets = JSON.parse(JSON.stringify(INITIAL_CADETS));
+      db.aiadCases = JSON.parse(JSON.stringify(INITIAL_AIAD));
+      db.vehicles = JSON.parse(JSON.stringify(INITIAL_VEHICLES));
+      db.dispatchCalls = JSON.parse(JSON.stringify(INITIAL_DISPATCH));
+    }
+    if (!db.customMaps) db.customMaps = {};
+    if (!db.vehicles) db.vehicles = JSON.parse(JSON.stringify(INITIAL_VEHICLES));
+    if (!db.dispatchCalls) db.dispatchCalls = JSON.parse(JSON.stringify(INITIAL_DISPATCH));
+    db.cadets.forEach(c => {
+      if (!c.modules) c.modules = {};
+      FTO_BASIC.forEach(m => { if (!c.modules[m]) c.modules[m] = { ok: false, note: "", sign: "" }; });
+    });
+    if (db.theme) window.setTabletTheme(db.theme);
+    updateSidebarCounters();
+  }
+  function saveDatabase() {
+    try { localStorage.setItem("lspd_mdt_gh_v11", JSON.stringify(db)); } catch (e) {}
+    updateSidebarCounters();
+  }
+  function updateSidebarCounters() {
+    setTxt("cnt-duty", db.officers.filter(o => o.status === "Na służbie").length);
+    setTxt("cnt-reports", db.reports.length);
+    setTxt("cnt-officers", db.officers.length);
+    setTxt("cnt-cadets", db.cadets.length);
+    setTxt("cnt-patrols", db.patrols.length);
+    setTxt("cnt-aiad", (db.aiadCases || []).length);
+    setTxt("cnt-vehicles", (db.vehicles || []).length);
+    setTxt("logged-officer-display", db.loggedOfficer);
+    setTxt("case-lead-officer", db.loggedOfficer);
+  }
+
+  /* RAPORTY */
+  let editingReportId = null, draftOfficers = [], draftPersons = [], draftVehicles = [], currentPickerType = "officers";
+  window.renderReportsList = function() {
+    const tbody = document.getElementById("reports-tbody");
+    if (!tbody) return;
+    const q = (document.getElementById("report-search-inp")?.value || "").toLowerCase();
+    const filtered = db.reports.filter(r => ("#" + r.id).includes(q) || r.title.toLowerCase().includes(q) || r.author.toLowerCase().includes(q));
+    tbody.innerHTML = filtered.length ? filtered.map(r => `<tr><td style="font-weight:800; color:var(--accent-light);">#${r.id}</td><td style="font-weight:700;">${r.author}</td><td style="color:#fff;">${r.title}</td><td><span class="pill pill-amber">${r.type}</span></td><td style="color:var(--text-muted);">${r.date}</td><td style="text-align:right;"><button type="button" class="btn btn-sm btn-dark" onclick="window.openEditReport(${r.id})">Edytuj</button><button type="button" class="btn btn-sm btn-red" onclick="window.deleteReport(${r.id})">Usuń</button></td></tr>`).join("") : `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--text-dim);">Brak raportów.</td></tr>`;
+  };
+  window.openCleanReportCreator = function() {
+    editingReportId = null; setTxt("rep-form-header", "Nowy raport");
+    document.getElementById("rf-title").value = ""; document.getElementById("rf-body").value = "";
+    setTxt("rf-author", db.loggedOfficer); draftOfficers = []; draftPersons = []; draftVehicles = [];
+    renderDraftChips();
+    document.getElementById("reports-list-subview").classList.add("hidden");
+    document.getElementById("reports-form-subview").classList.remove("hidden");
+  };
+  window.openEditReport = function(id) {
+    const r = db.reports.find(x => x.id === id); if (!r) return;
+    editingReportId = r.id; setTxt("rep-form-header", "Edycja raportu #" + r.id);
+    document.getElementById("rf-title").value = r.title; document.getElementById("rf-type").value = r.type;
+    document.getElementById("rf-body").value = r.body; setTxt("rf-author", r.author);
+    draftOfficers = [...(r.officers || [])]; draftPersons = [...(r.persons || [])]; draftVehicles = [...(r.vehicles || [])];
+    renderDraftChips();
+    document.getElementById("reports-list-subview").classList.add("hidden");
+    document.getElementById("reports-form-subview").classList.remove("hidden");
+  };
+  window.closeReportCreator = function() {
+    document.getElementById("reports-form-subview").classList.add("hidden");
+    document.getElementById("reports-list-subview").classList.remove("hidden");
+    window.renderReportsList();
+  };
+  function renderDraftChips() {
+    const rBox = (id, arr, k) => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = arr.length ? arr.map((it, i) => `<div class="chip-item"><span>${it}</span><button type="button" class="chip-remove" onclick="window.removeDraftChip('${k}',${i})">×</button></div>`).join("") : `<div style="color:var(--text-dim); font-size:12px;">Brak pozycji</div>`;
+    };
+    rBox("rf-officers-box", draftOfficers, "officers");
+    rBox("rf-persons-box", draftPersons, "persons");
+    rBox("rf-vehicles-box", draftVehicles, "vehicles");
+  }
+  window.removeDraftChip = function(k, i) {
+    if (k === "officers") draftOfficers.splice(i, 1);
+    if (k === "persons") draftPersons.splice(i, 1);
+    if (k === "vehicles") draftVehicles.splice(i, 1);
+    renderDraftChips();
+  };
+  window.openPickerModal = function(k) {
+    currentPickerType = k; document.getElementById("picker-custom-inp").value = "";
+    document.getElementById("picker-modal").classList.remove("hidden");
+    const box = document.getElementById("picker-list-box");
+    const pool = (k === "officers" || k === "case_officers") ? db.officers.map(o => `[${o.badge}] ${o.name}`) : k === "persons" ? ["[729] Jade Grayson (SAMS)", "[711] Andrew Karabin (SAMS)"] : ["Bravado Charger LSPD", "BMW M3 Patrol Unit"];
+    box.innerHTML = pool.map((it, idx) => `<div class="penal-blip-item" onclick="window.selectPickerPool(${idx})"><span>${it}</span><span class="pill pill-blue">+ Wybierz</span></div>`).join("");
+    window._pickerPool = pool;
+  };
+  window.selectPickerPool = function(idx) { selectItemFromPicker(window._pickerPool[idx]); };
+  window.closePickerModal = function() { document.getElementById("picker-modal").classList.add("hidden"); };
+  function selectItemFromPicker(val) {
+    if (currentPickerType === "case_officers") {
+      if (!caseAssistOfficers.includes(val)) caseAssistOfficers.push(val);
+      renderCaseAssistOfficers(); window.generateAutoCaseDescription(); window.closePickerModal(); return;
+    }
+    if (currentPickerType === "officers" && !draftOfficers.includes(val)) draftOfficers.push(val);
+    if (currentPickerType === "persons" && !draftPersons.includes(val)) draftPersons.push(val);
+    if (currentPickerType === "vehicles" && !draftVehicles.includes(val)) draftVehicles.push(val);
+    renderDraftChips(); window.closePickerModal();
+  }
+  window.addCustomPickerItem = function() { const val = document.getElementById("picker-custom-inp").value.trim(); if (val) selectItemFromPicker(val); };
+  window.insertReportTemplate = function(tpl) {
+    document.getElementById("rf-body").value = tpl === "akcja"
+      ? "1. Dyspozycja i przybycie na miejsce:\n\n2. Przebieg działań:\n\n3. Wnioski końcowe:"
+      : "1. Powód pościgu (10-80):\n\n2. Użyte jednostki i trasa:\n\n3. Zakończenie i zatrzymani:";
+  };
+  window.saveReportFromForm = function() {
+    const title = document.getElementById("rf-title").value.trim(), type = document.getElementById("rf-type").value, body = document.getElementById("rf-body").value.trim();
+    if (!title || !body) { toast("Wpisz tytuł i treść raportu!"); return; }
+    const now = new Date(), dStr = now.toLocaleDateString("pl-PL") + " " + now.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
+    if (editingReportId) {
+      const r = db.reports.find(x => x.id === editingReportId);
+      if (r) { r.title = title; r.type = type; r.body = body; r.officers = [...draftOfficers]; r.persons = [...draftPersons]; r.vehicles = [...draftVehicles]; }
+    } else {
+      const nextId = db.reports.length ? Math.max(...db.reports.map(x => x.id)) + 1 : 309;
+      db.reports.unshift({ id: nextId, author: db.loggedOfficer, title, type, date: dStr, body, officers: [...draftOfficers], persons: [...draftPersons], vehicles: [...draftVehicles] });
+    }
+    saveDatabase(); window.closeReportCreator(); toast("Zapisano raport!");
+  };
+  window.deleteReport = function(id) { db.reports = db.reports.filter(x => x.id !== id); saveDatabase(); window.renderReportsList(); };
+  window.copyCurrentReportForm = function() { copyText(`TYTUŁ: ${document.getElementById("rf-title").value}\nAUTOR: ${db.loggedOfficer}\n\n${document.getElementById("rf-body").value}`, "Skopiowano raport!"); };
+
+  /* 7 SZKOLEŃ SPECJALISTYCZNYCH */
+  const COURSES_DATA = {
+    "RTO+HRO": { name: "RTO + HRO", reqTheory: 15, maxTheory: 16, questions: [
+      { q: "1. Jaki jest nadrzędny cel prowadzenia radiówki podczas pościgu?", pts: 1, a: "Zapewnienie świadomości sytuacyjnej innym jednostkom, aby odcięte radiowozy mogły z samych komunikatów wyliczyć trasę, rozstawić kolczatki lub odciąć drogę bez patrzenia na mapę." },
+      { q: "2. Dlaczego jednostka prowadząca pościg nie powinna zajmować się raportowaniem na radiu?", pts: 2, a: "Wymaga to pełnego skupienia na jeździe. Jednoczesna orientacja z nazw ulic i mówienie zwiększa ryzyko wypadku. Rolę przejmuje pasażer lub U2." },
+      { q: "3. Jakie informacje i w jakiej kolejności należy podać w „komunikacie inicjującym”?", pts: 1, a: "1) Kod pościgu i identyfikator, 2) Opis pojazdu, 3) Aktualna lokalizacja i kierunek, 4) Powód pościgu." },
+      { q: "4. Co oznacza pojęcie objaśnienie progresywne i jak należy je stosować?", pts: 3, a: "Podawanie komunikatów z wyprzedzeniem — do jakiego punktu lub skrzyżowania pojazd się zbliża." },
+      { q: "5. Jak należy prawidłowo określać kierunki jazdy w pościgu?", pts: 2, a: "Używać kierunków świata (North, South, East, West) zamiast „w lewo / w prawo”." },
+      { q: "6. Jak reagować na wjazd uciekiniera w „strefę martwą” (tunele, kanały)?", pts: 1, a: "Natychmiast podać ostatni punkt wejścia, kierunek i zmianę środowiska (pościg podziemny)." },
+      { q: "7. W jaki sposób raportować zmiany prędkości i stylu jazdy?", pts: 2, a: "Prędkość opisowo (autostradowa/miejska/niska), a styl przez anomalie (ścina krawężniki, jedzie chodnikiem, gasi światła)." },
+      { q: "8. Czym różni się „Cisza radiowa” od „Komunikacji ograniczonej”?", pts: 1, a: "Cisza radiowa to całkowity zakaz nadawania. Komunikacja ograniczona (TAC) to korzystanie z pasma tylko przez jednostki w pościgu." },
+      { q: "9. Jaka jest rola jednostek dołączających do pościgu w kwestii komunikacji?", pts: 2, a: "Zachować absolutną ciszę — jedynie krótkie zgłoszenie wejścia w szyk (np. U4 przejmuje U3 po 10-50)." },
+      { q: "10. Kiedy i jak ogłosić status „10-13” w trakcie pościgu?", pts: 1, a: "Tylko gdy życie FP jest bezpośrednio zagrożone: „10-0 10-5 na 10-13 na [Lokalizacja]!”." }
+    ], practical: ["Etap 2 (HRO): 2 pościgi helikopterem po min. 5 minut z pełną radiówką (Próby: 2)", "Etap 3 (RTO): Pościg ADAM za ADAM z pełną radiówką przez 10 minut (Próby: 2)"] },
+    "NEGO": { name: "NEGO (Negocjator)", reqTheory: 15, maxTheory: 17, questions: [
+      { q: "1. Czy negocjator musi się przedstawić?", pts: 1, a: "Tak, na początku interakcji z napastnikami." },
+      { q: "2. Co jest najważniejsze dla negocjatora?", pts: 1, a: "Bezpieczeństwo i życie własne oraz zakładników." },
+      { q: "3. Kiedy możemy podejść do negocjacji?", pts: 1, a: "Po zgłoszeniu na radiu „Podchodzę do negocjacji” i upewnieniu się, że ktoś nas ubezpiecza." },
+      { q: "4. Jakie są obowiązki negocjatora?", pts: 3, a: "1) Ustalenie liczby napastników i zakładników, ich stanu, broni oraz rejestracji pojazdu. 2) Korygowanie i akceptowanie żądań. 3) Poinformowanie SV o ustaleniach." },
+      { q: "5. Ile żądań realizujemy za jednego zakładnika?", pts: 1, a: "Nie stosujemy systemu „jedynkowego” — każde negocjacje rozpatrujemy osobno." },
+      { q: "6. Co negocjator musi zrobić na początku rozmowy?", pts: 1, a: "Zapytać, co się dzieje. Skłaniać napastników do oddania zakładników i poddania się." },
+      { q: "7. Co negocjator musi się dowiedzieć o zakładnikach i jak?", pts: 1, a: "Czy potrzebują jedzenia, picia, pomocy medycznej i czy czują się dobrze (najlepiej osobiście)." },
+      { q: "8. Czy negocjator może kłamać?", pts: 1, a: "Nie. Wyjątek: próby samobójcze." },
+      { q: "9. Czy negocjator może rozmawiać sam na sam z osobą uzbrojoną?", pts: 1, a: "Nie. Tylko przy próbach samobójczych bez zagrożenia dla negocjatora." },
+      { q: "10. W jaki sposób zwracasz się do napastnika?", pts: 1, a: "Z szacunkiem, bez względu na jego czyny." },
+      { q: "11. Jaki powinien być głos i mowa ciała negocjatora?", pts: 1, a: "Spokojny, opanowany, pewny siebie." },
+      { q: "12. Ile jest ostrzeżeń negocjatorskich?", pts: 1, a: "3." },
+      { q: "13. Kto nakłada ostrzeżenia negocjatorskie?", pts: 1, a: "Supervisor (SV) nakłada — Negocjator przekazuje informację napastnikom." },
+      { q: "14. Za co można nałożyć ostrzeżenia negocjatorskie?", pts: 1, a: "Zmiana żądań po przyklepaniu, groźby wobec zakładników, obraza negocjatora, brak wykonywania poleceń." },
+      { q: "15. Co się dzieje po przekroczeniu liczby ostrzeżeń?", pts: 1, a: "SV podejmuje decyzję o zerwaniu negocjacji i informuje PWC." }
+    ], practical: ["Przestrzeganie zasad (1 pkt)", "Reakcja na warunki (1 pkt)", "Zachowanie (1 pkt)", "Profesjonalizm (1 pkt) — Wymagane 3/4 pkt"] },
+    "SV": { name: "SV (Supervisor)", reqTheory: 12, maxTheory: 14, questions: [
+      { q: "1. Kto przejmuje rolę SV na każdej akcji?", pts: 1, a: "Osoba wyznaczona przez PWC, osoba ze szkoleniem lub najwyższy stopniem na radiu." },
+      { q: "2. Czy jako SV możesz zezwolić negocjatorowi na wejście do placówki?", pts: 1, a: "Nie." },
+      { q: "3. Czy będziesz prowadził dwa pościgi na jednym radiu?", pts: 1, a: "Nie." },
+      { q: "4. Czy wydasz polecenie zerwania negocjacji widząc szansę na odbicie zakładnika?", pts: 2, a: "Nie, chyba że nałożone byłyby 3 ostrzeżenia negocjatorskie." },
+      { q: "5. Masz 2x SEU, 3x LINCOLN, 2x ADAM — jak rozstawisz unity na offroad i sport?", pts: 2, a: "Wg uznania szkoleniowca, aby miało to logiczny sens." },
+      { q: "6. Na konwoju masz 4 zatrzymanych — jakie i ile unitów przygotujesz?", pts: 2, a: "Wg uznania szkoleniowca, aby miało to sens taktyczny." },
+      { q: "7. Jakie są obowiązki SV? (5 punktów)", pts: 5, a: "1) Wyznaczanie negocjatora i ubezpieczającego. 2) Ustalanie jednostek pościgowych. 3) Nadawanie kodów pościgowych. 4) Uzupełnianie dispatcha. 5) Zabezpieczenie terenu wokół akcji." }
+    ], practical: ["Zasady SV (1 pkt)", "Odpowiednie żądania (1 pkt)", "Rozmieszczenie jednostek (1 pkt)", "Profesjonalizm (1 pkt)", "Obserwacja terenu (1 pkt) — Wymagane 4/5 pkt"] },
+    "PWC+APWC": { name: "PWC + APWC", reqTheory: 15, maxTheory: 17, questions: [
+      { q: "1. Czym się zajmują PWC / APWC?", pts: 1, a: "Dowodzenie patrolami, wyznaczanie SV, ustalanie jednostek, porządek na radiu, dbanie o Dispatch." },
+      { q: "2. Jaki numer ma PWC?", pts: 1, a: "00" },
+      { q: "3. Jak wyznaczany jest PWC lub APWC?", pts: 1, a: "Najwyższy stopniem (bez HC) lub wyznaczony przez poprzedniego PWC/APWC." },
+      { q: "4. Czy PWC i APWC mogą jeździć razem w patrolu?", pts: 1, a: "Nie." },
+      { q: "5. Czy PWC może zareagować na zgłoszenie, gdy APWC jest podczas akcji?", pts: 1, a: "Nie. Musi zostać na radiu Main." },
+      { q: "6. Co musi zrobić PWC, gdy schodzi ze służby?", pts: 2, a: "Przekazać sytuację w mieście: ostatnie akcje, aktualny kod i powód wprowadzenia." },
+      { q: "7. Co zrobić, gdy jest niebezpiecznie, a kod to Zielony?", pts: 2, a: "Zawołać HC, poprosić o zmianę kodu i uzasadnić." },
+      { q: "8. Jak powinny być rozdzielone jednostki na mieście?", pts: 2, a: "Harmonijnie i równomiernie – nie może być samych Edwardów." },
+      { q: "9. Co zrobić, gdy FP popełniają błędy lub są źle rozdysponowani?", pts: 1, a: "Zrobić Code 8." },
+      { q: "10. Co zrobić, gdy FP popełnia poważne błędy wymagające ukarania?", pts: 2, a: "Zgłosić do HC/AIAD." },
+      { q: "11. Czy PWC/APWC musi zostać poinformowany o zerwaniu negocjacji?", pts: 1, a: "Tak." },
+      { q: "12. Co zrobić, gdy wszystkie jednostki są na jednej akcji, a pojawia się kolejna?", pts: 2, a: "Zależnie od pilności – cofnąć część jednostek na drugą akcję." }
+    ], practical: ["Przejęcie PWC i ogłoszenie Code 8 (1 pkt)", "Przebieg Code 8 (1 pkt)", "Rozdysponowanie jednostek (1 pkt)", "Zlecenie zmiany kodu (1 pkt) — Wymagane 3/4 pkt"] },
+    "ASU": { name: "ASU (Helikopter)", reqTheory: 0, maxTheory: 0, map: "ASU", questions: [], practical: ["Etap 1: Free flight (3 min)", "Etap 2: 3 trudne lądowania", "Etap 3: 2 pościgi po 5 min z radiówką (Próby: 3)", "Etap 4: Mapka pod mostami w kanale LS < 0:55s"] },
+    "MERRY": { name: "MERRY (Motocykle)", reqTheory: 0, maxTheory: 0, questions: [], practical: ["Etap 1: Motor-motor 2x 5 min (Próby: 2)", "Etap 2: Motor-ADAM 2x 5 min (Próby: 2)", "Etap 3: Motor-EDWARD 3 min (Próby: 3)", "Etap 4: Pościg do destylacji motoru (Próby: 1)"] },
+    "SEU": { name: "SEU (Pościgowe)", reqTheory: 0, maxTheory: 0, map: "SEU", questions: [], practical: ["Etap 1: Drive skills test na mapce bez kolizji (Próby: 2)", "Etap 2: Pościg SEU-SEU 2x 5 min (Próby: 2)", "Etap 3: Pościg EDWARD-EDWARD do destylacji (Próby: 1)", "Etap 4: Pościg EDWARD-EDWARD z radiówką 10 min (Próby: 2)"] }
+  };
+
+  let selectedCourse = "RTO+HRO", courseScores = {}, practicalChecks = {};
+  function renderSzkCourseBar() {
+    const sel = document.getElementById("szk-officer-select");
+    if (sel) sel.innerHTML = db.officers.map(o => `<option value="${o.badge}">[${o.badge}] ${o.name}</option>`).join("");
+    const bar = document.getElementById("szk-courses-bar");
+    if (bar) bar.innerHTML = LICENSES.map(k => `<div class="blip-pill ${k === selectedCourse ? 'active-blue' : ''}" onclick="window.selectCourseTab('${k}')"><span class="blip-dot"></span><span>${COURSES_DATA[k].name}</span></div>`).join("");
+    renderSzkCourseBody();
+  }
+  window.selectCourseTab = function(k) { selectedCourse = k; renderSzkCourseBar(); };
+  window.setCourseQuestionScore = function(idx, pts) { if (!courseScores[selectedCourse]) courseScores[selectedCourse] = {}; courseScores[selectedCourse][idx] = pts; renderSzkCourseBody(); };
+  window.togglePracticalStageBlip = function(idx) { if (!practicalChecks[selectedCourse]) practicalChecks[selectedCourse] = {}; practicalChecks[selectedCourse][idx] = !practicalChecks[selectedCourse][idx]; renderSzkCourseBody(); };
+  function renderSzkCourseBody() {
+    const c = COURSES_DATA[selectedCourse], container = document.getElementById("szk-course-body");
+    if (!container || !c) return;
+    if (!courseScores[selectedCourse]) courseScores[selectedCourse] = {};
+    if (!practicalChecks[selectedCourse]) practicalChecks[selectedCourse] = {};
+    const sc = courseScores[selectedCourse], pr = practicalChecks[selectedCourse];
+    let sum = 0; c.questions.forEach((q, idx) => { sum += (sc[idx] || 0); });
+    let tHTML = "";
+    if (c.questions.length) {
+      const pass = sum >= c.reqTheory, pct = Math.min(100, Math.round((sum / c.maxTheory) * 100));
+      tHTML = `<div class="card"><div class="card-header"><div><h3 style="margin:0; font-size:15px;">Etap 1: Pytania Teoretyczne — ${c.name}</h3></div><div class="blip-pill ${pass ? 'active-green' : 'active-red'}" style="cursor:default;"><span class="blip-dot"></span><span>${sum} / ${c.maxTheory} pkt (Min. ${c.reqTheory}) — ${pass ? 'ZALICZONA' : 'NIEZALICZONA'}</span></div></div><div class="progress-track" style="margin-bottom:14px;"><div class="progress-fill" style="width:${pct}%;"></div></div>` +
+        c.questions.map((it, idx) => {
+          const cur = sc[idx] !== undefined ? sc[idx] : 0;
+          let nodes = "";
+          for (let p = 0; p <= it.pts; p++) {
+            let cls = cur === p ? (p === 0 ? "selected-zero" : (p === it.pts ? "selected-max" : "selected-pts")) : "";
+            nodes += `<div class="blip-node ${cls}" onclick="window.setCourseQuestionScore(${idx},${p})">${p}</div>`;
+          }
+          return `<div class="question-blip-row ${cur > 0 ? 'scored-positive' : 'scored-zero'}"><div style="display:flex; justify-content:space-between; align-items:center; gap:14px;"><div style="font-weight:700; color:#e2e8f0; font-size:13px;">${it.q} <span style="color:var(--text-dim); font-size:11px;">(Max ${it.pts} pkt)</span></div><div class="blip-nodes-group">${nodes}</div></div><div style="margin-top:8px; padding:7px 11px; background:#070a10; border-left:2px solid var(--accent-bright); border-radius:6px; font-size:12px; color:var(--text-muted);"><strong style="color:var(--accent-light);">Odp:</strong> ${it.a}</div></div>`;
+        }).join("") + `</div>`;
+    }
+    let mapHTML = "";
+    if (c.map === "ASU" || c.map === "SEU") {
+      const isAsu = c.map === "ASU";
+      mapHTML = `<div class="card"><div class="card-header"><div><h3 style="margin:0; font-size:15px; color:#38bdf8;">${isAsu ? "Mapa Szkoleniowa ASU (Etap 4 — Przelot pod mostami < 0:55s)" : "Mapa Szkoleniowa SEU (Etap 1 — Drive Skills Test)"}</h3></div><div style="display:flex; gap:8px;"><button type="button" class="btn btn-sm btn-dark" onclick="window.triggerCustomMapUpload('${c.map}')">Wgraj zdjęcie mapki</button><button type="button" class="btn btn-sm btn-blue" onclick="window.openMapZoomModal('${c.map}')">Powiększ mapę</button></div></div><div class="training-map-wrapper"><div class="map-frame" onclick="window.openMapZoomModal('${c.map}')">${getTrainingMapVisualHTML(c.map)}<span class="map-zoom-badge">Kliknij, aby powiększyć</span></div><div style="font-size:13px; color:#cbd5e1; line-height:1.6; background:var(--bg-input); padding:12px 14px; border-radius:10px; border:1px solid var(--border);">${isAsu ? "<strong>Trasa na mapie ASU:</strong><br/>• <strong>Start:</strong> Górny odcinek kanału burzowego przy Mirror Park.<br/>• <strong>Przelot:</strong> Lot wzdłuż czerwonych strzałek pod wszystkimi mostami.<br/>• <strong>Meta:</strong> Wylot kanału przy porcie Elysian Island (poniżej 0:55s)." : "<strong>Trasa na mapie SEU:</strong><br/>• <strong>Start:</strong> Wjazd na Great Ocean Hwy przy plaży Pacific Bluffs.<br/>• <strong>Przejazd:</strong> Jazda wzdłuż wybrzeża przez Chumash, pętla przy Tongva Hills i tunel Zancudo.<br/>• <strong>Meta:</strong> Nawrotka za tunelem i dojazd pod bramę Fortu Zancudo."}</div></div></div>`;
+    }
+    const pHTML = `<div class="card"><h3 style="margin:0 0 10px; color:#34d399;">Etapy Praktyczne — Kliknij blip, aby zaliczyć etap (${c.name})</h3><div style="display:flex; flex-direction:column; gap:8px;">${c.practical.map((p, idx) => `<div class="blip-pill ${pr[idx] ? 'active-green' : ''}" style="border-radius:10px; padding:10px 14px; justify-content:space-between;" onclick="window.togglePracticalStageBlip(${idx})"><div style="display:flex; align-items:center; gap:10px;"><span class="blip-dot"></span><span>${p}</span></div><span class="pill ${pr[idx] ? 'pill-green' : 'pill-gray'}">${pr[idx] ? 'ZALICZONE' : 'DO WYKONANIA'}</span></div>`).join("")}</div></div>`;
+    container.innerHTML = tHTML + mapHTML + pHTML;
+  }
+  window.assignCourseLicenseToSelected = function() {
+    const badge = document.getElementById("szk-officer-select").value, off = db.officers.find(o => o.badge === badge);
+    if (!off) return;
+    if (!off.licenses) off.licenses = {};
+    off.licenses[selectedCourse] = true; off.updated = "Nadano " + selectedCourse;
+    saveDatabase(); window.renderLicenseMatrix(); renderAllOfficersView(); toast("Nadano licencję " + selectedCourse + " dla [" + off.badge + "] " + off.name);
+  };
+  window.copyCourseProtocol = function() { copyText(`PROTOKÓŁ SZKOLENIA LSPD — ${COURSES_DATA[selectedCourse].name}\nSzkoleniowiec: ${db.loggedOfficer}\nStatus: ZALICZONE`, "Skopiowano protokół!"); };
+  window.renderLicenseMatrix = function() {
+    const tbody = document.getElementById("matrix-tbody"); if (!tbody) return;
+    const q = (document.getElementById("matrix-search-inp")?.value || "").toLowerCase();
+    tbody.innerHTML = db.officers.filter(o => o.badge.toLowerCase().includes(q) || o.name.toLowerCase().includes(q)).map(o => `<tr><td style="font-weight:800; color:var(--accent-light);">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${LICENSES.map(k => `<div class="blip-pill ${o.licenses && o.licenses[k] ? 'active-green' : ''}" style="padding:3px 9px; font-size:11px; margin:2px;" onclick="window.toggleMatrixLic('${o.badge}','${k}')"><span class="blip-dot"></span><span>${k}</span></div>`).join("")}</td><td style="color:var(--text-dim); font-size:11px;">${o.updated || "-"}</td></tr>`).join("");
+  };
+  window.toggleMatrixLic = function(badge, k) { const o = db.officers.find(x => x.badge === badge); if (o) { if (!o.licenses) o.licenses = {}; o.licenses[k] = !o.licenses[k]; saveDatabase(); window.renderLicenseMatrix(); renderAllOfficersView(); } };
+
+  let trialSwRunning = false, trialSwStart = 0, trialSwElapsed = 0, trialSwInterval = null;
+  window.toggleTrialStopwatch = function() {
+    const btn = document.getElementById("trial-sw-btn");
+    if (trialSwRunning) {
+      trialSwElapsed += Date.now() - trialSwStart; trialSwRunning = false;
+      clearInterval(trialSwInterval); btn.textContent = "Start"; btn.className = "btn btn-sm btn-green";
+    } else {
+      trialSwStart = Date.now(); trialSwRunning = true;
+      btn.textContent = "Stop"; btn.className = "btn btn-sm btn-red";
+      trialSwInterval = setInterval(() => {
+        const ms = trialSwElapsed + (Date.now() - trialSwStart), totSec = Math.floor(ms / 1000);
+        setTxt("trial-stopwatch-val", `${String(Math.floor(totSec / 60)).padStart(2, "0")}:${String(totSec % 60).padStart(2, "0")}.${Math.floor((ms % 1000) / 100)}`);
+      }, 100);
+    }
+  };
+  window.resetTrialStopwatch = function() { trialSwRunning = false; trialSwElapsed = 0; clearInterval(trialSwInterval); setTxt("trial-stopwatch-val", "00:00.0"); const btn = document.getElementById("trial-sw-btn"); if (btn) { btn.textContent = "Start"; btn.className = "btn btn-sm btn-green"; } };
+
+  /* STREFA KADETA (FTO) */
+  window.currentCadetId = "165";
+  function getCadetTotalSec(c) { return (c.sec || 0) + (c.running && c.ts ? Math.max(0, Math.floor((Date.now() - c.ts) / 1000)) : 0); }
+  function formatHMS(s) { return String(Math.floor(s / 3600)).padStart(2, "0") + "h " + String(Math.floor((s % 3600) / 60)).padStart(2, "0") + "m " + String(s % 60).padStart(2, "0") + "s"; }
+  window.toggleCadetStopwatch = function(id) {
+    const c = db.cadets.find(x => x.id === id); if (!c) return;
+    if (c.running) { c.sec = getCadetTotalSec(c); c.running = false; c.ts = null; toast("Zatrzymano patrol [" + c.badge + "] " + c.name); }
+    else { c.running = true; c.ts = Date.now(); toast("Start patrolu [" + c.badge + "] " + c.name); }
+    saveDatabase(); window.renderCadets(); refreshCadetSheetButtonState();
+  };
+  window.adjustCadetTime = function(mins) { const c = db.cadets.find(x => x.id === window.currentCadetId); if (c) { c.sec = Math.max(0, (c.sec || 0) + mins * 60); saveDatabase(); window.renderCadets(); refreshCadetSheetButtonState(); } };
+  function refreshCadetSheetButtonState() {
+    const c = db.cadets.find(x => x.id === window.currentCadetId); if (!c) return;
+    setTxt("cs-live-timer", formatHMS(getCadetTotalSec(c)));
+    const b = document.getElementById("cs-startstop-btn");
+    if (b) { b.textContent = c.running ? "STOP" : "START"; b.className = "btn btn-sm " + (c.running ? "btn-red" : "btn-green"); }
+  }
+  window.renderCadets = function() {
+    const tbody = document.getElementById("fto-cadets-tbody"); if (!tbody) return;
+    const q = (document.getElementById("fto-search")?.value || "").toLowerCase();
+    tbody.innerHTML = db.cadets.filter(c => c.badge.toLowerCase().includes(q) || c.name.toLowerCase().includes(q) || c.fto.toLowerCase().includes(q)).map(c => {
+      const done = FTO_BASIC.filter(m => c.modules[m]?.ok).length;
+      return `<tr><td style="font-weight:800; color:var(--accent-light);">#${c.badge}</td><td style="font-weight:700;">${c.name}</td><td>${c.fto}</td><td><div style="display:flex; align-items:center; gap:8px;"><span id="cad-timer-${c.id}" style="font-family:monospace; font-weight:800; color:${c.running ? '#34d399' : '#38bdf8'};">${formatHMS(getCadetTotalSec(c))}</span><button type="button" class="btn btn-sm ${c.running ? 'btn-red' : 'btn-green'}" onclick="window.toggleCadetStopwatch('${c.id}')" style="border-radius:99px;">${c.running ? 'STOP' : 'START'}</button></div></td><td><button type="button" class="btn btn-sm btn-blue" onclick="window.openCadetSheetView('${c.id}')" style="border-radius:99px;">ARKUSZ (${done}/7)</button></td><td>${c.joinDate}</td><td><div class="blip-pill ${c.pos ? 'active-green' : ''}" style="padding:3px 9px; font-size:11px;" onclick="window.setCadetPos('${c.id}', ${!c.pos})"><span class="blip-dot"></span><span>${c.pos ? 'TAK' : 'NIE'}</span></div></td><td><select class="sel" style="padding:4px 8px; font-size:11px;" onchange="window.setCadetNeg('${c.id}', this.value)">${["BRAK","1 NEGATYWNY","2 NEGATYWNE","DO POPRAWY","ZAWIESZONY"].map(opt => `<option value="${opt}" ${c.neg===opt?'selected':''}>${opt}</option>`).join("")}</select></td><td><button type="button" class="btn btn-sm btn-red" onclick="window.removeCadet('${c.id}')">✕</button></td></tr>`;
+    }).join("");
+    const examSel = document.getElementById("exam-cadet-sel");
+    if (examSel) examSel.innerHTML = db.cadets.map(c => `<option value="${c.id}">[${c.badge}] ${c.name}</option>`).join("");
+  };
+  window.createCadet = function() {
+    const badge = document.getElementById("new-c-badge").value.trim(), name = document.getElementById("new-c-name").value.trim(), fto = document.getElementById("new-c-fto").value.trim() || "Oley Sasa";
+    if (!badge || !name) { toast("Wpisz odznakę i imię kadeta!"); return; }
+    const nc = { id: badge + "_" + Date.now(), badge, name, fto, joinDate: new Date().toLocaleDateString("pl-PL"), sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} };
+    FTO_BASIC.forEach(m => nc.modules[m] = { ok: false, note: "", sign: "" });
+    db.cadets.unshift(nc); saveDatabase(); window.renderCadets();
+    document.getElementById("new-c-badge").value = ""; document.getElementById("new-c-name").value = ""; toast("Dodano kadeta!");
+  };
+  window.removeCadet = function(id) { db.cadets = db.cadets.filter(x => x.id !== id); saveDatabase(); window.renderCadets(); };
+  window.setCadetPos = function(id, v) { const c = db.cadets.find(x => x.id === id); if (c) { c.pos = v; saveDatabase(); window.renderCadets(); } };
+  window.setCadetNeg = function(id, v) { const c = db.cadets.find(x => x.id === id); if (c) { c.neg = v; saveDatabase(); window.renderCadets(); } };
+  window.openCadetSheetView = function(id) {
+    window.currentCadetId = id; const c = db.cadets.find(x => x.id === id); if (!c) return;
+    setTxt("cs-badge-pill", "#" + c.badge); setTxt("cs-title-name", c.name); setTxt("cs-subtitle", "Opiekun FTO: " + c.fto + " • Dołączył: " + c.joinDate);
+    document.getElementById("cs-pos-blip").className = "blip-pill " + (c.pos ? "active-green" : "");
+    document.getElementById("cs-pos-notes").value = c.posNotes || "";
+    document.getElementById("cs-neg-select").value = c.neg || "BRAK";
+    document.getElementById("cs-neg-notes").value = c.negNotes || "";
+    refreshCadetSheetButtonState(); renderCadetSheetModules(c); window.switchFtoView("sheet");
+  };
+  window.toggleSheetPosBlip = function() { const c = db.cadets.find(x => x.id === window.currentCadetId); if (c) { c.pos = !c.pos; document.getElementById("cs-pos-blip").className = "blip-pill " + (c.pos ? "active-green" : ""); saveDatabase(); window.renderCadets(); } };
+  function renderCadetSheetModules(c) {
+    const tbody = document.getElementById("cs-modules-body"); if (!tbody) return;
+    tbody.innerHTML = FTO_BASIC.map((m, i) => {
+      const mod = c.modules[m] || { ok: false, note: "", sign: "" };
+      return `<tr><td style="font-weight:700;">${m}</td><td><div class="blip-pill ${mod.ok ? 'active-green' : ''}" style="padding:4px 10px; font-size:11px;" onclick="window.toggleCadetModOk(${i})"><span class="blip-dot"></span><span>${mod.ok ? 'Potrafi' : 'Brak'}</span></div></td><td><input type="text" class="inp" value="${mod.note}" oninput="window.updateCadMod(${i},'note',this.value)"/></td><td><input type="text" class="inp" style="text-align:center;font-weight:700;" value="${mod.sign}" oninput="window.updateCadMod(${i},'sign',this.value)"/></td><td><button type="button" class="btn btn-sm btn-dark" onclick="window.quickSignCadMod(${i})">Podpisz: SASA</button></td></tr>`;
+    }).join("");
+  }
+  window.toggleCadetModOk = function(idx) {
+    const c = db.cadets.find(x => x.id === window.currentCadetId);
+    if (c) { c.modules[FTO_BASIC[idx]].ok = !c.modules[FTO_BASIC[idx]].ok; saveDatabase(); renderCadetSheetModules(c); window.renderCadets(); }
+  };
+  window.updateCadMod = function(idx, field, val) { const c = db.cadets.find(x => x.id === window.currentCadetId); if (c) { c.modules[FTO_BASIC[idx]][field] = val; saveDatabase(); window.renderCadets(); } };
+  window.quickSignCadMod = function(idx) { const c = db.cadets.find(x => x.id === window.currentCadetId); if (c) { c.modules[FTO_BASIC[idx]].ok = true; c.modules[FTO_BASIC[idx]].sign = "SASA"; saveDatabase(); renderCadetSheetModules(c); window.renderCadets(); } };
+  window.signAllCadetBasic = function() { const c = db.cadets.find(x => x.id === window.currentCadetId); if (c) { FTO_BASIC.forEach(m => { c.modules[m].ok = true; c.modules[m].sign = "SASA"; }); saveDatabase(); renderCadetSheetModules(c); window.renderCadets(); toast("Zatwierdzono moduły jako SASA"); } };
+  window.saveCadetRemarks = function() { const c = db.cadets.find(x => x.id === window.currentCadetId); if (c) { c.posNotes = document.getElementById("cs-pos-notes").value; c.neg = document.getElementById("cs-neg-select").value; c.negNotes = document.getElementById("cs-neg-notes").value; saveDatabase(); window.renderCadets(); } };
+  window.promoteCadetToOfficer = function() {
+    const c = db.cadets.find(x => x.id === window.currentCadetId); if (!c) return;
+    db.officers.unshift({ badge: c.badge, name: c.name, rank: "Officer I", channel: "LSPD Tac #1", status: "Na służbie", licenses: {}, updated: "Awans FTO" });
+    db.cadets = db.cadets.filter(x => x.id !== window.currentCadetId);
+    saveDatabase(); window.renderCadets(); renderAllOfficersView(); window.switchFtoView("list"); toast("Awansowano [" + c.badge + "] " + c.name + "!");
+  };
+  window.copyCadetSheet = function() { const c = db.cadets.find(x => x.id === window.currentCadetId); if (c) copyText(`KARTA KADETA [${c.badge}] ${c.name}\nCzas w patrolu: ${formatHMS(getCadetTotalSec(c))}`, "Skopiowano kartę kadeta!"); };
+
+  const EXAM_ITEMS = ["Teoria", "NTS", "FTS", "Status 7", "10-80", "10-80 patyki", "Pierwsza pomoc"];
+  let examScores = { "Teoria": 0, "NTS": 0, "FTS": 0, "Status 7": 0, "10-80": 0, "10-80 patyki": 0, "Pierwsza pomoc": 0 };
+  function renderOfficerExamTable() {
+    const tb = document.getElementById("exam-rows-tbody"); if (!tb) return;
+    let total = 0;
+    tb.innerHTML = EXAM_ITEMS.map((item, idx) => {
+      const val = examScores[item] || 0; total += val;
+      const nodes = [0, 1, 2, 3].map(p => `<div class="blip-node ${val === p ? (p === 0 ? 'selected-zero' : (p === 3 ? 'selected-max' : 'selected-pts')) : ''}" onclick="window.setExamPts(${idx},${p})">${p}</div>`).join("");
+      return `<tr><td style="font-weight:700; color:var(--accent-light);">${item}</td><td><div class="blip-nodes-group">${nodes}</div></td><td style="text-align:center; font-weight:800;">${val} pkt</td></tr>`;
+    }).join("");
+    setTxt("exam-total-cell", total + " / 21");
+    const v = document.getElementById("exam-verdict-cell");
+    if (v) { v.textContent = total >= 17 ? "ZDANE" : "NIEZDANE (Min. 17 pkt)"; v.style.color = total >= 17 ? "#34d399" : "#f87171"; }
+  }
+  window.setExamPts = function(idx, p) { examScores[EXAM_ITEMS[idx]] = p; renderOfficerExamTable(); };
+  window.copyFinalExamProtocol = function() { let total = 0; EXAM_ITEMS.forEach(i => total += examScores[i]); copyText(`EGZAMIN OFICERSKI LSPD — Wynik: ${total}/21 pkt (${total >= 17 ? 'ZDANE' : 'NIEZDANE'})`, "Skopiowano wynik egzaminu!"); };
+
+  /* PATROLE I FUNKCJONARIUSZE */
+  function renderPatrols() {
+    setTxt("pwc-holder-name", db.pwc); setTxt("apwc-holder-name", db.apwc);
+    const grid = document.getElementById("patrols-grid");
+    if (grid) grid.innerHTML = db.patrols.map((p, idx) => `<div class="card" style="margin-bottom:0;"><div class="card-header"><div><strong>Patrol ${idx + 1}</strong> <span class="pill pill-blue">${p.type}</span></div><button type="button" class="btn btn-sm btn-red" onclick="window.removePatrol(${p.id})">Usuń</button></div>${p.members.map(m => `<div class="chip-item"><span>${m}</span></div>`).join("")}</div>`).join("");
+  }
+  window.removePatrol = function(id) { db.patrols = db.patrols.filter(x => x.id !== id); saveDatabase(); renderPatrols(); };
+  window.takeOverRole = function(r) { if (r === "PWC") db.pwc = db.loggedOfficer; else db.apwc = db.loggedOfficer; saveDatabase(); renderPatrols(); toast("Przejęto " + r); };
+  window.createNewPatrolUnit = function() {
+    const type = document.getElementById("new-patrol-type").value, mem = document.getElementById("new-patrol-members").value.trim() || db.loggedOfficer;
+    db.patrols.push({ id: Date.now(), type, members: mem.split(",").map(s => s.trim()) });
+    document.getElementById("new-patrol-members").value = ""; saveDatabase(); renderPatrols();
+  };
+  function renderAllOfficersView() {
+    const dispBody = document.getElementById("dispatch-officers-tbody"), allBody = document.getElementById("all-officers-tbody");
+    if (dispBody) dispBody.innerHTML = db.officers.map(o => `<tr><td style="font-weight:800; color:var(--accent-light);">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${o.channel || "LSPD Tac #1"}</td><td><div class="blip-pill ${o.status === 'Na służbie' ? 'active-green' : ''}" style="padding:3px 10px; font-size:11px;" onclick="window.toggleOfficerDuty('${o.badge}')"><span class="blip-dot"></span><span>${o.status}</span></div></td></tr>`).join("");
+    if (allBody) allBody.innerHTML = db.officers.map(o => `<tr><td style="font-weight:800; color:var(--accent-light);">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${LICENSES.filter(k => o.licenses && o.licenses[k]).map(k => `<span class="pill pill-blue" style="margin-right:3px;">${k}</span>`).join("") || `<span style="color:var(--text-dim);">Brak</span>`}</td><td><span class="pill ${o.status === 'Na służbie' ? 'pill-green' : 'pill-gray'}">${o.status}</span></td><td style="text-align:right;"><button type="button" class="btn btn-sm btn-red" onclick="window.deleteOfficer('${o.badge}')">Usuń</button></td></tr>`).join("");
+  }
+  window.deleteOfficer = function(b) { db.officers = db.officers.filter(x => x.badge !== b); saveDatabase(); renderAllOfficersView(); window.renderLicenseMatrix(); };
+  window.toggleOfficerDuty = function(b) { const o = db.officers.find(x => x.badge === b); if (o) { o.status = o.status === "Na służbie" ? "Poza służbą" : "Na służbie"; saveDatabase(); renderAllOfficersView(); } };
+  window.createOfficerInDB = function() {
+    const b = document.getElementById("add-off-badge").value.trim(), n = document.getElementById("add-off-name").value.trim(), r = document.getElementById("add-off-rank").value.trim() || "Officer I";
+    if (!b || !n) { toast("Wpisz odznakę i imię!"); return; }
+    db.officers.unshift({ badge: b, name: n, rank: r, channel: "LSPD Tac #1", status: "Na służbie", licenses: {}, updated: "Nowy" });
+    saveDatabase(); renderAllOfficersView(); window.renderLicenseMatrix(); renderSzkCourseBar(); renderAiadOffensesBlips();
+    document.getElementById("add-off-badge").value = ""; document.getElementById("add-off-name").value = ""; toast("Dodano funkcjonariusza!");
+  };
+
+  /* NAWIGACJA GŁÓWNA */
+  window.switchMainView = function(v) {
+    ["sprawy", "raporty", "pojazdy", "dispatch", "aiad", "dyspozytornia", "patrole", "funkcjonariusze", "szkolenia", "kadet"].forEach(k => {
+      document.getElementById("view-" + k)?.classList.add("hidden");
+      document.getElementById("nav-" + k)?.classList.remove("active");
+    });
+    document.getElementById("view-" + v)?.classList.remove("hidden");
+    document.getElementById("nav-" + v)?.classList.add("active");
+  };
+  window.switchSzkMode = function(m) {
+    document.getElementById("szk-mode-exam").classList.toggle("hidden", m !== "exam");
+    document.getElementById("szk-mode-matrix").classList.toggle("hidden", m !== "matrix");
+    document.getElementById("btn-szk-exam").className = "btn " + (m === "exam" ? "btn-blue" : "btn-dark");
+    document.getElementById("btn-szk-matrix").className = "btn " + (m === "matrix" ? "btn-blue" : "btn-dark");
+  };
+  window.switchFtoView = function(s) {
+    ["list", "sheet", "exam"].forEach(k => document.getElementById("fto-sub-" + k)?.classList.add("hidden"));
+    document.getElementById("fto-sub-" + s)?.classList.remove("hidden");
+    document.getElementById("fto-tab-list").className = "btn " + (s !== "exam" ? "btn-blue" : "btn-dark");
+    document.getElementById("fto-tab-exam").className = "btn " + (s === "exam" ? "btn-blue" : "btn-dark");
+  };
+  window.toggleOfficerEditBox = function() { document.getElementById("officer-edit-box").classList.toggle("hidden"); };
+  window.saveLoggedOfficer = function() {
+    const val = document.getElementById("logged-officer-inp").value.trim();
+    if (val) { db.loggedOfficer = val; saveDatabase(); window.generateAutoCaseDescription(); window.generateAiadAutoText(); window.updateRadioPreview(); }
+    document.getElementById("officer-edit-box").classList.add("hidden");
+  };
+  window.exportAllTabletData = function() {
+    const blob = new Blob([JSON.stringify(db, null, 2)], { type: "application/json" });
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "tablet_lspd_backup.json"; a.click();
+  };
+  window.resetFactoryDefaults = function() {
+    try { localStorage.removeItem("lspd_mdt_gh_v11"); } catch (e) {}
+    location.reload();
+  };
+
+  function tickClock() {
+    const now = new Date();
+    setTxt("live-clock", now.toLocaleDateString("pl-PL") + " • " + now.toLocaleTimeString("pl-PL"));
+    let runningCount = 0;
+    db.cadets.forEach(c => {
+      if (c.running) {
+        runningCount++;
+        setTxt("cad-timer-" + c.id, formatHMS(getCadetTotalSec(c)));
+        if (c.id === window.currentCadetId) setTxt("cs-live-timer", formatHMS(getCadetTotalSec(c)));
+      }
+    });
+    const banner = document.getElementById("active-patrol-timers-banner");
+    if (banner) {
+      if (runningCount > 0) { banner.classList.remove("hidden"); setTxt("active-patrol-banner-txt", `Aktywny patrol kadeta (${runningCount})`); }
+      else banner.classList.add("hidden");
+    }
+  }
+  setInterval(tickClock, 1000);
+
+  loadDatabase();
+  tickClock();
+  renderCaseAssistOfficers();
+  renderConfiscatedDisplay([]);
+  renderContextualChargeBlips();
+  updateCaseTotals();
+  renderVehiclesAndTickets();
+  window.updateRadioPreview();
+  renderDispatchCalls();
+  renderAiadOffensesBlips();
+  window.generateAiadAutoText();
+  renderAiadCasesList();
+  window.renderReportsList();
+  renderSzkCourseBar();
+  window.renderLicenseMatrix();
+  window.renderCadets();
+  renderOfficerExamTable();
+  renderPatrols();
+  renderAllOfficersView();
+})();
+</script>
+</body>
+</html>
