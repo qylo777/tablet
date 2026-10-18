@@ -7,18 +7,21 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg-outer: #05070b;
-      --bg-main: #0b0e15;
-      --bg-sidebar: #0e121b;
-      --bg-card: #121723;
-      --bg-input: #090c12;
-      --border: #1e2738;
-      --border-light: #2a364f;
+      --bg-outer: #04060a;
+      --bg-main: #090d14;
+      --bg-sidebar: #0c111a;
+      --bg-card: #111723;
+      --bg-input: #070a10;
+      --border: #1d2638;
+      --border-light: #2a3752;
       --blue: #2563eb;
-      --blue-hover: #1d4ed8;
-      --green: #16a34a;
-      --red: #dc2626;
-      --amber: #d97706;
+      --blue-bright: #3b82f6;
+      --blue-glow: rgba(59, 130, 246, 0.35);
+      --green: #10b981;
+      --green-glow: rgba(16, 185, 129, 0.35);
+      --red: #ef4444;
+      --red-glow: rgba(239, 68, 68, 0.35);
+      --amber: #f59e0b;
       --text: #f1f5f9;
       --text-muted: #94a3b8;
       --text-dim: #64748b;
@@ -28,141 +31,293 @@
       margin: 0; padding: 0;
       background-color: var(--bg-outer);
       color: var(--text);
-      font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
+      font-family: 'Inter', 'Segoe UI', Roboto, -apple-system, sans-serif;
       font-size: 13px;
       overflow-x: hidden;
     }
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.96) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes pulseRadar {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+      70% { box-shadow: 0 0 0 7px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    @keyframes pulseBlue {
+      0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.55); }
+      70% { box-shadow: 0 0 0 6px rgba(59, 130, 246, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+    }
+    .view-animate { animation: fadeSlideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .tablet-shell { display: flex; min-height: 100vh; background-color: var(--bg-main); }
+
+    /* SIDEBAR */
     .sidebar {
-      width: 250px; background-color: var(--bg-sidebar);
+      width: 256px; background-color: var(--bg-sidebar);
       border-right: 1px solid var(--border);
       display: flex; flex-direction: column; flex-shrink: 0; user-select: none;
     }
     .brand-header {
-      padding: 16px; border-bottom: 1px solid var(--border);
+      padding: 18px 16px; border-bottom: 1px solid var(--border);
       display: flex; align-items: center; gap: 12px;
     }
     .brand-seal {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #2563eb, #0f172a 75%);
+      width: 42px; height: 42px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #2563eb, #0b132b 75%);
       border: 2px solid #60a5fa;
       display: flex; align-items: center; justify-content: center;
-      font-weight: 900; font-size: 11px; color: #fff; flex-shrink: 0;
+      box-shadow: 0 0 16px var(--blue-glow); flex-shrink: 0;
     }
     .nav-section-title {
-      padding: 14px 16px 6px; font-size: 10px; font-weight: 800;
-      color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 16px 18px 6px; font-size: 10px; font-weight: 800;
+      color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase;
     }
     .nav-list { display: flex; flex-direction: column; padding: 0 10px; gap: 4px; flex: 1; }
     .nav-item {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 12px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      padding: 10px 12px; border-radius: 9px; font-size: 13px; font-weight: 600;
       color: var(--text-muted); background: transparent; border: 1px solid transparent;
-      cursor: pointer; text-align: left; width: 100%; transition: background-color 0.15s, color 0.15s;
+      cursor: pointer; text-align: left; width: 100%;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .nav-item:hover { background-color: #151c2a; color: #fff; }
-    .nav-item.active { background-color: #172554; color: #60a5fa; border-color: #1e3a8a; }
+    .nav-item-left { display: flex; align-items: center; gap: 10px; }
+    .nav-item svg { width: 17px; height: 17px; stroke: currentColor; transition: transform 0.2s; }
+    .nav-item:hover { background-color: #141c2b; color: #fff; transform: translateX(3px); }
+    .nav-item.active {
+      background: linear-gradient(90deg, rgba(37, 99, 235, 0.22) 0%, rgba(37, 99, 235, 0.05) 100%);
+      color: #60a5fa; border-color: rgba(59, 130, 246, 0.4);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    }
+    .nav-item.active svg { transform: scale(1.1); stroke: #60a5fa; }
     .nav-counter {
       font-size: 10px; padding: 2px 7px; border-radius: 99px;
-      background-color: #1e293b; color: #cbd5e1; font-weight: 700;
+      background-color: #1a2333; color: #cbd5e1; font-weight: 700;
     }
-    .nav-item.active .nav-counter { background-color: #2563eb; color: #fff; }
+    .nav-item.active .nav-counter { background-color: var(--blue); color: #fff; }
+
+    /* MAIN AREA */
     .main-area { flex: 1; display: flex; flex-direction: column; min-width: 0; }
     .topbar {
-      min-height: 52px; background-color: var(--bg-sidebar);
+      min-height: 54px; background-color: var(--bg-sidebar);
       border-bottom: 1px solid var(--border); padding: 8px 24px;
       display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
     }
-    .content-scroll { flex: 1; padding: 22px; overflow-y: auto; }
+    .content-scroll { flex: 1; padding: 22px 26px; overflow-y: auto; }
+
+    /* CARDS & INPUTS */
     .card {
       background-color: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 10px; padding: 16px; margin-bottom: 16px;
+      border-radius: 12px; padding: 16px; margin-bottom: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
     .card-header {
       display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 12px; gap: 10px; flex-wrap: wrap;
     }
     .field-label {
-      display: block; font-size: 11px; font-weight: 700; color: var(--text-muted);
-      text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px;
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;
     }
     .inp, .sel, .txt {
       width: 100%; background-color: var(--bg-input); border: 1px solid var(--border-light);
-      color: var(--text); border-radius: 8px; padding: 8px 12px; font-size: 13px;
-      outline: none; font-family: inherit;
+      color: var(--text); border-radius: 8px; padding: 9px 12px; font-size: 13px;
+      outline: none; font-family: inherit; transition: all 0.18s;
     }
-    .inp:focus, .sel:focus, .txt:focus { border-color: #3b82f6; }
+    .inp:focus, .sel:focus, .txt:focus {
+      border-color: var(--blue-bright);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    /* BUTTONS */
     .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
       padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700;
       cursor: pointer; border: 1px solid transparent; color: #fff; white-space: nowrap;
-      user-select: none; transition: filter 0.15s;
+      user-select: none; transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .btn:hover { filter: brightness(1.1); }
+    .btn svg { width: 15px; height: 15px; stroke: currentColor; flex-shrink: 0; }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.1); }
     .btn:active { transform: translateY(1px); }
-    .btn-sm { padding: 5px 10px; font-size: 11px; border-radius: 6px; }
-    .btn-blue { background-color: var(--blue); border-color: #3b82f6; }
-    .btn-green { background-color: var(--green); border-color: #22c55e; }
-    .btn-red { background-color: var(--red); border-color: #ef4444; }
-    .btn-amber { background-color: var(--amber); border-color: #f59e0b; }
-    .btn-dark { background-color: #182030; border-color: #2c3a52; color: #cbd5e1; }
-    .opt-group { display: flex; gap: 6px; flex-wrap: wrap; }
-    .opt-btn {
-      padding: 7px 12px; border-radius: 7px; font-size: 11.5px; font-weight: 700;
-      cursor: pointer; background-color: #0d121c; border: 1px solid #243047; color: #94a3b8;
+    .btn-sm { padding: 5px 10px; font-size: 11px; border-radius: 7px; }
+    .btn-blue { background: linear-gradient(135deg, #2563eb, #1d4ed8); border-color: #3b82f6; }
+    .btn-green { background: linear-gradient(135deg, #10b981, #059669); border-color: #34d399; }
+    .btn-red { background: linear-gradient(135deg, #ef4444, #dc2626); border-color: #f87171; }
+    .btn-amber { background: linear-gradient(135deg, #f59e0b, #d97706); border-color: #fbbf24; }
+    .btn-dark { background-color: #172030; border-color: #2b3954; color: #cbd5e1; }
+    .btn-dark:hover { background-color: #1f2b40; color: #fff; }
+
+    /* SYSTEM INTERAKTYWNYCH BLIPÓW */
+    .blip-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .blip-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 13px; border-radius: 999px;
+      background-color: #0b101a; border: 1px solid #233047;
+      color: var(--text-muted); font-size: 12px; font-weight: 700;
+      cursor: pointer; user-select: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .opt-btn:hover { border-color: #3b82f6; color: #fff; }
-    .opt-btn.active-green { background-color: rgba(22, 163, 74, 0.22); border-color: #22c55e; color: #4ade80; }
-    .opt-btn.active-red { background-color: rgba(220, 38, 38, 0.22); border-color: #ef4444; color: #f87171; }
-    .opt-btn.active-blue { background-color: rgba(37, 99, 235, 0.25); border-color: #3b82f6; color: #60a5fa; }
+    .blip-pill:hover { border-color: #3b82f6; color: #fff; transform: translateY(-1px); background-color: #111927; }
+    .blip-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background-color: #334155; transition: all 0.2s ease; flex-shrink: 0;
+    }
+    .blip-pill.active-blue {
+      background-color: rgba(37, 99, 235, 0.16); border-color: #3b82f6; color: #93c5fd;
+      box-shadow: 0 0 14px rgba(59, 130, 246, 0.2);
+    }
+    .blip-pill.active-blue .blip-dot { background-color: #60a5fa; box-shadow: 0 0 8px #3b82f6; animation: pulseBlue 2s infinite; }
+    .blip-pill.active-green {
+      background-color: rgba(16, 185, 129, 0.16); border-color: #10b981; color: #6ee7b7;
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.2);
+    }
+    .blip-pill.active-green .blip-dot { background-color: #34d399; box-shadow: 0 0 8px #10b981; animation: pulseRadar 2s infinite; }
+    .blip-pill.active-red {
+      background-color: rgba(239, 68, 68, 0.16); border-color: #ef4444; color: #fca5a5;
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.2);
+    }
+    .blip-pill.active-red .blip-dot { background-color: #f87171; box-shadow: 0 0 8px #ef4444; }
+    .blip-pill.active-amber {
+      background-color: rgba(245, 158, 11, 0.16); border-color: #f59e0b; color: #fde68a;
+      box-shadow: 0 0 14px rgba(245, 158, 11, 0.2);
+    }
+    .blip-pill.active-amber .blip-dot { background-color: #fbbf24; box-shadow: 0 0 8px #f59e0b; }
+
+    /* Okrągłe Blipy Punktowe (0, 1, 2, 3 pkt) */
+    .blip-nodes-group {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: #080c13; padding: 4px 7px; border-radius: 999px;
+      border: 1px solid #1c2638;
+    }
+    .blip-node {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800; color: var(--text-muted);
+      background-color: #101724; border: 1.5px solid #26344d;
+      cursor: pointer; user-select: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .blip-node:hover { border-color: #60a5fa; color: #fff; transform: scale(1.08); }
+    .blip-node.selected-zero {
+      background-color: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #fca5a5;
+      box-shadow: 0 0 10px var(--red-glow);
+    }
+    .blip-node.selected-pts {
+      background: radial-gradient(circle at 30% 30%, #2563eb, #1e3a8a);
+      border-color: #60a5fa; color: #fff; box-shadow: 0 0 12px var(--blue-glow); transform: scale(1.08);
+    }
+    .blip-node.selected-max {
+      background: radial-gradient(circle at 30% 30%, #10b981, #065f46);
+      border-color: #34d399; color: #fff; box-shadow: 0 0 12px var(--green-glow); transform: scale(1.08);
+    }
+
+    .question-blip-row {
+      background-color: #0b1019; border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 14px; margin-bottom: 9px;
+      transition: all 0.2s ease;
+    }
+    .question-blip-row:hover { border-color: #2c3d5c; background-color: #0d131f; }
+    .question-blip-row.scored-positive { border-left: 3px solid var(--green); }
+    .question-blip-row.scored-zero { border-left: 3px solid #334155; }
+
+    .progress-track {
+      width: 100%; height: 7px; background: #080b11;
+      border-radius: 99px; overflow: hidden; border: 1px solid #1b2436; margin-top: 8px;
+    }
+    .progress-fill {
+      height: 100%; border-radius: 99px;
+      background: linear-gradient(90deg, #2563eb, #10b981);
+      transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* KARTA MAPKI SZKOLENIOWEJ (ASU / SEU) */
+    .training-map-wrapper {
+      display: grid; grid-template-columns: 360px 1fr; gap: 18px; align-items: center;
+      background: #0b1019; border: 1px solid #1f2b42; border-radius: 12px; padding: 14px;
+    }
+    @media (max-width: 900px) {
+      .training-map-wrapper { grid-template-columns: 1fr; }
+    }
+    .map-frame {
+      position: relative; width: 100%; height: 340px; border-radius: 10px;
+      overflow: hidden; border: 2px solid #26344d; background: #141c2b;
+      cursor: zoom-in; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    }
+    .map-frame img, .map-frame svg {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .map-zoom-badge {
+      position: absolute; bottom: 10px; right: 10px;
+      background: rgba(9, 13, 20, 0.85); border: 1px solid #3b82f6;
+      color: #93c5fd; padding: 4px 10px; border-radius: 99px;
+      font-size: 11px; font-weight: 700; pointer-events: none;
+    }
+
+    /* TARYFIKATOR (BLIP-PILLS W MODALNYM OKNIE) */
     .penal-category-title {
-      font-size: 12px; font-weight: 800; color: #e2e8f0;
-      text-transform: uppercase; margin: 16px 0 8px;
+      font-size: 11px; font-weight: 800; color: #60a5fa;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin: 16px 0 8px; display: flex; align-items: center; gap: 6px;
     }
-    .penal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 8px; }
-    .penal-card {
-      background-color: #0d1119; border: 1px solid #1e2636; border-radius: 9px;
-      padding: 10px 12px; cursor: pointer; display: flex; flex-direction: column;
-      justify-content: space-between; min-height: 70px; user-select: none;
+    .penal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(225px, 1fr)); gap: 8px; }
+    .penal-blip-item {
+      background-color: #0b1018; border: 1px solid #1e283a; border-radius: 999px;
+      padding: 8px 14px; cursor: pointer; display: flex; align-items: center;
+      justify-content: space-between; gap: 8px; user-select: none;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .penal-card:hover { border-color: #3b82f6; background-color: #111724; }
-    .penal-card.selected { background-color: #101c38; border-color: #2563eb; box-shadow: 0 0 0 1px #3b82f6 inset; }
-    .penal-card-title { font-weight: 700; font-size: 12px; color: #fff; margin-bottom: 6px; }
-    .penal-card-meta { font-size: 11px; color: #94a3b8; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
-    .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; background-color: var(--bg-card); }
+    .penal-blip-item:hover { border-color: #3b82f6; background-color: #111927; transform: translateY(-1px); }
+    .penal-blip-item.selected {
+      background-color: rgba(37, 99, 235, 0.18); border-color: #3b82f6;
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.22);
+    }
+
+    /* TABELE */
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 11px; background-color: var(--bg-card); }
     table.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
     table.tbl th {
-      text-align: left; padding: 10px 12px; background-color: #0d111a;
+      text-align: left; padding: 11px 14px; background-color: #0c1018;
       color: var(--text-muted); font-size: 11px; font-weight: 700;
       text-transform: uppercase; border-bottom: 1px solid var(--border);
     }
-    table.tbl td { padding: 9px 12px; border-bottom: 1px solid #171f2e; vertical-align: middle; }
-    table.tbl tr:hover td { background-color: #161e2e; }
-    .pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+    table.tbl td { padding: 10px 14px; border-bottom: 1px solid #161f2e; vertical-align: middle; }
+    table.tbl tr:hover td { background-color: #141c2b; }
+
+    .pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 99px; font-size: 11px; font-weight: 700; }
     .pill-blue { background: rgba(37, 99, 235, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35); }
-    .pill-green { background: rgba(22, 163, 74, 0.18); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.35); }
-    .pill-amber { background: rgba(217, 119, 6, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
-    .pill-red { background: rgba(220, 38, 38, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }
-    .pill-gray { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
+    .pill-green { background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
+    .pill-amber { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
+    .pill-red { background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }
+    .pill-gray { background: #1a2232; color: #94a3b8; border: 1px solid #2e3c56; }
+
     .chip-item {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 6px 10px; background-color: var(--bg-input); border: 1px solid var(--border);
-      border-radius: 7px; margin-bottom: 6px; font-size: 12px;
+      padding: 6px 12px; background-color: var(--bg-input); border: 1px solid var(--border);
+      border-radius: 999px; margin-bottom: 6px; font-size: 12px;
     }
     .chip-remove { background: transparent; border: none; color: #ef4444; font-weight: 800; cursor: pointer; font-size: 15px; }
+
+    /* MODALE */
     .modal-backdrop {
       position: fixed; inset: 0; background: rgba(3, 6, 12, 0.85);
+      backdrop-filter: blur(4px);
       display: flex; align-items: center; justify-content: center; z-index: 5000; padding: 16px;
     }
     .modal-window {
       width: 100%; max-width: 560px; background-color: #111622;
-      border: 1px solid var(--border-light); border-radius: 12px;
+      border: 1px solid var(--border-light); border-radius: 14px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85); overflow: hidden;
       display: flex; flex-direction: column; max-height: 88vh;
+      animation: modalPop 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-    .modal-window-lg { max-width: 1020px; }
+    .modal-window-lg { max-width: 1040px; }
     .modal-head {
-      padding: 12px 18px; background-color: #0c1018; border-bottom: 1px solid var(--border);
+      padding: 13px 18px; background-color: #0c1018; border-bottom: 1px solid var(--border);
       display: flex; justify-content: space-between; align-items: center; font-weight: 800; gap: 10px;
     }
     .modal-body { padding: 16px 18px; overflow-y: auto; flex: 1; }
@@ -171,58 +326,89 @@
       display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
     }
     .hidden { display: none !important; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #070a10; }
+    ::-webkit-scrollbar-thumb { background: #24324a; border-radius: 3px; }
   </style>
 </head>
 <body>
 
 <div class="tablet-shell">
-  <!-- BOCZNY PASEK NAWIGACJI -->
+  <!-- BOCZNY PASEK NAWIGACJI Z IKONAMI SVG -->
   <aside class="sidebar">
     <div class="brand-header">
-      <div class="brand-seal">LSPD</div>
+      <div class="brand-seal">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#93c5fd" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+      </div>
       <div>
-        <div style="font-weight: 800; font-size: 15px; color: #fff;">Tablet <span style="color: #3b82f6;">LSPD</span></div>
-        <div style="font-size: 11px; color: var(--text-dim);">Los Santos Police Department</div>
+        <div style="font-weight: 800; font-size: 15px; color: #fff; letter-spacing: 0.02em;">Tablet <span style="color: #3b82f6;">LSPD</span></div>
+        <div style="font-size: 11px; color: var(--text-dim);">Mobile Data Terminal</div>
       </div>
     </div>
 
-    <div class="nav-section-title">KATEGORIE</div>
+    <div class="nav-section-title">OPERACYJNE</div>
     <nav class="nav-list">
       <button type="button" class="nav-item active" id="nav-sprawy" onclick="switchMainView('sprawy')">
-        <span>⚖️ Sprawy (Taryfikator)</span>
-        <span class="nav-counter">AUTO</span>
+        <span class="nav-item-left">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+          <span>Sprawy (Taryfikator)</span>
+        </span>
+        <span class="nav-counter">BLIP</span>
       </button>
+
       <button type="button" class="nav-item" id="nav-raporty" onclick="switchMainView('raporty')">
-        <span>📋 Raporty</span>
+        <span class="nav-item-left">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <span>Raporty służbowe</span>
+        </span>
         <span class="nav-counter" id="cnt-reports">0</span>
       </button>
+
       <button type="button" class="nav-item" id="nav-dyspozytornia" onclick="switchMainView('dyspozytornia')">
-        <span>📡 Dyspozytornia</span>
+        <span class="nav-item-left">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg>
+          <span>Dyspozytornia</span>
+        </span>
         <span class="nav-counter" id="cnt-duty">0</span>
       </button>
+
       <button type="button" class="nav-item" id="nav-patrole" onclick="switchMainView('patrole')">
-        <span>🚓 Patrole (PWC)</span>
+        <span class="nav-item-left">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+          <span>Patrole (PWC)</span>
+        </span>
         <span class="nav-counter" id="cnt-patrols">0</span>
       </button>
+
       <button type="button" class="nav-item" id="nav-funkcjonariusze" onclick="switchMainView('funkcjonariusze')">
-        <span>👮 Funkcjonariusze</span>
+        <span class="nav-item-left">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Funkcjonariusze</span>
+        </span>
         <span class="nav-counter" id="cnt-officers">0</span>
       </button>
 
       <div class="nav-section-title" style="padding-top: 14px;">AKADEMIA I SZKOLENIA</div>
       <button type="button" class="nav-item" id="nav-szkolenia" onclick="switchMainView('szkolenia')">
-        <span>🎖️ Szkolenia LSPD</span>
+        <span class="nav-item-left">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+          <span>Szkolenia LSPD</span>
+        </span>
         <span class="nav-counter">7</span>
       </button>
+
       <button type="button" class="nav-item" id="nav-kadet" onclick="switchMainView('kadet')">
-        <span>🎓 Strefa Kadeta (FTO)</span>
+        <span class="nav-item-left">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          <span>Strefa Kadeta (FTO)</span>
+        </span>
         <span class="nav-counter" id="cnt-cadets">0</span>
       </button>
     </nav>
 
-    <div style="padding: 14px; border-top: 1px solid var(--border); background-color: #090c12;">
+    <div style="padding: 14px; border-top: 1px solid var(--border); background-color: #070a10;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-        <span style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; font-weight: 700;">Zalogowany jako</span>
+        <span style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; font-weight: 700;">Zalogowany funkcjonariusz</span>
         <button type="button" class="btn btn-sm btn-dark" style="padding: 2px 7px; font-size: 10px;" onclick="toggleOfficerEditBox()">Zmień</button>
       </div>
       <div style="font-weight: 800; font-size: 14px; color: #fff;" id="logged-officer-display">[923] Oley Sasa</div>
@@ -238,36 +424,51 @@
   <div class="main-area">
     <header class="topbar">
       <div style="display: flex; align-items: center; gap: 12px;">
-        <span class="pill pill-green">● NA SŁUŻBIE (10-8)</span>
-        <span id="active-patrol-timers-banner" class="pill pill-amber hidden">⏱ Aktywny stoper kadeta</span>
+        <span class="blip-pill active-green" style="cursor: default; padding: 4px 11px;">
+          <span class="blip-dot"></span>
+          <span>10-8 NA SŁUŻBIE</span>
+        </span>
+        <span id="active-patrol-timers-banner" class="blip-pill active-blue hidden" onclick="switchMainView('kadet')">
+          <span class="blip-dot"></span>
+          <span id="active-patrol-banner-txt">Aktywny stoper kadeta</span>
+        </span>
       </div>
       <div style="display: flex; align-items: center; gap: 10px;">
         <span id="live-clock" style="font-family: monospace; font-size: 13px; color: var(--text-muted); font-weight: 700;"></span>
-        <button type="button" class="btn btn-sm btn-dark" onclick="exportAllTabletData()">💾 Eksport JSON</button>
-        <button type="button" class="btn btn-sm btn-dark" onclick="resetFactoryDefaults()">🔄 Reset pamięci</button>
+        <button type="button" class="btn btn-sm btn-dark" onclick="exportAllTabletData()">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Eksport JSON</span>
+        </button>
+        <button type="button" class="btn btn-sm btn-dark" onclick="resetFactoryDefaults()">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          <span>Reset</span>
+        </button>
       </div>
     </header>
 
     <main class="content-scroll">
-      <div id="toast-alert" style="position: fixed; bottom: 22px; right: 22px; background: #1d4ed8; color: #fff; padding: 12px 18px; border-radius: 8px; font-weight: 700; border: 1px solid #60a5fa; box-shadow: 0 10px 25px rgba(0,0,0,0.7); display: none; z-index: 9999;"></div>
+      <div id="toast-alert" style="position: fixed; bottom: 22px; right: 22px; background: #1e3a8a; color: #fff; padding: 12px 18px; border-radius: 10px; font-weight: 700; border: 1px solid #60a5fa; box-shadow: 0 10px 25px rgba(0,0,0,0.75); display: none; z-index: 9999;"></div>
 
       <!-- ========================================================= -->
-      <!-- 1. SPRAWY I AUTOMATYCZNY GENERATOR OPISU Z TARYFIKATORA   -->
+      <!-- 1. SPRAWY I AUTOMATYCZNY GENERATOR OPISU (BLIP SYSTEM)    -->
       <!-- ========================================================= -->
-      <section id="view-sprawy">
+      <section id="view-sprawy" class="view-animate">
         <div class="card-header" style="margin-bottom: 14px;">
           <div>
-            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Nowa sprawa (Taryfikator i Automatyczny Opis)</h1>
-            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Zaznacz zarzuty w taryfikatorze, wybierz postawę zatrzymanego, a opis sprawy wygeneruje się automatycznie</p>
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Nowa sprawa — Taryfikator i Blipy Przesłuchania</h1>
+            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Zaznacz blipy pytań procesowych i wybierz zarzuty w taryfikatorze, aby automatycznie zbudować opis sprawy</p>
           </div>
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button type="button" class="btn btn-dark" onclick="resetCaseForm()">🗑️ Wyczyść szkic</button>
-            <button type="button" class="btn btn-blue" onclick="copyCaseTextOnly()">📄 Kopiuj sam opis sprawy</button>
-            <button type="button" class="btn btn-green" onclick="copyFullCaseRecord()">📋 Kopiuj pełną kartotekę</button>
+            <button type="button" class="btn btn-dark" onclick="resetCaseForm()">Wyczyść szkic</button>
+            <button type="button" class="btn btn-blue" onclick="copyCaseTextOnly()">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span>Kopiuj sam opis</span>
+            </button>
+            <button type="button" class="btn btn-green" onclick="copyFullCaseRecord()">Kopiuj pełną kartotekę</button>
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1.7fr 1fr; gap: 16px;">
+        <div style="display: grid; grid-template-columns: 1.75fr 1fr; gap: 16px;">
           <div>
             <div class="card">
               <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 14px; margin-bottom: 14px;">
@@ -276,7 +477,7 @@
                   <div style="font-size: 14px; font-weight: 800; color: #fff; padding: 8px 0;" id="case-lead-officer">[923] Oley Sasa</div>
                 </div>
                 <div>
-                  <label class="field-label">KONFISKATA / DOWODY</label>
+                  <label class="field-label">KONFISKATA / ZABEZPIECZONE DOWODY</label>
                   <div style="display: flex; gap: 6px; margin-bottom: 6px;">
                     <input type="text" id="confiscate-inline-inp" class="inp" style="padding: 6px 10px;" placeholder="Np. Pistolet Vintage, 10x Marihuana..." />
                     <button type="button" class="btn btn-sm btn-blue" onclick="addConfiscatedInline()">+ Dodaj</button>
@@ -293,43 +494,74 @@
                 <div id="case-assist-officers-box"></div>
               </div>
 
-              <!-- PRZEŁĄCZNIKI AUTOMATYCZNEGO OPISU -->
-              <div style="background: #0c111c; border: 1px solid #1f2b42; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
-                  <span style="font-size: 11.5px; font-weight: 800; color: #60a5fa; text-transform: uppercase;">⚙️ Ustawienia Automatycznego Opisu Sprawy</span>
-                  <label style="font-size: 11.5px; color: #cbd5e1; display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                    <input type="checkbox" id="auto-desc-toggle" checked onchange="generateAutoCaseDescription()" />
-                    Automatycznie aktualizuj opis
-                  </label>
-                </div>
-
-                <div style="margin-bottom: 10px;">
-                  <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;">1. ZACHOWANIE ZATRZYMANEGO I PRZYZNANIE SIĘ DO WINY:</div>
-                  <div class="opt-group">
-                    <button type="button" class="opt-btn active-green" id="att-coop" onclick="setCaseAttitude('coop')">
-                      🤝 Współpracował i przyznał się do winy
-                    </button>
-                    <button type="button" class="opt-btn" id="att-denied" onclick="setCaseAttitude('denied')">
-                      🛑 Do końca upierał się i nie przyznawał się do winy
-                    </button>
-                    <button type="button" class="opt-btn" id="att-silent" onclick="setCaseAttitude('silent')">
-                      😶 Wykonywał polecenia, ale odmówił składania wyjaśnień
-                    </button>
+              <!-- BLIPY PYTAŃ DO AUTOMATYCZNEGO OPISU SPRAWY -->
+              <div style="background: #0b1019; border: 1px solid #1f2b42; border-radius: 12px; padding: 14px; margin-bottom: 14px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                  <span style="font-size: 11.5px; font-weight: 800; color: #60a5fa; text-transform: uppercase; letter-spacing: 0.05em;">⚡ Blipy Przesłuchania i Decyzji Procesowej</span>
+                  <div class="blip-pill active-green" id="auto-toggle-blip" onclick="toggleAutoDescBlip()" style="padding: 4px 10px; font-size: 11px;">
+                    <span class="blip-dot"></span>
+                    <span>Auto-opis aktywny</span>
                   </div>
                 </div>
 
+                <!-- PYTANIE 1: CZY WSPÓŁPRACOWAŁ? -->
+                <div style="margin-bottom: 11px;">
+                  <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;">1. Czy podejrzany współpracował podczas czynności?</div>
+                  <div class="blip-row">
+                    <div class="blip-pill active-green" id="blip-coop-yes" onclick="setCaseCoop('yes')">
+                      <span class="blip-dot"></span><span>Współpracował z FP</span>
+                    </div>
+                    <div class="blip-pill" id="blip-coop-passive" onclick="setCaseCoop('passive')">
+                      <span class="blip-dot"></span><span>Bierny / Odmówił zeznań</span>
+                    </div>
+                    <div class="blip-pill" id="blip-coop-no" onclick="setCaseCoop('no')">
+                      <span class="blip-dot"></span><span>Nie współpracował / Agresywny</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- PYTANIE 2: STOSUNEK DO WINY -->
+                <div style="margin-bottom: 11px;">
+                  <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;">2. Stosunek do winy (Czy przyznał się do zarzutów?):</div>
+                  <div class="blip-row">
+                    <div class="blip-pill active-green" id="blip-guilt-admitted" onclick="setCaseGuilt('admitted')">
+                      <span class="blip-dot"></span><span>Przyznał się do winy</span>
+                    </div>
+                    <div class="blip-pill" id="blip-guilt-denied" onclick="setCaseGuilt('denied')">
+                      <span class="blip-dot"></span><span>Do końca upierał się i nie przyznawał się do winy</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- PYTANIE 3: DODATKOWE OKOLICZNOŚCI (ADWOKAT / SAMS / REDUKCJA) -->
+                <div style="margin-bottom: 11px;">
+                  <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;">3. Dodatkowe czynności procesowe (Wielokrotny wybór blipów):</div>
+                  <div class="blip-row">
+                    <div class="blip-pill" id="blip-extra-lawyer" onclick="toggleCaseExtra('lawyer')">
+                      <span class="blip-dot"></span><span>Żądał adwokata (Konsultacja prawna)</span>
+                    </div>
+                    <div class="blip-pill" id="blip-extra-sams" onclick="toggleCaseExtra('sams')">
+                      <span class="blip-dot"></span><span>Udzielono pomocy medycznej SAMS</span>
+                    </div>
+                    <div class="blip-pill" id="blip-extra-reduced" onclick="toggleCaseExtra('reduced')">
+                      <span class="blip-dot"></span><span>Złagodzono wyrok za współpracę (-20% mies.)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- PYTANIE 4: CZY ZATRZYMANY NA KOMENDZIE? -->
                 <div>
-                  <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;">2. DECYZJA KOŃCOWA (KOMENDA / WIĘZIENIE):</div>
-                  <div class="opt-group">
-                    <button type="button" class="opt-btn active-blue" id="det-station" onclick="setCaseDetention('station')">
-                      🏢 Zostaje zatrzymany na komendzie (Cele LSPD)
-                    </button>
-                    <button type="button" class="opt-btn" id="det-prison" onclick="setCaseDetention('prison')">
-                      🚌 Transport do więzienia stanowego (Bolingbroke)
-                    </button>
-                    <button type="button" class="opt-btn" id="det-released" onclick="setCaseDetention('released')">
-                      ✅ Zwolniony po opłaceniu grzywny
-                    </button>
+                  <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;">4. Czy zostaje zatrzymany na komendzie?</div>
+                  <div class="blip-row">
+                    <div class="blip-pill active-blue" id="blip-det-station" onclick="setCaseDetention('station')">
+                      <span class="blip-dot"></span><span>Tak — Zatrzymany na komendzie (Cele LSPD)</span>
+                    </div>
+                    <div class="blip-pill" id="blip-det-prison" onclick="setCaseDetention('prison')">
+                      <span class="blip-dot"></span><span>Więzienie stanowe (Bolingbroke)</span>
+                    </div>
+                    <div class="blip-pill" id="blip-det-released" onclick="setCaseDetention('released')">
+                      <span class="blip-dot"></span><span>Nie — Zwolniony po opłaceniu grzywny</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -337,9 +569,9 @@
               <div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                   <label class="field-label" style="margin: 0;">OPIS SPRAWY</label>
-                  <button type="button" class="btn btn-sm btn-dark" onclick="generateAutoCaseDescription(true)">🔄 Odśwież opis z zarzutów</button>
+                  <button type="button" class="btn btn-sm btn-dark" onclick="generateAutoCaseDescription(true)">Odśwież opis</button>
                 </div>
-                <textarea id="case-desc" rows="7" class="txt" style="line-height: 1.55;" placeholder="Kliknij poniżej „+ Dodaj wyrok (Otwórz Taryfikator)” i wybierz zarzuty – opis sprawy wygeneruje się tutaj automatycznie..."></textarea>
+                <textarea id="case-desc" rows="7" class="txt" style="line-height: 1.55;" placeholder="Wybierz zarzuty z taryfikatora poniżej (+ Dodaj wyrok) oraz zaznacz blipy powyżej — opis wygeneruje się sam..."></textarea>
               </div>
             </div>
 
@@ -350,8 +582,8 @@
                   <div style="font-size: 11px; color: var(--text-dim);">Pełny taryfikator LSPD (10 kategorii)</div>
                 </div>
                 <div style="display: flex; gap: 8px;">
-                  <button type="button" class="btn btn-sm btn-dark" onclick="clearCaseCharges()">Wyczyść zarzuty</button>
-                  <button type="button" class="btn btn-blue" onclick="openPenalModal()">+ Dodaj wyrok (Otwórz Taryfikator)</button>
+                  <button type="button" class="btn btn-sm btn-dark" onclick="clearCaseCharges()">Wyczyść</button>
+                  <button type="button" class="btn btn-blue" onclick="openPenalModal()">+ Dodaj wyrok (Taryfikator)</button>
                 </div>
               </div>
               <div id="case-selected-list"></div>
@@ -366,21 +598,21 @@
 
             <div class="card" style="margin-bottom: 0;">
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
-                <div style="background: var(--bg-input); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+                <div style="background: var(--bg-input); padding: 14px; border-radius: 10px; border: 1px solid var(--border);">
                   <div style="font-size: 10px; color: var(--text-dim); font-weight: 700;">PROPONOWANA ODSIADKA</div>
-                  <div id="case-sum-months" style="font-size: 22px; font-weight: 800; color: #fff; margin-top: 4px;">0 mies.</div>
+                  <div id="case-sum-months" style="font-size: 22px; font-weight: 800; color: #60a5fa; margin-top: 4px;">0 mies.</div>
                 </div>
-                <div style="background: var(--bg-input); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+                <div style="background: var(--bg-input); padding: 14px; border-radius: 10px; border: 1px solid var(--border);">
                   <div style="font-size: 10px; color: var(--text-dim); font-weight: 700;">PROPONOWANA GRZYWNA</div>
-                  <div id="case-sum-fine" style="font-size: 22px; font-weight: 800; color: #4ade80; margin-top: 4px;">$0</div>
+                  <div id="case-sum-fine" style="font-size: 22px; font-weight: 800; color: #34d399; margin-top: 4px;">$0</div>
                 </div>
               </div>
 
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <button type="button" class="btn btn-blue" style="padding: 11px;" onclick="finalizeCaseAction('prison')">🔒 Wyślij do więzienia</button>
-                <button type="button" class="btn btn-green" style="padding: 11px;" onclick="finalizeCaseAction('court')">⚖️ Postępowanie sądowe</button>
-                <button type="button" class="btn btn-dark" style="padding: 11px;" onclick="finalizeCaseAction('pardon')">🕊️ Ułaskaw</button>
-                <button type="button" class="btn btn-amber" style="padding: 11px;" onclick="finalizeCaseAction('station')">🏢 Zatrzymaj na komendzie</button>
+                <button type="button" class="btn btn-blue" style="padding: 11px;" onclick="finalizeCaseAction('prison')">Wyślij do więzienia</button>
+                <button type="button" class="btn btn-green" style="padding: 11px;" onclick="finalizeCaseAction('court')">Postępowanie sądowe</button>
+                <button type="button" class="btn btn-dark" style="padding: 11px;" onclick="finalizeCaseAction('pardon')">Ułaskaw</button>
+                <button type="button" class="btn btn-amber" style="padding: 11px;" onclick="finalizeCaseAction('station')">Zatrzymaj na komendzie</button>
               </div>
             </div>
 
@@ -389,7 +621,7 @@
                 <div class="field-label">PODSUMOWANIE ZARZUTÓW</div>
                 <div id="case-quick-preview" style="font-size: 12px; color: var(--text-muted); line-height: 1.5; background: var(--bg-input); padding: 12px; border-radius: 8px; border: 1px solid var(--border); min-height: 110px; white-space: pre-line;">Brak wybranych zarzutów.</div>
               </div>
-              <button type="button" class="btn btn-blue" style="width: 100%; padding: 12px; margin-top: 12px;" onclick="copyCaseTextOnly()">📋 Kopiuj sam opis sprawy</button>
+              <button type="button" class="btn btn-blue" style="width: 100%; padding: 12px; margin-top: 12px;" onclick="copyCaseTextOnly()">Kopiuj sam opis sprawy</button>
             </div>
           </div>
         </div>
@@ -398,7 +630,7 @@
       <!-- ========================================================= -->
       <!-- 2. RAPORTY (LISTA + CZYSTY FORMULARZ)                     -->
       <!-- ========================================================= -->
-      <section id="view-raporty" class="hidden">
+      <section id="view-raporty" class="hidden view-animate">
         <div id="reports-list-subview">
           <div class="card-header" style="margin-bottom: 14px;">
             <div>
@@ -408,7 +640,7 @@
             <button type="button" class="btn btn-blue" onclick="openCleanReportCreator()">+ Nowy raport</button>
           </div>
           <div class="card" style="padding: 12px 16px;">
-            <input type="text" id="report-search-inp" class="inp" placeholder="🔍 Szukaj po tytule, autorze lub numerze..." oninput="renderReportsList()" />
+            <input type="text" id="report-search-inp" class="inp" placeholder="Szukaj po tytule, autorze lub numerze..." oninput="renderReportsList()" />
           </div>
           <div class="table-wrap">
             <table class="tbl">
@@ -427,7 +659,7 @@
               <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Tworzenie czystego raportu służbowego</p>
             </div>
             <div style="display: flex; gap: 8px;">
-              <button type="button" class="btn btn-dark" onclick="copyCurrentReportForm()">📋 Kopiuj do schowka</button>
+              <button type="button" class="btn btn-dark" onclick="copyCurrentReportForm()">Kopiuj do schowka</button>
               <button type="button" class="btn btn-dark" onclick="closeReportCreator()">‹ Powrót do listy</button>
             </div>
           </div>
@@ -490,56 +722,58 @@
                 </div>
                 <div id="rf-officers-box"></div>
               </div>
-              <button type="button" class="btn btn-blue" style="padding: 13px; font-size: 14px;" onclick="saveReportFromForm()">💾 Zapisz raport</button>
+              <button type="button" class="btn btn-blue" style="padding: 13px; font-size: 14px;" onclick="saveReportFromForm()">Zapisz raport</button>
             </div>
           </div>
         </div>
       </section>
 
       <!-- ========================================================= -->
-      <!-- 3. SZKOLENIA LSPD (RTO+HRO, NEGO, SV, PWC, ASU, MERRY, SEU)-->
+      <!-- 3. SZKOLENIA LSPD (BLIPY PUNKTACJI + ZDJĘCIA MAPEK)       -->
       <!-- ========================================================= -->
-      <section id="view-szkolenia" class="hidden">
+      <section id="view-szkolenia" class="hidden view-animate">
         <div class="card-header" style="margin-bottom: 14px;">
           <div>
-            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">🎖️ Szkolenia Specjalistyczne LSPD (Dla wszystkich funkcjonariuszy)</h1>
-            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">RTO+HRO, NEGO, SV, PWC+APWC, ASU, MERRY, SEU — pytania, punktacja, stoper, mapki i matryca uprawnień</p>
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Szkolenia Specjalistyczne LSPD — Blipy i Mapki</h1>
+            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Wybierz szkolenie z paska blipów, oceniaj pytania na okrągłych blipach i korzystaj z wbudowanych mapek tras ASU oraz SEU</p>
           </div>
           <div style="display: flex; gap: 8px;">
-            <button type="button" class="btn btn-blue" id="btn-szk-exam" onclick="switchSzkMode('exam')">📖 Arkusz Egzaminacyjny</button>
-            <button type="button" class="btn btn-dark" id="btn-szk-matrix" onclick="switchSzkMode('matrix')">👮 Matryca Licencji</button>
+            <button type="button" class="btn btn-blue" id="btn-szk-exam" onclick="switchSzkMode('exam')">Arkusz Pytań i Mapki</button>
+            <button type="button" class="btn btn-dark" id="btn-szk-matrix" onclick="switchSzkMode('matrix')">Matryca Licencji FP</button>
           </div>
         </div>
 
         <div id="szk-mode-exam">
           <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
             <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="font-weight: 700; color: var(--text-muted);">Szkolony funkcjonariusz:</span>
+              <span style="font-weight: 700; color: var(--text-muted);">Zdający funkcjonariusz:</span>
               <select id="szk-officer-select" class="sel" style="width: 230px;"></select>
             </div>
-            <div style="display: flex; align-items: center; gap: 8px; background: var(--bg-input); padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="display: flex; align-items: center; gap: 8px; background: var(--bg-input); padding: 6px 12px; border-radius: 99px; border: 1px solid var(--border);">
               <span style="font-size: 11px; color: var(--text-dim); font-weight: 700;">STOPER PRÓBY:</span>
-              <span id="trial-stopwatch-val" style="font-family: monospace; font-size: 16px; font-weight: 800; color: #38bdf8;">00:00.0</span>
-              <button type="button" class="btn btn-sm btn-green" id="trial-sw-btn" onclick="toggleTrialStopwatch()">▶ Start</button>
-              <button type="button" class="btn btn-sm btn-dark" onclick="resetTrialStopwatch()">Reset</button>
+              <span id="trial-stopwatch-val" style="font-family: monospace; font-size: 15px; font-weight: 800; color: #38bdf8;">00:00.0</span>
+              <button type="button" class="btn btn-sm btn-green" id="trial-sw-btn" onclick="toggleTrialStopwatch()" style="border-radius:99px;">Start</button>
+              <button type="button" class="btn btn-sm btn-dark" onclick="resetTrialStopwatch()" style="border-radius:99px;">Reset</button>
             </div>
             <div style="display: flex; gap: 8px;">
-              <button type="button" class="btn btn-green" onclick="assignCourseLicenseToSelected()">✅ Nadaj licencję</button>
-              <button type="button" class="btn btn-blue" onclick="copyCourseProtocol()">📋 Kopiuj protokół</button>
+              <button type="button" class="btn btn-green" onclick="assignCourseLicenseToSelected()">Nadaj licencję</button>
+              <button type="button" class="btn btn-blue" onclick="copyCourseProtocol()">Kopiuj protokół</button>
             </div>
           </div>
-          <div id="szk-courses-bar" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px;"></div>
+
+          <!-- PASEK BLIPÓW WYBORU SZKOLENIA -->
+          <div id="szk-courses-bar" class="blip-row" style="margin-bottom: 16px;"></div>
           <div id="szk-course-body"></div>
         </div>
 
         <div id="szk-mode-matrix" class="hidden">
           <div class="card">
-            <input type="text" id="matrix-search-inp" class="inp" style="max-width: 320px;" placeholder="🔍 Szukaj funkcjonariusza..." oninput="renderLicenseMatrix()" />
+            <input type="text" id="matrix-search-inp" class="inp" style="max-width: 320px;" placeholder="Szukaj funkcjonariusza..." oninput="renderLicenseMatrix()" />
           </div>
           <div class="table-wrap">
             <table class="tbl">
               <thead>
-                <tr><th>Odznaka</th><th>Imię i nazwisko</th><th>Stopień</th><th>Licencje (Kliknij, aby przełączyć)</th><th>Notatka</th></tr>
+                <tr><th>Odznaka</th><th>Imię i nazwisko</th><th>Stopień</th><th>Licencje (Kliknij blip, aby przełączyć)</th><th>Notatka</th></tr>
               </thead>
               <tbody id="matrix-tbody"></tbody>
             </table>
@@ -548,23 +782,23 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 4. STREFA KADETA (FTO + STOPER START/STOP + EGZAMIN)      -->
+      <!-- 4. STREFA KADETA (FTO + BLIPY SZKOLEŃ I EGZAMINU)         -->
       <!-- ========================================================= -->
-      <section id="view-kadet" class="hidden">
+      <section id="view-kadet" class="hidden view-animate">
         <div class="card-header" style="margin-bottom: 14px;">
           <div>
-            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">🎓 Strefa Kadeta — Panel FTO</h1>
-            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Licznik czasu w patrolu (START/STOP), arkusze szkoleń podstawowych i Egzamin Oficerski</p>
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Strefa Kadeta — Panel FTO</h1>
+            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Licznik czasu w patrolu (START/STOP), blipy zaliczeń FTO oraz Egzamin Oficerski</p>
           </div>
           <div style="display: flex; gap: 8px;">
-            <button type="button" class="btn btn-blue" id="fto-tab-list" onclick="switchFtoView('list')">📋 Lista Kadetów</button>
-            <button type="button" class="btn btn-dark" id="fto-tab-exam" onclick="switchFtoView('exam')">🎯 Egzamin Oficerski (Min. 17 pkt)</button>
+            <button type="button" class="btn btn-blue" id="fto-tab-list" onclick="switchFtoView('list')">Lista Kadetów</button>
+            <button type="button" class="btn btn-dark" id="fto-tab-exam" onclick="switchFtoView('exam')">Egzamin Oficerski (Blipy 0-3)</button>
           </div>
         </div>
 
         <div id="fto-sub-list">
           <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-            <input type="text" id="fto-search" class="inp" style="max-width: 260px;" placeholder="🔍 Szukaj kadeta lub FTO..." oninput="renderCadets()" />
+            <input type="text" id="fto-search" class="inp" style="max-width: 260px;" placeholder="Szukaj kadeta lub FTO..." oninput="renderCadets()" />
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
               <input type="text" id="new-c-badge" class="inp" style="width: 85px;" placeholder="Odznaka" />
               <input type="text" id="new-c-name" class="inp" style="width: 170px;" placeholder="Imię i nazwisko" />
@@ -589,19 +823,19 @@
               <h2 style="margin: 4px 0 2px; font-size: 20px; font-weight: 800;" id="cs-title-name">Paulo Cortez</h2>
               <div style="font-size: 12px; color: var(--text-muted);" id="cs-subtitle"></div>
             </div>
-            <div style="display: flex; align-items: center; gap: 8px; background: var(--bg-input); padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border);">
+            <div style="display: flex; align-items: center; gap: 8px; background: var(--bg-input); padding: 8px 14px; border-radius: 99px; border: 1px solid var(--border);">
               <div>
-                <div style="font-size: 10px; color: var(--text-dim); font-weight: 700;">CZAS W PATROLU</div>
-                <div id="cs-live-timer" style="font-family: monospace; font-size: 17px; font-weight: 800; color: #38bdf8;">00h 00m 00s</div>
+                <div style="font-size: 9px; color: var(--text-dim); font-weight: 700;">CZAS W PATROLU</div>
+                <div id="cs-live-timer" style="font-family: monospace; font-size: 16px; font-weight: 800; color: #38bdf8;">00h 00m 00s</div>
               </div>
-              <button type="button" class="btn btn-green" id="cs-startstop-btn" onclick="toggleCadetStopwatch(currentCadetId)">▶ START</button>
-              <button type="button" class="btn btn-sm btn-dark" onclick="adjustCadetTime(15)">+15m</button>
-              <button type="button" class="btn btn-sm btn-dark" onclick="adjustCadetTime(-15)">-15m</button>
+              <button type="button" class="btn btn-sm btn-green" id="cs-startstop-btn" onclick="toggleCadetStopwatch(currentCadetId)" style="border-radius:99px;">START</button>
+              <button type="button" class="btn btn-sm btn-dark" onclick="adjustCadetTime(15)" style="border-radius:99px;">+15m</button>
+              <button type="button" class="btn btn-sm btn-dark" onclick="adjustCadetTime(-15)" style="border-radius:99px;">-15m</button>
             </div>
             <div style="display: flex; gap: 8px;">
-              <button type="button" class="btn btn-blue" onclick="signAllCadetBasic()">✍ Podpisz wszystkie (SASA)</button>
-              <button type="button" class="btn btn-green" onclick="promoteCadetToOfficer()">🎖️ Awansuj na Oficera</button>
-              <button type="button" class="btn btn-dark" onclick="copyCadetSheet()">📋 Kopiuj</button>
+              <button type="button" class="btn btn-blue" onclick="signAllCadetBasic()">Podpisz wszystkie (SASA)</button>
+              <button type="button" class="btn btn-green" onclick="promoteCadetToOfficer()">Awansuj na Oficera</button>
+              <button type="button" class="btn btn-dark" onclick="copyCadetSheet()">Kopiuj</button>
               <button type="button" class="btn btn-dark" onclick="switchFtoView('list')">‹ Wróć</button>
             </div>
           </div>
@@ -609,7 +843,7 @@
           <div class="table-wrap" style="margin-bottom: 14px;">
             <table class="tbl">
               <thead>
-                <tr><th>Szkolenie</th><th style="text-align:center;">Potrafi</th><th>Notatki FTO</th><th>Podpis FTO</th><th>Akcja</th></tr>
+                <tr><th>Szkolenie</th><th>Status (Blip)</th><th>Notatki FTO</th><th>Podpis FTO</th><th>Akcja</th></tr>
               </thead>
               <tbody id="cs-modules-body"></tbody>
             </table>
@@ -618,14 +852,16 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
             <div class="card" style="margin-bottom: 0;">
               <div class="card-header">
-                <span style="font-weight: 800; color: #4ade80;">✅ Pozytywny raport</span>
-                <input type="checkbox" id="cs-pos-check" onchange="saveCadetRemarks()" />
+                <span style="font-weight: 800; color: #34d399;">Pozytywny raport / Pochwały</span>
+                <div class="blip-pill" id="cs-pos-blip" onclick="toggleSheetPosBlip()">
+                  <span class="blip-dot"></span><span>Pozytywny raport</span>
+                </div>
               </div>
               <textarea id="cs-pos-notes" rows="3" class="txt" placeholder="Pochwały..." oninput="saveCadetRemarks()"></textarea>
             </div>
             <div class="card" style="margin-bottom: 0;">
               <div class="card-header">
-                <span style="font-weight: 800; color: #f87171;">⚠️ Raport negatywny</span>
+                <span style="font-weight: 800; color: #f87171;">Raport negatywny</span>
                 <select id="cs-neg-select" class="sel" style="width: 150px; padding: 4px 8px;" onchange="saveCadetRemarks()">
                   <option value="BRAK">BRAK</option>
                   <option value="1 NEGATYWNY">1 NEGATYWNY</option>
@@ -647,18 +883,18 @@
               <select id="exam-cadet-sel" class="sel" style="margin-bottom: 10px;"></select>
               <label class="field-label">Egzaminator prowadzący</label>
               <input type="text" id="exam-lead-inp" class="inp" value="[923] Oley Sasa" style="margin-bottom: 12px;" />
-              <button type="button" class="btn btn-blue" style="width:100%;" onclick="copyFinalExamProtocol()">📋 Kopiuj protokół egzaminu</button>
+              <button type="button" class="btn btn-blue" style="width:100%;" onclick="copyFinalExamProtocol()">Kopiuj protokół egzaminu</button>
             </div>
             <div class="table-wrap">
               <table class="tbl">
                 <thead>
-                  <tr><th>Zadanie</th><th style="text-align:center;">0</th><th style="text-align:center;">1</th><th style="text-align:center;">2</th><th style="text-align:center;">3</th><th style="text-align:center;">Wynik</th></tr>
+                  <tr><th>Zadanie Egzaminacyjne</th><th>Wybierz Blip Punktacji (0 - 3 pkt)</th><th style="text-align:center;">Wynik</th></tr>
                 </thead>
                 <tbody id="exam-rows-tbody"></tbody>
                 <tfoot>
-                  <tr style="background:#0d121d; font-weight:800;">
+                  <tr style="background:#0c1018; font-weight:800;">
                     <td style="color:#f87171;">Rezultat (min. 17 pkt)</td>
-                    <td colspan="4" style="text-align:center;" id="exam-verdict-cell">NIEZDANE</td>
+                    <td style="text-align:center;" id="exam-verdict-cell">NIEZDANE</td>
                     <td style="text-align:center;" id="exam-total-cell">0 / 21</td>
                   </tr>
                 </tfoot>
@@ -671,7 +907,7 @@
       <!-- ========================================================= -->
       <!-- 5. PATROLE, DYSPOZYTORNIA I FUNKCJONARIUSZE               -->
       <!-- ========================================================= -->
-      <section id="view-patrole" class="hidden">
+      <section id="view-patrole" class="hidden view-animate">
         <div class="card-header">
           <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Patrole i Dowodzenie (PWC / APWC)</h1>
           <div style="display: flex; gap: 8px;">
@@ -700,17 +936,17 @@
         <div id="patrols-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px;"></div>
       </section>
 
-      <section id="view-dyspozytornia" class="hidden">
+      <section id="view-dyspozytornia" class="hidden view-animate">
         <h1 style="margin: 0 0 14px; font-size: 20px; font-weight: 800;">Dyspozytornia — Funkcjonariusze na zmianie</h1>
         <div class="table-wrap">
           <table class="tbl">
-            <thead><tr><th>Odznaka</th><th>Imię i nazwisko</th><th>Stopień</th><th>Kanał</th><th>Status (Kliknij, aby zmienić)</th></tr></thead>
+            <thead><tr><th>Odznaka</th><th>Imię i nazwisko</th><th>Stopień</th><th>Kanał</th><th>Status (Blip)</th></tr></thead>
             <tbody id="dispatch-officers-tbody"></tbody>
           </table>
         </div>
       </section>
 
-      <section id="view-funkcjonariusze" class="hidden">
+      <section id="view-funkcjonariusze" class="hidden view-animate">
         <div class="card-header">
           <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Baza Funkcjonariuszy LSPD</h1>
           <div style="display: flex; gap: 8px;">
@@ -731,11 +967,11 @@
   </div>
 </div>
 
-<!-- MODAL TARYFIKATORA -->
+<!-- MODAL TARYFIKATORA (BLIP-PILLS) -->
 <div id="penal-modal" class="modal-backdrop hidden">
   <div class="modal-window modal-window-lg">
     <div class="modal-head">
-      <input type="text" id="penal-search-inp" class="inp" style="max-width: 420px;" placeholder="🔍 Szukaj zarzutu lub kategorii..." oninput="renderPenalModalCatalog()" />
+      <input type="text" id="penal-search-inp" class="inp" style="max-width: 420px;" placeholder="Wyszukaj zarzut lub kategorię..." oninput="renderPenalModalCatalog()" />
       <button type="button" class="btn btn-dark" onclick="closePenalModal()">‹ Powrót</button>
     </div>
     <div class="modal-body" id="penal-catalog-container"></div>
@@ -746,6 +982,17 @@
         <button type="button" class="btn btn-blue" onclick="confirmPenalSelection()">✓ Potwierdź i wygeneruj opis</button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- MODAL POWIĘKSZENIA MAPKI SZKOLENIOWEJ (PEŁNY EKRAN) -->
+<div id="map-zoom-modal" class="modal-backdrop hidden" onclick="closeMapZoomModal()">
+  <div class="modal-window modal-window-lg" style="max-width: 820px;" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <span id="map-zoom-title">Mapa Szkoleniowa LSPD</span>
+      <button type="button" class="btn btn-sm btn-dark" onclick="closeMapZoomModal()">✕ Zamknij</button>
+    </div>
+    <div class="modal-body" id="map-zoom-body" style="padding: 0; background: #0c121e; display: flex; justify-content: center; align-items: center; min-height: 520px;"></div>
   </div>
 </div>
 
@@ -766,15 +1013,15 @@
   </div>
 </div>
 
+<!-- UKRYTY INPUT DO WGRYWANIA WŁASNEGO PLIKU MAPKI -->
+<input type="file" id="hidden-map-file-inp" accept="image/*" class="hidden" onchange="handleMapFileUpload(event)" />
+
 <script>
-  /* FUNKCJE POMOCNICZE */
   const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
   const copyText = (str, msg) => {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(str).then(() => toast(msg)).catch(() => fallbackCopy(str, msg));
-    } else {
-      fallbackCopy(str, msg);
-    }
+    } else { fallbackCopy(str, msg); }
   };
   function fallbackCopy(str, msg) {
     const ta = document.createElement("textarea");
@@ -789,10 +1036,7 @@
     clearTimeout(window._tTimer); window._tTimer = setTimeout(() => { box.style.display = "none"; }, 3000);
   }
 
-  /* =========================================================
-     ZOPTYMALIZOWANA BAZA TARYFIKATORA (10 KATEGORII)
-     Format: [Nazwa, Miesiące, Grzywna, OpisCzynu, KonfiskataOpcjonalna]
-     ========================================================= */
+  /* 10 KATEGORII TARYFIKATORA */
   const PENAL_RAW = [
     ["PRZESTĘPSTWA PRZECIWKO ŻYCIU", [
       ["Morderstwo I stopnia", 300, 75000, "dopuścił się zaplanowanego zabójstwa człowieka z premedytacją (Morderstwo I stopnia)"],
@@ -930,29 +1174,62 @@
     items: list.map(([name, m, f, desc, confiscate]) => ({ name, m, f, desc, confiscate: confiscate || "" }))
   }));
 
-  /* LOGIKA AUTOMATYCZNEGO OPISU SPRAWY */
+  /* LOGIKA BLIPÓW AUTOMATYCZNEGO OPISU SPRAWY */
   let activeCharges = [], tempModalSelected = [], caseAssistOfficers = [], customConfiscated = [];
-  let caseAttitude = "coop", caseDetention = "station";
+  let autoDescEnabled = true;
+  let caseCoop = "yes";       // 'yes' | 'passive' | 'no'
+  let caseGuilt = "admitted"; // 'admitted' | 'denied'
+  let caseDetention = "station"; // 'station' | 'prison' | 'released'
+  let caseExtras = { lawyer: false, sams: false, reduced: false };
 
-  function setCaseAttitude(mode) {
-    caseAttitude = mode;
-    document.getElementById("att-coop").className = "opt-btn " + (mode === "coop" ? "active-green" : "");
-    document.getElementById("att-denied").className = "opt-btn " + (mode === "denied" ? "active-red" : "");
-    document.getElementById("att-silent").className = "opt-btn " + (mode === "silent" ? "active-blue" : "");
+  function toggleAutoDescBlip() {
+    autoDescEnabled = !autoDescEnabled;
+    const el = document.getElementById("auto-toggle-blip");
+    if (el) el.className = "blip-pill " + (autoDescEnabled ? "active-green" : "");
+    if (autoDescEnabled) generateAutoCaseDescription();
+  }
+
+  function setCaseCoop(val) {
+    caseCoop = val;
+    document.getElementById("blip-coop-yes").className = "blip-pill " + (val === "yes" ? "active-green" : "");
+    document.getElementById("blip-coop-passive").className = "blip-pill " + (val === "passive" ? "active-blue" : "");
+    document.getElementById("blip-coop-no").className = "blip-pill " + (val === "no" ? "active-red" : "");
+    generateAutoCaseDescription();
+  }
+
+  function setCaseGuilt(val) {
+    caseGuilt = val;
+    document.getElementById("blip-guilt-admitted").className = "blip-pill " + (val === "admitted" ? "active-green" : "");
+    document.getElementById("blip-guilt-denied").className = "blip-pill " + (val === "denied" ? "active-red" : "");
+    generateAutoCaseDescription();
+  }
+
+  function toggleCaseExtra(key) {
+    caseExtras[key] = !caseExtras[key];
+    document.getElementById("blip-extra-lawyer").className = "blip-pill " + (caseExtras.lawyer ? "active-amber" : "");
+    document.getElementById("blip-extra-sams").className = "blip-pill " + (caseExtras.sams ? "active-blue" : "");
+    document.getElementById("blip-extra-reduced").className = "blip-pill " + (caseExtras.reduced ? "active-green" : "");
+    updateCaseTotals();
     generateAutoCaseDescription();
   }
 
   function setCaseDetention(mode) {
     caseDetention = mode;
-    document.getElementById("det-station").className = "opt-btn " + (mode === "station" ? "active-blue" : "");
-    document.getElementById("det-prison").className = "opt-btn " + (mode === "prison" ? "active-red" : "");
-    document.getElementById("det-released").className = "opt-btn " + (mode === "released" ? "active-green" : "");
+    document.getElementById("blip-det-station").className = "blip-pill " + (mode === "station" ? "active-blue" : "");
+    document.getElementById("blip-det-prison").className = "blip-pill " + (mode === "prison" ? "active-red" : "");
+    document.getElementById("blip-det-released").className = "blip-pill " + (mode === "released" ? "active-green" : "");
     generateAutoCaseDescription();
   }
 
+  function getCalculatedTotals() {
+    let rawM = 0, totalF = 0;
+    activeCharges.forEach(c => { rawM += c.m * c.count; totalF += c.f * c.count; });
+    const finalM = caseExtras.reduced ? Math.max(1, Math.round(rawM * 0.8)) : rawM;
+    return { rawM, finalM, totalF };
+  }
+
   function generateAutoCaseDescription(force = false) {
-    const autoOn = document.getElementById("auto-desc-toggle")?.checked;
-    if (!autoOn && !force) return;
+    if (!autoDescEnabled && !force) return;
     const citizen = document.getElementById("case-citizen").value.trim() || "zatrzymany obywatel";
     const lead = db.loggedOfficer;
     const assists = caseAssistOfficers.length ? ` przy wsparciu jednostek (${caseAssistOfficers.join(", ")})` : "";
@@ -964,31 +1241,48 @@
 
     const actions = activeCharges.map(c => c.desc);
     const names = activeCharges.map(c => c.count > 1 ? `${c.name} (x${c.count})` : c.name);
-    let totalM = 0, totalF = 0;
-    activeCharges.forEach(c => { totalM += c.m * c.count; totalF += c.f * c.count; });
+    const { rawM, finalM, totalF } = getCalculatedTotals();
 
     const p1 = `W dniu dzisiejszym funkcjonariusz ${lead}${assists} przeprowadził czynności procesowe wobec osoby zidentyfikowanej jako ${citizen}. W toku podjętej interwencji oraz zebranego materiału dowodowego ustalono, iż podejrzany ${actions.join(", a ponadto ")}.`;
     const p2 = allConf.length ? ` Podczas przeszukania osobistego ujawniono oraz zabezpieczono do depozytu policyjnego: ${allConf.join(", ")}.` : ` Zatrzymanego poddano procedurze przeszukania oraz weryfikacji w systemie MDT.`;
-    const p3 = caseAttitude === "coop"
-      ? ` Podczas wykonywanych czynności zatrzymany zachowywał spokój, w pełni współpracował z funkcjonariuszami LSPD oraz przyznał się do zarzucanych mu czynów.`
-      : caseAttitude === "denied"
-      ? ` W trakcie prowadzonych czynności zatrzymany nie wykazywał woli współpracy z funkcjonariuszami, do samego końca upierał się przy swojej wersji i kategorycznie nie przyznawał się do winy.`
-      : ` W trakcie czynności na celach zatrzymany wykonywał polecenia funkcjonariuszy, jednak odmówił składania wyjaśnień i nie przyznał się do winy.`;
+
+    let extraSentences = "";
+    if (caseExtras.sams) {
+      extraSentences += " Przed osadzeniem w celi zatrzymanemu zapewniono niezbędną pomoc medyczną ze strony personelu SAMS.";
+    }
+    if (caseExtras.lawyer) {
+      extraSentences += " Na wyraźne żądanie zatrzymanego wezwano adwokata i umożliwiono przeprowadzenie konsultacji prawnej na terenie komendy.";
+    }
+
+    const coopTxt = caseCoop === "yes"
+      ? "Podczas wykonywanych czynności zatrzymany zachowywał spokój i w pełni współpracował z funkcjonariuszami LSPD"
+      : caseCoop === "passive"
+      ? "W trakcie czynności zatrzymany wykonywał polecenia techniczne funkcjonariuszy, jednak zachowywał postawę bierną i odmówił składania wyjaśnień"
+      : "W trakcie prowadzonych czynności zatrzymany nie wykazywał woli współpracy z funkcjonariuszami i utrudniał czynności procesowe";
+
+    const guiltTxt = caseGuilt === "admitted"
+      ? ", a po przedstawieniu materiału dowodowego przyznał się do zarzucanych mu czynów."
+      : ", natomiast do samego końca upierał się przy swojej wersji wydarzeń i kategorycznie nie przyznawał się do winy.";
+
+    const redTxt = caseExtras.reduced
+      ? ` Ze względu na postawę podejrzanego zastosowano złagodzenie wymiaru kary pozbawienia wolności (z ${rawM} mies. do ${finalM} mies.).`
+      : "";
+
     const p4 = caseDetention === "station"
-      ? ` Po przedstawieniu zarzutów (${names.join(", ")}) nałożono karę łączną ${totalM} mies. pozbawienia wolności oraz grzywnę $${totalF.toLocaleString()}. Obywatel zostaje zatrzymany na komendzie LSPD w celu odbycia kary.`
+      ? ` Po odczytaniu praw Mirandy i przedstawieniu zarzutów (${names.join(", ")}) nałożono karę łączną ${finalM} mies. pozbawienia wolności oraz grzywnę $${totalF.toLocaleString()}.${redTxt} Obywatel zostaje zatrzymany na komendzie LSPD w celu odbycia kary.`
       : caseDetention === "prison"
-      ? ` Po przedstawieniu zarzutów (${names.join(", ")}) orzeczono wyrok ${totalM} mies. pozbawienia wolności oraz grzywnę $${totalF.toLocaleString()}. Zatrzymany został przetransportowany do więzienia stanowego Bolingbroke.`
+      ? ` Po przedstawieniu zarzutów (${names.join(", ")}) orzeczono wyrok ${finalM} mies. pozbawienia wolności oraz grzywnę $${totalF.toLocaleString()}.${redTxt} Zatrzymany został przetransportowany do więzienia stanowego Bolingbroke.`
       : ` Po przedstawieniu zarzutów (${names.join(", ")}) i opłaceniu grzywny w wysokości $${totalF.toLocaleString()}, zatrzymany został zwolniony z komendy.`;
 
-    document.getElementById("case-desc").value = p1 + p2 + "\n\n" + p3 + p4;
+    document.getElementById("case-desc").value = p1 + p2 + extraSentences + "\n\n" + coopTxt + guiltTxt + p4;
   }
 
   function renderConfiscatedDisplay(allConf) {
     const box = document.getElementById("case-confiscated-box");
     if (!box) return;
     box.innerHTML = allConf && allConf.length
-      ? allConf.map(i => `<span class="pill pill-red" style="margin:2px;">📦 ${i}</span>`).join("")
-      : `<span style="color:var(--text-dim);">Brak konfiskat (dodają się automatycznie z zarzutów broni/narkotyków/napadów)</span>`;
+      ? allConf.map(i => `<span class="pill pill-red" style="margin:2px;">${i}</span>`).join("")
+      : `<span style="color:var(--text-dim);">Brak konfiskat (dodają się automatycznie z zarzutów)</span>`;
   }
 
   function addConfiscatedInline() {
@@ -1014,16 +1308,19 @@
     FULL_PENAL_CATALOG.forEach((group, gIdx) => {
       const matched = group.items.map((it, iIdx) => ({ ...it, gIdx, iIdx })).filter(i => i.name.toLowerCase().includes(q) || group.category.toLowerCase().includes(q));
       if (!matched.length) return;
-      html += `<div class="penal-category-title">${group.category}</div><div class="penal-grid">`;
+      html += `<div class="penal-category-title"><span>●</span><span>${group.category}</span></div><div class="penal-grid">`;
       matched.forEach(item => {
         const ex = tempModalSelected.find(x => x.name === item.name);
         html += `
-          <div class="penal-card ${ex ? 'selected' : ''}" onclick="togglePenalByIdx(${item.gIdx}, ${item.iIdx})">
-            <div class="penal-card-title">${item.name}</div>
-            <div class="penal-card-meta">
-              <span>${item.m} mies. • $${item.f.toLocaleString()}</span>
-              ${ex ? `<span class="pill pill-blue">✓ x${ex.count}</span>` : ""}
+          <div class="penal-blip-item ${ex ? 'selected' : ''}" onclick="togglePenalByIdx(${item.gIdx}, ${item.iIdx})">
+            <div style="display:flex; align-items:center; gap:8px; min-width:0;">
+              <span class="blip-dot" style="background:${ex ? '#60a5fa' : '#334155'}; box-shadow:${ex ? '0 0 8px #3b82f6' : 'none'};"></span>
+              <div>
+                <div style="font-weight:700; font-size:12px; color:#fff;">${item.name}</div>
+                <div style="font-size:10.5px; color:var(--text-muted);">${item.m} mies. • $${item.f.toLocaleString()}</div>
+              </div>
             </div>
+            ${ex ? `<span class="pill pill-blue">x${ex.count}</span>` : ""}
           </div>`;
       });
       html += `</div>`;
@@ -1032,7 +1329,7 @@
     let m = 0, f = 0;
     tempModalSelected.forEach(c => { m += c.m * c.count; f += c.f * c.count; });
     document.getElementById("penal-modal-summary").innerHTML = tempModalSelected.length
-      ? `Wybrano: <span style="color:#60a5fa;">${tempModalSelected.length}</span> • Wyrok: <span style="color:#fff;">${m} mies.</span> • Grzywna: <span style="color:#4ade80;">$${f.toLocaleString()}</span>`
+      ? `Wybrano blipów: <span style="color:#60a5fa;">${tempModalSelected.length}</span> • Wyrok: <span style="color:#fff;">${m} mies.</span> • Grzywna: <span style="color:#34d399;">$${f.toLocaleString()}</span>`
       : "Nie wybrano przestępstw";
   }
 
@@ -1049,7 +1346,7 @@
     closePenalModal();
     updateCaseTotals();
     generateAutoCaseDescription();
-    toast("✅ Wygenerowano automatyczny opis sprawy!");
+    toast("Zaktualizowano zarzuty i wygenerowano opis sprawy!");
   }
 
   function changeChargeCount(idx, d) {
@@ -1067,39 +1364,42 @@
   function resetCaseForm() {
     document.getElementById("case-citizen").value = "";
     caseAssistOfficers = []; renderCaseAssistOfficers(); clearCaseCharges();
-    toast("🗑️ Wyczyszczono szkic sprawy");
+    toast("Wyczyszczono szkic sprawy");
   }
 
   function updateCaseTotals() {
-    let m = 0, f = 0;
-    activeCharges.forEach(c => { m += c.m * c.count; f += c.f * c.count; });
-    setTxt("case-sum-months", m + " mies.");
-    setTxt("case-sum-fine", "$" + f.toLocaleString());
+    const { finalM, totalF } = getCalculatedTotals();
+    setTxt("case-sum-months", finalM + " mies.");
+    setTxt("case-sum-fine", "$" + totalF.toLocaleString());
     const listEl = document.getElementById("case-selected-list");
     const prevEl = document.getElementById("case-quick-preview");
     if (!activeCharges.length) {
-      listEl.innerHTML = `<div style="padding:14px; text-align:center; color:var(--text-dim); border:1px dashed var(--border); border-radius:8px;">Kliknij „+ Dodaj wyrok (Otwórz Taryfikator)”, aby wybrać zarzuty.</div>`;
+      listEl.innerHTML = `<div style="padding:14px; text-align:center; color:var(--text-dim); border:1px dashed var(--border); border-radius:10px;">Kliknij „+ Dodaj wyrok (Taryfikator)”, aby wybrać blipy zarzutów.</div>`;
       prevEl.textContent = "Brak wybranych zarzutów.";
       return;
     }
     listEl.innerHTML = activeCharges.map((c, idx) => `
       <div class="chip-item">
-        <div><strong>${c.name}</strong> <span style="color:var(--text-muted);">(${c.m * c.count} mies. • $${(c.f * c.count).toLocaleString()})</span></div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="blip-dot" style="background:#60a5fa; box-shadow:0 0 6px #3b82f6;"></span>
+          <strong>${c.name}</strong>
+          <span style="color:var(--text-muted);">(${c.m * c.count} mies. • $${(c.f * c.count).toLocaleString()})</span>
+        </div>
         <div style="display:flex; align-items:center; gap:6px;">
-          <button type="button" class="btn btn-sm btn-dark" onclick="changeChargeCount(${idx}, -1)">-</button>
+          <button type="button" class="btn btn-sm btn-dark" onclick="changeChargeCount(${idx}, -1)" style="border-radius:99px;">-</button>
           <span style="font-weight:800;">x${c.count}</span>
-          <button type="button" class="btn btn-sm btn-dark" onclick="changeChargeCount(${idx}, 1)">+</button>
+          <button type="button" class="btn btn-sm btn-dark" onclick="changeChargeCount(${idx}, 1)" style="border-radius:99px;">+</button>
         </div>
       </div>`).join("");
-    prevEl.textContent = `ZARZUTY: ${activeCharges.map(c => c.count > 1 ? c.name + " x" + c.count : c.name).join(", ")}\nWYROK: ${m} mies. | GRZYWNA: $${f.toLocaleString()}`;
+    prevEl.textContent = `ZARZUTY: ${activeCharges.map(c => c.count > 1 ? c.name + " x" + c.count : c.name).join(", ")}\nWYROK: ${finalM} mies. | GRZYWNA: $${totalF.toLocaleString()}`;
   }
 
   function renderCaseAssistOfficers() {
     const box = document.getElementById("case-assist-officers-box");
     if (!box) return;
     box.innerHTML = caseAssistOfficers.length
-      ? caseAssistOfficers.map((o, i) => `<div class="chip-item"><span>👮 ${o}</span><button type="button" class="chip-remove" onclick="removeAssistOfficer(${i})">×</button></div>`).join("")
-      : `<div style="padding:8px; text-align:center; color:var(--text-dim); border:1px dashed var(--border); border-radius:8px; font-size:12px;">Brak jednostek pomocniczych</div>`;
+      ? caseAssistOfficers.map((o, i) => `<div class="chip-item"><span>${o}</span><button type="button" class="chip-remove" onclick="removeAssistOfficer(${i})">×</button></div>`).join("")
+      : `<div style="padding:8px; text-align:center; color:var(--text-dim); border:1px dashed var(--border); border-radius:99px; font-size:12px;">Brak jednostek pomocniczych</div>`;
   }
   function removeAssistOfficer(i) { caseAssistOfficers.splice(i, 1); renderCaseAssistOfficers(); generateAutoCaseDescription(); }
 
@@ -1111,8 +1411,8 @@
   }
   function copyCaseTextOnly() {
     const txt = document.getElementById("case-desc").value;
-    if (!txt) { toast("⚠️ Najpierw wybierz zarzuty z taryfikatora!"); return; }
-    copyText(txt, "📄 Skopiowano sam opis sprawy!");
+    if (!txt) { toast("Najpierw wybierz zarzuty z taryfikatora!"); return; }
+    copyText(txt, "Skopiowano sam opis sprawy!");
   }
   function copyFullCaseRecord() {
     const cit = document.getElementById("case-citizen").value || "Nieznany";
@@ -1120,7 +1420,108 @@
     const m = document.getElementById("case-sum-months").textContent;
     const f = document.getElementById("case-sum-fine").textContent;
     const ch = activeCharges.map(c => c.count > 1 ? `${c.name} (x${c.count})` : c.name).join(", ") || "Brak";
-    copyText(`KARTOTEKA SPRAWY LSPD\nObywatel: ${cit}\nProwadzący: ${db.loggedOfficer}\nZarzuty: ${ch}\nWyrok: ${m} | Grzywna: ${f}\n\nOPIS SPRAWY:\n${desc}`, "📋 Skopiowano pełną kartotekę sprawy!");
+    copyText(`KARTOTEKA SPRAWY LSPD\nObywatel: ${cit}\nProwadzący: ${db.loggedOfficer}\nZarzuty: ${ch}\nWyrok: ${m} | Grzywna: ${f}\n\nOPIS SPRAWY:\n${desc}`, "Skopiowano pełną kartotekę sprawy!");
+  }
+
+  /* =========================================================
+     GRAFIKI MAPEK SZKOLENIOWYCH ASU (image_7f9838.jpg) I SEU (image_7f9876.jpg)
+     ========================================================= */
+  let uploadingMapTarget = "ASU";
+
+  function getAsuMapSvgMarkup() {
+    return `
+      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="400" fill="#a8c5db"/>
+        <!-- Ląd Los Santos i wzgórza wschodnie -->
+        <path d="M 0 0 L 400 0 L 400 320 Q 340 310 315 345 L 250 345 L 245 390 L 160 390 L 145 325 L 70 315 L 0 265 Z" fill="#d4d6d8"/>
+        <path d="M 195 0 L 400 0 L 400 315 Q 340 310 315 335 Q 275 315 265 250 Q 250 180 205 110 Z" fill="#8fb369"/>
+        <!-- Siatka ulic Downtown / South LS -->
+        <g stroke="#ffffff" stroke-width="2.5" opacity="0.75">
+          <line x1="20" y1="60" x2="180" y2="60"/><line x1="20" y1="100" x2="210" y2="100"/>
+          <line x1="20" y1="145" x2="220" y2="145"/><line x1="20" y1="195" x2="220" y2="195"/>
+          <line x1="20" y1="245" x2="220" y2="245"/><line x1="60" y1="20" x2="60" y2="280"/>
+          <line x1="105" y1="20" x2="105" y2="290"/><line x1="145" y1="20" x2="145" y2="310"/>
+        </g>
+        <!-- Autostrady (żółte) -->
+        <path d="M 0 80 L 195 85 L 235 160 L 245 310 M 0 160 L 290 155 L 400 100" stroke="#f3e596" stroke-width="5" fill="none"/>
+        <!-- Kanał burzowy LS -->
+        <path d="M 225 55 Q 190 70 175 85 L 170 160 L 178 220 L 172 295 L 208 332" stroke="#7ba6c7" stroke-width="7" fill="none"/>
+        <!-- CZERWONA TRASA Z TWOJEGO ZDJĘCIA (ASU) -->
+        <path d="M 225 55 Q 195 72 176 85 L 170 155 L 178 220 L 172 295 L 208 332" stroke="#e11d48" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        <!-- Strzałki kierunkowe wzdłuż kanału -->
+        <path d="M 164 115 L 170 127 L 176 115 M 164 150 L 170 162 L 176 150 M 172 195 L 178 207 L 184 195 M 168 245 L 174 257 L 180 245 M 166 280 L 172 292 L 178 280" stroke="#e11d48" stroke-width="3" fill="none"/>
+        <!-- Punkt Start i Meta -->
+        <circle cx="225" cy="55" r="6" fill="#e11d48"/>
+        <text x="235" y="60" fill="#be123c" font-size="16" font-weight="900">Start</text>
+        <circle cx="208" cy="332" r="6" fill="#e11d48"/>
+        <text x="218" y="337" fill="#be123c" font-size="16" font-weight="900">Meta</text>
+      </svg>`;
+  }
+
+  function getSeuMapSvgMarkup() {
+    return `
+      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="400" fill="#5da9d6"/>
+        <!-- Wybrzeże zachodnie, Chumash i Góry -->
+        <path d="M 185 0 L 400 0 L 400 400 L 200 400 Q 170 385 115 360 Q 105 315 100 280 Q 85 240 112 195 Q 125 160 148 145 L 145 95 L 130 75 L 165 40 Z" fill="#8fb369"/>
+        <!-- Plaża (żółty brzeg) -->
+        <path d="M 180 0 L 165 40 L 130 75 L 145 95 L 148 145 Q 115 170 105 220 Q 95 280 115 360 L 195 400" stroke="#ebe09d" stroke-width="8" fill="none"/>
+        <!-- Lotnisko Fort Zancudo -->
+        <polygon points="135,75 235,105 225,130 125,95" fill="#9ca3af" stroke="#fff" stroke-width="1.5"/>
+        <line x1="140" y1="84" x2="225" y2="112" stroke="#ffffff" stroke-width="3" stroke-dasharray="6,4"/>
+        <!-- CZERWONA TRASA Z TWOJEGO ZDJĘCIA (SEU) -->
+        <path d="M 192 382 L 120 342 L 114 295 L 106 238 L 116 190 L 146 158 C 172 152 172 165 148 160 L 158 80 L 166 46 C 172 44 176 55 176 66" stroke="#dc2626" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Punkt Start i Meta -->
+        <circle cx="192" cy="382" r="6" fill="#dc2626"/>
+        <text x="202" y="387" fill="#b91c1c" font-size="16" font-weight="900">Start</text>
+        <circle cx="176" cy="66" r="6" fill="#dc2626"/>
+        <text x="186" y="70" fill="#b91c1c" font-size="16" font-weight="900">Meta</text>
+      </svg>`;
+  }
+
+  function getTrainingMapVisualHTML(mapType) {
+    const savedCustomImg = db.customMaps && db.customMaps[mapType];
+    const defaultFileName = mapType === "ASU" ? "image_7f9838.jpg" : "image_7f9876.jpg";
+    const svgFallback = mapType === "ASU" ? getAsuMapSvgMarkup() : getSeuMapSvgMarkup();
+
+    if (savedCustomImg) {
+      return `<img src="${savedCustomImg}" alt="Mapa ${mapType}" />`;
+    }
+    return `
+      <img src="${defaultFileName}" alt="Mapa ${mapType}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+      <div style="display:none; width:100%; height:100%;">${svgFallback}</div>
+    `;
+  }
+
+  function openMapZoomModal(mapType) {
+    document.getElementById("map-zoom-title").textContent = mapType === "ASU"
+      ? "Mapa Szkoleniowa ASU — Przelot pod mostami w kanale LS (Limit: < 0:55s)"
+      : "Mapa Szkoleniowa SEU — Drive Skills Test (Pacific Bluffs ➔ Fort Zancudo)";
+    document.getElementById("map-zoom-body").innerHTML = `<div style="width:100%; max-width:620px; height:520px;">${getTrainingMapVisualHTML(mapType)}</div>`;
+    document.getElementById("map-zoom-modal").classList.remove("hidden");
+  }
+
+  function closeMapZoomModal() {
+    document.getElementById("map-zoom-modal").classList.add("hidden");
+  }
+
+  function triggerCustomMapUpload(mapType) {
+    uploadingMapTarget = mapType;
+    document.getElementById("hidden-map-file-inp").click();
+  }
+
+  function handleMapFileUpload(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      if (!db.customMaps) db.customMaps = {};
+      db.customMaps[uploadingMapTarget] = ev.target.result;
+      saveDatabase();
+      renderSzkCourseBody();
+      toast("Wgrano i zapisano oryginalne zdjęcie mapki " + uploadingMapTarget + "!");
+    };
+    reader.readAsDataURL(file);
   }
 
   /* BAZA DANYCH I POZOSTAŁE ZAKŁADKI */
@@ -1148,11 +1549,11 @@
     { id: "199", badge: "199", name: "Túlio Navarro Figueiredo", fto: "Oley Sasa", joinDate: "11.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} }
   ];
 
-  let db = { loggedOfficer: "[923] Oley Sasa", pwc: "[80] Henry Scott", apwc: "Brak przypisanego", officers: [], reports: [], cadets: [], patrols: [{ id: 1, type: "Adam", members: ["[923] Oley Sasa", "[141] Vivienne Walker"] }] };
+  let db = { loggedOfficer: "[923] Oley Sasa", pwc: "[80] Henry Scott", apwc: "Brak przypisanego", officers: [], reports: [], cadets: [], patrols: [{ id: 1, type: "Adam", members: ["[923] Oley Sasa", "[141] Vivienne Walker"] }], customMaps: {} };
 
   function loadDatabase() {
     try {
-      const raw = localStorage.getItem("lspd_mdt_gh_v7");
+      const raw = localStorage.getItem("lspd_mdt_gh_v9");
       if (raw) db = JSON.parse(raw);
       else {
         db.officers = JSON.parse(JSON.stringify(INITIAL_OFFICERS));
@@ -1164,6 +1565,7 @@
       db.reports = JSON.parse(JSON.stringify(INITIAL_REPORTS));
       db.cadets = JSON.parse(JSON.stringify(INITIAL_CADETS));
     }
+    if (!db.customMaps) db.customMaps = {};
     db.cadets.forEach(c => {
       if (!c.modules) c.modules = {};
       FTO_BASIC.forEach(m => { if (!c.modules[m]) c.modules[m] = { ok: false, note: "", sign: "" }; });
@@ -1172,7 +1574,7 @@
   }
 
   function saveDatabase() {
-    try { localStorage.setItem("lspd_mdt_gh_v7", JSON.stringify(db)); } catch (e) {}
+    try { localStorage.setItem("lspd_mdt_gh_v9", JSON.stringify(db)); } catch (e) {}
     updateSidebarCounters();
   }
 
@@ -1257,7 +1659,7 @@
     document.getElementById("picker-modal").classList.remove("hidden");
     const box = document.getElementById("picker-list-box");
     const pool = (k === "officers" || k === "case_officers") ? db.officers.map(o => `[${o.badge}] ${o.name}`) : k === "persons" ? ["[729] Jade Grayson (SAMS)", "[711] Andrew Karabin (SAMS)"] : ["Bravado Charger LSPD", "BMW M3 Patrol Unit"];
-    box.innerHTML = pool.map((it, idx) => `<div style="padding:8px 12px; background:var(--bg-input); border:1px solid var(--border); border-radius:8px; cursor:pointer; display:flex; justify-content:space-between;" onclick="selectPickerPool(${idx})"><span>${it}</span><span class="pill pill-blue">+ Dodaj</span></div>`).join("");
+    box.innerHTML = pool.map((it, idx) => `<div class="penal-blip-item" onclick="selectPickerPool(${idx})"><span>${it}</span><span class="pill pill-blue">+ Wybierz</span></div>`).join("");
     window._pickerPool = pool;
   }
   function selectPickerPool(idx) { selectItemFromPicker(window._pickerPool[idx]); }
@@ -1285,7 +1687,7 @@
     const title = document.getElementById("rf-title").value.trim();
     const type = document.getElementById("rf-type").value;
     const body = document.getElementById("rf-body").value.trim();
-    if (!title || !body) { toast("⚠️ Wpisz tytuł i treść raportu!"); return; }
+    if (!title || !body) { toast("Wpisz tytuł i treść raportu!"); return; }
     const now = new Date();
     const dStr = now.toLocaleDateString("pl-PL") + " " + now.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
     if (editingReportId) {
@@ -1295,15 +1697,15 @@
       const nextId = db.reports.length ? Math.max(...db.reports.map(x => x.id)) + 1 : 309;
       db.reports.unshift({ id: nextId, author: db.loggedOfficer, title, type, date: dStr, body, officers: [...draftOfficers], persons: [...draftPersons], vehicles: [...draftVehicles] });
     }
-    saveDatabase(); closeReportCreator(); toast("✅ Zapisano raport!");
+    saveDatabase(); closeReportCreator(); toast("Zapisano raport!");
   }
   function deleteReport(id) { db.reports = db.reports.filter(x => x.id !== id); saveDatabase(); renderReportsList(); }
   function copyCurrentReportForm() {
-    copyText(`TYTUŁ: ${document.getElementById("rf-title").value}\nAUTOR: ${db.loggedOfficer}\n\n${document.getElementById("rf-body").value}`, "📋 Skopiowano raport!");
+    copyText(`TYTUŁ: ${document.getElementById("rf-title").value}\nAUTOR: ${db.loggedOfficer}\n\n${document.getElementById("rf-body").value}`, "Skopiowano raport!");
   }
 
   /* =========================================================
-     7 SZKOLEŃ SPECJALISTYCZNYCH (ZOPTYMALIZOWANE)
+     7 SZKOLEŃ SPECJALISTYCZNYCH Z BLIPAMI I MAPKAMI
      ========================================================= */
   const COURSES_DATA = {
     "RTO+HRO": { name: "RTO + HRO", reqTheory: 15, maxTheory: 16, questions: [
@@ -1363,12 +1765,19 @@
     "SEU": { name: "SEU (Pościgowe)", reqTheory: 0, maxTheory: 0, map: "SEU", questions: [], practical: ["Etap 1: Drive skills test na mapce bez kolizji (Próby: 2)", "Etap 2: Pościg SEU-SEU 2x 5 min (Próby: 2)", "Etap 3: Pościg EDWARD-EDWARD do destylacji (Próby: 1)", "Etap 4: Pościg EDWARD-EDWARD z radiówką 10 min (Próby: 2)"] }
   };
 
-  let selectedCourse = "RTO+HRO", courseScores = {};
+  let selectedCourse = "RTO+HRO", courseScores = {}, practicalChecks = {};
   function renderSzkCourseBar() {
     const sel = document.getElementById("szk-officer-select");
     if (sel) sel.innerHTML = db.officers.map(o => `<option value="${o.badge}">[${o.badge}] ${o.name}</option>`).join("");
     const bar = document.getElementById("szk-courses-bar");
-    if (bar) bar.innerHTML = LICENSES.map(k => `<button type="button" class="btn ${k === selectedCourse ? 'btn-blue' : 'btn-dark'}" onclick="selectCourseTab('${k}')">${COURSES_DATA[k].name}</button>`).join("");
+    if (bar) {
+      bar.innerHTML = LICENSES.map(k => `
+        <div class="blip-pill ${k === selectedCourse ? 'active-blue' : ''}" onclick="selectCourseTab('${k}')">
+          <span class="blip-dot"></span>
+          <span>${COURSES_DATA[k].name}</span>
+        </div>
+      `).join("");
+    }
     renderSzkCourseBody();
   }
   function selectCourseTab(k) { selectedCourse = k; renderSzkCourseBar(); }
@@ -1377,32 +1786,122 @@
     courseScores[selectedCourse][idx] = pts;
     renderSzkCourseBody();
   }
+  function togglePracticalStageBlip(idx) {
+    if (!practicalChecks[selectedCourse]) practicalChecks[selectedCourse] = {};
+    practicalChecks[selectedCourse][idx] = !practicalChecks[selectedCourse][idx];
+    renderSzkCourseBody();
+  }
+
   function renderSzkCourseBody() {
     const c = COURSES_DATA[selectedCourse];
     const container = document.getElementById("szk-course-body");
     if (!container || !c) return;
     if (!courseScores[selectedCourse]) courseScores[selectedCourse] = {};
+    if (!practicalChecks[selectedCourse]) practicalChecks[selectedCourse] = {};
     const sc = courseScores[selectedCourse];
+    const pr = practicalChecks[selectedCourse];
     let sum = 0; c.questions.forEach((q, idx) => { sum += (sc[idx] || 0); });
+
     let tHTML = "";
     if (c.questions.length) {
       const pass = sum >= c.reqTheory;
-      tHTML = `<div class="card"><div class="card-header"><h3 style="margin:0;">Pytania Teoretyczne (${c.name})</h3><span class="pill ${pass ? 'pill-green' : 'pill-red'}">Wynik: ${sum}/${c.maxTheory} pkt (Min. ${c.reqTheory}) — ${pass ? 'ZALICZONA ✅' : 'NIEZALICZONA ❌'}</span></div>` +
-        c.questions.map((it, idx) => {
-          const cur = sc[idx] || 0;
-          let b = ""; for (let p = 0; p <= it.pts; p++) b += `<button type="button" class="btn btn-sm ${cur === p ? 'btn-blue' : 'btn-dark'}" onclick="setCourseQuestionScore(${idx},${p})">${p} pkt</button>`;
-          return `<div style="background:var(--bg-input); border:1px solid var(--border); border-radius:8px; padding:10px; margin-bottom:8px;"><div style="display:flex; justify-content:space-between; gap:10px;"><strong style="color:#60a5fa;">${it.q}</strong><div style="display:flex; gap:4px;">${b}</div></div><div style="margin-top:6px; padding:6px 10px; background:#111827; border-left:3px solid #3b82f6; border-radius:4px; font-size:12px;"><strong>Odp:</strong> ${it.a}</div></div>`;
-        }).join("") + `</div>`;
+      const pct = Math.min(100, Math.round((sum / c.maxTheory) * 100));
+      tHTML = `
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 style="margin:0; font-size:15px;">Etap 1: Pytania Teoretyczne — ${c.name}</h3>
+              <div style="font-size:11.5px; color:var(--text-muted); margin-top:2px;">Kliknij okrągły blip punktowy po prawej stronie każdego pytania</div>
+            </div>
+            <div class="blip-pill ${pass ? 'active-green' : 'active-red'}" style="cursor:default;">
+              <span class="blip-dot"></span>
+              <span>${sum} / ${c.maxTheory} pkt (Min. ${c.reqTheory}) — ${pass ? 'ZALICZONA' : 'NIEZALICZONA'}</span>
+            </div>
+          </div>
+          <div class="progress-track" style="margin-bottom:14px;">
+            <div class="progress-fill" style="width:${pct}%;"></div>
+          </div>
+      ` + c.questions.map((it, idx) => {
+        const cur = sc[idx] !== undefined ? sc[idx] : 0;
+        let nodes = "";
+        for (let p = 0; p <= it.pts; p++) {
+          let cls = "";
+          if (cur === p) cls = p === 0 ? "selected-zero" : (p === it.pts ? "selected-max" : "selected-pts");
+          nodes += `<div class="blip-node ${cls}" onclick="setCourseQuestionScore(${idx},${p})" title="${p} pkt">${p}</div>`;
+        }
+        return `
+          <div class="question-blip-row ${cur > 0 ? 'scored-positive' : 'scored-zero'}">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:14px;">
+              <div style="font-weight:700; color:#e2e8f0; font-size:13px;">${it.q} <span style="color:var(--text-dim); font-size:11px;">(Max ${it.pts} pkt)</span></div>
+              <div class="blip-nodes-group">${nodes}</div>
+            </div>
+            <div style="margin-top:8px; padding:7px 11px; background:#070a10; border-left:2px solid #3b82f6; border-radius:6px; font-size:12px; color:var(--text-muted);">
+              <strong style="color:#93c5fd;">Odp:</strong> ${it.a}
+            </div>
+          </div>`;
+      }).join("") + `</div>`;
     }
+
     let mapHTML = "";
-    if (c.map === "ASU") {
-      mapHTML = `<div class="card"><h3 style="margin:0 0 8px; color:#38bdf8;">🗺️ Mapka ASU Etap 4 — Kanał Los Santos (Limit: poniżej 0:55s)</h3><div style="background:var(--bg-input); padding:10px 12px; border-radius:8px; border:1px solid var(--border);"><strong>START:</strong> Wlot kanału przy Mirror Park / East Vinewood ➔ <strong>TRASA:</strong> Lot na południe korytem rzeki Los Santos pod wszystkimi mostami ➔ <strong>META:</strong> Wylot kanału przy porcie Elysian Island / Port of South LS.</div></div>`;
-    } else if (c.map === "SEU") {
-      mapHTML = `<div class="card"><h3 style="margin:0 0 8px; color:#38bdf8;">🗺️ Mapka SEU Etap 1 — Drive Skills Test (Pacific Bluffs ➔ Fort Zancudo)</h3><div style="background:var(--bg-input); padding:10px 12px; border-radius:8px; border:1px solid var(--border);"><strong>START:</strong> Wybrzeże Pacific Bluffs ➔ <strong>TRASA:</strong> Great Ocean Hwy przez Chumash, pętla przy Tongva Hills i tunel Zancudo ➔ <strong>META:</strong> Nawrotka za tunelem i dojazd pod bramę Fortu Zancudo.</div></div>`;
+    if (c.map === "ASU" || c.map === "SEU") {
+      const isAsu = c.map === "ASU";
+      mapHTML = `
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 style="margin:0; font-size:15px; color:#38bdf8;">
+                ${isAsu ? "Mapa Szkoleniowa ASU (Etap 4 — Przelot pod mostami < 0:55s)" : "Mapa Szkoleniowa SEU (Etap 1 — Drive Skills Test)"}
+              </h3>
+              <div style="font-size:11.5px; color:var(--text-muted); margin-top:2px;">
+                Kliknij na mapkę, aby powiększyć ją na pełny ekran, lub podmień plik obrazu z dysku
+              </div>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button type="button" class="btn btn-sm btn-dark" onclick="triggerCustomMapUpload('${c.map}')">Wgraj / Podmień zdjęcie mapki</button>
+              <button type="button" class="btn btn-sm btn-blue" onclick="openMapZoomModal('${c.map}')">Powiększ mapę</button>
+            </div>
+          </div>
+          <div class="training-map-wrapper">
+            <div class="map-frame" onclick="openMapZoomModal('${c.map}')">
+              ${getTrainingMapVisualHTML(c.map)}
+              <span class="map-zoom-badge">Kliknij, aby powiększyć</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <div class="blip-pill active-green" style="cursor:default; width:fit-content;">
+                <span class="blip-dot"></span>
+                <span>${isAsu ? "Wymagany czas przelotu: poniżej 0:55 sekundy" : "Wymagany przejazd: 0 kolizji z najwyższą prędkością (Próby: 2)"}</span>
+              </div>
+              <div style="font-size:13px; color:#cbd5e1; line-height:1.6; background:var(--bg-input); padding:12px 14px; border-radius:10px; border:1px solid var(--border);">
+                ${isAsu
+                  ? "<strong>Trasa na mapie ASU:</strong><br/>• <strong>Start:</strong> Górny odcinek kanału burzowego przy Mirror Park / East Vinewood.<br/>• <strong>Przelot:</strong> Lot wzdłuż czerwonych strzałek korytem kanału Los Santos pod wszystkimi mostami.<br/>• <strong>Meta:</strong> Wylot kanału przy basenie portowym (Port of South Los Santos)."
+                  : "<strong>Trasa na mapie SEU:</strong><br/>• <strong>Start:</strong> Wjazd na Great Ocean Highway przy plaży Pacific Bluffs.<br/>• <strong>Przejazd:</strong> Jazda wzdłuż wybrzeża przez Chumash, ostra pętla przy Tongva Hills i powrót na trasę przez tunel pod pasem startowym.<br/>• <strong>Meta:</strong> Nawrotka za tunelem Zancudo i dojazd pod bramę Fortu Zancudo."}
+              </div>
+            </div>
+          </div>
+        </div>`;
     }
-    const pHTML = `<div class="card"><h3 style="margin:0 0 10px; color:#4ade80;">Etapy Praktyczne — ${c.name}</h3>` + c.practical.map(p => `<label style="display:flex; align-items:center; gap:10px; background:var(--bg-input); border:1px solid var(--border); padding:9px 12px; border-radius:8px; margin-bottom:6px; cursor:pointer;"><input type="checkbox"/><span>${p}</span></label>`).join("") + `</div>`;
+
+    const pHTML = `
+      <div class="card">
+        <h3 style="margin:0 0 10px; color:#34d399;">Etapy Praktyczne — Kliknij blip, aby zaliczyć etap (${c.name})</h3>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          ${c.practical.map((p, idx) => {
+            const isOk = !!pr[idx];
+            return `
+              <div class="blip-pill ${isOk ? 'active-green' : ''}" style="border-radius:10px; padding:10px 14px; justify-content:space-between;" onclick="togglePracticalStageBlip(${idx})">
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <span class="blip-dot"></span>
+                  <span>${p}</span>
+                </div>
+                <span class="pill ${isOk ? 'pill-green' : 'pill-gray'}">${isOk ? 'ZALICZONE' : 'DO WYKONANIA'}</span>
+              </div>`;
+          }).join("")}
+        </div>
+      </div>`;
+
     container.innerHTML = tHTML + mapHTML + pHTML;
   }
+
   function assignCourseLicenseToSelected() {
     const badge = document.getElementById("szk-officer-select").value;
     const off = db.officers.find(o => o.badge === badge);
@@ -1411,17 +1910,20 @@
     off.licenses[selectedCourse] = true;
     off.updated = "Nadano " + selectedCourse;
     saveDatabase(); renderLicenseMatrix(); renderAllOfficersView();
-    toast("🎖️ Nadano licencję " + selectedCourse + " dla [" + off.badge + "] " + off.name);
+    toast("Nadano licencję " + selectedCourse + " dla [" + off.badge + "] " + off.name);
   }
   function copyCourseProtocol() {
-    copyText(`PROTOKÓŁ SZKOLENIA LSPD — ${COURSES_DATA[selectedCourse].name}\nSzkoleniowiec: ${db.loggedOfficer}\nStatus: ZALICZONE`, "📋 Skopiowano protokół!");
+    copyText(`PROTOKÓŁ SZKOLENIA LSPD — ${COURSES_DATA[selectedCourse].name}\nSzkoleniowiec: ${db.loggedOfficer}\nStatus: ZALICZONE`, "Skopiowano protokół!");
   }
   function renderLicenseMatrix() {
     const tbody = document.getElementById("matrix-tbody");
     if (!tbody) return;
     const q = (document.getElementById("matrix-search-inp")?.value || "").toLowerCase();
     tbody.innerHTML = db.officers.filter(o => o.badge.toLowerCase().includes(q) || o.name.toLowerCase().includes(q)).map(o => {
-      const pills = LICENSES.map(k => `<span class="pill ${o.licenses && o.licenses[k] ? 'pill-green' : 'pill-gray'}" style="cursor:pointer; margin:2px;" onclick="toggleMatrixLic('${o.badge}','${k}')">${o.licenses && o.licenses[k] ? '✓ ' : ''}${k}</span>`).join("");
+      const pills = LICENSES.map(k => {
+        const has = !!(o.licenses && o.licenses[k]);
+        return `<div class="blip-pill ${has ? 'active-green' : ''}" style="padding:3px 9px; font-size:11px; margin:2px;" onclick="toggleMatrixLic('${o.badge}','${k}')"><span class="blip-dot"></span><span>${k}</span></div>`;
+      }).join("");
       return `<tr><td style="font-weight:800; color:#60a5fa;">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${pills}</td><td style="color:var(--text-dim); font-size:11px;">${o.updated || "-"}</td></tr>`;
     }).join("");
   }
@@ -1433,7 +1935,6 @@
     saveDatabase(); renderLicenseMatrix(); renderAllOfficersView();
   }
 
-  /* STOPER PRÓB PRAKTYCZNYCH (URUCHAMIANY TYLKO GDY AKTYWNY) */
   let trialSwRunning = false, trialSwStart = 0, trialSwElapsed = 0, trialSwInterval = null;
   function toggleTrialStopwatch() {
     const btn = document.getElementById("trial-sw-btn");
@@ -1441,11 +1942,11 @@
       trialSwElapsed += Date.now() - trialSwStart;
       trialSwRunning = false;
       clearInterval(trialSwInterval);
-      btn.textContent = "▶ Start"; btn.className = "btn btn-sm btn-green";
+      btn.textContent = "Start"; btn.className = "btn btn-sm btn-green";
     } else {
       trialSwStart = Date.now();
       trialSwRunning = true;
-      btn.textContent = "⏹ Stop"; btn.className = "btn btn-sm btn-red";
+      btn.textContent = "Stop"; btn.className = "btn btn-sm btn-red";
       trialSwInterval = setInterval(() => {
         const ms = trialSwElapsed + (Date.now() - trialSwStart);
         const totSec = Math.floor(ms / 1000);
@@ -1458,18 +1959,18 @@
     clearInterval(trialSwInterval);
     setTxt("trial-stopwatch-val", "00:00.0");
     const btn = document.getElementById("trial-sw-btn");
-    if (btn) { btn.textContent = "▶ Start"; btn.className = "btn btn-sm btn-green"; }
+    if (btn) { btn.textContent = "Start"; btn.className = "btn btn-sm btn-green"; }
   }
 
-  /* STREFA KADETA (FTO) + STOPER */
+  /* STREFA KADETA (FTO) Z BLIPAMI ZALICZEŃ I EGZAMINU */
   let currentCadetId = "165";
   function getCadetTotalSec(c) { return (c.sec || 0) + (c.running && c.ts ? Math.max(0, Math.floor((Date.now() - c.ts) / 1000)) : 0); }
   function formatHMS(s) { return String(Math.floor(s / 3600)).padStart(2, "0") + "h " + String(Math.floor((s % 3600) / 60)).padStart(2, "0") + "m " + String(s % 60).padStart(2, "0") + "s"; }
   function toggleCadetStopwatch(id) {
     const c = db.cadets.find(x => x.id === id);
     if (!c) return;
-    if (c.running) { c.sec = getCadetTotalSec(c); c.running = false; c.ts = null; toast("⏹ Zatrzymano patrol [" + c.badge + "] " + c.name); }
-    else { c.running = true; c.ts = Date.now(); toast("▶ Start patrolu [" + c.badge + "] " + c.name); }
+    if (c.running) { c.sec = getCadetTotalSec(c); c.running = false; c.ts = null; toast("Zatrzymano patrol [" + c.badge + "] " + c.name); }
+    else { c.running = true; c.ts = Date.now(); toast("Start patrolu [" + c.badge + "] " + c.name); }
     saveDatabase(); renderCadets(); refreshCadetSheetButtonState();
   }
   function adjustCadetTime(mins) {
@@ -1481,7 +1982,7 @@
     if (!c) return;
     setTxt("cs-live-timer", formatHMS(getCadetTotalSec(c)));
     const b = document.getElementById("cs-startstop-btn");
-    if (b) { b.textContent = c.running ? "⏹ STOP" : "▶ START"; b.className = "btn " + (c.running ? "btn-red" : "btn-green"); }
+    if (b) { b.textContent = c.running ? "STOP" : "START"; b.className = "btn btn-sm " + (c.running ? "btn-red" : "btn-green"); }
   }
   function renderCadets() {
     const tbody = document.getElementById("fto-cadets-tbody");
@@ -1493,10 +1994,14 @@
         <td style="font-weight:800; color:#60a5fa;">#${c.badge}</td>
         <td style="font-weight:700;">${c.name}</td>
         <td>${c.fto}</td>
-        <td><div style="display:flex; align-items:center; gap:8px;"><span id="cad-timer-${c.id}" style="font-family:monospace; font-weight:800; color:${c.running ? '#4ade80' : '#38bdf8'};">${formatHMS(getCadetTotalSec(c))}</span><button type="button" class="btn btn-sm ${c.running ? 'btn-red' : 'btn-green'}" onclick="toggleCadetStopwatch('${c.id}')">${c.running ? '⏹ STOP' : '▶ START'}</button></div></td>
-        <td><button type="button" class="btn btn-sm btn-blue" onclick="openCadetSheetView('${c.id}')">KLIKNIJ (${done}/7)</button></td>
+        <td><div style="display:flex; align-items:center; gap:8px;"><span id="cad-timer-${c.id}" style="font-family:monospace; font-weight:800; color:${c.running ? '#34d399' : '#38bdf8'};">${formatHMS(getCadetTotalSec(c))}</span><button type="button" class="btn btn-sm ${c.running ? 'btn-red' : 'btn-green'}" onclick="toggleCadetStopwatch('${c.id}')" style="border-radius:99px;">${c.running ? 'STOP' : 'START'}</button></div></td>
+        <td><button type="button" class="btn btn-sm btn-blue" onclick="openCadetSheetView('${c.id}')" style="border-radius:99px;">ARKUSZ (${done}/7)</button></td>
         <td>${c.joinDate}</td>
-        <td style="text-align:center;"><input type="checkbox" ${c.pos ? 'checked' : ''} onchange="setCadetPos('${c.id}', this.checked)"/></td>
+        <td>
+          <div class="blip-pill ${c.pos ? 'active-green' : ''}" style="padding:3px 9px; font-size:11px;" onclick="setCadetPos('${c.id}', ${!c.pos})">
+            <span class="blip-dot"></span><span>${c.pos ? 'TAK' : 'NIE'}</span>
+          </div>
+        </td>
         <td><select class="sel" style="padding:4px 8px; font-size:11px;" onchange="setCadetNeg('${c.id}', this.value)">${["BRAK","1 NEGATYWNY","2 NEGATYWNE","DO POPRAWY","ZAWIESZONY"].map(opt => `<option value="${opt}" ${c.neg===opt?'selected':''}>${opt}</option>`).join("")}</select></td>
         <td><button type="button" class="btn btn-sm btn-red" onclick="removeCadet('${c.id}')">✕</button></td>
       </tr>`;
@@ -1506,57 +2011,75 @@
   }
   function createCadet() {
     const badge = document.getElementById("new-c-badge").value.trim(), name = document.getElementById("new-c-name").value.trim(), fto = document.getElementById("new-c-fto").value.trim() || "Oley Sasa";
-    if (!badge || !name) { toast("⚠️ Wpisz odznakę i imię kadeta!"); return; }
+    if (!badge || !name) { toast("Wpisz odznakę i imię kadeta!"); return; }
     const nc = { id: badge + "_" + Date.now(), badge, name, fto, joinDate: new Date().toLocaleDateString("pl-PL"), sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} };
     FTO_BASIC.forEach(m => nc.modules[m] = { ok: false, note: "", sign: "" });
     db.cadets.unshift(nc); saveDatabase(); renderCadets();
     document.getElementById("new-c-badge").value = ""; document.getElementById("new-c-name").value = "";
-    toast("✅ Dodano kadeta [" + badge + "] " + name);
+    toast("Dodano kadeta [" + badge + "] " + name);
   }
   function removeCadet(id) { db.cadets = db.cadets.filter(x => x.id !== id); saveDatabase(); renderCadets(); }
-  function setCadetPos(id, v) { const c = db.cadets.find(x => x.id === id); if (c) { c.pos = v; saveDatabase(); } }
+  function setCadetPos(id, v) { const c = db.cadets.find(x => x.id === id); if (c) { c.pos = v; saveDatabase(); renderCadets(); } }
   function setCadetNeg(id, v) { const c = db.cadets.find(x => x.id === id); if (c) { c.neg = v; saveDatabase(); } }
   function openCadetSheetView(id) {
     currentCadetId = id;
     const c = db.cadets.find(x => x.id === id);
     if (!c) return;
     setTxt("cs-badge-pill", "#" + c.badge); setTxt("cs-title-name", c.name); setTxt("cs-subtitle", "Opiekun FTO: " + c.fto + " • Dołączył: " + c.joinDate);
-    document.getElementById("cs-pos-check").checked = !!c.pos;
+    document.getElementById("cs-pos-blip").className = "blip-pill " + (c.pos ? "active-green" : "");
     document.getElementById("cs-pos-notes").value = c.posNotes || "";
     document.getElementById("cs-neg-select").value = c.neg || "BRAK";
     document.getElementById("cs-neg-notes").value = c.negNotes || "";
     refreshCadetSheetButtonState(); renderCadetSheetModules(c); switchFtoView("sheet");
+  }
+  function toggleSheetPosBlip() {
+    const c = db.cadets.find(x => x.id === currentCadetId);
+    if (!c) return;
+    c.pos = !c.pos;
+    document.getElementById("cs-pos-blip").className = "blip-pill " + (c.pos ? "active-green" : "");
+    saveDatabase(); renderCadets();
   }
   function renderCadetSheetModules(c) {
     const tbody = document.getElementById("cs-modules-body");
     if (!tbody) return;
     tbody.innerHTML = FTO_BASIC.map((m, i) => {
       const mod = c.modules[m] || { ok: false, note: "", sign: "" };
-      return `<tr><td style="font-weight:700;">${m}</td><td style="text-align:center;"><input type="checkbox" ${mod.ok?'checked':''} onchange="updateCadMod(${i},'ok',this.checked)"/></td><td><input type="text" class="inp" value="${mod.note}" oninput="updateCadMod(${i},'note',this.value)"/></td><td><input type="text" class="inp" style="text-align:center;font-weight:700;" value="${mod.sign}" oninput="updateCadMod(${i},'sign',this.value)"/></td><td><button type="button" class="btn btn-sm btn-dark" onclick="quickSignCadMod(${i})">Podpisz: SASA</button></td></tr>`;
+      return `<tr>
+        <td style="font-weight:700;">${m}</td>
+        <td>
+          <div class="blip-pill ${mod.ok ? 'active-green' : ''}" style="padding:4px 10px; font-size:11px;" onclick="updateCadMod(${i},'ok',${!mod.ok});renderCadetSheetModules(db.cadets.find(x=>x.id===currentCadetId));">
+            <span class="blip-dot"></span><span>${mod.ok ? 'Potrafi' : 'Brak'}</span>
+          </div>
+        </td>
+        <td><input type="text" class="inp" value="${mod.note}" oninput="updateCadMod(${i},'note',this.value)"/></td>
+        <td><input type="text" class="inp" style="text-align:center;font-weight:700;" value="${mod.sign}" oninput="updateCadMod(${i},'sign',this.value)"/></td>
+        <td><button type="button" class="btn btn-sm btn-dark" onclick="quickSignCadMod(${i})">Podpisz: SASA</button></td>
+      </tr>`;
     }).join("");
   }
   function updateCadMod(idx, field, val) { const c = db.cadets.find(x => x.id === currentCadetId); if (c) { c.modules[FTO_BASIC[idx]][field] = val; saveDatabase(); renderCadets(); } }
   function quickSignCadMod(idx) { const c = db.cadets.find(x => x.id === currentCadetId); if (c) { c.modules[FTO_BASIC[idx]].ok = true; c.modules[FTO_BASIC[idx]].sign = "SASA"; saveDatabase(); renderCadetSheetModules(c); renderCadets(); } }
   function signAllCadetBasic() {
     const c = db.cadets.find(x => x.id === currentCadetId);
-    if (c) { FTO_BASIC.forEach(m => { c.modules[m].ok = true; c.modules[m].sign = "SASA"; }); saveDatabase(); renderCadetSheetModules(c); renderCadets(); toast("✍ Zatwierdzono wszystkie moduły jako SASA"); }
+    if (c) { FTO_BASIC.forEach(m => { c.modules[m].ok = true; c.modules[m].sign = "SASA"; }); saveDatabase(); renderCadetSheetModules(c); renderCadets(); toast("Zatwierdzono wszystkie moduły jako SASA"); }
   }
   function saveCadetRemarks() {
     const c = db.cadets.find(x => x.id === currentCadetId);
-    if (c) { c.pos = document.getElementById("cs-pos-check").checked; c.posNotes = document.getElementById("cs-pos-notes").value; c.neg = document.getElementById("cs-neg-select").value; c.negNotes = document.getElementById("cs-neg-notes").value; saveDatabase(); renderCadets(); }
+    if (c) { c.posNotes = document.getElementById("cs-pos-notes").value; c.neg = document.getElementById("cs-neg-select").value; c.negNotes = document.getElementById("cs-neg-notes").value; saveDatabase(); renderCadets(); }
   }
   function promoteCadetToOfficer() {
     const c = db.cadets.find(x => x.id === currentCadetId);
     if (!c) return;
     db.officers.unshift({ badge: c.badge, name: c.name, rank: "Officer I", channel: "LSPD Tac #1", status: "Na służbie", licenses: {}, updated: "Awans FTO" });
     db.cadets = db.cadets.filter(x => x.id !== currentCadetId);
-    saveDatabase(); renderCadets(); renderAllOfficersView(); switchFtoView("list"); toast("🎖️ Awansowano [" + c.badge + "] " + c.name + "!");
+    saveDatabase(); renderCadets(); renderAllOfficersView(); switchFtoView("list"); toast("Awansowano [" + c.badge + "] " + c.name + "!");
   }
   function copyCadetSheet() {
     const c = db.cadets.find(x => x.id === currentCadetId);
-    if (c) copyText(`KARTA KADETA [${c.badge}] ${c.name}\nCzas w patrolu: ${formatHMS(getCadetTotalSec(c))}`, "📋 Skopiowano kartę kadeta!");
+    if (c) copyText(`KARTA KADETA [${c.badge}] ${c.name}\nCzas w patrolu: ${formatHMS(getCadetTotalSec(c))}`, "Skopiowano kartę kadeta!");
   }
 
+  /* EGZAMIN OFICERSKI Z OKRĄGŁYMI BLIPAMI 0-3 PKT */
   const EXAM_ITEMS = ["Teoria", "NTS", "FTS", "Status 7", "10-80", "10-80 patyki", "Pierwsza pomoc"];
   let examScores = { "Teoria": 0, "NTS": 0, "FTS": 0, "Status 7": 0, "10-80": 0, "10-80 patyki": 0, "Pierwsza pomoc": 0 };
   function renderOfficerExamTable() {
@@ -1565,36 +2088,45 @@
     let total = 0;
     tb.innerHTML = EXAM_ITEMS.map((item, idx) => {
       const val = examScores[item] || 0; total += val;
-      return `<tr><td style="font-weight:700; color:#60a5fa;">${item}</td>${[0,1,2,3].map(p => `<td style="text-align:center;"><input type="radio" name="ex-${idx}" ${val===p?'checked':''} onchange="setExamPts(${idx},${p})"/></td>`).join("")}<td style="text-align:center; font-weight:800;">${val}</td></tr>`;
+      const nodes = [0, 1, 2, 3].map(p => {
+        let cls = "";
+        if (val === p) cls = p === 0 ? "selected-zero" : (p === 3 ? "selected-max" : "selected-pts");
+        return `<div class="blip-node ${cls}" onclick="setExamPts(${idx},${p})">${p}</div>`;
+      }).join("");
+      return `<tr>
+        <td style="font-weight:700; color:#60a5fa;">${item}</td>
+        <td><div class="blip-nodes-group">${nodes}</div></td>
+        <td style="text-align:center; font-weight:800; font-size:14px;">${val} pkt</td>
+      </tr>`;
     }).join("");
     setTxt("exam-total-cell", total + " / 21");
     const v = document.getElementById("exam-verdict-cell");
-    if (v) { v.textContent = total >= 17 ? "ZDANE ✅" : "NIEZDANE ❌ (Min. 17 pkt)"; v.style.color = total >= 17 ? "#4ade80" : "#f87171"; }
+    if (v) { v.textContent = total >= 17 ? "ZDANE" : "NIEZDANE (Min. 17 pkt)"; v.style.color = total >= 17 ? "#34d399" : "#f87171"; }
   }
   function setExamPts(idx, p) { examScores[EXAM_ITEMS[idx]] = p; renderOfficerExamTable(); }
   function copyFinalExamProtocol() {
     let total = 0; EXAM_ITEMS.forEach(i => total += examScores[i]);
-    copyText(`EGZAMIN OFICERSKI LSPD — Wynik: ${total}/21 pkt (${total >= 17 ? 'ZDANE' : 'NIEZDANE'})`, "📋 Skopiowano wynik egzaminu!");
+    copyText(`EGZAMIN OFICERSKI LSPD — Wynik: ${total}/21 pkt (${total >= 17 ? 'ZDANE' : 'NIEZDANE'})`, "Skopiowano wynik egzaminu!");
   }
 
   /* PATROLE I FUNKCJONARIUSZE */
   function renderPatrols() {
     setTxt("pwc-holder-name", db.pwc); setTxt("apwc-holder-name", db.apwc);
     const grid = document.getElementById("patrols-grid");
-    if (grid) grid.innerHTML = db.patrols.map((p, idx) => `<div class="card" style="margin-bottom:0;"><div class="card-header"><div><strong>Patrol ${idx + 1}</strong> <span class="pill pill-blue">${p.type}</span></div><button type="button" class="btn btn-sm btn-red" onclick="removePatrol(${p.id})">Usuń</button></div>${p.members.map(m => `<div class="chip-item"><span>👮 ${m}</span></div>`).join("")}</div>`).join("");
+    if (grid) grid.innerHTML = db.patrols.map((p, idx) => `<div class="card" style="margin-bottom:0;"><div class="card-header"><div><strong>Patrol ${idx + 1}</strong> <span class="pill pill-blue">${p.type}</span></div><button type="button" class="btn btn-sm btn-red" onclick="removePatrol(${p.id})">Usuń</button></div>${p.members.map(m => `<div class="chip-item"><span>${m}</span></div>`).join("")}</div>`).join("");
   }
   function removePatrol(id) { db.patrols = db.patrols.filter(x => x.id !== id); saveDatabase(); renderPatrols(); }
-  function takeOverRole(r) { if (r === "PWC") db.pwc = db.loggedOfficer; else db.apwc = db.loggedOfficer; saveDatabase(); renderPatrols(); toast("✅ Przejęto " + r); }
+  function takeOverRole(r) { if (r === "PWC") db.pwc = db.loggedOfficer; else db.apwc = db.loggedOfficer; saveDatabase(); renderPatrols(); toast("Przejęto " + r); }
   function createNewPatrolUnit() {
     const type = document.getElementById("new-patrol-type").value;
     const mem = document.getElementById("new-patrol-members").value.trim() || db.loggedOfficer;
     db.patrols.push({ id: Date.now(), type, members: mem.split(",").map(s => s.trim()) });
     document.getElementById("new-patrol-members").value = "";
-    saveDatabase(); renderPatrols(); toast("🚓 Utworzono patrol " + type);
+    saveDatabase(); renderPatrols(); toast("Utworzono patrol " + type);
   }
   function renderAllOfficersView() {
     const dispBody = document.getElementById("dispatch-officers-tbody"), allBody = document.getElementById("all-officers-tbody");
-    if (dispBody) dispBody.innerHTML = db.officers.map(o => `<tr><td style="font-weight:800; color:#60a5fa;">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${o.channel || "LSPD Tac #1"}</td><td><span class="pill ${o.status === 'Na służbie' ? 'pill-green' : 'pill-gray'}" style="cursor:pointer;" onclick="toggleOfficerDuty('${o.badge}')">${o.status}</span></td></tr>`).join("");
+    if (dispBody) dispBody.innerHTML = db.officers.map(o => `<tr><td style="font-weight:800; color:#60a5fa;">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${o.channel || "LSPD Tac #1"}</td><td><div class="blip-pill ${o.status === 'Na służbie' ? 'active-green' : ''}" style="padding:3px 10px; font-size:11px;" onclick="toggleOfficerDuty('${o.badge}')"><span class="blip-dot"></span><span>${o.status}</span></div></td></tr>`).join("");
     if (allBody) allBody.innerHTML = db.officers.map(o => {
       const lics = LICENSES.filter(k => o.licenses && o.licenses[k]).map(k => `<span class="pill pill-blue" style="margin-right:3px;">${k}</span>`).join("") || `<span style="color:var(--text-dim);">Brak</span>`;
       return `<tr><td style="font-weight:800; color:#60a5fa;">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${lics}</td><td><span class="pill ${o.status === 'Na służbie' ? 'pill-green' : 'pill-gray'}">${o.status}</span></td><td style="text-align:right;"><button type="button" class="btn btn-sm btn-red" onclick="deleteOfficer('${o.badge}')">Usuń</button></td></tr>`;
@@ -1604,11 +2136,11 @@
   function toggleOfficerDuty(b) { const o = db.officers.find(x => x.badge === b); if (o) { o.status = o.status === "Na służbie" ? "Poza służbą" : "Na służbie"; saveDatabase(); renderAllOfficersView(); } }
   function createOfficerInDB() {
     const b = document.getElementById("add-off-badge").value.trim(), n = document.getElementById("add-off-name").value.trim(), r = document.getElementById("add-off-rank").value.trim() || "Officer I";
-    if (!b || !n) { toast("⚠️ Wpisz odznakę i imię!"); return; }
+    if (!b || !n) { toast("Wpisz odznakę i imię!"); return; }
     db.officers.unshift({ badge: b, name: n, rank: r, channel: "LSPD Tac #1", status: "Na służbie", licenses: {}, updated: "Nowy" });
     saveDatabase(); renderAllOfficersView(); renderLicenseMatrix(); renderSzkCourseBar();
     document.getElementById("add-off-badge").value = ""; document.getElementById("add-off-name").value = "";
-    toast("✅ Dodano funkcjonariusza [" + b + "] " + n);
+    toast("Dodano funkcjonariusza [" + b + "] " + n);
   }
 
   /* NAWIGACJA */
@@ -1642,9 +2174,9 @@
     const blob = new Blob([JSON.stringify(db, null, 2)], { type: "application/json" });
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "tablet_lspd_backup.json"; a.click();
   }
-  function resetFactoryDefaults() { localStorage.removeItem("lspd_mdt_gh_v7"); location.reload(); }
+  function resetFactoryDefaults() { localStorage.removeItem("lspd_mdt_gh_v9"); location.reload(); }
 
-  /* ZOPTYMALIZOWANA PĘTLA ZEGARA (CO 1 SEKUNDĘ, BEZ PRZEBUDOWY PRZYCISKÓW DOM) */
+  /* ZEGAR SYSTEMOWY */
   function tickClock() {
     const now = new Date();
     setTxt("live-clock", now.toLocaleDateString("pl-PL") + " • " + now.toLocaleTimeString("pl-PL"));
@@ -1660,7 +2192,7 @@
     if (banner) {
       if (runningCount > 0) {
         banner.classList.remove("hidden");
-        banner.textContent = `⏱ Aktywny patrol kadeta (${runningCount})`;
+        setTxt("active-patrol-banner-txt", `Aktywny patrol kadeta (${runningCount})`);
       } else {
         banner.classList.add("hidden");
       }
@@ -1668,7 +2200,6 @@
   }
   setInterval(tickClock, 1000);
 
-  /* INICJALIZACJA */
   loadDatabase();
   tickClock();
   renderCaseAssistOfficers();
