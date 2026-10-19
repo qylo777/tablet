@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tablet LSPD — MDT v13.0 (Kompendium LEA & BOLO)</title>
+  <title>Tablet LSPD — MDT v13.0 (Poszukiwania & Pytania Sytuacyjne)</title>
   <style>
     :root {
       color-scheme: dark;
@@ -47,7 +47,7 @@
       font-size: 13px; overflow-x: hidden;
     }
     @keyframes fadeSlideIn {
-      from { opacity: 0; transform: translateY(8px); }
+      from { opacity: 0; transform: translateY(7px); }
       to { opacity: 1; transform: translateY(0); }
     }
     @keyframes pulseRadar {
@@ -60,10 +60,9 @@
       70% { box-shadow: 0 0 0 7px rgba(0, 0, 0, 0); }
       100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
     }
-    .view-animate { animation: fadeSlideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .view-animate { animation: fadeSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .tablet-shell {
-      display: flex; min-height: 100vh;
-      background-color: var(--bg-main);
+      display: flex; min-height: 100vh; background-color: var(--bg-main);
       background-image:
         radial-gradient(circle at 85% 10%, var(--accent-soft), transparent 38%),
         linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
@@ -73,7 +72,7 @@
 
     /* SIDEBAR */
     .sidebar {
-      width: 264px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border);
+      width: 262px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border);
       display: flex; flex-direction: column; flex-shrink: 0; user-select: none;
       box-shadow: 6px 0 24px rgba(0,0,0,0.4); z-index: 10;
     }
@@ -91,14 +90,14 @@
     }
     .nav-section-title {
       padding: 12px 16px 4px; font-size: 10px; font-weight: 800;
-      color: var(--text-dim); letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-dim); letter-spacing: 0.11em; text-transform: uppercase;
     }
     .nav-list { display: flex; flex-direction: column; padding: 0 10px; gap: 2px; flex: 1; }
     .nav-item {
       display: flex; align-items: center; justify-content: space-between;
       padding: 8.5px 12px; border-radius: 9px; font-size: 12.5px; font-weight: 600;
       color: var(--text-muted); background: transparent; border: 1px solid transparent;
-      cursor: pointer; text-align: left; width: 100%; transition: all 0.16s ease;
+      cursor: pointer; text-align: left; width: 100%; transition: all 0.15s ease;
     }
     .nav-item-left { display: flex; align-items: center; gap: 9px; pointer-events: none; }
     .nav-item svg { width: 16px; height: 16px; stroke: currentColor; flex-shrink: 0; }
@@ -128,7 +127,7 @@
     .card {
       background-color: var(--bg-card); backdrop-filter: blur(6px);
       border: 1px solid var(--border); border-radius: 13px; padding: 15px; margin-bottom: 15px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.28);
     }
     .card-header {
       display: flex; justify-content: space-between; align-items: center;
@@ -152,7 +151,7 @@
       display: inline-flex; align-items: center; justify-content: center; gap: 6px;
       padding: 8px 14px; border-radius: 9px; font-size: 12px; font-weight: 700;
       cursor: pointer; border: 1px solid transparent; color: #fff; white-space: nowrap;
-      user-select: none; transition: all 0.16s ease;
+      user-select: none; transition: all 0.15s ease;
     }
     .btn:hover { filter: brightness(1.12); transform: translateY(-1px); }
     .btn:active { transform: translateY(1px); }
@@ -168,10 +167,10 @@
     .blip-row { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
     .blip-pill {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 6px 13px; border-radius: 999px;
+      padding: 5.5px 12px; border-radius: 999px;
       background-color: #090e17; border: 1px solid #24324b;
       color: var(--text-muted); font-size: 11.5px; font-weight: 700;
-      cursor: pointer; user-select: none; transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer; user-select: none; transition: all 0.16s ease;
     }
     .blip-pill:hover { border-color: var(--accent-bright); color: #fff; background-color: #111927; transform: translateY(-1px); }
     .blip-dot {
@@ -181,32 +180,32 @@
     .blip-pill span { pointer-events: none; }
     .blip-pill.active-blue {
       background-color: var(--accent-soft); border-color: var(--accent-bright); color: var(--accent-light);
-      box-shadow: 0 0 14px var(--accent-glow);
+      box-shadow: 0 0 12px var(--accent-glow);
     }
     .blip-pill.active-blue .blip-dot { background-color: var(--accent-light); box-shadow: 0 0 8px var(--accent-bright); animation: pulseAccent 2s infinite; }
     .blip-pill.active-green {
       background-color: rgba(16, 185, 129, 0.16); border-color: #10b981; color: #6ee7b7;
-      box-shadow: 0 0 14px rgba(16, 185, 129, 0.22);
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.22);
     }
     .blip-pill.active-green .blip-dot { background-color: #34d399; box-shadow: 0 0 8px #10b981; animation: pulseRadar 2s infinite; }
     .blip-pill.active-red {
       background-color: rgba(239, 68, 68, 0.16); border-color: #ef4444; color: #fca5a5;
-      box-shadow: 0 0 14px rgba(239, 68, 68, 0.22);
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.22);
     }
     .blip-pill.active-red .blip-dot { background-color: #f87171; box-shadow: 0 0 8px #ef4444; }
     .blip-pill.active-amber {
       background-color: rgba(245, 158, 11, 0.16); border-color: #f59e0b; color: #fde68a;
-      box-shadow: 0 0 14px rgba(245, 158, 11, 0.22);
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.22);
     }
     .blip-pill.active-amber .blip-dot { background-color: #fbbf24; box-shadow: 0 0 8px #f59e0b; }
 
     .context-blip-card {
       background: linear-gradient(180deg, rgba(37, 99, 235, 0.11) 0%, rgba(11, 16, 25, 0.96) 100%);
       border: 1px solid var(--accent-bright); border-radius: 11px;
-      padding: 12px 14px; margin-top: 10px; animation: fadeSlideIn 0.2s ease forwards;
+      padding: 11px 13px; margin-top: 9px; animation: fadeSlideIn 0.2s ease forwards;
     }
 
-    /* OKRĄGŁE BLIPY PUNKTOWE */
+    /* OKRĄGŁE BLIPY PUNKTOWE (0, 1, 2, 3, 5 PKT) */
     .blip-nodes-group {
       display: inline-flex; align-items: center; gap: 6px;
       background: #060910; padding: 4px 8px; border-radius: 999px; border: 1px solid #1d283a;
@@ -216,7 +215,7 @@
       display: inline-flex; align-items: center; justify-content: center;
       font-size: 12px; font-weight: 800; color: var(--text-muted);
       background-color: #101724; border: 1.5px solid #26344d;
-      cursor: pointer; user-select: none; transition: all 0.16s ease;
+      cursor: pointer; user-select: none; transition: all 0.15s ease;
     }
     .blip-node:hover { border-color: var(--accent-light); color: #fff; transform: scale(1.1); }
     .blip-node.selected-zero { background-color: rgba(239, 68, 68, 0.24); border-color: #ef4444; color: #fca5a5; }
@@ -235,7 +234,7 @@
       border: 1px solid var(--border); border-radius: 11px; padding: 12px 15px; margin-bottom: 9px;
       transition: all 0.18s ease;
     }
-    .question-blip-row:hover { border-color: #2f4163; transform: translateX(2px); }
+    .question-blip-row:hover { border-color: #2f4163; }
     .question-blip-row.scored-positive { border-left: 4px solid var(--green); }
     .question-blip-row.scored-zero { border-left: 4px solid #334155; }
 
@@ -332,7 +331,7 @@
       </div>
       <div>
         <div style="font-weight: 800; font-size: 15px; color: #fff;">Tablet <span style="color: var(--accent-light);">LSPD</span></div>
-        <div style="font-size: 11px; color: var(--text-dim);">MDT v13.0 LEA & BOLO</div>
+        <div style="font-size: 11px; color: var(--text-dim);">MDT v13.0 Mega Pack</div>
       </div>
     </div>
 
@@ -346,12 +345,13 @@
         <span class="nav-counter">BLIP</span>
       </button>
 
+      <!-- NOWA KATEGORIA: TWORZENIE OPISÓW POSZUKIWAŃ (BOLO / LISTY GOŃCZE) -->
       <button type="button" class="nav-item" id="nav-poszukiwania" onclick="window.switchMainView('poszukiwania')">
         <span class="nav-item-left">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
           <span>Poszukiwania (BOLO)</span>
         </span>
-        <span class="nav-counter" id="cnt-bolo" style="background:#7f1d1d; color:#fca5a5;">0</span>
+        <span class="nav-counter" id="cnt-bolo" style="background:#991b1b; color:#fecaca;">NOWE</span>
       </button>
 
       <button type="button" class="nav-item" id="nav-raporty" onclick="window.switchMainView('raporty')">
@@ -383,7 +383,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           <span>Wydział AIAD</span>
         </span>
-        <span class="nav-counter" id="cnt-aiad">0</span>
+        <span class="nav-counter" id="cnt-aiad" style="background:#7f1d1d; color:#fca5a5;">0</span>
       </button>
 
       <button type="button" class="nav-item" id="nav-dyspozytornia" onclick="window.switchMainView('dyspozytornia')">
@@ -489,13 +489,13 @@
       <div id="toast-alert" style="position: fixed; bottom: 22px; right: 22px; background: #111827; color: #fff; padding: 12px 18px; border-radius: 10px; font-weight: 700; border: 1px solid var(--accent-bright); box-shadow: 0 10px 25px rgba(0,0,0,0.85); display: none; z-index: 9999;"></div>
 
       <!-- ========================================================= -->
-      <!-- 1. SPRAWY, TARYFIKATOR I DYNAMICZNE BLIPY KONTEKSTOWE     -->
+      <!-- 1. SPRAWY, TARYFIKATOR I PYTANIA SYTUACYJNE (BLIP SYSTEM) -->
       <!-- ========================================================= -->
       <section id="view-sprawy" class="view-animate">
         <div class="card-header" style="margin-bottom: 14px;">
           <div>
-            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Nowa sprawa — Taryfikator, Kaucja i Blipy Kontekstowe</h1>
-            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Po wybraniu zarzutów (np. Kradzież pojazdu, 10-80, Broń, Narkotyki) pojawią się dedykowane pytania blipowe (np. o Tracker GPS) oraz weryfikacja prawa do kaucji (do 50 mies.)</p>
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Nowa sprawa — Taryfikator, Kaucja i Pytania Sytuacyjne (Blipy)</h1>
+            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Po wybraniu zarzutów w taryfikatorze pojawią się szczegółowe blipy sytuacyjne (np. Tracker GPS, los pojazdu, użycie Tasera, zastawka w 10-80, nagranie z Bodycam)</p>
           </div>
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
             <button type="button" class="btn btn-dark" onclick="window.resetCaseForm()">Wyczyść szkic</button>
@@ -530,13 +530,13 @@
                 <div id="case-assist-officers-box"></div>
               </div>
 
-              <!-- BLIPY PYTAŃ OGÓLNYCH + DYNAMICZNE BLIPY KONTEKSTOWE Z TARYFIKATORA -->
+              <!-- BLIPY PYTAŃ OGÓLNYCH + ROZBUDOWANE PYTANIA SYTUACYJNE -->
               <div style="background: #090d16; border: 1px solid #1f2b42; border-radius: 12px; padding: 14px; margin-bottom: 14px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
-                  <span style="font-size: 11.5px; font-weight: 800; color: var(--accent-light); text-transform: uppercase;">⚡ Blipy Przesłuchania i Decyzji Procesowej (Status 7)</span>
+                  <span style="font-size: 11.5px; font-weight: 800; color: var(--accent-light); text-transform: uppercase;">⚡ Blipy Przesłuchania i Pytań Sytuacyjnych</span>
                   <div style="display: flex; gap: 6px; flex-wrap: wrap;">
                     <div class="blip-pill" id="show-all-ctx-blip" onclick="window.toggleShowAllContextBlips()" style="padding: 4px 10px; font-size: 11px;">
-                      <span class="blip-dot"></span><span>Pokaż wszystkie pytania szczegółowe</span>
+                      <span class="blip-dot"></span><span>Pokaż wszystkie pytania sytuacyjne (8 kategorii)</span>
                     </div>
                     <div class="blip-pill active-green" id="auto-toggle-blip" onclick="window.toggleAutoDescBlip()" style="padding: 4px 10px; font-size: 11px;">
                       <span class="blip-dot"></span><span>Auto-opis aktywny</span>
@@ -604,7 +604,7 @@
                   </div>
                 </div>
 
-                <!-- DYNAMICZNE PYTANIA KONTEKSTOWE ZALEŻNE OD WYBRANYCH ZARZUTÓW -->
+                <!-- DYNAMICZNE PYTANIA SYTUACYJNE ZALEŻNE OD WYBRANYCH ZARZUTÓW -->
                 <div id="dynamic-context-blips-container"></div>
               </div>
 
@@ -613,7 +613,7 @@
                   <label class="field-label" style="margin: 0;">OPIS SPRAWY (DO SKOPIOWANIA W TABLECIE GRY)</label>
                   <button type="button" class="btn btn-sm btn-dark" onclick="window.generateAutoCaseDescription(true)">Odśwież opis</button>
                 </div>
-                <textarea id="case-desc" rows="8" class="txt" style="line-height: 1.55;" placeholder="Kliknij „+ Dodaj wyrok (Taryfikator)” poniżej. Po wybraniu zarzutów pojawią się dodatkowe blipy szczegółowe (np. czy skradziony pojazd miał Tracker GPS), a pełny opis sprawy wygeneruje się automatycznie..."></textarea>
+                <textarea id="case-desc" rows="8" class="txt" style="line-height: 1.55;" placeholder="Kliknij „+ Dodaj wyrok (Taryfikator)” poniżej. Po wybraniu zarzutów pojawią się dodatkowe pytania sytuacyjne (np. o Tracker GPS, los pojazdu, użycie Tasera, zastawkę), a pełny opis sprawy wygeneruje się automatycznie..."></textarea>
               </div>
             </div>
 
@@ -650,7 +650,6 @@
                 </div>
               </div>
 
-              <!-- WERYFIKATOR KAUCJI I KONWOJU WG KOMPENDIUM LEA -->
               <div id="bail-convoy-status-box" style="background: #080c14; border: 1px solid var(--border); border-radius: 9px; padding: 10px 12px; margin-bottom: 14px; font-size: 12px;">
                 Wybierz zarzuty, aby sprawdzić kwalifikację do kaucji (max 50 mies.) oraz wymóg konwoju (min. 100 mies.).
               </div>
@@ -675,86 +674,93 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- NOWOŚĆ: KATEGORIA TWORZENIA OPISÓW POSZUKIWAŃ (BOLO)      -->
+      <!-- NOWOŚĆ: KATEGORIA TWORZENIA OPISÓW POSZUKIWAŃ (BOLO / APB)-->
       <!-- ========================================================= -->
       <section id="view-poszukiwania" class="hidden view-animate">
         <div class="card-header" style="margin-bottom: 14px;">
           <div>
-            <h1 style="margin: 0; font-size: 20px; font-weight: 800; color: #f87171;">🎯 Kreator Opisów Poszukiwań (Listy Gończe / BOLO)</h1>
-            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Automatyczne tworzenie opisów poszukiwanych osób i pojazdów przy pomocy blipów taktycznych LSPD</p>
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800; color: #60a5fa;">🎯 Generator Opisów Poszukiwań — BOLO / Listy Gończe LSPD</h1>
+            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Tworzenie profesjonalnych rysopisów poszukiwanych osób i pojazdów za pomocą blipów sytuacyjnych (gotowe do wklejenia w kartotekę lub na /d)</p>
           </div>
           <div style="display: flex; gap: 8px;">
-            <button type="button" class="btn btn-dark" onclick="window.resetBoloCreator()">Wyczyść</button>
-            <button type="button" class="btn btn-blue" onclick="window.copyBoloDescription()">Kopiuj opis poszukiwania</button>
-            <button type="button" class="btn btn-red" onclick="window.saveBoloEntry()">+ Wystaw list gończy (BOLO)</button>
+            <button type="button" class="btn btn-dark" onclick="window.resetBoloCreator()">Wyczyść formularz</button>
+            <button type="button" class="btn btn-blue" onclick="window.copyBoloDescription()">Kopiuj sam opis poszukiwań</button>
+            <button type="button" class="btn btn-green" onclick="window.saveBoloEntry()">Zapisz w bazie poszukiwanych</button>
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1.35fr 1fr; gap: 16px;">
-          <div class="card" style="margin-bottom: 0; border-color: rgba(239, 68, 68, 0.35);">
-            <div style="margin-bottom: 12px;">
-              <label class="field-label">1. RODZAJ POSZUKIWANIA (BLIP):</label>
-              <div class="blip-row">
-                <div class="blip-pill active-blue" id="bolo-type-person" onclick="window.setBoloType('person')">
-                  <span class="blip-dot"></span><span>Poszukiwany Obywatel (List Gończy)</span>
-                </div>
-                <div class="blip-pill" id="bolo-type-vehicle" onclick="window.setBoloType('vehicle')">
-                  <span class="blip-dot"></span><span>Poszukiwany Pojazd (BOLO Pojazdu)</span>
-                </div>
-              </div>
-            </div>
-
+        <div style="display: grid; grid-template-columns: 1.45fr 1fr; gap: 16px;">
+          <div class="card" style="margin-bottom: 0;">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
               <div>
-                <label class="field-label" id="bolo-lbl-main">IMIĘ I NAZWISKO / PSEUDONIM</label>
-                <input type="text" id="bolo-subject-inp" class="inp" placeholder="Np. Evil Evans / Nieznany sprawca..." oninput="window.generateBoloText()" />
+                <label class="field-label">IMIĘ I NAZWISKO / PSEUDONIM POSZUKIWANEGO</label>
+                <input type="text" id="bolo-name" class="inp" placeholder="Np. Evil Evans / Nieznany zamaskowany..." oninput="window.generateBoloText()" />
               </div>
               <div>
-                <label class="field-label" id="bolo-lbl-sub">RYSOPIS / ZNAKI SZCZEGÓLNE / POJAZD</label>
-                <input type="text" id="bolo-details-inp" class="inp" placeholder="Np. Czarna bluza, tatuaże, porusza się czarnym Sultanem..." oninput="window.generateBoloText()" />
+                <label class="field-label">OSTATNIA ZNANA LOKALIZACJA (10-20) I KIERUNEK</label>
+                <input type="text" id="bolo-loc" class="inp" placeholder="Np. El Burro Heights / Mirror Park (North)..." oninput="window.generateBoloText()" />
               </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
               <div>
-                <label class="field-label">OSTATNIA ZNANA LOKALIZACJA (10-20)</label>
-                <input type="text" id="bolo-loc-inp" class="inp" placeholder="Np. El Burro Heights / Vinewood Blvd..." oninput="window.generateBoloText()" />
+                <label class="field-label">RYSOPIS / UBIÓR / ZNAKI SZCZEGÓLNE</label>
+                <input type="text" id="bolo-look" class="inp" placeholder="Np. Czarna marynarka, tatuaże na rękach, maska..." oninput="window.generateBoloText()" />
               </div>
               <div>
-                <label class="field-label">NUMER REJESTRACYJNY / CBN (OPCJONALNIE)</label>
-                <input type="text" id="bolo-id-inp" class="inp" placeholder="Np. Rej. 68LCE795 / CBN: V56793..." oninput="window.generateBoloText()" />
+                <label class="field-label">POWIĄZANY POJAZD I NUMER REJESTRACYJNY</label>
+                <input type="text" id="bolo-veh" class="inp" placeholder="Np. Czarne BMW M3 / Rej. 49LJC766..." oninput="window.generateBoloText()" />
               </div>
             </div>
 
-            <!-- BLIPY POWODU POSZUKIWAŃ I INSTRUKCJI DLA PATROLI -->
-            <div style="background: #090d16; border: 1px solid #2d1b24; border-radius: 11px; padding: 12px; margin-bottom: 12px;">
-              <div style="font-size: 11px; color: #f87171; font-weight: 800; text-transform: uppercase; margin-bottom: 7px;">2. POWÓD WYSTAWIENIA POSZUKIWANIA (WIELOKROTNY WYBÓR BLIPÓW):</div>
-              <div class="blip-row" id="bolo-reasons-bar" style="margin-bottom: 12px;"></div>
+            <!-- BLIPY GENERATORA POSZUKIWAŃ -->
+            <div style="background: #090d16; border: 1px solid #1f2b42; border-radius: 12px; padding: 14px; margin-bottom: 14px;">
+              <div style="margin-bottom: 10px;">
+                <div style="font-size: 11px; color: var(--accent-light); font-weight: 800; margin-bottom: 6px;">1. POWÓD WYSTAWIENIA LISTU GOŃCZEGO / BOLO (WIELOKROTNY WYBÓR BLIPÓW):</div>
+                <div class="blip-row" id="bolo-reasons-bar"></div>
+              </div>
 
-              <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;">3. POZIOM ZAGROŻENIA I WYTYCZNE DLA JEDNOSTEK (BLIP):</div>
-              <div class="blip-row">
-                <div class="blip-pill active-red" id="bolo-risk-high" onclick="window.setBoloRisk('high')">
-                  <span class="blip-dot"></span><span>WYSOKIE RYZYKO — Uzbrojony, obowiązkowy FTS (10-21)!</span>
+              <div style="margin-bottom: 10px;">
+                <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;">2. STOPIEŃ ZAGROŻENIA I UZBROJENIE POSZUKIWANEGO:</div>
+                <div class="blip-row">
+                  <div class="blip-pill active-blue" id="bolo-threat-low" onclick="window.setBoloThreat('low')">
+                    <span class="blip-dot"></span><span>Niskie (Poszukiwany do wyjaśnień / Brak broni)</span>
+                  </div>
+                  <div class="blip-pill" id="bolo-threat-med" onclick="window.setBoloThreat('med')">
+                    <span class="blip-dot"></span><span>Średnie (Prawdopodobna broń krótka Klasy II)</span>
+                  </div>
+                  <div class="blip-pill" id="bolo-threat-high" onclick="window.setBoloThreat('high')">
+                    <span class="blip-dot"></span><span>Wysokie (Uzbrojony i niebezpieczny — Broń długa Klasy III!)</span>
+                  </div>
                 </div>
-                <div class="blip-pill" id="bolo-risk-med" onclick="window.setBoloRisk('med')">
-                  <span class="blip-dot"></span><span>ŚREDNIE RYZYKO — Zachować ostrożność, wezwać U2</span>
-                </div>
-                <div class="blip-pill" id="bolo-risk-impound" onclick="window.setBoloRisk('impound')">
-                  <span class="blip-dot"></span><span>Zatrzymać do kontroli (Code 6) i odholować pojazd (Impound)</span>
+              </div>
+
+              <div>
+                <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;">3. DYREKTYWA OPERACYJNA DLA PATROLI LSPD:</div>
+                <div class="blip-row">
+                  <div class="blip-pill active-green" id="bolo-act-arrest" onclick="window.setBoloDirective('arrest')">
+                    <span class="blip-dot"></span><span>Zatrzymać i doprowadzić na komendę MRPD (Status 7)</span>
+                  </div>
+                  <div class="blip-pill" id="bolo-act-fts" onclick="window.setBoloDirective('fts')">
+                    <span class="blip-dot"></span><span>Przeprowadzić zatrzymanie wysokiego ryzyka FTS (10-21)</span>
+                  </div>
+                  <div class="blip-pill" id="bolo-act-swat" onclick="window.setBoloDirective('swat')">
+                    <span class="blip-dot"></span><span>Nie podchodzić solo — obserwować i wezwać SV / SWAT (Kod 11)</span>
+                  </div>
                 </div>
               </div>
             </div>
 
             <div>
-              <label class="field-label">AUTOMATYCZNIE WYGENEROWANY OPIS POSZUKIWANIA (BOLO)</label>
-              <textarea id="bolo-output-txt" rows="6" class="txt" style="line-height: 1.55;"></textarea>
+              <label class="field-label">WYGENEROWANY OPIS POSZUKIWAŃ (DO KARTOTEKI MDT LUB DISPATCHA)</label>
+              <textarea id="bolo-output-txt" rows="7" class="txt" style="line-height: 1.55;"></textarea>
             </div>
           </div>
 
           <div class="card" style="margin-bottom: 0; display: flex; flex-direction: column;">
             <div class="card-header">
-              <span style="font-weight: 800; font-size: 14px; color: #f87171;">Aktywne Listy Gończe i Pojazdy BOLO</span>
-              <span class="pill pill-red" id="bolo-count-pill">0 aktywnych</span>
+              <span style="font-weight: 800; font-size: 14px; color: var(--accent-light);">Tablica Aktywnych Poszukiwań (BOLO)</span>
+              <span class="pill pill-blue" id="bolo-count-pill">0 aktywnych</span>
             </div>
             <div id="bolo-active-list" style="flex: 1; overflow-y: auto; max-height: 460px;"></div>
           </div>
@@ -762,13 +768,13 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 2. SZKOLENIA LSPD (10 KURSÓW + KAZUSY SYTUACYJNE LEA)     -->
+      <!-- 2. SZKOLENIA LSPD (10 KURSÓW + KAZUSY SYTUACYJNE + MAPKI) -->
       <!-- ========================================================= -->
       <section id="view-szkolenia" class="hidden view-animate">
         <div class="card-header" style="margin-bottom: 14px;">
           <div>
-            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">🎖️ Centrum Szkoleń LSPD i Kazusów Sytuacyjnych LEA (80+ Pytań z Blipami)</h1>
-            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">SYTUACYJNE (Kazusy Terenowe), KOMPENDIUM LEA, RTO+HRO, NEGO, SV, PWC+APWC, ASU, MERRY, SEU, L.W — klikaj okrągłe blipy punktowe</p>
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">🎖️ Centrum Szkoleń LSPD i Kazusów Sytuacyjnych (80+ Pytań z Blipami)</h1>
+            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">PYTANIA SYTUACYJNE (KAZUSY), KOMPENDIUM LEA, RTO+HRO, NEGO, SV, PWC+APWC, ASU, MERRY, SEU, L.W — klikaj okrągłe blipy punktowe</p>
           </div>
           <div style="display: flex; gap: 8px;">
             <button type="button" class="btn btn-blue" id="btn-szk-exam" onclick="window.switchSzkMode('exam')">Arkusz Pytań i Mapki</button>
@@ -1452,22 +1458,4 @@
       const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
       osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
       gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-      osc.connect(gain); gain.connect(audioCtx.destination);
-      osc.start(); osc.stop(audioCtx.currentTime + duration);
-    } catch (e) {}
-  }
-  document.addEventListener("click", (e) => {
-    if (e.target.closest(".blip-pill, .blip-node, .penal-blip-item")) playUiBeep(960, 0.04, "sine");
-    else if (e.target.closest(".nav-item, .btn, .theme-dot")) playUiBeep(680, 0.03, "triangle");
-  });
-
-  window.toggleSfx = function() {
-    sfxEnabled = !sfxEnabled;
-    const blip = document.getElementById("sfx-toggle-blip");
-    if (blip) blip.className = "blip-pill " + (sfxEnabled ? "active-blue" : "");
-    setTxt("sfx-toggle-txt", "SFX: " + (sfxEnabled ? "ON" : "OFF"));
-  };
-
-  window.setTabletTheme = function(themeKey) {
-    document.body.className = themeKey
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime
