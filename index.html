@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tablet LSPD — MDT v12.0 Kompendium LEA</title>
+  <title>Tablet LSPD — MDT v13.0 (Kompendium LEA & BOLO)</title>
   <style>
     :root {
       color-scheme: dark;
       --bg-outer: #030508;
       --bg-main: #070b12;
       --bg-sidebar: #0a0f18;
-      --bg-card: rgba(16, 23, 36, 0.88);
+      --bg-card: rgba(16, 23, 36, 0.9);
       --bg-input: #05080e;
       --border: #1b2538;
       --border-light: #2c3a57;
@@ -73,34 +73,34 @@
 
     /* SIDEBAR */
     .sidebar {
-      width: 262px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border);
+      width: 264px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border);
       display: flex; flex-direction: column; flex-shrink: 0; user-select: none;
       box-shadow: 6px 0 24px rgba(0,0,0,0.4); z-index: 10;
     }
     .brand-header {
-      padding: 18px 16px; border-bottom: 1px solid var(--border);
+      padding: 16px; border-bottom: 1px solid var(--border);
       display: flex; align-items: center; gap: 12px;
       background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
     }
     .brand-seal {
-      width: 42px; height: 42px; border-radius: 50%;
+      width: 40px; height: 40px; border-radius: 50%;
       background: radial-gradient(circle at 30% 30%, var(--accent), #0b132b 75%);
       border: 2px solid var(--accent-light);
       display: flex; align-items: center; justify-content: center;
       box-shadow: 0 0 18px var(--accent-glow); flex-shrink: 0;
     }
     .nav-section-title {
-      padding: 13px 16px 4px; font-size: 10px; font-weight: 800;
+      padding: 12px 16px 4px; font-size: 10px; font-weight: 800;
       color: var(--text-dim); letter-spacing: 0.12em; text-transform: uppercase;
     }
-    .nav-list { display: flex; flex-direction: column; padding: 0 10px; gap: 3px; flex: 1; }
+    .nav-list { display: flex; flex-direction: column; padding: 0 10px; gap: 2px; flex: 1; }
     .nav-item {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 9px 12px; border-radius: 10px; font-size: 12.5px; font-weight: 600;
+      padding: 8.5px 12px; border-radius: 9px; font-size: 12.5px; font-weight: 600;
       color: var(--text-muted); background: transparent; border: 1px solid transparent;
       cursor: pointer; text-align: left; width: 100%; transition: all 0.16s ease;
     }
-    .nav-item-left { display: flex; align-items: center; gap: 10px; pointer-events: none; }
+    .nav-item-left { display: flex; align-items: center; gap: 9px; pointer-events: none; }
     .nav-item svg { width: 16px; height: 16px; stroke: currentColor; flex-shrink: 0; }
     .nav-item:hover { background-color: #131c2e; color: #fff; transform: translateX(3px); }
     .nav-item.active {
@@ -117,21 +117,19 @@
     /* MAIN AREA */
     .main-area { flex: 1; display: flex; flex-direction: column; min-width: 0; }
     .topbar {
-      min-height: 56px; background-color: rgba(10, 15, 24, 0.9);
+      min-height: 54px; background-color: rgba(10, 15, 24, 0.92);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border); padding: 8px 24px;
       display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
     }
-    .content-scroll { flex: 1; padding: 22px 26px; overflow-y: auto; }
+    .content-scroll { flex: 1; padding: 20px 24px; overflow-y: auto; }
 
     /* CARDS & INPUTS */
     .card {
       background-color: var(--bg-card); backdrop-filter: blur(6px);
-      border: 1px solid var(--border); border-radius: 13px; padding: 16px; margin-bottom: 16px;
-      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.28);
-      transition: border-color 0.2s;
+      border: 1px solid var(--border); border-radius: 13px; padding: 15px; margin-bottom: 15px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
     }
-    .card:hover { border-color: #263552; }
     .card-header {
       display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 12px; gap: 10px; flex-wrap: wrap;
@@ -142,7 +140,7 @@
     }
     .inp, .sel, .txt {
       width: 100%; background-color: var(--bg-input); border: 1px solid var(--border-light);
-      color: var(--text); border-radius: 9px; padding: 9px 12px; font-size: 13px;
+      color: var(--text); border-radius: 9px; padding: 8px 12px; font-size: 13px;
       outline: none; font-family: inherit; transition: all 0.16s;
     }
     .inp:focus, .sel:focus, .txt:focus {
@@ -159,8 +157,8 @@
     .btn:hover { filter: brightness(1.12); transform: translateY(-1px); }
     .btn:active { transform: translateY(1px); }
     .btn-sm { padding: 5px 10px; font-size: 11px; border-radius: 7px; }
-    .btn-blue { background: linear-gradient(135deg, var(--accent), #1e3a8a); border-color: var(--accent-bright); box-shadow: 0 3px 12px var(--accent-soft); }
-    .btn-green { background: linear-gradient(135deg, #10b981, #059669); border-color: #34d399; box-shadow: 0 3px 12px rgba(16,185,129,0.2); }
+    .btn-blue { background: linear-gradient(135deg, var(--accent), #1e3a8a); border-color: var(--accent-bright); }
+    .btn-green { background: linear-gradient(135deg, #10b981, #059669); border-color: #34d399; }
     .btn-red { background: linear-gradient(135deg, #ef4444, #dc2626); border-color: #f87171; }
     .btn-amber { background: linear-gradient(135deg, #f59e0b, #d97706); border-color: #fbbf24; }
     .btn-dark { background-color: #161f30; border-color: #2b3954; color: #cbd5e1; }
@@ -208,13 +206,13 @@
       padding: 12px 14px; margin-top: 10px; animation: fadeSlideIn 0.2s ease forwards;
     }
 
-    /* OKRĄGŁE BLIPY PUNKTOWE (0, 1, 2, 3, 5 PKT) */
+    /* OKRĄGŁE BLIPY PUNKTOWE */
     .blip-nodes-group {
       display: inline-flex; align-items: center; gap: 6px;
       background: #060910; padding: 4px 8px; border-radius: 999px; border: 1px solid #1d283a;
     }
     .blip-node {
-      width: 31px; height: 31px; border-radius: 50%;
+      width: 30px; height: 30px; border-radius: 50%;
       display: inline-flex; align-items: center; justify-content: center;
       font-size: 12px; font-weight: 800; color: var(--text-muted);
       background-color: #101724; border: 1.5px solid #26344d;
@@ -334,7 +332,7 @@
       </div>
       <div>
         <div style="font-weight: 800; font-size: 15px; color: #fff;">Tablet <span style="color: var(--accent-light);">LSPD</span></div>
-        <div style="font-size: 11px; color: var(--text-dim);">MDT v12.0 Kompendium LEA</div>
+        <div style="font-size: 11px; color: var(--text-dim);">MDT v13.0 LEA & BOLO</div>
       </div>
     </div>
 
@@ -346,6 +344,14 @@
           <span>Sprawy (Taryfikator)</span>
         </span>
         <span class="nav-counter">BLIP</span>
+      </button>
+
+      <button type="button" class="nav-item" id="nav-poszukiwania" onclick="window.switchMainView('poszukiwania')">
+        <span class="nav-item-left">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          <span>Poszukiwania (BOLO)</span>
+        </span>
+        <span class="nav-counter" id="cnt-bolo" style="background:#7f1d1d; color:#fca5a5;">0</span>
       </button>
 
       <button type="button" class="nav-item" id="nav-raporty" onclick="window.switchMainView('raporty')">
@@ -377,7 +383,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           <span>Wydział AIAD</span>
         </span>
-        <span class="nav-counter" id="cnt-aiad" style="background:#7f1d1d; color:#fca5a5;">0</span>
+        <span class="nav-counter" id="cnt-aiad">0</span>
       </button>
 
       <button type="button" class="nav-item" id="nav-dyspozytornia" onclick="window.switchMainView('dyspozytornia')">
@@ -404,13 +410,13 @@
         <span class="nav-counter" id="cnt-officers">0</span>
       </button>
 
-      <div class="nav-section-title" style="padding-top: 10px;">AKADEMIA I KOMPENDIUM</div>
+      <div class="nav-section-title" style="padding-top: 8px;">AKADEMIA I KOMPENDIUM</div>
       <button type="button" class="nav-item" id="nav-szkolenia" onclick="window.switchMainView('szkolenia')">
         <span class="nav-item-left">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
-          <span>Szkolenia (9 Kursów)</span>
+          <span>Szkolenia (10 Kursów)</span>
         </span>
-        <span class="nav-counter">65+ PYTAŃ</span>
+        <span class="nav-counter">80+ PYTAŃ</span>
       </button>
 
       <button type="button" class="nav-item" id="nav-kompendium" onclick="window.switchMainView('kompendium')">
@@ -669,13 +675,100 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 2. SZKOLENIA LSPD (9 KURSÓW + 65 PYTAŃ Z BLIPAMI + MAPKI) -->
+      <!-- NOWOŚĆ: KATEGORIA TWORZENIA OPISÓW POSZUKIWAŃ (BOLO)      -->
+      <!-- ========================================================= -->
+      <section id="view-poszukiwania" class="hidden view-animate">
+        <div class="card-header" style="margin-bottom: 14px;">
+          <div>
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800; color: #f87171;">🎯 Kreator Opisów Poszukiwań (Listy Gończe / BOLO)</h1>
+            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">Automatyczne tworzenie opisów poszukiwanych osób i pojazdów przy pomocy blipów taktycznych LSPD</p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn btn-dark" onclick="window.resetBoloCreator()">Wyczyść</button>
+            <button type="button" class="btn btn-blue" onclick="window.copyBoloDescription()">Kopiuj opis poszukiwania</button>
+            <button type="button" class="btn btn-red" onclick="window.saveBoloEntry()">+ Wystaw list gończy (BOLO)</button>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.35fr 1fr; gap: 16px;">
+          <div class="card" style="margin-bottom: 0; border-color: rgba(239, 68, 68, 0.35);">
+            <div style="margin-bottom: 12px;">
+              <label class="field-label">1. RODZAJ POSZUKIWANIA (BLIP):</label>
+              <div class="blip-row">
+                <div class="blip-pill active-blue" id="bolo-type-person" onclick="window.setBoloType('person')">
+                  <span class="blip-dot"></span><span>Poszukiwany Obywatel (List Gończy)</span>
+                </div>
+                <div class="blip-pill" id="bolo-type-vehicle" onclick="window.setBoloType('vehicle')">
+                  <span class="blip-dot"></span><span>Poszukiwany Pojazd (BOLO Pojazdu)</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+              <div>
+                <label class="field-label" id="bolo-lbl-main">IMIĘ I NAZWISKO / PSEUDONIM</label>
+                <input type="text" id="bolo-subject-inp" class="inp" placeholder="Np. Evil Evans / Nieznany sprawca..." oninput="window.generateBoloText()" />
+              </div>
+              <div>
+                <label class="field-label" id="bolo-lbl-sub">RYSOPIS / ZNAKI SZCZEGÓLNE / POJAZD</label>
+                <input type="text" id="bolo-details-inp" class="inp" placeholder="Np. Czarna bluza, tatuaże, porusza się czarnym Sultanem..." oninput="window.generateBoloText()" />
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+              <div>
+                <label class="field-label">OSTATNIA ZNANA LOKALIZACJA (10-20)</label>
+                <input type="text" id="bolo-loc-inp" class="inp" placeholder="Np. El Burro Heights / Vinewood Blvd..." oninput="window.generateBoloText()" />
+              </div>
+              <div>
+                <label class="field-label">NUMER REJESTRACYJNY / CBN (OPCJONALNIE)</label>
+                <input type="text" id="bolo-id-inp" class="inp" placeholder="Np. Rej. 68LCE795 / CBN: V56793..." oninput="window.generateBoloText()" />
+              </div>
+            </div>
+
+            <!-- BLIPY POWODU POSZUKIWAŃ I INSTRUKCJI DLA PATROLI -->
+            <div style="background: #090d16; border: 1px solid #2d1b24; border-radius: 11px; padding: 12px; margin-bottom: 12px;">
+              <div style="font-size: 11px; color: #f87171; font-weight: 800; text-transform: uppercase; margin-bottom: 7px;">2. POWÓD WYSTAWIENIA POSZUKIWANIA (WIELOKROTNY WYBÓR BLIPÓW):</div>
+              <div class="blip-row" id="bolo-reasons-bar" style="margin-bottom: 12px;"></div>
+
+              <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;">3. POZIOM ZAGROŻENIA I WYTYCZNE DLA JEDNOSTEK (BLIP):</div>
+              <div class="blip-row">
+                <div class="blip-pill active-red" id="bolo-risk-high" onclick="window.setBoloRisk('high')">
+                  <span class="blip-dot"></span><span>WYSOKIE RYZYKO — Uzbrojony, obowiązkowy FTS (10-21)!</span>
+                </div>
+                <div class="blip-pill" id="bolo-risk-med" onclick="window.setBoloRisk('med')">
+                  <span class="blip-dot"></span><span>ŚREDNIE RYZYKO — Zachować ostrożność, wezwać U2</span>
+                </div>
+                <div class="blip-pill" id="bolo-risk-impound" onclick="window.setBoloRisk('impound')">
+                  <span class="blip-dot"></span><span>Zatrzymać do kontroli (Code 6) i odholować pojazd (Impound)</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label class="field-label">AUTOMATYCZNIE WYGENEROWANY OPIS POSZUKIWANIA (BOLO)</label>
+              <textarea id="bolo-output-txt" rows="6" class="txt" style="line-height: 1.55;"></textarea>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom: 0; display: flex; flex-direction: column;">
+            <div class="card-header">
+              <span style="font-weight: 800; font-size: 14px; color: #f87171;">Aktywne Listy Gończe i Pojazdy BOLO</span>
+              <span class="pill pill-red" id="bolo-count-pill">0 aktywnych</span>
+            </div>
+            <div id="bolo-active-list" style="flex: 1; overflow-y: auto; max-height: 460px;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 2. SZKOLENIA LSPD (10 KURSÓW + KAZUSY SYTUACYJNE LEA)     -->
       <!-- ========================================================= -->
       <section id="view-szkolenia" class="hidden view-animate">
         <div class="card-header" style="margin-bottom: 14px;">
           <div>
-            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">🎖️ Centrum Szkoleń LSPD i Egzaminów LEA (65+ Pytań z Blipami)</h1>
-            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">KOMPENDIUM LEA, RTO+HRO, NEGO (N.L I/II), SV, PWC+APWC, ASU, MERRY, SEU, L.W (Long Weapon) — klikaj okrągłe blipy punktowe przy pytaniach</p>
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800;">🎖️ Centrum Szkoleń LSPD i Kazusów Sytuacyjnych LEA (80+ Pytań z Blipami)</h1>
+            <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">SYTUACYJNE (Kazusy Terenowe), KOMPENDIUM LEA, RTO+HRO, NEGO, SV, PWC+APWC, ASU, MERRY, SEU, L.W — klikaj okrągłe blipy punktowe</p>
           </div>
           <div style="display: flex; gap: 8px;">
             <button type="button" class="btn btn-blue" id="btn-szk-exam" onclick="window.switchSzkMode('exam')">Arkusz Pytań i Mapki</button>
@@ -721,7 +814,7 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- NOWOŚĆ: ZAKŁADKA KOMPENDIUM LEA (ŚCIĄGA OPERACYJNA)       -->
+      <!-- 3. KOMPENDIUM LEA (ŚCIĄGA OPERACYJNA)                     -->
       <!-- ========================================================= -->
       <section id="view-kompendium" class="hidden view-animate">
         <div class="card-header" style="margin-bottom: 14px;">
@@ -790,7 +883,7 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 3. POJAZDY (TRACKER / IMPOUND) I MANDATY DROGOWE          -->
+      <!-- 4. POJAZDY (TRACKER / IMPOUND) I MANDATY DROGOWE          -->
       <!-- ========================================================= -->
       <section id="view-pojazdy" class="hidden view-animate">
         <div class="card-header" style="margin-bottom: 14px;">
@@ -860,7 +953,7 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 4. DISPATCH I GENERATOR KOMUNIKATÓW RADIOWYCH (/d)        -->
+      <!-- 5. DISPATCH I GENERATOR KOMUNIKATÓW RADIOWYCH (/d)        -->
       <!-- ========================================================= -->
       <section id="view-dispatch" class="hidden view-animate">
         <div class="card-header" style="margin-bottom: 14px;">
@@ -911,7 +1004,7 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 5. WYDZIAŁ AIAD / INTERNAL AFFAIRS                        -->
+      <!-- 6. WYDZIAŁ AIAD / INTERNAL AFFAIRS                        -->
       <!-- ========================================================= -->
       <section id="view-aiad" class="hidden view-animate">
         <div class="card-header" style="margin-bottom: 14px;">
@@ -994,7 +1087,7 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 6. RAPORTY (LISTA + CZYSTY FORMULARZ)                     -->
+      <!-- 7. RAPORTY (LISTA + CZYSTY FORMULARZ)                     -->
       <!-- ========================================================= -->
       <section id="view-raporty" class="hidden view-animate">
         <div id="reports-list-subview">
@@ -1095,7 +1188,7 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 7. STREFA KADETA (FTO + BLIPY SZKOLEŃ I EGZAMINU)         -->
+      <!-- 8. STREFA KADETA (FTO + BLIPY SZKOLEŃ I EGZAMINU)         -->
       <!-- ========================================================= -->
       <section id="view-kadet" class="hidden view-animate">
         <div class="card-header" style="margin-bottom: 14px;">
@@ -1218,7 +1311,7 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 8. PATROLE, DYSPOZYTORNIA I FUNKCJONARIUSZE               -->
+      <!-- 9. PATROLE, DYSPOZYTORNIA I FUNKCJONARIUSZE               -->
       <!-- ========================================================= -->
       <section id="view-patrole" class="hidden view-animate">
         <div class="card-header">
@@ -1377,1055 +1470,4 @@
   };
 
   window.setTabletTheme = function(themeKey) {
-    document.body.className = themeKey === "lspd" ? "" : "theme-" + themeKey;
-    ["lspd", "aiad", "sasp", "swat"].forEach(k => document.getElementById("th-" + k)?.classList.toggle("active", k === themeKey));
-    if (db) { db.theme = themeKey; saveDatabase(); }
-  };
-
-  const CITY_CODES = [
-    { name: "KOD ZIELONY", cls: "active-green", cmd: "/d [LSPD] Na mieście obowiązuje Kod Zielony — patrole solo od Officer I." },
-    { name: "KOD POMARAŃCZOWY", cls: "active-amber", cmd: "/d [LSPD] Wprowadzono Kod Pomarańczowy — patrole 2-osobowe, legitymowanie zamaskowanych!" },
-    { name: "KOD CZERWONY", cls: "active-red", cmd: "/d [LSPD] UWAGA! Wprowadzono KOD CZERWONY — patrole 2-3 os., kamizelka od Officer III, 1x EAGLE!" },
-    { name: "KOD CZARNY", cls: "active-red", cmd: "/d [LSPD] UWAGA! Wprowadzono KOD CZARNY — patrole min. 3-os., kamizelka dla każdego, 2x EAGLE!" }
-  ];
-  let cityCodeIdx = 0;
-  window.cycleCityThreatCode = function() {
-    cityCodeIdx = (cityCodeIdx + 1) % CITY_CODES.length;
-    const c = CITY_CODES[cityCodeIdx];
-    const blip = document.getElementById("city-code-blip");
-    if (blip) blip.className = "blip-pill " + c.cls;
-    setTxt("city-code-txt", c.name);
-    copyText(c.cmd, "Zmieniono na " + c.name + " (Skopiowano /d)!");
-  };
-
-  /* DYNAMICZNE BLIPY KONTEKSTOWE DO ZARZUTÓW (TRACKER GPS, 10-80, BROŃ, NARKOTYKI, NAPADY) */
-  const CONTEXT_BLIP_RULES = [
-    {
-      id: "ctx_tracker",
-      title: "🚗 Kradzież Pojazdu (10-70) — Czy skradziony pojazd posiadał nadajnik GPS (Tracker)?",
-      match: (names) => names.some(n => n.includes("Kradzież pojazdu")),
-      options: [
-        { key: "tracker_yes", label: "Aktywny Tracker GPS (Namierzono nadajnik)", text: "Skradziony pojazd posiadał aktywny nadajnik lokalizacyjny GPS (Tracker), dzięki czemu jednostki LSPD precyzyjnie namierzyły jego pozycję w terenie." },
-        { key: "tracker_no", label: "Brak Trackera (Zwykła kradzież pojazdu)", text: "Skradziony pojazd nie posiadał aktywnego nadajnika GPS (brak Trackera), a jego identyfikacja nastąpiła bezpośrednio podczas działań patrolowych." },
-        { key: "tracker_hacked", label: "Tracker rozbrojony / zhakowany przez sprawcę", text: "Sprawca podjął próbę elektronicznego zagłuszenia i dezaktywacji nadajnika GPS (Trackera) zamontowanego w skradzionym pojeździe." }
-      ]
-    },
-    {
-      id: "ctx_pursuit",
-      title: "🚓 Ucieczka (10-80) — Kod pościgowy i sposób zakończenia pościgu:",
-      match: (names) => names.some(n => n.includes("Ucieczka") || n.includes("Próba ucieczki")),
-      options: [
-        { key: "pit_box", label: "Manewr PIT / BOX / RAM / STRZAŁKA", text: "Pościg 10-80 został skutecznie zakończony po autoryzacji manewrów pościgowych (PIT / BOX) i zablokowaniu pojazdu uciekiniera." },
-        { key: "spikes", label: "Kod Czerwony — Kolczatki / Strzał w oponę", text: "W trakcie pościgu 10-80 przy Kodzie Czerwonym zastosowano kolczatki drogowe (Spike Strips), co doprowadziło do unieruchomienia pojazdu." },
-        { key: "crash_1050", label: "Destylacja / Kolizja drogowa (10-50)", text: "Uciekinier stracił panowanie nad pojazdem, doprowadzając do poważnej kolizji drogowej (10-50) i całkowitej destylacji silnika." },
-        { key: "foot_1080", label: "Porzucenie auta i pościg pieszy", text: "Po unieruchomieniu pojazdu podejrzany porzucił auto i kontynuował ucieczkę pieszo, lecz został obezwładniony przy użyciu Tasera/siły fizycznej." }
-      ]
-    },
-    {
-      id: "ctx_weapon",
-      title: "🔫 Broń Palna (Klasa I-IV) — Status numerów seryjnych i licencji:",
-      match: (names, cats) => cats.includes("BROŃ I BEZPIECZEŃSTWO") || names.some(n => n.includes("broni")),
-      options: [
-        { key: "serial_scratched", label: "Zeszlifowane / Zatarte numery seryjne", text: "Zabezpieczona jednostka broni posiadała celowo zatarte numery seryjne, co uniemożliwiło ustalenie jej właściciela." },
-        { key: "serial_stolen", label: "Broń skradziona / Zarejestrowana na inną osobę", text: "Weryfikacja w bazie wykazała, iż zabezpieczona broń pochodzi z kradzieży i nie należy do zatrzymanego." },
-        { key: "lic_revoked", label: "Cofnięto licencję na broń (Weapon License)", text: "W związku z naruszeniem przepisów funkcjonariusz LSPD dokonał oficjalnego cofnięcia licencji na broń zatrzymanemu." }
-      ]
-    },
-    {
-      id: "ctx_drugs",
-      title: "💊 Narkotyki (10-72) — W jakich okolicznościach ujawniono substancje?",
-      match: (names, cats) => cats.includes("PRZESTĘPSTWA NARKOTYKOWE"),
-      options: [
-        { key: "drugs_pocket", label: "Przy przeszukaniu osobistym", text: "Nielegalne środki odurzające zostały ujawnione bezpośrednio przy podejrzanym w trakcie przeszukania osobistego." },
-        { key: "drugs_trunk", label: "Ukryte w schowku / bagażniku pojazdu", text: "Zabezpieczone narkotyki były ukryte w przestrzeni bagażowej oraz schowkach pojazdu należącego do podejrzanego." },
-        { key: "drugs_deal", label: "Złapany na gorącym uczynku podczas sprzedaży (10-72)", text: "Podejrzany został ujęty bezpośrednio na gorącym uczynku podczas dystrybucji środków odurzających (zgłoszenie 10-72)." }
-      ]
-    },
-    {
-      id: "ctx_heist",
-      title: "🏦 Napad Rabunkowy (10-90) — Zakładnicy i przebieg negocjacji:",
-      match: (names, cats) => cats.includes("NAPADY"),
-      options: [
-        { key: "heist_hostages", label: "Z udziałem zakładników (Bezpiecznie uwolnieni)", text: "Napastnicy przetrzymywali wewnątrz placówki zakładników, którzy po przeprowadzeniu negocjacji z LSPD zostali bezpiecznie uwolnieni." },
-        { key: "heist_broken", label: "Zerwane negocjacje (3/3 ostrzeżenia)", text: "W trakcie działań pod placówką napastnicy przekroczyli limit ostrzeżeń negocjatorskich (3/3), co skutkowało zerwaniem negocjacji przez SV." },
-        { key: "heist_no_hostage", label: "Napad bez zakładników", text: "Napad został przeprowadzony bez udziału zakładników, a sprawcy podjęli próbę oddalenia się z miejsca rabunku." }
-      ]
-    }
-  ];
-
-  let selectedContextAnswers = {}, showAllContextBlips = false;
-  window.toggleShowAllContextBlips = function() {
-    showAllContextBlips = !showAllContextBlips;
-    const el = document.getElementById("show-all-ctx-blip");
-    if (el) el.className = "blip-pill " + (showAllContextBlips ? "active-blue" : "");
-    renderContextualChargeBlips();
-  };
-  window.selectContextBlipOption = function(ruleId, optKey) {
-    if (selectedContextAnswers[ruleId] === optKey) delete selectedContextAnswers[ruleId];
-    else selectedContextAnswers[ruleId] = optKey;
-    renderContextualChargeBlips();
-    window.generateAutoCaseDescription();
-  };
-  function renderContextualChargeBlips() {
-    const box = document.getElementById("dynamic-context-blips-container");
-    if (!box) return;
-    const names = activeCharges.map(c => c.name), cats = activeCharges.map(c => c.category || "");
-    const activeRules = CONTEXT_BLIP_RULES.filter(r => showAllContextBlips || r.match(names, cats));
-    if (!activeRules.length) { box.innerHTML = ""; return; }
-    box.innerHTML = activeRules.map(rule => {
-      const currentAns = selectedContextAnswers[rule.id] || "";
-      const pills = rule.options.map(opt => `<div class="blip-pill ${currentAns === opt.key ? 'active-amber' : ''}" onclick="window.selectContextBlipOption('${rule.id}', '${opt.key}')"><span class="blip-dot"></span><span>${opt.label}</span></div>`).join("");
-      return `<div class="context-blip-card"><div style="font-size:11.5px; font-weight:800; color:#fbbf24; margin-bottom:7px;">${rule.title}</div><div class="blip-row">${pills}</div></div>`;
-    }).join("");
-  }
-
-  /* PEŁNY TARYFIKATOR (10 KATEGORII) */
-  const PENAL_RAW = [
-    ["PRZESTĘPSTWA PRZECIWKO ŻYCIU", [
-      ["Morderstwo I stopnia", 300, 75000, "dopuścił się czynu z art. Morderstwa I stopnia"],
-      ["Współudział w morderstwie I stopnia", 250, 50000, "brał czynny współudział w czynie Morderstwa I stopnia"],
-      ["Morderstwo II stopnia", 200, 60000, "dopuścił się czynu z art. Morderstwa II stopnia"],
-      ["Współudział w morderstwie II stopnia", 180, 40000, "współdziałał przy czynie Morderstwa II stopnia"],
-      ["Morderstwo III stopnia", 120, 25000, "dopuścił się czynu z art. Morderstwa III stopnia"],
-      ["Usiłowanie zabójstwa obywatela", 15, 2500, "dopuścił się czynu usiłowania pozbawienia życia obywatela"],
-      ["Usiłowanie zabójstwa funkcjonariusza", 30, 5000, "dopuścił się czynnego zamachu na funkcjonariusza publicznego na służbie"],
-      ["Doprowadzenie do targnięcia się na życie", 50, 25000, "swoim działaniem doprowadził inną osobę do sytuacji kryzysowej zagrażającej życiu"]
-    ]],
-    ["PRZESTĘPSTWA PRZECIWKO ZDROWIU", [
-      ["Pobicie/bójka", 5, 1000, "brał czynny udział w bójce lub pobiciu"],
-      ["Naruszenie nietykalności cielesnej", 3, 250, "naruszył nietykalność cielesną innej osoby"],
-      ["Spowodowanie uszczerbku na zdrowiu", 10, 2500, "spowodował obrażenia skutkujące uszczerbkiem na zdrowiu"],
-      ["Spowodowanie ciężkiego uszczerbku na zdrowiu", 50, 25000, "spowodował ciężki uszczerbek na zdrowiu"],
-      ["Udaremniona próba porwania", 8, 1250, "podjął próbę uprowadzenia osoby, która została udaremniona"],
-      ["Nieudzielenie pomocy", 8, 5000, "nie udzielił pomocy osobie w zagrożeniu zdrowia"],
-      ["Stosowanie niedozwolonej przemocy (Tortury)", 40, 10000, "stosował niedozwoloną przemoc wobec osoby przetrzymywanej"],
-      ["Szczególne okrucieństwo", 80, 20000, "dopuścił się czynu ze szczególnym okrucieństwem"],
-      ["Napaść na obywatela", 10, 2000, "dopuścił się napaści na osobę cywilną"],
-      ["Napaść na funkcjonariusza", 15, 5000, "dopuścił się czynnej napaści na funkcjonariusza publicznego"],
-      ["Nękanie", 6, 1250, "uporczywie nękał inną osobę"],
-      ["Napaść obyczajowa", 20, 12500, "dopuścił się przestępstwa przeciwko wolności obyczajowej"],
-      ["Narażenie życia obywatela", 5, 2500, "swoim zachowaniem naraził osoby postronne na niebezpieczeństwo"]
-    ]],
-    ["PRZESTĘPSTWA PRZECIWKO PORZĄDKOWI PUBLICZNEMU", [
-      ["Stawianie oporu funkcjonariuszowi", 5, 2500, "stawiał czynny opór podczas zatrzymania przez funkcjonariuszy LSPD"],
-      ["Ucieczka przed organami ścigania", 20, 3500, "podjął ucieczkę przed jednostkami LSPD (10-80), ignorując sygnały świetlne i dźwiękowe"],
-      ["Próba ucieczki przed organami ścigania", 15, 2500, "podjął próbę ucieczki przed interweniującymi funkcjonariuszami"],
-      ["Zakłócenia porządku publicznego", 2, 1500, "zakłócał spokój i porządek publiczny"],
-      ["Fałszywe zawiadomienie", 6, 4000, "dokonał fałszywego zgłoszenia na numer alarmowy"],
-      ["Podszywanie się pod funkcjonariusza", 25, 7500, "bezprawnie podawał się za funkcjonariusza publicznego"],
-      ["Fałszowanie dokumentów", 30, 10000, "podrabiał dokumenty w celu użycia ich jako autentycznych"],
-      ["Posługiwanie się fałszywymi dokumentami", 20, 5000, "posłużył się sfałszowanymi dokumentami podczas kontroli"],
-      ["Szantaż", 10, 3750, "stosował bezprawny szantaż wobec innej osoby"],
-      ["Podszywanie się pod obywatela", 12, 2000, "podszywał się pod tożsamość innego obywatela"],
-      ["Groźby", 12, 1500, "kierował groźby karalne wzbudzające uzasadnioną obawę ich spełnienia"],
-      ["Obraza funkcjonariusza na służbie", 2, 500, "znieważył słownie funkcjonariusza LSPD na służbie"],
-      ["Liczna obraza funkcjonariusza", 4, 1000, "wielokrotnie znieważał funkcjonariuszy LSPD"],
-      ["Utrudnianie prac służb porządkowych", 8, 1750, "celowo utrudniał prowadzenie działań przez służby porządkowe"],
-      ["Fałszywy alarm bombowy", 25, 7500, "wywołał fałszywy alarm o zagrożeniu"],
-      ["Niewykonywanie poleceń", 3, 375, "odmawiał wykonywania zgodnych z prawem poleceń funkcjonariusza"],
-      ["Naruszenie praw człowieka", 80, 15000, "dopuścił się naruszenia praw człowieka"],
-      ["Zlecenie popełnienia przestępstwa", 250, 87500, "zlecił osobom trzecim dokonanie przestępstwa"],
-      ["Nielegalne przechwytywanie komunikacji", 20, 5000, "bezprawnie przechwytywał komunikację radiową służb"]
-    ]],
-    ["PRZESTĘPSTWA PRZECIWKO MIENIU", [
-      ["Kradzież", 1, 500, "dokonał zaboru cudzego mienia w celu przywłaszczenia"],
-      ["Kradzież pojazdu", 5, 1000, "dokonał kradzieży cudzego pojazdu mechanicznego (10-70)"],
-      ["Rozbój", 10, 2500, "dokonał rozboju w celu zaboru mienia"],
-      ["Włamanie", 5, 1000, "wtargnął do zamkniętego obiektu po pokonaniu zabezpieczeń"],
-      ["Niszczenie mienia drugiej osoby o niskiej wartości", 10, 2500, "umyślnie uszkodził cudze mienie prywatne o niskiej wartości"],
-      ["Niszczenie mienia drugiej osoby o wysokiej wartości", 30, 15000, "umyślnie zniszczył mienie prywatne o wysokiej wartości"],
-      ["Niszczenie mienia użytku publicznego o niskiej wartości", 15, 4000, "uszkodził mienie użytku publicznego o niskiej wartości"],
-      ["Niszczenie mienia użytku publicznego o wysokiej wartości", 25, 20000, "dokonał poważnego uszkodzenia mienia publicznego o wysokiej wartości"],
-      ["Niszczenie mienia użytku publicznego o znacznej wartości", 50, 50000, "spowodował zniszczenia mienia publicznego o znacznej wartości"],
-      ["Wtargnięcie na teren prywatny", 2, 500, "wdarł się na teren prywatny i nie opuścił go mimo wezwania"],
-      ["Wtargnięcie na teren placówki publicznej", 10, 1000, "bezprawnie wtargnął do wyłączonej strefy placówki publicznej"],
-      ["Kradzież pojazdu służb publicznych", 12, 2500, "dokonał zaboru pojazdu należącego do służb publicznych"],
-      ["Udaremnienie lub uszczuplenie zaspokojenia wierzyciela", 8, 7500, "ukrywał składniki majątku w celu udaremnienia spłaty wierzyciela"]
-    ]],
-    ["PRZESTĘPSTWA NARKOTYKOWE", [
-      ["Posiadanie narkotyków miękkich", 5, 1000, "posiadał przy sobie zabronione narkotyki miękkie", "Narkotyki miękkie"],
-      ["Posiadanie narkotyków twardych", 20, 2500, "posiadał przy sobie nielegalne narkotyki twarde", "Narkotyki twarde"],
-      ["Posiadanie hurtowej ilości narkotyków miękkich", 30, 7500, "posiadał przy sobie hurtowe ilości narkotyków miękkich", "Hurtowa ilość narkotyków miękkich"],
-      ["Posiadanie hurtowej ilości narkotyków twardych", 60, 20000, "posiadał przy sobie hurtową ilość narkotyków twardych", "Hurtowa ilość narkotyków twardych"],
-      ["Handel narkotykami miękkimi", 20, 5000, "prowadził nielegalny handel narkotykami miękkimi", "Narkotyki miękkie + gotówka"],
-      ["Handel narkotykami twardymi", 35, 10000, "prowadził nielegalny handel narkotykami twardymi", "Narkotyki twarde + gotówka"],
-      ["Produkcja narkotyków miękkich", 40, 10000, "brał udział w wytwarzaniu narkotyków miękkich", "Surowce i narkotyki miękkie"],
-      ["Produkcja narkotyków twardych", 100, 15000, "prowadził nielegalną produkcję narkotyków twardych", "Prekursory i narkotyki twarde"]
-    ]],
-    ["BROŃ I BEZPIECZEŃSTWO", [
-      ["Nielegalne posiadanie broni klasy I", 10, 2500, "posiadał przy sobie nielegalną broń klasy I", "Broń klasy I"],
-      ["Nielegalne posiadanie broni klasy II", 15, 7500, "posiadał bez zezwolenia broń krótką klasy II", "Broń krótka klasy II + amunicja"],
-      ["Nielegalne posiadanie broni klasy III", 60, 17500, "posiadał nielegalną broń długą klasy III", "Broń długa klasy III + amunicja"],
-      ["Nielegalne posiadanie broni klasy IV", 100, 25000, "posiadał wyposażenie klasy IV", "Wyposażenie klasy IV"],
-      ["Handel bronią", 100, 45000, "prowadził nielegalny handel bronią", "Broń przeznaczona na handel"],
-      ["Bezpodstawne użycie broni palnej", 30, 7500, "bezpodstawnie użył broni palnej w miejscu publicznym"],
-      ["Nielegalne dodatki do broni", 4, 2500, "posiadał zabronione dodatki do broni", "Nielegalne dodatki do broni"],
-      ["Handel materiałami pirotechnicznymi", 60, 25000, "zajmował się nielegalnym obrotem materiałami klasy IV", "Materiały klasy IV"],
-      ["Wytwarzanie materiałów niebezpiecznych", 25, 15000, "nielegalnie wytwarzał materiały klasy IV", "Komponenty klasy IV"],
-      ["Posiadanie sprzętu policyjnego", 12, 5000, "bezprawnie posiadał sprzęt należący do LSPD", "Sprzęt policyjny LSPD"],
-      ["Nielegalna produkcja broni", 44, 17500, "brał udział w nielegalnej produkcji broni", "Części broni"],
-      ["Niewłaściwe transportowanie broni", 8, 2500, "transportował broń z naruszeniem przepisów"],
-      ["Posiadanie kontrabandy", 5, 5000, "posiadał przy sobie nielegalną kontrabandę", "Kontrabanda"]
-    ]],
-    ["PRZESTĘPSTWA PRZECIWKO PAŃSTWU", [
-      ["Korupcja", 100, 25000, "dopuścił się przestępstwa korupcyjnego"],
-      ["Nadużycie władzy", 20, 10000, "przekroczył uprawnienia służbowe"],
-      ["Zdrada stanu", 250, 75000, "dopuścił się zdrady stanu"],
-      ["Nadużycie immunitetu", 35, 25000, "bezprawnie wykorzystywał posiadany immunitet"]
-    ]],
-    ["PRZESTĘPCZOŚĆ ZORGANIZOWANA", [
-      ["Udział w grupie przestępczej", 50, 15000, "brał udział w zorganizowanej grupie przestępczej"],
-      ["Kierowanie grupą przestępczą", 280, 50000, "kierował zorganizowaną grupą przestępczą"]
-    ]],
-    ["PRZESTĘPSTWA PRZECIWKO SPRAWIEDLIWOŚCI", [
-      ["Składanie fałszywych zeznań", 10, 6250, "złożył fałszywe zeznania w toku czynności"],
-      ["Ucieczka z konwoju", 35, 8000, "podjął ucieczkę z konwoju policyjnego"],
-      ["Próba odbicia konwoju", 30, 10000, "zaatakował konwój LSPD w celu odbicia zatrzymanego"],
-      ["Ucieczka z więzienia lub komendy", 40, 10000, "zbiegł z terenu komendy LSPD lub więzienia"],
-      ["Odbicie z więzienia lub komendy", 70, 15000, "brał udział w odbiciu zatrzymanego z komendy lub więzienia"],
-      ["Zagrożenie bezpieczeństwa publicznego (Terroryzm)", 400, 250000, "dopuścił się czynu o charakterze terrorystycznym"],
-      ["Krzywoprzysięstwo", 20, 7500, "dopuścił się krzywoprzysięstwa"],
-      ["Odbicie z konwoju", 60, 15000, "dokonał odbicia osoby konwojowanej"],
-      ["Wtargnięcie na teren więzienia lub komendy", 8, 10000, "bezprawnie wtargnął na zamknięty teren komendy lub więzienia"],
-      ["Naruszenie praw zawartych w prawie stanowym", 35, 7500, "dopuścił się rażącego naruszenia przepisów prawa stanowego"]
-    ]],
-    ["PORWANIE", [
-      ["Porwanie obywatela", 30, 6250, "bezprawnie pozbawił wolności osobę cywilną"],
-      ["Porwanie obywatela dla okupu", 40, 10000, "dokonał porwania obywatela dla okupu"],
-      ["Porwanie funkcjonariusza", 40, 15000, "dopuścił się uprowadzenia funkcjonariusza publicznego"],
-      ["Porwanie funkcjonariusza dla okupu", 75, 22500, "uprowadził funkcjonariusza na służbie w celu wymuszenia okupu"],
-      ["Próba porwania obywatela", 10, 3750, "usiłował dokonać porwania obywatela"],
-      ["Próba porwania funkcjonariusza", 15, 7500, "usiłował dokonać porwania funkcjonariusza publicznego"],
-      ["Zlecenie porwania obywatela", 50, 10000, "zlecił uprowadzenie osoby cywilnej"],
-      ["Zlecenie porwanie funkcjonariusza", 80, 25000, "zlecił uprowadzenie funkcjonariusza publicznego"],
-      ["Porwanie znacznej ilości osób - od 5 do 10 osób", 65, 40000, "brał udział w porwaniu grupy od 5 do 10 zakładników"],
-      ["Porwanie znacznej ilości osób - od 11 do 20 osób", 115, 60000, "brał udział w porwaniu grupy od 11 do 20 zakładników"],
-      ["Porwanie znacznej ilości osób - od 21 osób", 180, 90000, "brał udział w przetrzymywaniu powyżej 21 zakładników"]
-    ]],
-    ["NAPADY", [
-      ["Napad na sklep", 15, 2000, "brał czynny udział w napadzie rabunkowym na sklep", "Gotówka z kasy sklepowej"],
-      ["Napad na mieszkanie", 20, 3500, "dokonał rabunkowego włamania do mieszkania", "Skradzione przedmioty z mieszkania"],
-      ["Napad na sklep z bronią", 35, 8500, "brał udział w napadzie na sklep z bronią Ammu-Nation", "Skradziona broń z Ammu-Nation"],
-      ["Napad na jubilera xGem", 40, 9500, "brał udział w napadzie rabunkowym na salon jubilerski xGem", "Kosztowności z jubilera xGem"],
-      ["Napad na Gruppe 6", 45, 10000, "dokonał napadu na konwój Gruppe 6", "Gotówka z furgonetki Gruppe 6"],
-      ["Napad na Bobcat", 65, 15000, "brał udział w napadzie na placówkę Bobcat Security", "Wyposażenie z Bobcat Security"]
-    ]]
-  ];
-
-  const FULL_PENAL_CATALOG = PENAL_RAW.map(([category, list]) => ({
-    category,
-    items: list.map(([name, m, f, desc, confiscate]) => ({ name, m, f, desc, confiscate: confiscate || "", category }))
-  }));
-
-  let activeCharges = [], tempModalSelected = [], caseAssistOfficers = [], customConfiscated = [];
-  let autoDescEnabled = true, caseCoop = "yes", caseGuilt = "admitted", caseDetention = "station";
-  let caseExtras = { lawyer: false, sams: false, reduced: false, bail: false };
-
-  window.toggleAutoDescBlip = function() {
-    autoDescEnabled = !autoDescEnabled;
-    const el = document.getElementById("auto-toggle-blip");
-    if (el) el.className = "blip-pill " + (autoDescEnabled ? "active-green" : "");
-    if (autoDescEnabled) window.generateAutoCaseDescription();
-  };
-  window.setCaseCoop = function(val) {
-    caseCoop = val;
-    document.getElementById("blip-coop-yes").className = "blip-pill " + (val === "yes" ? "active-green" : "");
-    document.getElementById("blip-coop-passive").className = "blip-pill " + (val === "passive" ? "active-blue" : "");
-    document.getElementById("blip-coop-no").className = "blip-pill " + (val === "no" ? "active-red" : "");
-    window.generateAutoCaseDescription();
-  };
-  window.setCaseGuilt = function(val) {
-    caseGuilt = val;
-    document.getElementById("blip-guilt-admitted").className = "blip-pill " + (val === "admitted" ? "active-green" : "");
-    document.getElementById("blip-guilt-denied").className = "blip-pill " + (val === "denied" ? "active-red" : "");
-    window.generateAutoCaseDescription();
-  };
-  window.toggleCaseExtra = function(key) {
-    caseExtras[key] = !caseExtras[key];
-    document.getElementById("blip-extra-lawyer").className = "blip-pill " + (caseExtras.lawyer ? "active-amber" : "");
-    document.getElementById("blip-extra-sams").className = "blip-pill " + (caseExtras.sams ? "active-blue" : "");
-    document.getElementById("blip-extra-reduced").className = "blip-pill " + (caseExtras.reduced ? "active-green" : "");
-    document.getElementById("blip-extra-bail").className = "blip-pill " + (caseExtras.bail ? "active-green" : "");
-    updateCaseTotals(); window.generateAutoCaseDescription();
-  };
-  window.setCaseDetention = function(mode) {
-    caseDetention = mode;
-    document.getElementById("blip-det-station").className = "blip-pill " + (mode === "station" ? "active-blue" : "");
-    document.getElementById("blip-det-prison").className = "blip-pill " + (mode === "prison" ? "active-red" : "");
-    document.getElementById("blip-det-released").className = "blip-pill " + (mode === "released" ? "active-green" : "");
-    window.generateAutoCaseDescription();
-  };
-
-  function getCalculatedTotals() {
-    let rawM = 0, totalF = 0;
-    activeCharges.forEach(c => { rawM += c.m * c.count; totalF += c.f * c.count; });
-    const finalM = caseExtras.reduced ? Math.max(1, Math.round(rawM * 0.8)) : rawM;
-    // Sprawdzenie kaucji wg Rozdziału 10 Kompendium (max 50 mies., brak wykluczonych zarzutów)
-    const forbiddenBail = activeCharges.some(c =>
-      c.category === "PRZESTĘPSTWA PRZECIWKO ŻYCIU" ||
-      c.category === "NAPADY" ||
-      c.category === "PORWANIE" ||
-      c.name.includes("Handel bronią") ||
-      c.name.includes("Groźby")
-    );
-    const canBail = finalM > 0 && finalM <= 50 && !forbiddenBail;
-    const minBailCost = finalM * 1000;
-    const needsConvoy = finalM >= 100;
-    return { rawM, finalM, totalF, canBail, forbiddenBail, minBailCost, needsConvoy };
-  }
-
-  window.generateAutoCaseDescription = function(force = false) {
-    if (!autoDescEnabled && !force) return;
-    const citizen = document.getElementById("case-citizen")?.value.trim() || "zatrzymany obywatel";
-    const lead = db.loggedOfficer;
-    const assists = caseAssistOfficers.length ? ` przy wsparciu jednostek (${caseAssistOfficers.join(", ")})` : "";
-    const autoConf = activeCharges.filter(c => c.confiscate).map(c => c.confiscate);
-    const allConf = [...new Set([...autoConf, ...customConfiscated])];
-    renderConfiscatedDisplay(allConf);
-    if (!activeCharges.length) { document.getElementById("case-desc").value = ""; return; }
-
-    const actions = activeCharges.map(c => c.desc);
-    const names = activeCharges.map(c => c.count > 1 ? `${c.name} (x${c.count})` : c.name);
-    const { rawM, finalM, totalF, minBailCost } = getCalculatedTotals();
-
-    let contextSentences = [];
-    CONTEXT_BLIP_RULES.forEach(rule => {
-      const selKey = selectedContextAnswers[rule.id];
-      if (selKey) {
-        const opt = rule.options.find(o => o.key === selKey);
-        if (opt) contextSentences.push(opt.text);
-      }
-    });
-    const ctxBlock = contextSentences.length ? " " + contextSentences.join(" ") : "";
-
-    const p1 = `W dniu dzisiejszym funkcjonariusz ${lead}${assists} przeprowadził procedurę zatrzymania (Status 7) wobec osoby zidentyfikowanej jako ${citizen}. W toku podjętej interwencji oraz zebranego materiału dowodowego ustalono, iż podejrzany ${actions.join(", a ponadto ")}.${ctxBlock}`;
-    const p2 = allConf.length ? ` Podczas przeszukania na celach ujawniono oraz przekazano do magazynu policyjnego: ${allConf.join(", ")}.` : ` Zatrzymanego poddano procedurze przeszukania oraz weryfikacji w systemie MDT.`;
-    let extraSentences = "";
-    if (caseExtras.sams) extraSentences += " Zatrzymanemu udzielono pierwszej pomocy przedmedycznej przy użyciu MedBaga / personelu SAMS.";
-    if (caseExtras.lawyer) extraSentences += " Na żądanie zatrzymanego wezwano adwokata, którego po wylegitymowaniu i przeszukaniu dopuszczono do konsultacji prawnej na celach.";
-
-    const coopTxt = caseCoop === "yes"
-      ? "Podczas wykonywanych czynności zatrzymany zachowywał spokój i w pełni współpracował z funkcjonariuszami LSPD"
-      : caseCoop === "passive"
-      ? "W trakcie czynności zatrzymany wykonywał polecenia techniczne funkcjonariuszy, jednak zachowywał postawę bierną i odmówił składania wyjaśnień"
-      : "W trakcie prowadzonych czynności zatrzymany nie wykazywał woli współpracy z funkcjonariuszami i utrudniał czynności procesowe";
-    const guiltTxt = caseGuilt === "admitted"
-      ? ", a po przedstawieniu materiału dowodowego przyznał się do zarzucanych mu czynów."
-      : ", natomiast do samego końca upierał się przy swojej wersji wydarzeń i kategorycznie nie przyznawał się do winy.";
-    const redTxt = caseExtras.reduced ? ` Ze względu na współpracę zastosowano złagodzenie wymiaru kary pozbawienia wolności (z ${rawM} mies. do ${finalM} mies.).` : "";
-    const bailTxt = caseExtras.bail ? ` WPŁACONA KAUCJA (w wysokości min. $${minBailCost.toLocaleString()}) — obywatel skorzystał z prawa do kaucji.` : "";
-
-    const p4 = caseDetention === "station"
-      ? ` Po przedstawieniu praw Mirandy i zarzutów (${names.join(", ")}) oraz pouczeniu o prawie do odwołania w ciągu 7 dni, nałożono karę łączną ${finalM} mies. pozbawienia wolności oraz grzywnę $${totalF.toLocaleString()}.${redTxt}${bailTxt} Obywatel zostaje zatrzymany na komendzie LSPD w celu odbycia kary.`
-      : caseDetention === "prison"
-      ? ` Po przedstawieniu praw Mirandy i zarzutów (${names.join(", ")}) orzeczono wyrok ${finalM} mies. pozbawienia wolności oraz grzywnę $${totalF.toLocaleString()}.${redTxt} Zatrzymany został skierowany do transportu (konwoju) do więzienia stanowego Bolingbroke.`
-      : ` Po przedstawieniu zarzutów (${names.join(", ")}) i uregulowaniu należności finansowych ($${totalF.toLocaleString()}), zatrzymany został zwolniony z komendy.${bailTxt}`;
-
-    document.getElementById("case-desc").value = p1 + p2 + extraSentences + "\n\n" + coopTxt + guiltTxt + p4;
-  };
-
-  function renderConfiscatedDisplay(allConf) {
-    const box = document.getElementById("case-confiscated-box");
-    if (!box) return;
-    box.innerHTML = allConf && allConf.length
-      ? allConf.map(i => `<span class="pill pill-red" style="margin:2px;">${i}</span>`).join("")
-      : `<span style="color:var(--text-dim);">Brak konfiskat (dodają się automatycznie z zarzutów)</span>`;
-  }
-  window.addConfiscatedInline = function() {
-    const inp = document.getElementById("confiscate-inline-inp");
-    if (!inp || !inp.value.trim()) return;
-    customConfiscated.push(inp.value.trim()); inp.value = ""; window.generateAutoCaseDescription();
-  };
-  window.openPenalModal = function() {
-    tempModalSelected = JSON.parse(JSON.stringify(activeCharges));
-    document.getElementById("penal-search-inp").value = "";
-    document.getElementById("penal-modal").classList.remove("hidden");
-    window.renderPenalModalCatalog();
-  };
-  window.closePenalModal = function() { document.getElementById("penal-modal").classList.add("hidden"); };
-  window.renderPenalModalCatalog = function() {
-    const q = (document.getElementById("penal-search-inp").value || "").toLowerCase();
-    const container = document.getElementById("penal-catalog-container");
-    let html = "";
-    FULL_PENAL_CATALOG.forEach((group, gIdx) => {
-      const matched = group.items.map((it, iIdx) => ({ ...it, gIdx, iIdx })).filter(i => i.name.toLowerCase().includes(q) || group.category.toLowerCase().includes(q));
-      if (!matched.length) return;
-      html += `<div class="penal-category-title"><span>●</span><span>${group.category}</span></div><div class="penal-grid">`;
-      matched.forEach(item => {
-        const ex = tempModalSelected.find(x => x.name === item.name);
-        html += `<div class="penal-blip-item ${ex ? 'selected' : ''}" onclick="window.togglePenalByIdx(${item.gIdx}, ${item.iIdx})"><div style="display:flex; align-items:center; gap:8px; min-width:0;"><span class="blip-dot" style="background:${ex ? 'var(--accent-light)' : '#334155'};"></span><div><div style="font-weight:700; font-size:12px; color:#fff;">${item.name}</div><div style="font-size:10.5px; color:var(--text-muted);">${item.m} mies. • $${item.f.toLocaleString()}</div></div></div>${ex ? `<span class="pill pill-blue">x${ex.count}</span>` : ""}</div>`;
-      });
-      html += `</div>`;
-    });
-    container.innerHTML = html;
-    let m = 0, f = 0;
-    tempModalSelected.forEach(c => { m += c.m * c.count; f += c.f * c.count; });
-    document.getElementById("penal-modal-summary").innerHTML = tempModalSelected.length
-      ? `Wybrano blipów: <span style="color:var(--accent-light);">${tempModalSelected.length}</span> • Wyrok: <span style="color:#fff;">${m} mies.</span> • Grzywna: <span style="color:#34d399;">$${f.toLocaleString()}</span>`
-      : "Nie wybrano przestępstw";
-  };
-  window.togglePenalByIdx = function(gIdx, iIdx) {
-    const item = FULL_PENAL_CATALOG[gIdx].items[iIdx];
-    const idx = tempModalSelected.findIndex(x => x.name === item.name);
-    if (idx > -1) tempModalSelected.splice(idx, 1);
-    else tempModalSelected.push({ ...item, count: 1 });
-    window.renderPenalModalCatalog();
-  };
-  window.confirmPenalSelection = function() {
-    activeCharges = JSON.parse(JSON.stringify(tempModalSelected));
-    window.closePenalModal();
-    renderContextualChargeBlips();
-    updateCaseTotals();
-    window.generateAutoCaseDescription();
-    toast("Zaktualizowano zarzuty i pytania kontekstowe!");
-  };
-  window.changeChargeCount = function(idx, d) {
-    activeCharges[idx].count += d;
-    if (activeCharges[idx].count <= 0) activeCharges.splice(idx, 1);
-    renderContextualChargeBlips();
-    updateCaseTotals(); window.generateAutoCaseDescription();
-  };
-  window.clearCaseCharges = function() {
-    activeCharges = []; customConfiscated = []; selectedContextAnswers = {};
-    renderContextualChargeBlips(); updateCaseTotals(); window.generateAutoCaseDescription();
-  };
-  window.resetCaseForm = function() {
-    document.getElementById("case-citizen").value = "";
-    caseAssistOfficers = []; renderCaseAssistOfficers(); window.clearCaseCharges();
-    toast("Wyczyszczono szkic sprawy");
-  };
-
-  function updateCaseTotals() {
-    const { finalM, totalF, canBail, forbiddenBail, minBailCost, needsConvoy } = getCalculatedTotals();
-    setTxt("case-sum-months", finalM + " mies.");
-    setTxt("case-sum-fine", "$" + totalF.toLocaleString());
-
-    const statusBox = document.getElementById("bail-convoy-status-box");
-    if (statusBox) {
-      if (finalM === 0) {
-        statusBox.innerHTML = `<span style="color:var(--text-dim);">Wybierz zarzuty, aby sprawdzić kwalifikację do kaucji (max 50 mies.) oraz wymóg konwoju (min. 100 mies.).</span>`;
-      } else {
-        const bailBadge = canBail
-          ? `<span class="pill pill-green">KAUCJA DOZWOLONA (Min. $${minBailCost.toLocaleString()})</span>`
-          : `<span class="pill pill-red">BRAK PRAWA DO KAUCJI (${forbiddenBail ? 'Zarzut wykluczony' : 'Powyżej 50 mies.'})</span>`;
-        const convoyBadge = needsConvoy
-          ? `<span class="pill pill-amber">WYMAGANY KONWÓJ (Min. 100 mies. / 6 FP / Status 9)</span>`
-          : `<span class="pill pill-blue">OSADZENIE NA KOMENDZIE (Poniżej 100 mies.)</span>`;
-        statusBox.innerHTML = `<div style="display:flex; gap:6px; flex-wrap:wrap;">${bailBadge}${convoyBadge}</div>`;
-      }
-    }
-
-    const listEl = document.getElementById("case-selected-list");
-    const prevEl = document.getElementById("case-quick-preview");
-    if (!activeCharges.length) {
-      listEl.innerHTML = `<div style="padding:14px; text-align:center; color:var(--text-dim); border:1px dashed var(--border); border-radius:10px;">Kliknij „+ Dodaj wyrok (Taryfikator)”, aby wybrać blipy zarzutów.</div>`;
-      prevEl.textContent = "Brak wybranych zarzutów."; return;
-    }
-    listEl.innerHTML = activeCharges.map((c, idx) => `<div class="chip-item"><div style="display:flex; align-items:center; gap:8px;"><span class="blip-dot" style="background:var(--accent-light);"></span><strong>${c.name}</strong><span style="color:var(--text-muted);">(${c.m * c.count} mies. • $${(c.f * c.count).toLocaleString()})</span></div><div style="display:flex; align-items:center; gap:6px;"><button type="button" class="btn btn-sm btn-dark" onclick="window.changeChargeCount(${idx}, -1)" style="border-radius:99px;">-</button><span style="font-weight:800;">x${c.count}</span><button type="button" class="btn btn-sm btn-dark" onclick="window.changeChargeCount(${idx}, 1)" style="border-radius:99px;">+</button></div></div>`).join("");
-    prevEl.textContent = `ZARZUTY: ${activeCharges.map(c => c.count > 1 ? c.name + " x" + c.count : c.name).join(", ")}\nWYROK: ${finalM} mies. | GRZYWNA: $${totalF.toLocaleString()}`;
-  }
-
-  function renderCaseAssistOfficers() {
-    const box = document.getElementById("case-assist-officers-box");
-    if (!box) return;
-    box.innerHTML = caseAssistOfficers.length
-      ? caseAssistOfficers.map((o, i) => `<div class="chip-item"><span>${o}</span><button type="button" class="chip-remove" onclick="window.removeAssistOfficer(${i})">×</button></div>`).join("")
-      : `<div style="padding:8px; text-align:center; color:var(--text-dim); border:1px dashed var(--border); border-radius:99px; font-size:12px;">Brak jednostek pomocniczych</div>`;
-  }
-  window.removeAssistOfficer = function(i) { caseAssistOfficers.splice(i, 1); renderCaseAssistOfficers(); window.generateAutoCaseDescription(); };
-  window.finalizeCaseAction = function(mode) {
-    if (mode === "station") window.setCaseDetention("station");
-    if (mode === "prison") window.setCaseDetention("prison");
-    if (mode === "pardon") window.setCaseDetention("released");
-    window.copyFullCaseRecord();
-  };
-  window.copyCaseTextOnly = function() {
-    const txt = document.getElementById("case-desc").value;
-    if (!txt) { toast("Najpierw wybierz zarzuty z taryfikatora!"); return; }
-    copyText(txt, "Skopiowano sam opis sprawy!");
-  };
-  window.copyFullCaseRecord = function() {
-    const cit = document.getElementById("case-citizen").value || "Nieznany";
-    const desc = document.getElementById("case-desc").value || "Brak opisu";
-    const m = document.getElementById("case-sum-months").textContent;
-    const f = document.getElementById("case-sum-fine").textContent;
-    const ch = activeCharges.map(c => c.count > 1 ? `${c.name} (x${c.count})` : c.name).join(", ") || "Brak";
-    copyText(`KARTOTEKA SPRAWY LSPD\nObywatel: ${cit}\nProwadzący: ${db.loggedOfficer}\nZarzuty: ${ch}\nWyrok: ${m} | Grzywna: ${f}\n\nOPIS SPRAWY:\n${desc}`, "Skopiowano pełną kartotekę sprawy!");
-  };
-
-  /* POJAZDY (IMPOUND / TRACKER) I MANDATY + DISPATCH */
-  const TRAFFIC_OFFENSES = [
-    { name: "Przekroczenie prędkości", fine: 750, pts: 4 },
-    { name: "Brawurowa jazda", fine: 1500, pts: 8 },
-    { name: "Przejazd na czerwonym świetle", fine: 500, pts: 3 },
-    { name: "Brak prawa jazdy / OC", fine: 1200, pts: 5 },
-    { name: "Nieprawidłowe parkowanie (Impound)", fine: 400, pts: 2 },
-    { name: "Spowodowanie kolizji (10-50)", fine: 1000, pts: 6 }
-  ];
-  let selectedTrafficIdxs = [];
-  function renderVehiclesAndTickets() {
-    const vBody = document.getElementById("vehicles-db-tbody");
-    const vList = db.vehicles || [];
-    setTxt("cnt-vehicles", vList.length);
-    if (vBody) {
-      vBody.innerHTML = vList.map((v, idx) => {
-        const cls = v.status.includes("TRACKER") ? "pill-red" : (v.status.includes("IMPOUND") ? "pill-amber" : "pill-blue");
-        return `<tr><td style="font-weight:700;">${v.model}</td><td style="font-family:monospace; color:var(--accent-light);">${v.plate}</td><td>${v.owner}</td><td><span class="pill ${cls}">${v.status}</span></td><td><button type="button" class="btn btn-sm btn-red" onclick="window.removeVehicleRecord(${idx})">✕</button></td></tr>`;
-      }).join("");
-    }
-    const tBox = document.getElementById("traffic-blips-box");
-    if (tBox) {
-      tBox.innerHTML = TRAFFIC_OFFENSES.map((t, i) => `<div class="blip-pill ${selectedTrafficIdxs.includes(i) ? 'active-green' : ''}" onclick="window.toggleTrafficBlip(${i})"><span class="blip-dot"></span><span>${t.name} ($${t.fine} / ${t.pts}pkt)</span></div>`).join("");
-    }
-    let tf = 0, tp = 0;
-    selectedTrafficIdxs.forEach(i => { tf += TRAFFIC_OFFENSES[i].fine; tp += TRAFFIC_OFFENSES[i].pts; });
-    setTxt("tkt-fine-val", "$" + tf.toLocaleString());
-    setTxt("tkt-pts-val", tp + " pkt");
-    const hBox = document.getElementById("tickets-history-box");
-    if (hBox) hBox.innerHTML = (db.tickets || []).map(tk => `<div class="chip-item"><span><strong>${tk.citizen}</strong> (${tk.plate}) — <span style="color:#34d399;">$${tk.fine}</span> / ${tk.pts} pkt</span></div>`).join("");
-  }
-  window.addVehicleRecord = function() {
-    const m = document.getElementById("veh-model-inp").value.trim() || "Karin Sultan";
-    const p = document.getElementById("veh-plate-inp").value.trim() || "BRAK";
-    const o = document.getElementById("veh-owner-inp").value.trim() || "Nieznany";
-    const s = document.getElementById("veh-status-sel").value;
-    if (!db.vehicles) db.vehicles = [];
-    db.vehicles.unshift({ model: m, plate: p.toUpperCase(), owner: o, status: s });
-    saveDatabase(); renderVehiclesAndTickets(); toast("Dodano pojazd do bazy LSPD!");
-  };
-  window.removeVehicleRecord = function(idx) { db.vehicles.splice(idx, 1); saveDatabase(); renderVehiclesAndTickets(); };
-  window.toggleTrafficBlip = function(i) {
-    const idx = selectedTrafficIdxs.indexOf(i);
-    if (idx > -1) selectedTrafficIdxs.splice(idx, 1); else selectedTrafficIdxs.push(i);
-    renderVehiclesAndTickets();
-  };
-  window.saveAndCopyTicket = function() {
-    const cit = document.getElementById("tkt-citizen").value.trim() || "Obywatel";
-    const pl = document.getElementById("tkt-plate").value.trim() || "Brak rej.";
-    let tf = 0, tp = 0;
-    const names = selectedTrafficIdxs.map(i => { tf += TRAFFIC_OFFENSES[i].fine; tp += TRAFFIC_OFFENSES[i].pts; return TRAFFIC_OFFENSES[i].name; });
-    if (!db.tickets) db.tickets = [];
-    db.tickets.unshift({ citizen: cit, plate: pl, fine: tf, pts: tp });
-    saveDatabase(); renderVehiclesAndTickets();
-    copyText(`MANDAT DROGOWY LSPD\nObywatel: ${cit} | Pojazd: ${pl}\nWykroczenia: ${names.join(", ") || "Wykroczenie drogowe"}\nKwota: $${tf} | Punkty karne: ${tp} pkt\nWystawił: ${db.loggedOfficer}`, "Wystawiono i skopiowano mandat!");
-  };
-
-  let currentRadioReason = "rozpoczynamy 10-80 za";
-  window.setRadioPreset = function(r) { currentRadioReason = r; window.updateRadioPreview(); };
-  window.updateRadioPreview = function() {
-    const veh = document.getElementById("rad-veh")?.value.trim() || "czarnym pojazdem";
-    const loc = document.getElementById("rad-loc")?.value.trim() || "Downtown, kierunek North";
-    const out = document.getElementById("rad-output");
-    if (out) out.value = `${db.loggedOfficer} ${currentRadioReason} ${veh}, nasze 10-20 to ${loc}, 10-21!`;
-  };
-  window.copyRadioOutput = function() { copyText(document.getElementById("rad-output").value, "Skopiowano meldunek radiowy!"); };
-  function renderDispatchCalls() {
-    const box = document.getElementById("dispatch-calls-box");
-    if (!box) return;
-    box.innerHTML = (db.dispatchCalls || []).map((c, i) => `<div style="background:var(--bg-input); border:1px solid var(--border); border-left:3px solid var(--accent-bright); border-radius:8px; padding:10px 12px; display:flex; justify-content:space-between; align-items:center;"><div><span class="pill pill-red" style="margin-right:6px;">${c.code}</span><strong>${c.title}</strong><div style="font-size:11px; color:var(--text-dim); margin-top:3px;">Zgłoszono: ${c.time} • Reaguje: ${c.unit}</div></div><div style="display:flex; gap:6px;"><button type="button" class="btn btn-sm btn-blue" onclick="window.respondDispatchCall(${i})">10-4 Reaguj</button><button type="button" class="btn btn-sm btn-red" onclick="window.removeDispatchCall(${i})">✕</button></div></div>`).join("");
-  }
-  window.addDispatchCall = function() {
-    const code = document.getElementById("disp-code-inp").value.trim() || "10-90";
-    const title = document.getElementById("disp-title-inp").value.trim() || "Zgłoszenie centrali LSPD";
-    if (!db.dispatchCalls) db.dispatchCalls = [];
-    db.dispatchCalls.unshift({ code, title, time: new Date().toLocaleTimeString("pl-PL", {hour:"2-digit",minute:"2-digit"}), unit: "Brak" });
-    document.getElementById("disp-title-inp").value = "";
-    saveDatabase(); renderDispatchCalls();
-  };
-  window.respondDispatchCall = function(i) { db.dispatchCalls[i].unit = db.loggedOfficer; saveDatabase(); renderDispatchCalls(); toast("Przypisano " + db.loggedOfficer + " do wezwania!"); };
-  window.removeDispatchCall = function(i) { db.dispatchCalls.splice(i, 1); saveDatabase(); renderDispatchCalls(); };
-
-  /* AIAD / INTERNAL AFFAIRS (Z PRZEWINIENIAMI Z KOMPENDIUM) */
-  const AIAD_OFFENSES = [
-    { id: "offduty_gun", label: "Poruszanie się ze sprzętem/w mundurze poza służbą (2.8)", text: "naruszył pkt 2.8 regulaminu (posiadanie wyposażenia lub munduru poza służbą)" },
-    { id: "illegal_attachments", label: "Nielegalne dodatki do broni służbowej", text: "posiadał zamontowane niedozwolone dodatki do broni służbowej (inne niż latarka taktyczna)" },
-    { id: "evidence_theft", label: "Brak zdania konfiskaty po Statusie 7 (2.10)", text: "nie zdał skonfiskowanych przedmiotów do magazynu policyjnego bezpośrednio po zakończeniu Statusu 7 (pkt 2.10)" },
-    { id: "insubordination", label: "Podważanie decyzji przełożonego / SV (3.4)", text: "dopuścił się niesubordynacji oraz podważania decyzji funkcjonariusza wyższego stopniem (pkt 3.4)" },
-    { id: "no_backup", label: "Brak reakcji na Kod 0 / 10-13 Panic Button (3.1)", text: "nie zareagował na wezwanie najwyższego priorytetu Kod 0 / 10-13 (pkt 3.1)" },
-    { id: "taser_abuse", label: "Nadużycie Tasera (>2 razy / na osobie zakutej)", text: "złamał zasady użycia paralizatora Taser (użycie powyżej 2 razy lub wobec osoby zakutej - pkt 13.2)" },
-    { id: "uniform_breach", label: "Nieregulaminowy mundur (Spodnie w butach / Kabura)", text: "nosił nieregulaminowe elementy umundurowania (spodnie w butach lub kaburę na udzie bez uprawnień SWAT/HC)" }
-  ];
-  let selectedAiadOffenses = ["offduty_gun"], aiadMode = "self", aiadSanction = "warn";
-  function renderAiadOffensesBlips() {
-    const bar = document.getElementById("aiad-offenses-bar");
-    if (!bar) return;
-    bar.innerHTML = AIAD_OFFENSES.map(o => `<div class="blip-pill ${selectedAiadOffenses.includes(o.id) ? 'active-red' : ''}" onclick="window.toggleAiadOffense('${o.id}')"><span class="blip-dot"></span><span>${o.label}</span></div>`).join("");
-    const dl = document.getElementById("aiad-officers-datalist");
-    if (dl && db.officers) dl.innerHTML = db.officers.map(o => `<option value="[${o.badge}] ${o.name}">`).join("") + `<option value="[147] Peter Fals">`;
-  }
-  window.toggleAiadOffense = function(id) {
-    const idx = selectedAiadOffenses.indexOf(id);
-    if (idx > -1) selectedAiadOffenses.splice(idx, 1); else selectedAiadOffenses.push(id);
-    renderAiadOffensesBlips(); window.generateAiadAutoText();
-  };
-  window.setAiadMode = function(m) {
-    aiadMode = m;
-    document.getElementById("aiad-mode-self").className = "blip-pill " + (m === "self" ? "active-blue" : "");
-    document.getElementById("aiad-mode-complaint").className = "blip-pill " + (m === "complaint" ? "active-amber" : "");
-    document.getElementById("aiad-mode-observed").className = "blip-pill " + (m === "observed" ? "active-red" : "");
-    window.generateAiadAutoText();
-  };
-  window.setAiadSanction = function(s) {
-    aiadSanction = s;
-    ["warn", "strike", "fine", "suspend", "fire"].forEach(k => {
-      const cls = k === "warn" ? "active-green" : (k === "strike" || k === "fine" ? "active-amber" : "active-red");
-      document.getElementById("aiad-sanc-" + k).className = "blip-pill " + (s === k ? cls : "");
-    });
-    window.generateAiadAutoText();
-  };
-  window.generateAiadAutoText = function() {
-    const offName = document.getElementById("aiad-officer-inp")?.value.trim() || "[Nieznany funkcjonariusz]";
-    const inspector = db.loggedOfficer || "[923] Oley Sasa";
-    const chosen = AIAD_OFFENSES.filter(o => selectedAiadOffenses.includes(o.id)).map(o => o.text);
-    const offenseStr = chosen.length ? chosen.join(", a ponadto ") : "dopuścił się uchybienia regulaminowego wymagającego weryfikacji przez wydział wewnętrzny";
-    const modeStr = aiadMode === "self"
-      ? `Funkcjonariusz ${offName} zgłosił się dobrowolnie na rozmowę wyjaśniającą („dywanik”) do inspektora AIAD ${inspector}, informując o zaistniałym incydencie.`
-      : aiadMode === "complaint"
-      ? `Postępowanie wewnętrzne wobec funkcjonariusza ${offName} zostało wszczęte przez inspektora AIAD ${inspector} po wpłynięciu oficjalnego zawiadomienia.`
-      : `Postępowanie wobec funkcjonariusza ${offName} zostało wszczęte bezpośrednio przez inspektora AIAD ${inspector} podczas kontroli wyposażenia i działań służbowych.`;
-    const sancMap = {
-      warn: "Po przeanalizowaniu okoliczności sprawy oraz wysłuchaniu wyjaśnień funkcjonariusza, inspektor AIAD zakończył czynności na pouczeniu ustnym (oraz przypomnieniu formułki pompki policyjnej).",
-      strike: "W związku ze stwierdzonym naruszeniem Kompendium LEA, na funkcjonariusza nałożono oficjalne upomnienie pisemne wpisywane do akt osobowych (1/3).",
-      fine: "Decyzją wydziału AIAD na funkcjonariusza nałożono naganę służbową połączoną z karą finansową.",
-      suspend: "Decyzją wydziału AIAD funkcjonariusz zostaje natychmiastowo zawieszony w czynnościach służbowych (Suspension) do czasu zakończenia postępowania.",
-      fire: "Ze względu na rażące naruszenie regulaminu LSPD, wydział AIAD wnioskuje do High Command o natychmiastowe wydalenie funkcjonariusza ze służby."
-    };
-    const area = document.getElementById("aiad-desc-txt");
-    if (area) area.value = `PROTOKÓŁ POSTĘPOWANIA WEWNĘTRZNEGO AIAD\nInspektor prowadzący: ${inspector}\nFunkcjonariusz objęty czynnościami: ${offName}\n\n1. Okoliczności wszczęcia czynności:\n${modeStr} W toku weryfikacji ustalono, iż funkcjonariusz ${offenseStr}.\n\n2. Postanowienie końcowe AIAD:\n${sancMap[aiadSanction]}`;
-  };
-  window.saveAiadCase = function() {
-    const offName = document.getElementById("aiad-officer-inp").value.trim() || "[147] Peter Fals";
-    const body = document.getElementById("aiad-desc-txt").value.trim();
-    const sancLabels = { warn: "POUCZENIE", strike: "UPOMNIENIE 1/3", fine: "KARA FINANSOWA", suspend: "ZAWIESZONY", fire: "WYDALENIE" };
-    const now = new Date(), dStr = now.toLocaleDateString("pl-PL") + " " + now.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
-    if (!db.aiadCases) db.aiadCases = [];
-    db.aiadCases.unshift({ id: Date.now(), officer: offName, inspector: db.loggedOfficer, sanction: sancLabels[aiadSanction], sanctionKey: aiadSanction, date: dStr, body });
-    saveDatabase(); renderAiadCasesList(); toast("Zapisano protokół w rejestrze AIAD!");
-  };
-  function renderAiadCasesList() {
-    const box = document.getElementById("aiad-cases-list");
-    if (!box) return;
-    const list = db.aiadCases || [];
-    setTxt("aiad-total-badge", list.length + " wpisów"); setTxt("cnt-aiad", list.length);
-    box.innerHTML = list.length ? list.map(item => `<div style="background:var(--bg-input); border:1px solid var(--border); border-radius:10px; padding:11px 13px; margin-bottom:8px;"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><strong style="color:#fff;">${item.officer}</strong><span class="pill pill-red">${item.sanction}</span></div><div style="font-size:11px; color:var(--text-dim); margin-bottom:6px;">Inspektor: ${item.inspector} • ${item.date}</div><div style="font-size:12px; color:var(--text-muted); white-space:pre-line; max-height:75px; overflow-y:auto; margin-bottom:8px;">${item.body}</div><div style="display:flex; justify-content:flex-end; gap:6px;"><button type="button" class="btn btn-sm btn-dark" onclick="window.copySingleAiad(${item.id})">Kopiuj</button><button type="button" class="btn btn-sm btn-red" onclick="window.deleteAiadCase(${item.id})">Usuń</button></div></div>`).join("") : `<div style="padding:20px; text-align:center; color:var(--text-dim);">Brak spraw AIAD.</div>`;
-  }
-  window.copySingleAiad = function(id) { const it = (db.aiadCases || []).find(x => x.id === id); if (it) copyText(it.body, "Skopiowano protokół AIAD!"); };
-  window.deleteAiadCase = function(id) { db.aiadCases = (db.aiadCases || []).filter(x => x.id !== id); saveDatabase(); renderAiadCasesList(); };
-  window.resetAiadForm = function() { document.getElementById("aiad-officer-inp").value = ""; selectedAiadOffenses = []; renderAiadOffensesBlips(); window.generateAiadAutoText(); };
-  window.copyAiadProtocol = function() { copyText(document.getElementById("aiad-desc-txt").value, "Skopiowano protokół AIAD!"); };
-
-  /* GRAFIKI MAPEK SZKOLENIOWYCH ASU I SEU */
-  let uploadingMapTarget = "ASU";
-  function getAsuMapSvgMarkup() {
-    return `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="400" fill="#a8c5db"/><path d="M 0 0 L 400 0 L 400 320 Q 340 310 315 345 L 250 345 L 245 390 L 160 390 L 145 325 L 70 315 L 0 265 Z" fill="#d4d6d8"/><path d="M 195 0 L 400 0 L 400 315 Q 340 310 315 335 Q 275 315 265 250 Q 250 180 205 110 Z" fill="#8fb369"/><path d="M 225 55 Q 190 70 175 85 L 170 160 L 178 220 L 172 295 L 208 332" stroke="#7ba6c7" stroke-width="7" fill="none"/><path d="M 225 55 Q 195 72 176 85 L 170 155 L 178 220 L 172 295 L 208 332" stroke="#e11d48" stroke-width="4.5" fill="none" stroke-linecap="round"/><circle cx="225" cy="55" r="6" fill="#e11d48"/><text x="235" y="60" fill="#be123c" font-size="16" font-weight="900">Start</text><circle cx="208" cy="332" r="6" fill="#e11d48"/><text x="218" y="337" fill="#be123c" font-size="16" font-weight="900">Meta</text></svg>`;
-  }
-  function getSeuMapSvgMarkup() {
-    return `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="400" fill="#5da9d6"/><path d="M 185 0 L 400 0 L 400 400 L 200 400 Q 170 385 115 360 Q 105 315 100 280 Q 85 240 112 195 Q 125 160 148 145 L 145 95 L 130 75 L 165 40 Z" fill="#8fb369"/><polygon points="135,75 235,105 225,130 125,95" fill="#9ca3af" stroke="#fff" stroke-width="1.5"/><path d="M 192 382 L 120 342 L 114 295 L 106 238 L 116 190 L 146 158 C 172 152 172 165 148 160 L 158 80 L 166 46 C 172 44 176 55 176 66" stroke="#dc2626" stroke-width="4.5" fill="none" stroke-linecap="round"/><circle cx="192" cy="382" r="6" fill="#dc2626"/><text x="202" y="387" fill="#b91c1c" font-size="16" font-weight="900">Start</text><circle cx="176" cy="66" r="6" fill="#dc2626"/><text x="186" y="70" fill="#b91c1c" font-size="16" font-weight="900">Meta</text></svg>`;
-  }
-  function getTrainingMapVisualHTML(mapType) {
-    const savedCustomImg = db.customMaps && db.customMaps[mapType];
-    const defaultFileName = mapType === "ASU" ? "image_7f9838.jpg" : "image_7f9876.jpg";
-    const svgFallback = mapType === "ASU" ? getAsuMapSvgMarkup() : getSeuMapSvgMarkup();
-    if (savedCustomImg) return `<img src="${savedCustomImg}" alt="Mapa ${mapType}" />`;
-    return `<img src="${defaultFileName}" alt="Mapa ${mapType}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" /><div style="display:none; width:100%; height:100%;">${svgFallback}</div>`;
-  }
-  window.openMapZoomModal = function(mapType) {
-    setTxt("map-zoom-title", mapType === "ASU" ? "Mapa ASU — Kanał LS (< 0:55s)" : "Mapa SEU — Drive Skills Test");
-    document.getElementById("map-zoom-body").innerHTML = `<div style="width:100%; max-width:620px; height:520px;">${getTrainingMapVisualHTML(mapType)}</div>`;
-    document.getElementById("map-zoom-modal").classList.remove("hidden");
-  };
-  window.closeMapZoomModal = function() { document.getElementById("map-zoom-modal").classList.add("hidden"); };
-  window.triggerCustomMapUpload = function(mapType) { uploadingMapTarget = mapType; document.getElementById("hidden-map-file-inp").click(); };
-  window.handleMapFileUpload = function(e) {
-    const file = e.target.files && e.target.files[0]; if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(ev) {
-      if (!db.customMaps) db.customMaps = {};
-      db.customMaps[uploadingMapTarget] = ev.target.result;
-      saveDatabase(); renderSzkCourseBody(); toast("Zapisano zdjęcie mapki " + uploadingMapTarget + "!");
-    };
-    reader.readAsDataURL(file);
-  };
-
-  /* =========================================================
-     9 KURSÓW SZKOLENIOWYCH (W TYM KOMPENDIUM LEA I LONG WEAPON)
-     ========================================================= */
-  const LICENSES = ["KOMPENDIUM", "RTO+HRO", "NEGO", "SV", "PWC+APWC", "ASU", "MERRY", "SEU", "L.W"];
-  const FTO_BASIC = ["Code 6", "FTS", "10-80", "10-80 Pieszo", "Status 7", "TCCC", "Kompendium"];
-
-  const COURSES_DATA = {
-    "KOMPENDIUM": {
-      name: "📖 KOMPENDIUM LEA (Teoria Ogólna)",
-      reqTheory: 22, maxTheory: 26,
-      questions: [
-        { q: "1. Na czym polega zasada Chain of Command i kiedy można ją pominąć?", pts: 1, a: "Każdy funkcjonariusz kieruje sprawy najpierw do bezpośredniego przełożonego. Pominięcie jest dozwolone tylko w sytuacjach wymagających interwencji wyższego szczebla lub gdy sprawa dotyczy bezpośrednio przełożonego." },
-        { q: "2. Wymień podstawowe wyposażenie funkcjonariusza (limity amunicji, kartridży, kajdanek) oraz zasadę dot. dodatków do broni:", pts: 2, a: "Pistolet Policyjny (od Officer I), Amunicja max 60 + 12 załadowanych, Taser max 5 kartridży, Kajdanki x3, Tonfa, Odznaka, Bodycam, Radio, GPS, Nożyce, Kevlar, Skaner linii papilarnych. Zakaz dodatków poza latarką!" },
-        { q: "3. Kto może nosić spodnie wsunięte w buty, a kto kaburę na udzie?", pts: 1, a: "Spodnie w butach: High Command, Command Staff, K9 oraz SWAT. Kabura na udzie: wyłącznie High Command oraz SWAT." },
-        { q: "4. Co wchodzi w skład obowiązkowego wyposażenia radiowozu?", pts: 1, a: "MedBag, Kolczatki x3, Zestaw Naprawczy x2, pełne oznakowanie karoserii i dachu, Radar prędkości." },
-        { q: "5. Czym różni się kod 10-13A od 10-13B oraz co oznacza Kod 0?", pts: 2, a: "10-13A: Ranny FP (jednostki mogą dojechać). 10-13B: Ranny FP (jednostki nie mogą dojechać). Kod 0 / Panic Button: Strzały w kierunku FP — najwyższy priorytet, obowiązek rzucenia wszystkiego." },
-        { q: "6. Podaj znaczenie kodów: 10-60, 10-62, 10-64, 10-70, 10-71, 10-72, 10-90:", pts: 2, a: "10-60: Zgłoszenie od dyspozytora, 10-62: Kradzież przesyłek, 10-64: Ucieczka z więzienia, 10-70: Kradzież pojazdu, 10-71: Strzały, 10-72: Sprzedaż narkotów, 10-90: Napad." },
-        { q: "7. Podaj zasady dot. jednostek: 1) Limit EDWARD (zasada 10 FP), 2) Skład MERRY, 3) Skład pieszy (FRANK), 4) Zakaz dla jednostki TOM:", pts: 2, a: "1) 10 FP na służbie = 1 Edward (chyba że jest <10 FP, wtedy można pobrać 1). 2) MERRY wyłącznie 2-osobowe. 3) Piesze 2–4 osoby za zgodą PWC. 4) Zakaz patroli drogowych jednostką TOM." },
-        { q: "8. Opisz podział ról podczas FTS (U1, U2, U3) oraz procedurę wychodzenia kierowcy z pojazdu:", pts: 2, a: "U1 celuje w osobę w pojeździe, U2 celuje w oponę, U3 zabezpiecza plecy. Kierowca wyrzuca kluczyki przez okno, wystawia ręce, lewą ręką od zewnątrz otwiera drzwi, 2 kroki w lewo, podwija koszulkę, 2 obroty wokół osi, 3 kroki w tył i kładzie się na ziemi." },
-        { q: "9. Wymień 4 poziomy zagrożenia pościgu, po jakim czasie wchodzą i jakie dają autoryzacje (prędkości PIT):", pts: 3, a: "1) Zielony: od startu. 2) Żółty: po 10 min / jazda pod prąd / próba zastawki -> PIT do 40mph, Nieruchoma. 3) Czerwony: po 20 min od żółtego / potrącenie / kanały metra / udana zastawka -> PIT do 60mph, kolczatki, strzał w oponę (1 na 5 min). 4) Czarny: strzały do FP / woda / helikopter -> PIT do 70mph, ostrzał." },
-        { q: "10. Czym różni się blokada NIERUCHOMA od RUCHOMEJ?", pts: 1, a: "Nieruchoma to wcześniejsze ustawienie radiowozu jako bariery zamykającej trasę. Ruchoma (wjeżdżanie przed pędzący pojazd) jest surowo zakazana." },
-        { q: "11. Jakie są kryteria przeprowadzenia Konwoju (min. wyrok, liczba FP, stopień, prędkości, szyk)?", pts: 2, a: "Wyrok min. 100 miesięcy, min. 6 dostępnych FP, dowodzi PWC lub min. Sierżant I (zwołuje Status 9). Prędkość: 70 mph w mieście, 100 mph na autostradzie w szyku szachownicy." },
-        { q: "12. Wymień Prawa Mirandy, ile razy maksymalnie je czytamy i kiedy odkuwamy zatrzymanego na celi?", pts: 2, a: "Prawo do milczenia, wszystko może być użyte w sądzie, prawo do adwokata (również z urzędu). Czytamy max 2 razy przed zarzutami. Odkuwamy wyłącznie po wyjściu z celi przez kraty (zatrzymany stoi tyłem)." },
-        { q: "13. Kiedy zatrzymanemu przysługuje Kaucja, jaka jest jej minimalna kwota i jakie zarzuty ją wykluczają?", pts: 2, a: "Wyrok do 50 miesięcy, min. stopień Officer I, stawka min. 1000$ za 1 miesiąc. Wykluczenia: napad, porwanie, handel bronią, groźby z bronią, zamach na życie obywatela/FP." },
-        { q: "14. Rozwiń skróty BLOS, ATM oraz UPR i podaj zasady użycia Tasera:", pts: 2, a: "BLOS: Broń, Lufa, Otoczenie, Spust. ATM: Ask Them, Tell Them, Make Them (10 sekund odliczania). UPR: Uprzejmość, Profesjonalizm, Radio. Taser: max 2 użycia, zakaz wobec zakutych, w wodzie i na wysokości." },
-        { q: "15. Jak brzmi obowiązkowa formułka Pompki Policyjnej i ile wynosi strefa bezpiecznego zatrzymania?", pts: 1, a: "„Pierwsza poprawna pompka policyjna została poprawnie wykonana”. Strefa bezpiecznego zatrzymania to teren powyżej 50 metrów od miejsca interwencji." }
-      ],
-      practical: [
-        "Praktyka 1: Przeprowadzenie pełnego zatrzymania drogowego NTS oraz FTS (ustawienie radiowozów, komendy megafonowe)",
-        "Praktyka 2: Przeprowadzenie pełnej procedury Statusu 7 na celach komendy (Prawa Mirandy, odłożenie broni, bezpieczne rozkucie przez kraty)"
-      ]
-    },
-    "RTO+HRO": {
-      name: "RTO + HRO", reqTheory: 15, maxTheory: 16,
-      questions: [
-        { q: "1. Jaki jest nadrzędny cel prowadzenia radiówki podczas pościgu?", pts: 1, a: "Zapewnienie świadomości sytuacyjnej innym jednostkom, aby odcięte radiowozy mogły z samych komunikatów wyliczyć trasę, rozstawić kolczatki lub odciąć drogę bez patrzenia na mapę." },
-        { q: "2. Dlaczego jednostka prowadząca pościg nie powinna zajmować się raportowaniem na radiu?", pts: 2, a: "Wymaga to pełnego skupienia na jeździe. Jednoczesna orientacja z nazw ulic i mówienie zwiększa ryzyko wypadku. Rolę przejmuje pasażer lub U2." },
-        { q: "3. Jakie informacje i w jakiej kolejności należy podać w „komunikacie inicjującym”?", pts: 1, a: "1) Kod pościgu i identyfikator, 2) Opis pojazdu, 3) Aktualna lokalizacja i kierunek, 4) Powód pościgu." },
-        { q: "4. Co oznacza pojęcie objaśnienie progresywne i jak należy je stosować?", pts: 3, a: "Podawanie komunikatów z wyprzedzeniem — do jakiego punktu lub skrzyżowania pojazd się zbliża." },
-        { q: "5. Jak należy prawidłowo określać kierunki jazdy w pościgu?", pts: 2, a: "Używać kierunków świata (North, South, East, West) zamiast „w lewo / w prawo”." },
-        { q: "6. Jak reagować na wjazd uciekiniera w „strefę martwą” (tunele, kanały)?", pts: 1, a: "Natychmiast podać ostatni punkt wejścia, kierunek i zmianę środowiska (pościg podziemny — w kanałach metra wchodzi Kod Czerwony)." },
-        { q: "7. W jaki sposób raportować zmiany prędkości i stylu jazdy?", pts: 2, a: "Prędkość opisowo (autostradowa/miejska/niska), a styl przez anomalie (ścina krawężniki, jedzie chodnikiem, gasi światła)." },
-        { q: "8. Czym różni się „Cisza radiowa” od „Komunikacji ograniczonej”?", pts: 1, a: "Cisza radiowa to całkowity zakaz nadawania. Komunikacja ograniczona (TAC) to korzystanie z pasma tylko przez jednostki w pościgu." },
-        { q: "9. Jaka jest rola jednostek dołączających do pościgu w kwestii komunikacji?", pts: 2, a: "Zachować absolutną ciszę — jedynie krótkie zgłoszenie wejścia w szyk (np. U4 przejmuje U3 po 10-50)." },
-        { q: "10. Kiedy i jak ogłosić status „10-13” w trakcie pościgu?", pts: 1, a: "Tylko gdy życie FP jest bezpośrednio zagrożone: „10-0 10-5 na 10-13 na [Lokalizacja]!”." }
-      ],
-      practical: ["Etap 2 (HRO): 2 pościgi helikopterem po min. 5 minut z pełną radiówką (Próby: 2)", "Etap 3 (RTO): Pościg ADAM za ADAM z pełną radiówką przez 10 minut (Próby: 2)"]
-    },
-    "NEGO": {
-      name: "NEGO (N.L I / II)", reqTheory: 15, maxTheory: 17,
-      questions: [
-        { q: "1. Czy negocjator musi się przedstawić i od jakiego stopnia można wyrobić N.L I oraz N.L II?", pts: 1, a: "Tak, przedstawia się na początku. N.L I od stopnia Officer I, natomiast N.L II od stopnia Officer II po min. 10 negocjacjach." },
-        { q: "2. Co jest najważniejsze dla negocjatora?", pts: 1, a: "Bezpieczeństwo i życie własne, innych funkcjonariuszy oraz zakładników." },
-        { q: "3. Kiedy możemy podejść do negocjacji?", pts: 1, a: "Po zgłoszeniu na radiu „Podchodzę do negocjacji” (wtedy na radiu zapada cisza) i upewnieniu się, że ktoś nas ubezpiecza." },
-        { q: "4. Jakie są obowiązki negocjatora?", pts: 3, a: "1) Ustalenie liczby napastników i zakładników, ich stanu, broni oraz rejestracji pojazdu. 2) Korygowanie i akceptowanie żądań. 3) Poinformowanie SV o ustaleniach." },
-        { q: "5. Ile żądań realizujemy za jednego zakładnika?", pts: 1, a: "Zakazuje się stosowania systemu „jedynkowego” (pkt 11.7) — każde negocjacje rozpatrujemy osobno zależnie od zagrożenia." },
-        { q: "6. Co negocjator musi zrobić na początku rozmowy?", pts: 1, a: "Zapytać, co się dzieje. Skłaniać napastników do oddania zakładników i poddania się." },
-        { q: "7. Co negocjator musi się dowiedzieć o zakładnikach i jak?", pts: 1, a: "Czy potrzebują jedzenia, picia, pomocy medycznej i czy czują się dobrze (najlepiej osobiście)." },
-        { q: "8. Czy negocjator może kłamać?", pts: 1, a: "Nie. Wyjątek: sytuacje kryzysowe z osobą chcącą targnąć się na życie." },
-        { q: "9. Czy negocjator może rozmawiać sam na sam z osobą uzbrojoną?", pts: 1, a: "Nie. Tylko podczas interwencji kryzysowych bez zagrożenia dla życia negocjatora." },
-        { q: "10. W jaki sposób zwracasz się do napastnika?", pts: 1, a: "Z szacunkiem, bez względu na jego czyny." },
-        { q: "11. Jaki powinien być głos i mowa ciała negocjatora?", pts: 1, a: "Spokojny, opanowany, pewny siebie." },
-        { q: "12. Ile jest ostrzeżeń negocjatorskich?", pts: 1, a: "3." },
-        { q: "13. Kto nakłada ostrzeżenia negocjatorskie?", pts: 1, a: "Supervisor (SV) nakłada — Negocjator przekazuje informację napastnikom." },
-        { q: "14. Za co można nałożyć ostrzeżenia negocjatorskie?", pts: 1, a: "Zmiana żądań po przyklepaniu, groźby wobec zakładników, obraza negocjatora, brak wykonywania poleceń." },
-        { q: "15. Co się dzieje po przekroczeniu liczby ostrzeżeń?", pts: 1, a: "SV podejmuje decyzję o zerwaniu negocjacji i informuje PWC." }
-      ],
-      practical: ["Przestrzeganie zasad (1 pkt)", "Reakcja na warunki (1 pkt)", "Zachowanie (1 pkt)", "Profesjonalizm (1 pkt) — Wymagane 3/4 pkt"]
-    },
-    "SV": {
-      name: "SV (Supervisor)", reqTheory: 12, maxTheory: 14,
-      questions: [
-        { q: "1. Kto przejmuje rolę SV na każdej akcji i jaki jest minimalny stopień wg Kompendium?", pts: 1, a: "Osoba wyznaczona przez PWC (posiadająca min. stopień Officer III), osoba ze szkoleniem lub najwyższy stopniem na radiu." },
-        { q: "2. Czy jako SV możesz zezwolić negocjatorowi na wejście do placówki?", pts: 1, a: "Nie." },
-        { q: "3. Czy będziesz prowadził dwa pościgi na jednym radiu?", pts: 1, a: "Nie." },
-        { q: "4. Czy wydasz polecenie zerwania negocjacji widząc szansę na odbicie zakładnika?", pts: 2, a: "Nie, chyba że nałożone byłyby 3 ostrzeżenia negocjatorskie." },
-        { q: "5. Masz 2x SEU, 3x LINCOLN, 2x ADAM — jak rozstawisz unity na offroad i sport oraz jak ustawia się radiowozy pod napadem (pkt 11.6)?", pts: 2, a: "Rozstawienie pościgowe wg logiki (SEU na sport, Lincoln na offroad). Pod napadem: 2 radiowozy równolegle po bokach auta napastników i 1 prostopadle blokujący wolny odjazd." },
-        { q: "6. Na konwoju masz 4 zatrzymanych — jakie i ile unitów przygotujesz przy poszczególnych prawdopodobieństwach odbicia?", pts: 2, a: "BRAK: konwojentka (2 FP). NISKIE: konwojentka + eskorta ADAM/LINCOLN. REALNE: konwojentka + eskorta SWAT. BEZPOŚREDNIE: transport wyłącznie przez SWAT." },
-        { q: "7. Jakie są obowiązki SV? (5 punktów)", pts: 5, a: "1) Wyznaczanie negocjatora i ubezpieczającego. 2) Ustalanie jednostek pościgowych. 3) Nadawanie kodów pościgowych. 4) Uzupełnianie dispatcha. 5) Zabezpieczenie terenu wokół akcji." }
-      ],
-      practical: ["Zasady SV (1 pkt)", "Odpowiednie żądania (1 pkt)", "Rozmieszczenie jednostek (1 pkt)", "Profesjonalizm (1 pkt)", "Obserwacja terenu (1 pkt) — Wymagane 4/5 pkt"]
-    },
-    "PWC+APWC": {
-      name: "PWC + APWC", reqTheory: 15, maxTheory: 17,
-      questions: [
-        { q: "1. Czym się zajmują PWC / APWC i jakie są wymagane stopnie minimalne?", pts: 1, a: "Dowodzenie patrolami, wyznaczanie SV, porządek na radiu i Dispatch. PWC od Sierżanta I (chyba że HC wyznaczy inaczej), APWC od Officer III." },
-        { q: "2. Jaki numer ma PWC?", pts: 1, a: "00" },
-        { q: "3. Jak wyznaczany jest PWC lub APWC?", pts: 1, a: "Najwyższy stopniem na służbie lub porozumienie na tym samym stopniu / wyznaczenie przez poprzedniego PWC." },
-        { q: "4. Czy PWC i APWC mogą jeździć razem w patrolu lub brać udział w tej samej akcji?", pts: 1, a: "Nie (wyjątek stanowi niewystarczająca liczba FP na służbie)." },
-        { q: "5. Czy PWC może zareagować na zgłoszenie, gdy APWC jest podczas akcji?", pts: 1, a: "Nie. Musi zostać na radiu Main." },
-        { q: "6. Co musi zrobić PWC, gdy schodzi ze służby?", pts: 2, a: "Przekazać sytuację w mieście: ostatnie akcje, aktualny kod i powód wprowadzenia." },
-        { q: "7. Co zrobić, gdy jest niebezpiecznie, a kod to Zielony?", pts: 2, a: "Zawołać HC, poprosić o zmianę kodu (na Pomarańczowy/Czerwony) i uzasadnić." },
-        { q: "8. Jak powinny być rozdzielone jednostki na mieście (zasada EDWARD)?", pts: 2, a: "Harmonijnie i równomiernie — obowiązuje zasada 10 funkcjonariuszy = 1 Edward w patrolu." },
-        { q: "9. Co zrobić, gdy FP popełniają błędy lub są źle rozdysponowani?", pts: 1, a: "Zrobić Code 8 (Odprawa na komendzie)." },
-        { q: "10. Co zrobić, gdy FP popełnia poważne błędy wymagające ukarania?", pts: 2, a: "Zgłosić do HC / AIAD." },
-        { q: "11. Czy PWC/APWC musi zostać poinformowany o zerwaniu negocjacji?", pts: 1, a: "Tak." },
-        { q: "12. Co zrobić, gdy wszystkie jednostki są na jednej akcji, a pojawia się kolejna?", pts: 2, a: "Zależnie od pilności – cofnąć część jednostek na drugą akcję." }
-      ],
-      practical: ["Przejęcie PWC i ogłoszenie Code 8 (1 pkt)", "Przebieg Code 8 (1 pkt)", "Rozdysponowanie jednostek (1 pkt)", "Zlecenie zmiany kodu (1 pkt) — Wymagane 3/4 pkt"]
-    },
-    "ASU": { name: "ASU (Helikopter EAGLE)", reqTheory: 0, maxTheory: 0, map: "ASU", questions: [], practical: ["Wymóg: min. Officer III + badania psychologiczne", "Etap 1: Free flight (3 min)", "Etap 2: 3 trudne lądowania", "Etap 3: 2 pościgi po 5 min z radiówką jako U0 (Próby: 3)", "Etap 4: Mapka pod mostami w kanale LS < 0:55s"] },
-    "MERRY": { name: "MERRY (Motocykle)", reqTheory: 0, maxTheory: 0, questions: [], practical: ["Zasada: Patrole MERRY odbywają się wyłącznie w 2-osobowych składach (pkt 6.2)", "Etap 1: Motor-motor 2x 5 min (Próby: 2)", "Etap 2: Motor-ADAM 2x 5 min (Próby: 2)", "Etap 3: Motor-EDWARD 3 min (Próby: 3)", "Etap 4: Pościg do destylacji motoru (Próby: 1)"] },
-    "SEU": { name: "SEU (Pościgowe EDWARD)", reqTheory: 0, maxTheory: 0, map: "SEU", questions: [], practical: ["Wymóg: min. Officer III (zasada 10 FP = 1 Edward)", "Etap 1: Drive skills test na mapce bez kolizji (Próby: 2)", "Etap 2: Pościg SEU-SEU 2x 5 min (Próby: 2)", "Etap 3: Pościg EDWARD-EDWARD do destylacji (Próby: 1)", "Etap 4: Pościg EDWARD-EDWARD z radiówką 10 min (Próby: 2)"] },
-    "L.W": {
-      name: "🔫 L.W (Long Weapon - Klasa III)", reqTheory: 7, maxTheory: 8,
-      questions: [
-        { q: "1. Od jakiego stopnia można przystąpić do szkolenia L.W i do jakiej jednostki wewnętrznej jest ono niezbędne?", pts: 1, a: "Od stopnia Officer III. Jest niezbędne do wstąpienia w szeregi jednostki S.W.A.T." },
-        { q: "2. Wymień i opisz wszystkie 4 Klasy Broni w Stanie San Andreas (Rozdział 14):", pts: 2, a: "Klasa I: broń biała i tępa. Klasa II: broń palna krótka i taser. Klasa III: broń automatyczna, półautomatyczna, snajperska i każda długolufowa. Klasa IV: ładunki pirotechniczne (bez bomby termitowej)." },
-        { q: "3. Wymień główne elementy budowy pistoletu służbowego (Rozdział 14):", pts: 2, a: "Lufa, Muszka, Szczerbinka, Zamek, Okno wylotowe łusek (komora nabojowa), Zwalniacz zamka, Blokada zamka, Szyna na latarkę, Kabłąk (osłona spustu), Język spustowy, Zatrzask magazynka, Chwyt, Magazynek." },
-        { q: "4. W jakich 5 specyficznych sytuacjach funkcjonariusz może użyć broni palnej jako pierwszy (pkt 13.4)?", pts: 3, a: "1) Podejrzany biegnie z bronią w ręku, 2) Celuje z broni palnej, 3) Ma wyciągniętą broń białą z zamiarem ataku na FP, 4) Oddano strzały w kierunku FP, 5) Ucieka pieszo z napadu (wtedy najpierw 2 strzały ostrzegawcze w górę, 3. skuteczny)." }
-      ],
-      practical: ["Egzamin praktyczny: Sprawdzenie celności, opanowania odrzutu broni Klasy III, zasad BLOS oraz taktyki osłaniania w zespole."]
-    }
-  };
-
-  let selectedCourse = "KOMPENDIUM", courseScores = {}, practicalChecks = {};
-  function renderSzkCourseBar() {
-    const sel = document.getElementById("szk-officer-select");
-    if (sel) sel.innerHTML = db.officers.map(o => `<option value="${o.badge}">[${o.badge}] ${o.name}</option>`).join("");
-    const bar = document.getElementById("szk-courses-bar");
-    if (bar) bar.innerHTML = LICENSES.map(k => `<div class="blip-pill ${k === selectedCourse ? 'active-blue' : ''}" onclick="window.selectCourseTab('${k}')"><span class="blip-dot"></span><span>${COURSES_DATA[k].name}</span></div>`).join("");
-    renderSzkCourseBody();
-  }
-  window.selectCourseTab = function(k) { selectedCourse = k; renderSzkCourseBar(); };
-  window.setCourseQuestionScore = function(idx, pts) { if (!courseScores[selectedCourse]) courseScores[selectedCourse] = {}; courseScores[selectedCourse][idx] = pts; renderSzkCourseBody(); };
-  window.togglePracticalStageBlip = function(idx) { if (!practicalChecks[selectedCourse]) practicalChecks[selectedCourse] = {}; practicalChecks[selectedCourse][idx] = !practicalChecks[selectedCourse][idx]; renderSzkCourseBody(); };
-  function renderSzkCourseBody() {
-    const c = COURSES_DATA[selectedCourse], container = document.getElementById("szk-course-body");
-    if (!container || !c) return;
-    if (!courseScores[selectedCourse]) courseScores[selectedCourse] = {};
-    if (!practicalChecks[selectedCourse]) practicalChecks[selectedCourse] = {};
-    const sc = courseScores[selectedCourse], pr = practicalChecks[selectedCourse];
-    let sum = 0; c.questions.forEach((q, idx) => { sum += (sc[idx] || 0); });
-    let tHTML = "";
-    if (c.questions.length) {
-      const pass = sum >= c.reqTheory, pct = Math.min(100, Math.round((sum / c.maxTheory) * 100));
-      tHTML = `<div class="card"><div class="card-header"><div><h3 style="margin:0; font-size:15px;">Etap 1: Pytania Teoretyczne — ${c.name}</h3></div><div class="blip-pill ${pass ? 'active-green' : 'active-red'}" style="cursor:default;"><span class="blip-dot"></span><span>${sum} / ${c.maxTheory} pkt (Min. ${c.reqTheory}) — ${pass ? 'ZALICZONA' : 'NIEZALICZONA'}</span></div></div><div class="progress-track" style="margin-bottom:14px;"><div class="progress-fill" style="width:${pct}%;"></div></div>` +
-        c.questions.map((it, idx) => {
-          const cur = sc[idx] !== undefined ? sc[idx] : 0;
-          let nodes = "";
-          for (let p = 0; p <= it.pts; p++) {
-            let cls = cur === p ? (p === 0 ? "selected-zero" : (p === it.pts ? "selected-max" : "selected-pts")) : "";
-            nodes += `<div class="blip-node ${cls}" onclick="window.setCourseQuestionScore(${idx},${p})">${p}</div>`;
-          }
-          return `<div class="question-blip-row ${cur > 0 ? 'scored-positive' : 'scored-zero'}"><div style="display:flex; justify-content:space-between; align-items:center; gap:14px;"><div style="font-weight:700; color:#e2e8f0; font-size:13px;">${it.q} <span style="color:var(--text-dim); font-size:11px;">(Max ${it.pts} pkt)</span></div><div class="blip-nodes-group">${nodes}</div></div><div style="margin-top:8px; padding:7px 11px; background:#070a10; border-left:2px solid var(--accent-bright); border-radius:6px; font-size:12px; color:var(--text-muted);"><strong style="color:var(--accent-light);">Odp:</strong> ${it.a}</div></div>`;
-        }).join("") + `</div>`;
-    }
-    let mapHTML = "";
-    if (c.map === "ASU" || c.map === "SEU") {
-      const isAsu = c.map === "ASU";
-      mapHTML = `<div class="card"><div class="card-header"><div><h3 style="margin:0; font-size:15px; color:#38bdf8;">${isAsu ? "Mapa Szkoleniowa ASU (Etap 4 — Przelot pod mostami < 0:55s)" : "Mapa Szkoleniowa SEU (Etap 1 — Drive Skills Test)"}</h3></div><div style="display:flex; gap:8px;"><button type="button" class="btn btn-sm btn-dark" onclick="window.triggerCustomMapUpload('${c.map}')">Wgraj zdjęcie mapki</button><button type="button" class="btn btn-sm btn-blue" onclick="window.openMapZoomModal('${c.map}')">Powiększ mapę</button></div></div><div class="training-map-wrapper"><div class="map-frame" onclick="window.openMapZoomModal('${c.map}')">${getTrainingMapVisualHTML(c.map)}<span class="map-zoom-badge">Kliknij, aby powiększyć</span></div><div style="font-size:13px; color:#cbd5e1; line-height:1.6; background:var(--bg-input); padding:12px 14px; border-radius:10px; border:1px solid var(--border);">${isAsu ? "<strong>Trasa na mapie ASU:</strong><br/>• <strong>Start:</strong> Górny odcinek kanału burzowego przy Mirror Park.<br/>• <strong>Przelot:</strong> Lot wzdłuż czerwonych strzałek pod wszystkimi mostami.<br/>• <strong>Meta:</strong> Wylot kanału przy porcie Elysian Island (poniżej 0:55s)." : "<strong>Trasa na mapie SEU:</strong><br/>• <strong>Start:</strong> Wjazd na Great Ocean Hwy przy plaży Pacific Bluffs.<br/>• <strong>Przejazd:</strong> Jazda wzdłuż wybrzeża przez Chumash, pętla przy Tongva Hills i tunel Zancudo.<br/>• <strong>Meta:</strong> Nawrotka za tunelem i dojazd pod bramę Fortu Zancudo."}</div></div></div>`;
-    }
-    const pHTML = `<div class="card"><h3 style="margin:0 0 10px; color:#34d399;">Etapy Praktyczne — Kliknij blip, aby zaliczyć etap (${c.name})</h3><div style="display:flex; flex-direction:column; gap:8px;">${c.practical.map((p, idx) => `<div class="blip-pill ${pr[idx] ? 'active-green' : ''}" style="border-radius:10px; padding:10px 14px; justify-content:space-between;" onclick="window.togglePracticalStageBlip(${idx})"><div style="display:flex; align-items:center; gap:10px;"><span class="blip-dot"></span><span>${p}</span></div><span class="pill ${pr[idx] ? 'pill-green' : 'pill-gray'}">${pr[idx] ? 'ZALICZONE' : 'DO WYKONANIA'}</span></div>`).join("")}</div></div>`;
-    container.innerHTML = tHTML + mapHTML + pHTML;
-  }
-  window.assignCourseLicenseToSelected = function() {
-    const badge = document.getElementById("szk-officer-select").value, off = db.officers.find(o => o.badge === badge);
-    if (!off) return;
-    if (!off.licenses) off.licenses = {};
-    off.licenses[selectedCourse] = true; off.updated = "Nadano " + selectedCourse;
-    saveDatabase(); window.renderLicenseMatrix(); renderAllOfficersView(); toast("Nadano licencję " + selectedCourse + " dla [" + off.badge + "] " + off.name);
-  };
-  window.copyCourseProtocol = function() { copyText(`PROTOKÓŁ SZKOLENIA LSPD — ${COURSES_DATA[selectedCourse].name}\nSzkoleniowiec: ${db.loggedOfficer}\nStatus: ZALICZONE`, "Skopiowano protokół!"); };
-  window.renderLicenseMatrix = function() {
-    const tbody = document.getElementById("matrix-tbody"); if (!tbody) return;
-    const q = (document.getElementById("matrix-search-inp")?.value || "").toLowerCase();
-    tbody.innerHTML = db.officers.filter(o => o.badge.toLowerCase().includes(q) || o.name.toLowerCase().includes(q)).map(o => `<tr><td style="font-weight:800; color:var(--accent-light);">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${LICENSES.map(k => `<div class="blip-pill ${o.licenses && o.licenses[k] ? 'active-green' : ''}" style="padding:3px 9px; font-size:11px; margin:2px;" onclick="window.toggleMatrixLic('${o.badge}','${k}')"><span class="blip-dot"></span><span>${k}</span></div>`).join("")}</td><td style="color:var(--text-dim); font-size:11px;">${o.updated || "-"}</td></tr>`).join("");
-  };
-  window.toggleMatrixLic = function(badge, k) { const o = db.officers.find(x => x.badge === badge); if (o) { if (!o.licenses) o.licenses = {}; o.licenses[k] = !o.licenses[k]; saveDatabase(); window.renderLicenseMatrix(); renderAllOfficersView(); } };
-
-  let trialSwRunning = false, trialSwStart = 0, trialSwElapsed = 0, trialSwInterval = null;
-  window.toggleTrialStopwatch = function() {
-    const btn = document.getElementById("trial-sw-btn");
-    if (trialSwRunning) {
-      trialSwElapsed += Date.now() - trialSwStart; trialSwRunning = false;
-      clearInterval(trialSwInterval); btn.textContent = "Start"; btn.className = "btn btn-sm btn-green";
-    } else {
-      trialSwStart = Date.now(); trialSwRunning = true;
-      btn.textContent = "Stop"; btn.className = "btn btn-sm btn-red";
-      trialSwInterval = setInterval(() => {
-        const ms = trialSwElapsed + (Date.now() - trialSwStart), totSec = Math.floor(ms / 1000);
-        setTxt("trial-stopwatch-val", `${String(Math.floor(totSec / 60)).padStart(2, "0")}:${String(totSec % 60).padStart(2, "0")}.${Math.floor((ms % 1000) / 100)}`);
-      }, 100);
-    }
-  };
-  window.resetTrialStopwatch = function() { trialSwRunning = false; trialSwElapsed = 0; clearInterval(trialSwInterval); setTxt("trial-stopwatch-val", "00:00.0"); const btn = document.getElementById("trial-sw-btn"); if (btn) { btn.textContent = "Start"; btn.className = "btn btn-sm btn-green"; } };
-
-  /* STREFA KADETA (FTO) */
-  window.currentCadetId = "165";
-  function getCadetTotalSec(c) { return (c.sec || 0) + (c.running && c.ts ? Math.max(0, Math.floor((Date.now() - c.ts) / 1000)) : 0); }
-  function formatHMS(s) { return String(Math.floor(s / 3600)).padStart(2, "0") + "h " + String(Math.floor((s % 3600) / 60)).padStart(2, "0") + "m " + String(s % 60).padStart(2, "0") + "s"; }
-  window.toggleCadetStopwatch = function(id) {
-    const c = db.cadets.find(x => x.id === id); if (!c) return;
-    if (c.running) { c.sec = getCadetTotalSec(c); c.running = false; c.ts = null; toast("Zatrzymano patrol [" + c.badge + "] " + c.name); }
-    else { c.running = true; c.ts = Date.now(); toast("Start patrolu [" + c.badge + "] " + c.name); }
-    saveDatabase(); window.renderCadets(); refreshCadetSheetButtonState();
-  };
-  window.adjustCadetTime = function(mins) { const c = db.cadets.find(x => x.id === window.currentCadetId); if (c) { c.sec = Math.max(0, (c.sec || 0) + mins * 60); saveDatabase(); window.renderCadets(); refreshCadetSheetButtonState(); } };
-  function refreshCadetSheetButtonState() {
-    const c = db.cadets.find(x => x.id === window.currentCadetId); if (!c) return;
-    setTxt("cs-live-timer", formatHMS(getCadetTotalSec(c)));
-    const b = document.getElementById("cs-startstop-btn");
-    if (b) { b.textContent = c.running ? "STOP" : "START"; b.className = "btn btn-sm " + (c.running ? "btn-red" : "btn-green"); }
-  }
-  window.renderCadets = function() {
-    const tbody = document.getElementById("fto-cadets-tbody"); if (!tbody) return;
-    const q = (document.getElementById("fto-search")?.value || "").toLowerCase();
-    tbody.innerHTML = db.cadets.filter(c => c.badge.toLowerCase().includes(q) || c.name.toLowerCase().includes(q) || c.fto.toLowerCase().includes(q)).map(c => {
-      const done = FTO_BASIC.filter(m => c.modules[m]?.ok).length;
-      return `<tr><td style="font-weight:800; color:var(--accent-light);">#${c.badge}</td><td style="font-weight:700;">${c.name}</td><td>${c.fto}</td><td><div style="display:flex; align-items:center; gap:8px;"><span id="cad-timer-${c.id}" style="font-family:monospace; font-weight:800; color:${c.running ? '#34d399' : '#38bdf8'};">${formatHMS(getCadetTotalSec(c))}</span><button type="button" class="btn btn-sm ${c.running ? 'btn-red' : 'btn-green'}" onclick="window.toggleCadetStopwatch('${c.id}')" style="border-radius:99px;">${c.running ? 'STOP' : 'START'}</button></div></td><td><button type="button" class="btn btn-sm btn-blue" onclick="window.openCadetSheetView('${c.id}')" style="border-radius:99px;">ARKUSZ (${done}/7)</button></td><td>${c.joinDate}</td><td><div class="blip-pill ${c.pos ? 'active-green' : ''}" style="padding:3px 9px; font-size:11px;" onclick="window.setCadetPos('${c.id}', ${!c.pos})"><span class="blip-dot"></span><span>${c.pos ? 'TAK' : 'NIE'}</span></div></td><td><select class="sel" style="padding:4px 8px; font-size:11px;" onchange="window.setCadetNeg('${c.id}', this.value)">${["BRAK","1 NEGATYWNY","2 NEGATYWNE","DO POPRAWY","ZAWIESZONY"].map(opt => `<option value="${opt}" ${c.neg===opt?'selected':''}>${opt}</option>`).join("")}</select></td><td><button type="button" class="btn btn-sm btn-red" onclick="window.removeCadet('${c.id}')">✕</button></td></tr>`;
-    }).join("");
-    const examSel = document.getElementById("exam-cadet-sel");
-    if (examSel) examSel.innerHTML = db.cadets.map(c => `<option value="${c.id}">[${c.badge}] ${c.name}</option>`).join("");
-  };
-  window.createCadet = function() {
-    const badge = document.getElementById("new-c-badge").value.trim(), name = document.getElementById("new-c-name").value.trim(), fto = document.getElementById("new-c-fto").value.trim() || "Oley Sasa";
-    if (!badge || !name) { toast("Wpisz odznakę i imię kadeta!"); return; }
-    const nc = { id: badge + "_" + Date.now(), badge, name, fto, joinDate: new Date().toLocaleDateString("pl-PL"), sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} };
-    FTO_BASIC.forEach(m => nc.modules[m] = { ok: false, note: "", sign: "" });
-    db.cadets.unshift(nc); saveDatabase(); window.renderCadets();
-    document.getElementById("new-c-badge").value = ""; document.getElementById("new-c-name").value = ""; toast("Dodano kadeta!");
-  };
-  window.removeCadet = function(id) { db.cadets = db.cadets.filter(x => x.id !== id); saveDatabase(); window.renderCadets(); };
-  window.setCadetPos = function(id, v) { const c = db.cadets.find(x => x.id === id); if (c) { c.pos = v; saveDatabase(); window.renderCadets(); } };
-  window.setCadetNeg = function(id, v) { const c = db.cadets.find(x => x.id === id); if (c) { c.neg = v; saveDatabase(); window.renderCadets(); } };
-  window.openCadetSheetView = function(id) {
-    window.currentCadetId = id; const c = db.cadets.find(x => x.id === id); if (!c) return;
-    setTxt("cs-badge-pill", "#" + c.badge); setTxt("cs-title-name", c.name); setTxt("cs-subtitle", "Opiekun FTO: " + c.fto + " • Dołączył: " + c.joinDate);
-    document.getElementById("cs-pos-blip").className = "blip-pill " + (c.pos ? "active-green" : "");
-    document.getElementById("cs-pos-notes").value = c.posNotes || "";
-    document.getElementById("cs-neg-select").value = c.neg || "BRAK";
-    document.getElementById("cs-neg-notes").value = c.negNotes || "";
-    refreshCadetSheetButtonState(); renderCadetSheetModules(c); window.switchFtoView("sheet");
-  };
-  window.toggleSheetPosBlip = function() { const c = db.cadets.find(x => x.id === window.currentCadetId); if (c) { c.pos = !c.pos; document.getElementById("cs-pos-blip").className = "blip-pill " + (c.pos ? "active-green" : ""); saveDatabase(); window.renderCadets(); } };
-  function renderCadetSheetModules(c) {
-    const tbody = document.getElementById("cs-modules-body"); if (!tbody) return;
-    tbody.innerHTML = FTO_BASIC.map((m, i) => {
-      const mod = c.modules[m] || { ok: false, note: "", sign: "" };
-      return `<tr><td style="font-weight:700;">${m}</td><td><div class="blip-pill ${mod.ok ? 'active-green' : ''}" style="padding:4px 10px; font-size:11px;" onclick="window.toggleCadetModOk(${i})"><span class="blip-dot"></span><span>${mod.ok ? 'Potrafi' : 'Brak'}</span></div></td><td><input type="text" class="inp" value="${mod.note}" oninput="window.updateCadMod(${i},'note',this.value)"/></td><td><input type="text" class="inp" style="text-align:center;font-weight:700;" value="${mod.sign}" oninput="window.updateCadMod(${i},'sign',this.value)"/></td><td><button type="button" class="btn btn-sm btn-dark" onclick="window.quickSignCadMod(${i})">Podpisz: SASA</button></td></tr>`;
-    }).join("");
-  }
-  window.toggleCadetModOk = function(idx) {
-    const c = db.cadets.find(x => x.id === window.currentCadetId);
-    if (c) { c.modules[FTO_BASIC[idx]].ok = !c.modules[FTO_BASIC[idx]].ok; saveDatabase(); renderCadetSheetModules(c); window.renderCadets(); }
-  };
-  window.updateCadMod = function(idx, field, val) { const c = db.cadets.find(x => x.id === window.currentCadetId); if (c) { c.modules[FTO_BASIC[idx]][field] = val; saveDatabase(); window.renderCadets(); } };
-  window.quickSignCadMod = function(idx) { const c = db.cadets.find(x => x.id === window.currentCadetId); if (c) { c.modules[FTO_BASIC[idx]].ok = true; c.modules[FTO_BASIC[idx]].sign = "SASA"; saveDatabase(); renderCadetSheetModules(c); window.renderCadets(); } };
-  window.signAllCadetBasic = function() { const c = db.cadets.find(x => x.id === window.currentCadetId); if (c) { FTO_BASIC.forEach(m => { c.modules[m].ok = true; c.modules[m].sign = "SASA"; }); saveDatabase(); renderCadetSheetModules(c); window.renderCadets(); toast("Zatwierdzono moduły jako SASA"); } };
-  window.saveCadetRemarks = function() { const c = db.cadets.find(x => x.id === window.currentCadetId); if (c) { c.posNotes = document.getElementById("cs-pos-notes").value; c.neg = document.getElementById("cs-neg-select").value; c.negNotes = document.getElementById("cs-neg-notes").value; saveDatabase(); window.renderCadets(); } };
-  window.promoteCadetToOfficer = function() {
-    const c = db.cadets.find(x => x.id === window.currentCadetId); if (!c) return;
-    db.officers.unshift({ badge: c.badge, name: c.name, rank: "Officer I", channel: "LSPD Tac #1", status: "Na służbie", licenses: {}, updated: "Awans FTO" });
-    db.cadets = db.cadets.filter(x => x.id !== window.currentCadetId);
-    saveDatabase(); window.renderCadets(); renderAllOfficersView(); window.switchFtoView("list"); toast("Awansowano [" + c.badge + "] " + c.name + "!");
-  };
-  window.copyCadetSheet = function() { const c = db.cadets.find(x => x.id === window.currentCadetId); if (c) copyText(`KARTA KADETA [${c.badge}] ${c.name}\nCzas w patrolu: ${formatHMS(getCadetTotalSec(c))}`, "Skopiowano kartę kadeta!"); };
-
-  const EXAM_ITEMS = ["Teoria (Kompendium LEA)", "NTS", "FTS", "Status 7 (Cele)", "10-80 (Pościg)", "10-80 pieszo (Taser/BLOS)", "Pierwsza pomoc (MedBag)"];
-  let examScores = {};
-  EXAM_ITEMS.forEach(i => examScores[i] = 0);
-  function renderOfficerExamTable() {
-    const tb = document.getElementById("exam-rows-tbody"); if (!tb) return;
-    let total = 0;
-    tb.innerHTML = EXAM_ITEMS.map((item, idx) => {
-      const val = examScores[item] || 0; total += val;
-      const nodes = [0, 1, 2, 3].map(p => `<div class="blip-node ${val === p ? (p === 0 ? 'selected-zero' : (p === 3 ? 'selected-max' : 'selected-pts')) : ''}" onclick="window.setExamPts(${idx},${p})">${p}</div>`).join("");
-      return `<tr><td style="font-weight:700; color:var(--accent-light);">${item}</td><td><div class="blip-nodes-group">${nodes}</div></td><td style="text-align:center; font-weight:800;">${val} pkt</td></tr>`;
-    }).join("");
-    setTxt("exam-total-cell", total + " / 21");
-    const v = document.getElementById("exam-verdict-cell");
-    if (v) { v.textContent = total >= 17 ? "ZDANE" : "NIEZDANE (Min. 17 pkt)"; v.style.color = total >= 17 ? "#34d399" : "#f87171"; }
-  }
-  window.setExamPts = function(idx, p) { examScores[EXAM_ITEMS[idx]] = p; renderOfficerExamTable(); };
-  window.copyFinalExamProtocol = function() { let total = 0; EXAM_ITEMS.forEach(i => total += examScores[i]); copyText(`EGZAMIN OFICERSKI LSPD — Wynik: ${total}/21 pkt (${total >= 17 ? 'ZDANE' : 'NIEZDANE'})`, "Skopiowano wynik egzaminu!"); };
-
-  /* PATROLE I FUNKCJONARIUSZE */
-  function renderPatrols() {
-    setTxt("pwc-holder-name", db.pwc); setTxt("apwc-holder-name", db.apwc);
-    const grid = document.getElementById("patrols-grid");
-    if (grid) grid.innerHTML = db.patrols.map((p, idx) => `<div class="card" style="margin-bottom:0;"><div class="card-header"><div><strong>Patrol ${idx + 1}</strong> <span class="pill pill-blue">${p.type}</span></div><button type="button" class="btn btn-sm btn-red" onclick="window.removePatrol(${p.id})">Usuń</button></div>${p.members.map(m => `<div class="chip-item"><span>${m}</span></div>`).join("")}</div>`).join("");
-  }
-  window.removePatrol = function(id) { db.patrols = db.patrols.filter(x => x.id !== id); saveDatabase(); renderPatrols(); };
-  window.takeOverRole = function(r) { if (r === "PWC") db.pwc = db.loggedOfficer; else db.apwc = db.loggedOfficer; saveDatabase(); renderPatrols(); toast("Przejęto " + r); };
-  window.createNewPatrolUnit = function() {
-    const type = document.getElementById("new-patrol-type").value, mem = document.getElementById("new-patrol-members").value.trim() || db.loggedOfficer;
-    db.patrols.push({ id: Date.now(), type, members: mem.split(",").map(s => s.trim()) });
-    document.getElementById("new-patrol-members").value = ""; saveDatabase(); renderPatrols();
-  };
-  function renderAllOfficersView() {
-    const dispBody = document.getElementById("dispatch-officers-tbody"), allBody = document.getElementById("all-officers-tbody");
-    if (dispBody) dispBody.innerHTML = db.officers.map(o => `<tr><td style="font-weight:800; color:var(--accent-light);">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${o.channel || "LSPD Tac #1"}</td><td><div class="blip-pill ${o.status === 'Na służbie' ? 'active-green' : ''}" style="padding:3px 10px; font-size:11px;" onclick="window.toggleOfficerDuty('${o.badge}')"><span class="blip-dot"></span><span>${o.status}</span></div></td></tr>`).join("");
-    if (allBody) allBody.innerHTML = db.officers.map(o => `<tr><td style="font-weight:800; color:var(--accent-light);">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${LICENSES.filter(k => o.licenses && o.licenses[k]).map(k => `<span class="pill pill-blue" style="margin-right:3px;">${k}</span>`).join("") || `<span style="color:var(--text-dim);">Brak</span>`}</td><td><span class="pill ${o.status === 'Na służbie' ? 'pill-green' : 'pill-gray'}">${o.status}</span></td><td style="text-align:right;"><button type="button" class="btn btn-sm btn-red" onclick="window.deleteOfficer('${o.badge}')">Usuń</button></td></tr>`).join("");
-  }
-  window.deleteOfficer = function(b) { db.officers = db.officers.filter(x => x.badge !== b); saveDatabase(); renderAllOfficersView(); window.renderLicenseMatrix(); };
-  window.toggleOfficerDuty = function(b) { const o = db.officers.find(x => x.badge === b); if (o) { o.status = o.status === "Na służbie" ? "Poza służbą" : "Na służbie"; saveDatabase(); renderAllOfficersView(); } };
-  window.createOfficerInDB = function() {
-    const b = document.getElementById("add-off-badge").value.trim(), n = document.getElementById("add-off-name").value.trim(), r = document.getElementById("add-off-rank").value.trim() || "Officer I";
-    if (!b || !n) { toast("Wpisz odznakę i imię!"); return; }
-    db.officers.unshift({ badge: b, name: n, rank: r, channel: "LSPD Tac #1", status: "Na służbie", licenses: {}, updated: "Nowy" });
-    saveDatabase(); renderAllOfficersView(); window.renderLicenseMatrix(); renderSzkCourseBar(); renderAiadOffensesBlips();
-    document.getElementById("add-off-badge").value = ""; document.getElementById("add-off-name").value = ""; toast("Dodano funkcjonariusza!");
-  };
-
-  /* NAWIGACJA GŁÓWNA */
-  window.switchMainView = function(v) {
-    ["sprawy", "raporty", "pojazdy", "dispatch", "aiad", "dyspozytornia", "patrole", "funkcjonariusze", "szkolenia", "kompendium", "kadet"].forEach(k => {
-      document.getElementById("view-" + k)?.classList.add("hidden");
-      document.getElementById("nav-" + k)?.classList.remove("active");
-    });
-    document.getElementById("view-" + v)?.classList.remove("hidden");
-    document.getElementById("nav-" + v)?.classList.add("active");
-  };
-  window.switchSzkMode = function(m) {
-    document.getElementById("szk-mode-exam").classList.toggle("hidden", m !== "exam");
-    document.getElementById("szk-mode-matrix").classList.toggle("hidden", m !== "matrix");
-    document.getElementById("btn-szk-exam").className = "btn " + (m === "exam" ? "btn-blue" : "btn-dark");
-    document.getElementById("btn-szk-matrix").className = "btn " + (m === "matrix" ? "btn-blue" : "btn-dark");
-  };
-  window.switchFtoView = function(s) {
-    ["list", "sheet", "exam"].forEach(k => document.getElementById("fto-sub-" + k)?.classList.add("hidden"));
-    document.getElementById("fto-sub-" + s)?.classList.remove("hidden");
-    document.getElementById("fto-tab-list").className = "btn " + (s !== "exam" ? "btn-blue" : "btn-dark");
-    document.getElementById("fto-tab-exam").className = "btn " + (s === "exam" ? "btn-blue" : "btn-dark");
-  };
-  window.toggleOfficerEditBox = function() { document.getElementById("officer-edit-box").classList.toggle("hidden"); };
-  window.saveLoggedOfficer = function() {
-    const val = document.getElementById("logged-officer-inp").value.trim();
-    if (val) { db.loggedOfficer = val; saveDatabase(); window.generateAutoCaseDescription(); window.generateAiadAutoText(); window.updateRadioPreview(); }
-    document.getElementById("officer-edit-box").classList.add("hidden");
-  };
-  window.exportAllTabletData = function() {
-    const blob = new Blob([JSON.stringify(db, null, 2)], { type: "application/json" });
-    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "tablet_lspd_backup.json"; a.click();
-  };
-  window.resetFactoryDefaults = function() {
-    try { localStorage.removeItem("lspd_mdt_gh_v11"); } catch (e) {}
-    location.reload();
-  };
-
-  function tickClock() {
-    const now = new Date();
-    setTxt("live-clock", now.toLocaleDateString("pl-PL") + " • " + now.toLocaleTimeString("pl-PL"));
-    let runningCount = 0;
-    db.cadets.forEach(c => {
-      if (c.running) {
-        runningCount++;
-        setTxt("cad-timer-" + c.id, formatHMS(getCadetTotalSec(c)));
-        if (c.id === window.currentCadetId) setTxt("cs-live-timer", formatHMS(getCadetTotalSec(c)));
-      }
-    });
-    const banner = document.getElementById("active-patrol-timers-banner");
-    if (banner) {
-      if (runningCount > 0) { banner.classList.remove("hidden"); setTxt("active-patrol-banner-txt", `Aktywny patrol kadeta (${runningCount})`); }
-      else banner.classList.add("hidden");
-    }
-  }
-  setInterval(tickClock, 1000);
-
-  loadDatabase();
-  tickClock();
-  renderCaseAssistOfficers();
-  renderConfiscatedDisplay([]);
-  renderContextualChargeBlips();
-  updateCaseTotals();
-  renderVehiclesAndTickets();
-  window.updateRadioPreview();
-  renderDispatchCalls();
-  renderAiadOffensesBlips();
-  window.generateAiadAutoText();
-  renderAiadCasesList();
-  window.renderReportsList();
-  renderSzkCourseBar();
-  window.renderLicenseMatrix();
-  window.renderCadets();
-  renderOfficerExamTable();
-  renderPatrols();
-  renderAllOfficersView();
-})();
-</script>
-</body>
-</html>
+    document.body.className = themeKey
