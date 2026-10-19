@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tablet LSPD — MDT v13.0</title>
+  <title>Tablet LSPD — MDT v13.1</title>
   <style>
     :root {
       color-scheme: dark;
@@ -297,7 +297,7 @@
       <div class="brand-seal">LSPD</div>
       <div>
         <div style="font-weight: 800; font-size: 15px; color: #fff;">Tablet <span style="color: var(--accent-light);">LSPD</span></div>
-        <div style="font-size: 11px; color: var(--text-dim);">MDT v13.0 Mega System</div>
+        <div style="font-size: 11px; color: var(--text-dim);">MDT v13.1 Mega System</div>
       </div>
     </div>
 
@@ -369,7 +369,7 @@
   <div class="main-area">
     <header class="topbar">
       <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-        <span class="pill pill-green" id="js-status-badge">● JS AKTYWNY v13.0</span>
+        <span class="pill pill-green" id="js-status-badge">● JS AKTYWNY v13.1</span>
         <div class="blip-pill active-green" id="city-code-blip" onclick="cycleCityThreatCode()">
           <span class="blip-dot"></span>
           <span id="city-code-txt">KOD ZIELONY</span>
@@ -560,7 +560,7 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- NOWOŚĆ: KATEGORIA TWORZENIA OPISÓW POSZUKIWAŃ (BOLO)      -->
+      <!-- 2. POSZUKIWANIA (BOLO / LIST GOŃCZY)                      -->
       <!-- ========================================================= -->
       <section id="view-poszukiwania" class="hidden view-sec">
         <div class="card-header" style="margin-bottom: 14px;">
@@ -626,7 +626,7 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 2. SZKOLENIA LSPD (10 KURSÓW + PYTANIA SYTUACYJNE)        -->
+      <!-- 3. SZKOLENIA LSPD (10 KURSÓW + PYTANIA SYTUACYJNE)        -->
       <!-- ========================================================= -->
       <section id="view-szkolenia" class="hidden view-sec">
         <div class="card-header" style="margin-bottom: 14px;">
@@ -678,7 +678,7 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 3. KOMPENDIUM LEA (ŚCIĄGA OPERACYJNA)                     -->
+      <!-- 4. KOMPENDIUM LEA (ŚCIĄGA OPERACYJNA)                     -->
       <!-- ========================================================= -->
       <section id="view-kompendium" class="hidden view-sec">
         <div class="card-header" style="margin-bottom: 14px;">
@@ -739,7 +739,7 @@
       </section>
 
       <!-- ========================================================= -->
-      <!-- 4. POJAZDY I MANDATY + DISPATCH + AIAD + RAPORTY + FTO    -->
+      <!-- 5. POJAZDY I MANDATY + DISPATCH + AIAD + RAPORTY + FTO    -->
       <!-- ========================================================= -->
       <section id="view-pojazdy" class="hidden view-sec">
         <div class="card-header"><h1 style="margin:0; font-size:20px; font-weight:800;">Baza Pojazdów (Impound / Tracker) i Mandaty Drogowe</h1></div>
@@ -1069,7 +1069,7 @@
   }
 
   /* =========================================================
-     NOWOŚĆ: KATEGORIA TWORZENIA OPISÓW POSZUKIWAŃ (BOLO)
+     KATEGORIA TWORZENIA OPISÓW POSZUKIWAŃ (BOLO)
      ========================================================= */
   var BOLO_REASONS = [
     { id: "r_tracker", label: "Kradzież pojazdu z nadajnikiem Tracker GPS (10-70)", text: "kradzieży pojazdu mechanicznego wyposażonego w nadajnik Tracker GPS" },
@@ -1125,7 +1125,7 @@
     var wTxts = BOLO_WARNINGS.filter(function(w) { return selectedBoloWarnings.indexOf(w.id) > -1; }).map(function(w) { return w.text; });
 
     var header = boloType === "person" ? "LIST GOŃCZY — POSZUKIWANY OBYWATEL (BOLO)" : "KOMUNIKAT BOLO — POSZUKIWANY POJAZD";
-    var body = `${header}\nystawiający funkcjonariusz: ${db.loggedOfficer}\nObiekt poszukiwań: ${target}\nSzczegóły / Rejestracja / Rysopis: ${details}\nOstatnia znana lokalizacja (10-20): ${loc}\n\nPowód wystawienia poszukiwań:\nObiekt jest poszukiwany przez departament LSPD w związku z podejrzeniem ${rTxts.length ? rTxts.join(", a także ") : "popełnienia czynu zabronionego i ucieczki z miejsca interwencji"}.\n\nWytyczne dla jednostek patrolowych:\n${wTxts.length ? wTxts.join(" ") : "W przypadku zauważenia obiektu należy niezwłocznie powiadomić PWC/SV na radiu i podjąć kontrolę drogową."}`;
+    var body = `${header}\nWystawiający funkcjonariusz: ${db.loggedOfficer}\nObiekt poszukiwań: ${target}\nSzczegóły / Rejestracja / Rysopis: ${details}\nOstatnia znana lokalizacja (10-20): ${loc}\n\nPowód wystawienia poszukiwań:\nObiekt jest poszukiwany przez departament LSPD w związku z podejrzeniem ${rTxts.length ? rTxts.join(", a także ") : "popełnienia czynu zabronionego i ucieczki z miejsca interwencji"}.\n\nWytyczne dla jednostek patrolowych:\n${wTxts.length ? wTxts.join(" ") : "W przypadku zauważenia obiektu należy niezwłocznie powiadomić PWC/SV na radiu i podjąć kontrolę drogową."}`;
     var out = document.getElementById("bolo-output-txt");
     if (out) out.value = body;
   }
@@ -1277,7 +1277,7 @@
       ["Spowodowanie ciężkiego uszczerbku na zdrowiu", 50, 25000, "spowodował ciężki uszczerbek na zdrowiu"],
       ["Udaremniona próba porwania", 8, 1250, "podjął próbę uprowadzenia osoby, która została udaremniona"],
       ["Nieudzielenie pomocy", 8, 5000, "nie udzielił pomocy osobie w zagrożeniu zdrowia"],
-      ["Stosowanie niedozwolonej przemocy", 40, 10000, "stosował niedozwoloną przemoc wobec osoby przetrzymywanego"],
+      ["Stosowanie niedozwolonej przemocy", 40, 10000, "stosował niedozwoloną przemoc wobec osoby przetrzymywanej"],
       ["Napaść na obywatela", 10, 2000, "dopuścił się napaści na osobę cywilną"],
       ["Napaść na funkcjonariusza", 15, 5000, "dopuścił się czynnej napaści na funkcjonariusza publicznego"],
       ["Nękanie", 6, 1250, "uporczywie nękał inną osobę"],
@@ -1598,415 +1598,258 @@
   }
 
   /* =========================================================
-     10 KURSÓW SZKOLENIOWYCH (W TYM PYTANIA SYTUACYJNE!)
+     POJAZDY, MANDATY, DISPATCH, AIAD I RAPORTY
      ========================================================= */
-  var LICENSES = ["SYTUACYJNE", "KOMPENDIUM", "RTO+HRO", "NEGO", "SV", "PWC+APWC", "ASU", "MERRY", "SEU", "L.W"];
-  var FTO_BASIC = ["Code 6", "FTS", "10-80", "10-80 Pieszo", "Status 7", "TCCC", "Kompendium"];
-
-  var COURSES_DATA = {
-    "SYTUACYJNE": {
-      name: "🚨 PYTANIA SYTUACYJNE (12 Przypadków)",
-      reqTheory: 20, maxTheory: 24,
-      questions: [
-        { q: "1. [Sytuacja 10-80] Ścigasz pojazd od 4 minut (Kod Zielony). Nagle uciekinier wjeżdża do kanałów metra pod Alta St, a po 2 minutach z nich wyjeżdża. Jak zmieniają się kody pościgu?", pts: 2, a: "W momencie wjazdu do kanałów metra automatycznie wchodzi Kod Czerwony. Gdy pojazd wyjeżdża z kanałów, kod wraca do takiego samego stanu, jaki obowiązywał przed wjazdem (czyli z powrotem na Kod Zielony)." },
-        { q: "2. [Sytuacja 10-80] Podczas pościgu uciekinier wyskakuje rozpędzonym autem do oceanu (wody) i zaczyna płynąć wpław. Jaki kod wchodzi, jakie daje autoryzacje i czy możesz użyć Tasera w wodzie?", pts: 2, a: "Wskoczenie pojazdem do wody wprowadza Kod Czarny (autoryzacja na PIT do 70 mph, kolczatki i ostrzał). Użycie Tasera wobec osoby w wodzie lub bezpośrednio po wyjściu z wody jest surowo ZABRONIONE!" },
-        { q: "3. [Sytuacja Napad / ATM] Zabezpieczasz teren wokół napadu na jubilera. Pod kordon podjeżdża cywilny motocyklista i nie chce odjechać. Opisz krok po kroku procedurę ATM, zanim oddasz strzał w oponę:", pts: 2, a: "1) Ask Them: kulturalnie informujesz o zagrożeniu i prosisz o odjazd. 2) Tell Them: wydajesz polecenie odjazdu dla bezpieczeństwa. 3) Make Them: ostrzegasz o aresztowaniu, wyciągasz broń, informujesz o przebiciu opon i odliczasz PEŁNE 10 SEKUND. Strzał w oponę oddajesz wyłącznie za zgodą SV!" },
-        { q: "4. [Sytuacja FTS] Prowadzisz zatrzymanie wysokiego ryzyka (FTS). Kierowca zamyka szyby, puszcza głośną muzykę, wyzywa FP i odmawia wyrzucenia kluczyków. Co może zarządzić Supervisor?", pts: 2, a: "Supervisor ma prawo w ostateczności zarządzić szturm na pojazd. Najpierw musi poinformować o tym wszystkie jednostki na radiu, a na znak SV funkcjonariusze wybiegają z bronią, otaczają auto i siłowo wyprowadzają podejrzanych." },
-        { q: "5. [Sytuacja Status 7] Jesteś na celach MRPD z zatrzymanym. Chcesz wejść do środka celi, aby go przeszukać, a po czynnościach go rozkuć. Jakie 3 rygorystyczne zasady bezpieczeństwa obowiązują?", pts: 2, a: "1) Przed wejściem do celi musisz odłożyć broń na blat lub przekazać ją innemu FP. 2) Musisz upewnić się, że drugi FP Cię asekuruje. 3) Odkuć zatrzymanego wolno WYŁĄCZNIE po wyjściu z celi przez zamknięte kraty, gdy zatrzymany stoi odwrócony plecami!" },
-        { q: "6. [Sytuacja Konwój / Kaucja] Zatrzymany po napadzie na sklep (15 mies.) i ucieczce (20 mies.) ma łącznie 35 miesięcy wyroku. Pyta, czy może wyjść za kaucją. Co mu odpowiesz?", pts: 2, a: "Mimo że wyrok nie przekracza 50 miesięcy, kaucja mu NIE PRZYSŁUGUJE, ponieważ posiada zarzut Napadu (który znajduje się na liście zarzutów wykluczających kaucję z pkt 10.23)." },
-        { q: "7. [Sytuacja Konwój] Zatrzymany otrzymał wyrok 135 miesięcy, a wywiad wskazuje na REALNE prawdopodobieństwo odbicia. Kto dowodzi konwojem, jaki status zwołuje na komendzie i jaki skład jedzie?", pts: 2, a: "Dowodzi PWC lub min. Sierżant I (lub dowódca SWAT). Zwołuje Status 9 na komendzie (wymagane min. 6 FP). Przy REALNYM zagrożeniu transport odbywa się konwojentką (z 2 FP) eskortowaną przez jednostkę S.W.A.T." },
-        { q: "8. [Sytuacja Patrol EDWARD] Na służbie jest aktualnie 7 funkcjonariuszy. Officer III z licencją SEU pyta PWC, czy może pobrać jednostkę pościgową EDWARD do patrolu. Czy regulamin na to pozwala?", pts: 2, a: "Tak! Zgodnie z pkt 6.6 obowiązuje zasada 10 funkcjonariuszy = 1 Edward, ale w przypadku gdy na służbie jest mniej niż 10 funkcjonariuszy, jedna jednostka Edward może zostać pobrana za zgodą PWC." },
-        { q: "9. [Sytuacja Poddanie FP] Zostałeś otoczony przez 4 uzbrojonych napastników na mieście i zmuszony do poddania się. Jak musisz się zachować zgodnie z Rozdziałem 11?", pts: 2, a: "Priorytetem jest ochrona własnego życia. Jeśli to możliwe, podajesz na radiu ostatnie 10-20 lub wciskasz Panic Button. Po poddaniu zachowujesz całkowitą neutralność i nie podejmujesz żadnych działań ofensywnych do czasu odbicia." },
-        { q: "10. [Sytuacja Użycie Broni] Napastnik z napadu wybiega z budynku bez widocznej broni w dłoniach i zaczyna uciekać pieszo. Czy możesz od razu oddać do niego strzał w ciało?", pts: 2, a: "Nie! Zgodnie z pkt 13.4, gdy istnieje podejrzenie posiadania broni u uciekającego z napadu pieszo, najpierw musisz oddać 2 strzały ostrzegawcze w powietrze (niebo), a dopiero 3. strzał może być skierowany w ciało." },
-        { q: "11. [Sytuacja Błąd Przełożonego] Podczas akcji widzisz, że funkcjonariusz wyższy stopniem (lub SV) podejmuje błędną decyzję taktyczną. Co robisz w trakcie akcji, a co po jej zakończeniu?", pts: 2, a: "W trakcie akcji kategorycznie nie podważasz decyzji przełożonego i nie przerywasz mu na radiu (pkt 3.4, 3.5). Wykonujesz polecenie, a po zakończeniu działań zgłaszasz sprawę do wydziału AIAD lub High Command." },
-        { q: "12. [Sytuacja Po Strzelaninie] Po wymianie ognia podejrzany leży nieprzytomny na ziemi, a obok niego leży pistolet. W jakiej kolejności wykonujesz czynności (Rozdział 10)?", pts: 2, a: "1) Podchodzisz i zabezpieczasz broń leżącą przy podejrzanym, 2) Wstępnie przeszukujesz pod kątem niebezpiecznych przedmiotów, 3) Udzielasz pierwszej pomocy przy użyciu MedBaga z bagażnika (jeśli wymaga pilnej pomocy EMS — czekasz na medyka), 4) Szukasz dowodu osobistego i konfiskujesz resztę przedmiotów." }
-      ],
-      practical: [
-        "Symulacja 1: Prawidłowe przeprowadzenie procedury ATM wobec natarczywego obywatela pod napadem",
-        "Symulacja 2: Reakcja radiowa i dobór kodu pościgowego przy zmianie zachowania uciekiniera"
-      ]
-    },
-    "KOMPENDIUM": {
-      name: "📖 KOMPENDIUM LEA (Teoria)", reqTheory: 18, maxTheory: 21,
-      questions: [
-        { q: "1. Na czym polega zasada Chain of Command i kiedy można ją pominąć?", pts: 1, a: "Sprawy kierujemy najpierw do bezpośredniego przełożonego. Pominięcie jest dozwolone tylko w sytuacjach wymagających interwencji wyższego szczebla lub gdy sprawa dotyczy bezpośrednio przełożonego." },
-        { q: "2. Wymień podstawowe wyposażenie funkcjonariusza (limity amunicji, kartridży, kajdanek) oraz zasadę dot. dodatków do broni:", pts: 2, a: "Pistolet Policyjny (od Officer I), Amunicja max 60 + 12 załadowanych, Taser max 5 kartridży, Kajdanki x3, Tonfa, Odznaka, Bodycam, Radio, GPS, Nożyce, Kevlar, Skaner linii papilarnych. Zakaz dodatków poza latarką!" },
-        { q: "3. Kto może nosić spodnie wsunięte w buty, a kto kaburę na udzie?", pts: 1, a: "Spodnie w butach: High Command, Command Staff, K9 oraz SWAT. Kabura na udzie: wyłącznie High Command oraz SWAT." },
-        { q: "4. Co wchodzi w skład obowiązkowego wyposażenia radiowozu?", pts: 1, a: "MedBag, Kolczatki x3, Zestaw Naprawczy x2, pełne oznakowanie karoserii i dachu, Radar prędkości." },
-        { q: "5. Czym różni się kod 10-13A od 10-13B oraz co oznacza Kod 0?", pts: 2, a: "10-13A: Ranny FP (jednostki mogą dojechać). 10-13B: Ranny FP (jednostki nie mogą dojechać). Kod 0 / Panic Button: Strzały w kierunku FP — najwyższy priorytet." },
-        { q: "6. Podaj znaczenie kodów: 10-60, 10-62, 10-64, 10-70, 10-71, 10-72, 10-90:", pts: 2, a: "10-60: Zgłoszenie od dyspozytora, 10-62: Kradzież przesyłek, 10-64: Ucieczka z więzienia, 10-70: Kradzież pojazdu, 10-71: Strzały, 10-72: Sprzedaż narkotyków, 10-90: Napad." },
-        { q: "7. Podaj zasady dot. jednostek: 1) Limit EDWARD, 2) Skład MERRY, 3) Skład pieszy (FRANK), 4) Zakaz dla jednostki TOM:", pts: 2, a: "1) 10 FP na służbie = 1 Edward. 2) MERRY wyłącznie 2-osobowe. 3) Piesze 2–4 osoby za zgodą PWC. 4) Zakaz patroli drogowych jednostką TOM." },
-        { q: "8. Opisz podział ról podczas FTS (U1, U2, U3) oraz procedurę wychodzenia kierowcy z pojazdu:", pts: 2, a: "U1 celuje w osobę w pojeździe, U2 celuje w oponę, U3 zabezpiecza plecy. Kierowca wyrzuca kluczyki, wystawia ręce, lewą ręką od zewnątrz otwiera drzwi, 2 kroki w lewo, podwija koszulkę, 2 obroty wokół osi, 3 kroki w tył i kładzie się na ziemi." },
-        { q: "9. Wymień 4 poziomy zagrożenia pościgu, po jakim czasie wchodzą i jakie dają autoryzacje (prędkości PIT):", pts: 3, a: "1) Zielony: od startu. 2) Żółty: po 10 min -> PIT do 40mph, Nieruchoma. 3) Czerwony: po 20 min od żółtego -> PIT do 60mph, kolczatki, opona (1 na 5 min). 4) Czarny: strzały do FP / woda / helikopter -> PIT do 70mph, ostrzał." },
-        { q: "10. Jakie są kryteria przeprowadzenia Konwoju (min. wyrok, liczba FP, stopień, prędkości, szyk)?", pts: 2, a: "Wyrok min. 100 miesięcy, min. 6 dostępnych FP, dowodzi PWC lub min. Sierżant I (Status 9). Prędkość: 70 mph miasto, 100 mph autostrada (szachownica)." },
-        { q: "11. Rozwiń skróty BLOS, ATM oraz UPR i podaj zasady użycia Tasera:", pts: 2, a: "BLOS: Broń, Lufa, Otoczenie, Spust. ATM: Ask Them, Tell Them, Make Them (10s). UPR: Uprzejmość, Profesjonalizm, Radio. Taser: max 2 użycia, zakaz wobec zakutych i w wodzie." },
-        { q: "12. Jak brzmi obowiązkowa formułka Pompki Policyjnej i ile wynosi strefa bezpiecznego zatrzymania?", pts: 1, a: "„Pierwsza poprawna pompka policyjna została poprawnie wykonana”. Strefa bezpiecznego zatrzymania to teren powyżej 50 metrów od akcji." }
-      ],
-      practical: ["Praktyka NTS i FTS", "Praktyka Statusu 7 na celach"]
-    },
-    "RTO+HRO": {
-      name: "RTO + HRO", reqTheory: 15, maxTheory: 16,
-      questions: [
-        { q: "1. Jaki jest nadrzędny cel prowadzenia radiówki podczas pościgu?", pts: 1, a: "Zapewnienie świadomości sytuacyjnej innym jednostkom, aby odcięte radiowozy mogły z samych komunikatów wyliczyć trasę i rozstawić blokadę bez patrzenia na mapę." },
-        { q: "2. Dlaczego jednostka prowadząca pościg nie powinna zajmować się raportowaniem na radiu?", pts: 2, a: "Wymaga to pełnego skupienia na jeździe. Rolę przejmuje pasażer lub kierowca U2." },
-        { q: "3. Jakie informacje i w jakiej kolejności należy podać w „komunikacie inicjującym”?", pts: 1, a: "1) Kod pościgu i identyfikator, 2) Opis pojazdu, 3) Aktualna lokalizacja i kierunek, 4) Powód pościgu." },
-        { q: "4. Co oznacza pojęcie objaśnienie progresywne i jak należy je stosować?", pts: 3, a: "Podawanie komunikatów z wyprzedzeniem — do jakiego punktu lub skrzyżowania pojazd się zbliża." },
-        { q: "5. Jak należy prawidłowo określać kierunki jazdy w pościgu?", pts: 2, a: "Używać kierunków świata (North, South, East, West) zamiast „w lewo / w prawo”." },
-        { q: "6. Jak reagować na wjazd uciekiniera w „strefę martwą” (tunele, kanały)?", pts: 1, a: "Natychmiast podać ostatni punkt wejścia, kierunek i zmianę środowiska." },
-        { q: "7. W jaki sposób raportować zmiany prędkości i stylu jazdy?", pts: 2, a: "Prędkość opisowo (autostradowa/miejska/niska), a styl przez anomalie (ścina krawężniki, jedzie chodnikiem, gasi światła)." },
-        { q: "8. Czym różni się „Cisza radiowa” od „Komunikacji ograniczonej”?", pts: 1, a: "Cisza radiowa to całkowity zakaz nadawania. Komunikacja ograniczona (TAC) to korzystanie z pasma tylko przez jednostki w pościgu." },
-        { q: "9. Jaka jest rola jednostek dołączających do pościgu w kwestii komunikacji?", pts: 2, a: "Zachować absolutną ciszę — jedynie krótkie zgłoszenie wejścia w szyk (np. U4 przejmuje U3 po 10-50)." },
-        { q: "10. Kiedy i jak ogłosić status „10-13” w trakcie pościgu?", pts: 1, a: "Tylko gdy życie FP jest bezpośrednio zagrożone: „10-0 10-5 na 10-13 na [Lokalizacja]!”." }
-      ],
-      practical: ["Etap 2 (HRO): 2 pościgi helikopterem po min. 5 minut z pełną radiówką (Próby: 2)", "Etap 3 (RTO): Pościg ADAM za ADAM z pełną radiówką przez 10 minut (Próby: 2)"]
-    },
-    "NEGO": {
-      name: "NEGO (N.L I / II)", reqTheory: 15, maxTheory: 17,
-      questions: [
-        { q: "1. Czy negocjator musi się przedstawić?", pts: 1, a: "Tak, na początku interakcji z napastnikami." },
-        { q: "2. Co jest najważniejsze dla negocjatora?", pts: 1, a: "Bezpieczeństwo i życie własne oraz zakładników." },
-        { q: "3. Kiedy możemy podejść do negocjacji?", pts: 1, a: "Po zgłoszeniu na radiu „Podchodzę do negocjacji” i upewnieniu się, że ktoś nas ubezpiecza." },
-        { q: "4. Jakie są obowiązki negocjatora?", pts: 3, a: "1) Ustalenie liczby napastników i zakładników, ich stanu, broni oraz rejestracji pojazdu. 2) Korygowanie i akceptowanie żądań. 3) Poinformowanie SV o ustaleniach." },
-        { q: "5. Ile żądań realizujemy za jednego zakładnika?", pts: 1, a: "Nie stosujemy systemu „jedynkowego” — każde negocjacje rozpatrujemy osobno." },
-        { q: "6. Co negocjator musi zrobić na początku rozmowy?", pts: 1, a: "Zapytać, co się dzieje. Skłaniać napastników do oddania zakładników i poddania się." },
-        { q: "7. Co negocjator musi się dowiedzieć o zakładnikach i jak?", pts: 1, a: "Czy potrzebują jedzenia, picia, pomocy medycznej i czy czują się dobrze (najlepiej osobiście)." },
-        { q: "8. Czy negocjator może kłamać?", pts: 1, a: "Nie. Wyjątek: sytuacje ratowania osoby na krawędzi." },
-        { q: "9. Czy negocjator może rozmawiać sam na sam z osobą uzbrojoną?", pts: 1, a: "Nie. Tylko w sytuacjach kryzysowych bez zagrożenia dla negocjatora." },
-        { q: "10. W jaki sposób zwracasz się do napastnika?", pts: 1, a: "Z szacunkiem, bez względu na jego czyny." },
-        { q: "11. Jaki powinien być głos i mowa ciała negocjatora?", pts: 1, a: "Spokojny, opanowany, pewny siebie." },
-        { q: "12. Ile jest ostrzeżeń negocjatorskich?", pts: 1, a: "3." },
-        { q: "13. Kto nakłada ostrzeżenia negocjatorskie?", pts: 1, a: "Supervisor (SV) nakłada — Negocjator przekazuje informację napastnikom." },
-        { q: "14. Za co można nałożyć ostrzeżenia negocjatorskie?", pts: 1, a: "Zmiana żądań po przyklepaniu, groźby wobec zakładników, obraza negocjatora, brak wykonywania poleceń." },
-        { q: "15. Co się dzieje po przekroczeniu liczby ostrzeżeń?", pts: 1, a: "SV podejmuje decyzję o zerwaniu negocjacji i informuje PWC." }
-      ],
-      practical: ["Przestrzeganie zasad (1 pkt)", "Reakcja na warunki (1 pkt)", "Zachowanie (1 pkt)", "Profesjonalizm (1 pkt) — Wymagane 3/4 pkt"]
-    },
-    "SV": {
-      name: "SV (Supervisor)", reqTheory: 12, maxTheory: 14,
-      questions: [
-        { q: "1. Kto przejmuje rolę SV na każdej akcji?", pts: 1, a: "Osoba wyznaczona przez PWC (min. Officer III), osoba ze szkoleniem lub najwyższy stopniem na radiu." },
-        { q: "2. Czy jako SV możesz zezwolić negocjatorowi na wejście do placówki?", pts: 1, a: "Nie." },
-        { q: "3. Czy będziesz prowadził dwa pościgi na jednym radiu?", pts: 1, a: "Nie." },
-        { q: "4. Czy wydasz polecenie zerwania negocjacji widząc szansę na odbicie zakładnika?", pts: 2, a: "Nie, chyba że nałożone byłyby 3 ostrzeżenia negocjatorskie." },
-        { q: "5. Masz 2x SEU, 3x LINCOLN, 2x ADAM — jak rozstawisz unity na offroad i sport?", pts: 2, a: "Wg uznania szkoleniowca, aby miało to logiczny sens." },
-        { q: "6. Na konwoju masz 4 zatrzymanych — jakie i ile unitów przygotujesz?", pts: 2, a: "Wg uznania szkoleniowca, zgodnie z poziomem zagrożenia konwoju." },
-        { q: "7. Jakie są obowiązki SV? (5 punktów)", pts: 5, a: "1) Wyznaczanie negocjatora i ubezpieczającego. 2) Ustalanie jednostek pościgowych. 3) Nadawanie kodów pościgowych. 4) Uzupełnianie dispatcha. 5) Zabezpieczenie terenu wokół akcji." }
-      ],
-      practical: ["Zasady SV (1 pkt)", "Odpowiednie żądania (1 pkt)", "Rozmieszczenie jednostek (1 pkt)", "Profesjonalizm (1 pkt)", "Obserwacja terenu (1 pkt) — Wymagane 4/5 pkt"]
-    },
-    "PWC+APWC": {
-      name: "PWC + APWC", reqTheory: 15, maxTheory: 17,
-      questions: [
-        { q: "1. Czym się zajmują PWC / APWC?", pts: 1, a: "Dowodzenie patrolami, wyznaczanie SV, ustalanie jednostek, porządek na radiu, dbanie o Dispatch." },
-        { q: "2. Jaki numer ma PWC?", pts: 1, a: "00" },
-        { q: "3. Jak wyznaczany jest PWC lub APWC?", pts: 1, a: "Najwyższy stopniem (min. Sierżant I dla PWC, Officer III dla APWC) lub wyznaczony przez poprzednika." },
-        { q: "4. Czy PWC i APWC mogą jeździć razem w patrolu?", pts: 1, a: "Nie." },
-        { q: "5. Czy PWC może zareagować na zgłoszenie, gdy APWC jest podczas akcji?", pts: 1, a: "Nie. Musi zostać na radiu Main." },
-        { q: "6. Co musi zrobić PWC, gdy schodzi ze służby?", pts: 2, a: "Przekazać sytuację w mieście: ostatnie akcje, aktualny kod i powód wprowadzenia." },
-        { q: "7. Co zrobić, gdy jest niebezpiecznie, a kod to Zielony?", pts: 2, a: "Zawołać HC, poprosić o zmianę kodu i uzasadnić." },
-        { q: "8. Jak powinny być rozdzielone jednostki na mieście?", pts: 2, a: "Harmonijnie i równomiernie – zasada 10 FP = 1 Edward." },
-        { q: "9. Co zrobić, gdy FP popełniają błędy lub są źle rozdysponowani?", pts: 1, a: "Zrobić Code 8." },
-        { q: "10. Co zrobić, gdy FP popełnia poważne błędy wymagające ukarania?", pts: 2, a: "Zgłosić do HC/AIAD." },
-        { q: "11. Czy PWC/APWC musi zostać poinformowany o zerwaniu negocjacji?", pts: 1, a: "Tak." },
-        { q: "12. Co zrobić, gdy wszystkie jednostki są na jednej akcji, a pojawia się kolejna?", pts: 2, a: "Zależnie od pilności – cofnąć część jednostek na drugą akcję." }
-      ],
-      practical: ["Przejęcie PWC i ogłoszenie Code 8 (1 pkt)", "Przebieg Code 8 (1 pkt)", "Rozdysponowanie jednostek (1 pkt)", "Zlecenie zmiany kodu (1 pkt) — Wymagane 3/4 pkt"]
-    },
-    "ASU": { name: "ASU (Helikopter EAGLE)", reqTheory: 0, maxTheory: 0, map: "ASU", questions: [], practical: ["Etap 1: Free flight (3 min)", "Etap 2: 3 trudne lądowania", "Etap 3: 2 pościgi po 5 min z radiówką (Próby: 3)", "Etap 4: Mapka pod mostami w kanale LS < 0:55s"] },
-    "MERRY": { name: "MERRY (Motocykle)", reqTheory: 0, maxTheory: 0, questions: [], practical: ["Etap 1: Motor-motor 2x 5 min (Próby: 2)", "Etap 2: Motor-ADAM 2x 5 min (Próby: 2)", "Etap 3: Motor-EDWARD 3 min (Próby: 3)", "Etap 4: Pościg do destylacji motoru (Próby: 1)"] },
-    "SEU": { name: "SEU (Pościgowe EDWARD)", reqTheory: 0, maxTheory: 0, map: "SEU", questions: [], practical: ["Etap 1: Drive skills test na mapce bez kolizji (Próby: 2)", "Etap 2: Pościg SEU-SEU 2x 5 min (Próby: 2)", "Etap 3: Pościg EDWARD-EDWARD do destylacji (Próby: 1)", "Etap 4: Pościg EDWARD-EDWARD z radiówką 10 min (Próby: 2)"] },
-    "L.W": {
-      name: "🔫 L.W (Long Weapon - Klasa III)", reqTheory: 7, maxTheory: 8,
-      questions: [
-        { q: "1. Od jakiego stopnia można przystąpić do szkolenia L.W i do jakiej jednostki jest niezbędne?", pts: 1, a: "Od stopnia Officer III. Niezbędne do dołączenia do jednostki S.W.A.T." },
-        { q: "2. Wymień 4 Klasy Broni w Stanie San Andreas:", pts: 2, a: "Klasa I: biała/tępa. Klasa II: krótka/taser. Klasa III: długa/automatyczna/snajperska. Klasa IV: ładunki pirotechniczne." },
-        { q: "3. Wymień elementy budowy broni krótkiej:", pts: 2, a: "Lufa, Muszka, Szczerbinka, Zamek, Komora nabojowa, Zwalniacz zamka, Blokada zamka, Szyna na latarkę, Kabłąk, Język spustowy, Zatrzask magazynka, Chwyt, Magazynek." },
-        { q: "4. Kiedy FP może użyć broni palnej jako pierwszy (pkt 13.4)?", pts: 3, a: "Gdy podejrzany biegnie z bronią, celuje z broni palnej, atakuje bronią białą, oddano strzały do FP, lub ucieka pieszo z napadu (po 2 strzałach ostrzegawczych w niebo)." }
-      ],
-      practical: ["Sprawdzenie opanowania broni Klasy III oraz zasad BLOS."]
+  var TRAFFIC_OFFENSES = [
+    { name: "Przekroczenie prędkości", fine: 750, pts: 4 },
+    { name: "Brawurowa jazda", fine: 1500, pts: 8 },
+    { name: "Przejazd na czerwonym świetle", fine: 500, pts: 3 },
+    { name: "Brak prawa jazdy / OC", fine: 1200, pts: 5 },
+    { name: "Nieprawidłowe parkowanie (Impound)", fine: 400, pts: 2 },
+    { name: "Spowodowanie kolizji (10-50)", fine: 1000, pts: 6 }
+  ];
+  var selectedTrafficIdxs = [];
+  function renderVehiclesAndTickets() {
+    var vBody = document.getElementById("vehicles-db-tbody");
+    var vList = db.vehicles || [];
+    setTxt("cnt-vehicles", vList.length);
+    if (vBody) {
+      vBody.innerHTML = vList.map(function(v, idx) {
+        var cls = v.status.indexOf("TRACKER") > -1 ? "pill-red" : (v.status.indexOf("IMPOUND") > -1 ? "pill-amber" : "pill-blue");
+        return `<tr><td style="font-weight:700;">${v.model}</td><td style="font-family:monospace; color:var(--accent-light);">${v.plate}</td><td>${v.owner}</td><td><span class="pill ${cls}">${v.status}</span></td><td><button type="button" class="btn btn-sm btn-red" onclick="removeVehicleRecord(${idx})">✕</button></td></tr>`;
+      }).join("");
     }
-  };
-
-  /* GRAFIKI MAPEK ASU I SEU */
-  var uploadingMapTarget = "ASU";
-  function getAsuMapSvgMarkup() {
-    return `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="400" fill="#a8c5db"/><path d="M 0 0 L 400 0 L 400 320 Q 340 310 315 345 L 250 345 L 245 390 L 160 390 L 145 325 L 70 315 L 0 265 Z" fill="#d4d6d8"/><path d="M 195 0 L 400 0 L 400 315 Q 340 310 315 335 Q 275 315 265 250 Q 250 180 205 110 Z" fill="#8fb369"/><path d="M 225 55 Q 190 70 175 85 L 170 160 L 178 220 L 172 295 L 208 332" stroke="#7ba6c7" stroke-width="7" fill="none"/><path d="M 225 55 Q 195 72 176 85 L 170 155 L 178 220 L 172 295 L 208 332" stroke="#e11d48" stroke-width="4.5" fill="none" stroke-linecap="round"/><circle cx="225" cy="55" r="6" fill="#e11d48"/><text x="235" y="60" fill="#be123c" font-size="16" font-weight="900">Start</text><circle cx="208" cy="332" r="6" fill="#e11d48"/><text x="218" y="337" fill="#be123c" font-size="16" font-weight="900">Meta</text></svg>`;
+    var tBox = document.getElementById("traffic-blips-box");
+    if (tBox) {
+      tBox.innerHTML = TRAFFIC_OFFENSES.map(function(t, i) {
+        return `<div class="blip-pill ${selectedTrafficIdxs.indexOf(i) > -1 ? 'active-green' : ''}" onclick="toggleTrafficBlip(${i})"><span class="blip-dot"></span><span>${t.name} ($${t.fine} / ${t.pts}pkt)</span></div>`;
+      }).join("");
+    }
+    var tf = 0, tp = 0;
+    selectedTrafficIdxs.forEach(function(i) { tf += TRAFFIC_OFFENSES[i].fine; tp += TRAFFIC_OFFENSES[i].pts; });
+    setTxt("tkt-fine-val", "$" + tf.toLocaleString());
+    setTxt("tkt-pts-val", tp + " pkt");
+    var hBox = document.getElementById("tickets-history-box");
+    if (hBox) hBox.innerHTML = (db.tickets || []).map(function(tk) { return `<div class="chip-item"><span><strong>${tk.citizen}</strong> (${tk.plate}) — <span style="color:#34d399;">$${tk.fine}</span> / ${tk.pts} pkt</span></div>`; }).join("");
   }
-  function getSeuMapSvgMarkup() {
-    return `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="400" fill="#5da9d6"/><path d="M 185 0 L 400 0 L 400 400 L 200 400 Q 170 385 115 360 Q 105 315 100 280 Q 85 240 112 195 Q 125 160 148 145 L 145 95 L 130 75 L 165 40 Z" fill="#8fb369"/><polygon points="135,75 235,105 225,130 125,95" fill="#9ca3af" stroke="#fff" stroke-width="1.5"/><path d="M 192 382 L 120 342 L 114 295 L 106 238 L 116 190 L 146 158 C 172 152 172 165 148 160 L 158 80 L 166 46 C 172 44 176 55 176 66" stroke="#dc2626" stroke-width="4.5" fill="none" stroke-linecap="round"/><circle cx="192" cy="382" r="6" fill="#dc2626"/><text x="202" y="387" fill="#b91c1c" font-size="16" font-weight="900">Start</text><circle cx="176" cy="66" r="6" fill="#dc2626"/><text x="186" y="70" fill="#b91c1c" font-size="16" font-weight="900">Meta</text></svg>`;
+  function addVehicleRecord() {
+    var m = document.getElementById("veh-model-inp").value.trim() || "Karin Sultan";
+    var p = document.getElementById("veh-plate-inp").value.trim() || "BRAK";
+    var o = document.getElementById("veh-owner-inp").value.trim() || "Nieznany";
+    var s = document.getElementById("veh-status-sel").value;
+    if (!db.vehicles) db.vehicles = [];
+    db.vehicles.unshift({ model: m, plate: p.toUpperCase(), owner: o, status: s });
+    saveDatabase(); renderVehiclesAndTickets(); toast("Dodano pojazd do bazy LSPD!");
   }
-  function getTrainingMapVisualHTML(mapType) {
-    var savedCustomImg = db.customMaps && db.customMaps[mapType];
-    var defaultFileName = mapType === "ASU" ? "image_7f9838.jpg" : "image_7f9876.jpg";
-    var svgFallback = mapType === "ASU" ? getAsuMapSvgMarkup() : getSeuMapSvgMarkup();
-    if (savedCustomImg) return `<img src="${savedCustomImg}" alt="Mapa ${mapType}" />`;
-    return `<img src="${defaultFileName}" alt="Mapa ${mapType}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" /><div style="display:none; width:100%; height:100%;">${svgFallback}</div>`;
+  function removeVehicleRecord(idx) { db.vehicles.splice(idx, 1); saveDatabase(); renderVehiclesAndTickets(); }
+  function toggleTrafficBlip(i) {
+    var idx = selectedTrafficIdxs.indexOf(i);
+    if (idx > -1) selectedTrafficIdxs.splice(idx, 1); else selectedTrafficIdxs.push(i);
+    renderVehiclesAndTickets();
   }
-  function openMapZoomModal(mapType) {
-    setTxt("map-zoom-title", mapType === "ASU" ? "Mapa ASU — Kanał LS (< 0:55s)" : "Mapa SEU — Drive Skills Test");
-    document.getElementById("map-zoom-body").innerHTML = `<div style="width:100%; max-width:620px; height:520px;">${getTrainingMapVisualHTML(mapType)}</div>`;
-    document.getElementById("map-zoom-modal").classList.remove("hidden");
-  }
-  function closeMapZoomModal() { document.getElementById("map-zoom-modal").classList.add("hidden"); }
-  function triggerCustomMapUpload(mapType) { uploadingMapTarget = mapType; document.getElementById("hidden-map-file-inp").click(); }
-  function handleMapFileUpload(e) {
-    var file = e.target.files && e.target.files[0]; if (!file) return;
-    var reader = new FileReader();
-    reader.onload = function(ev) {
-      if (!db.customMaps) db.customMaps = {};
-      db.customMaps[uploadingMapTarget] = ev.target.result;
-      saveDatabase(); renderSzkCourseBody(); toast("Zapisano zdjęcie mapki " + uploadingMapTarget + "!");
-    };
-    reader.readAsDataURL(file);
+  function saveAndCopyTicket() {
+    var cit = document.getElementById("tkt-citizen").value.trim() || "Obywatel";
+    var pl = document.getElementById("tkt-plate").value.trim() || "Brak rej.";
+    var tf = 0, tp = 0;
+    var names = selectedTrafficIdxs.map(function(i) { tf += TRAFFIC_OFFENSES[i].fine; tp += TRAFFIC_OFFENSES[i].pts; return TRAFFIC_OFFENSES[i].name; });
+    if (!db.tickets) db.tickets = [];
+    db.tickets.unshift({ citizen: cit, plate: pl, fine: tf, pts: tp });
+    saveDatabase(); renderVehiclesAndTickets();
+    copyText(`MANDAT DROGOWY LSPD\nObywatel: ${cit} | Pojazd: ${pl}\nWykroczenia: ${names.join(", ") || "Wykroczenie drogowe"}\nKwota: $${tf} | Punkty karne: ${tp} pkt\nWystawił: ${db.loggedOfficer}`, "Wystawiono i skopiowano mandat!");
   }
 
-  var selectedCourse = "SYTUACYJNE", courseScores = {}, practicalChecks = {};
-  function renderSzkCourseBar() {
-    var sel = document.getElementById("szk-officer-select");
-    if (sel) sel.innerHTML = db.officers.map(function(o) { return `<option value="${o.badge}">[${o.badge}] ${o.name}</option>`; }).join("");
-    var bar = document.getElementById("szk-courses-bar");
-    if (bar) bar.innerHTML = LICENSES.map(function(k) { return `<div class="blip-pill ${k === selectedCourse ? 'active-blue' : ''}" onclick="selectCourseTab('${k}')"><span class="blip-dot"></span><span>${COURSES_DATA[k].name}</span></div>`; }).join("");
-    renderSzkCourseBody();
+  var currentRadioReason = "rozpoczynamy 10-80 za";
+  function setRadioPreset(r) { currentRadioReason = r; updateRadioPreview(); }
+  function updateRadioPreview() {
+    var veh = document.getElementById("rad-veh")?.value.trim() || "czarnym pojazdem";
+    var loc = document.getElementById("rad-loc")?.value.trim() || "Downtown, kierunek North";
+    var out = document.getElementById("rad-output");
+    if (out) out.value = `${db.loggedOfficer} ${currentRadioReason} ${veh}, nasze 10-20 to ${loc}, 10-21!`;
   }
-  function selectCourseTab(k) { selectedCourse = k; renderSzkCourseBar(); }
-  function setCourseQuestionScore(idx, pts) { if (!courseScores[selectedCourse]) courseScores[selectedCourse] = {}; courseScores[selectedCourse][idx] = pts; renderSzkCourseBody(); }
-  function togglePracticalStageBlip(idx) { if (!practicalChecks[selectedCourse]) practicalChecks[selectedCourse] = {}; practicalChecks[selectedCourse][idx] = !practicalChecks[selectedCourse][idx]; renderSzkCourseBody(); }
-  function renderSzkCourseBody() {
-    var c = COURSES_DATA[selectedCourse], container = document.getElementById("szk-course-body");
-    if (!container || !c) return;
-    if (!courseScores[selectedCourse]) courseScores[selectedCourse] = {};
-    if (!practicalChecks[selectedCourse]) practicalChecks[selectedCourse] = {};
-    var sc = courseScores[selectedCourse], pr = practicalChecks[selectedCourse];
-    var sum = 0; c.questions.forEach(function(q, idx) { sum += (sc[idx] || 0); });
-    var tHTML = "";
-    if (c.questions.length) {
-      var pass = sum >= c.reqTheory, pct = Math.min(100, Math.round((sum / c.maxTheory) * 100));
-      tHTML = `<div class="card"><div class="card-header"><div><h3 style="margin:0; font-size:15px;">Pytania Egzaminacyjne — ${c.name}</h3></div><div class="blip-pill ${pass ? 'active-green' : 'active-red'}" style="cursor:default;"><span class="blip-dot"></span><span>${sum} / ${c.maxTheory} pkt (Min. ${c.reqTheory}) — ${pass ? 'ZALICZONE' : 'NIEZALICZONE'}</span></div></div><div class="progress-track" style="margin-bottom:14px;"><div class="progress-fill" style="width:${pct}%;"></div></div>` +
-        c.questions.map(function(it, idx) {
-          var cur = sc[idx] !== undefined ? sc[idx] : 0;
-          var nodes = "";
-          for (var p = 0; p <= it.pts; p++) {
-            var cls = cur === p ? (p === 0 ? "selected-zero" : (p === it.pts ? "selected-max" : "selected-pts")) : "";
-            nodes += `<div class="blip-node ${cls}" onclick="setCourseQuestionScore(${idx},${p})">${p}</div>`;
-          }
-          return `<div class="question-blip-row ${cur > 0 ? 'scored-positive' : 'scored-zero'}"><div style="display:flex; justify-content:space-between; align-items:center; gap:14px;"><div style="font-weight:700; color:#e2e8f0; font-size:13px;">${it.q} <span style="color:var(--text-dim); font-size:11px;">(Max ${it.pts} pkt)</span></div><div class="blip-nodes-group">${nodes}</div></div><div style="margin-top:8px; padding:7px 11px; background:#070a10; border-left:2px solid var(--accent-bright); border-radius:6px; font-size:12px; color:var(--text-muted);"><strong style="color:var(--accent-light);">Odp:</strong> ${it.a}</div></div>`;
-        }).join("") + `</div>`;
-    }
-    var mapHTML = "";
-    if (c.map === "ASU" || c.map === "SEU") {
-      var isAsu = c.map === "ASU";
-      mapHTML = `<div class="card"><div class="card-header"><h3 style="margin:0; font-size:15px; color:#38bdf8;">${isAsu ? "Mapa Szkoleniowa ASU (Przelot pod mostami < 0:55s)" : "Mapa Szkoleniowa SEU (Drive Skills Test)"}</h3><div style="display:flex; gap:8px;"><button type="button" class="btn btn-sm btn-dark" onclick="triggerCustomMapUpload('${c.map}')">Wgraj zdjęcie mapki</button><button type="button" class="btn btn-sm btn-blue" onclick="openMapZoomModal('${c.map}')">Powiększ mapę</button></div></div><div class="training-map-wrapper"><div class="map-frame" onclick="openMapZoomModal('${c.map}')">${getTrainingMapVisualHTML(c.map)}</div><div style="font-size:13px; color:#cbd5e1; line-height:1.6; background:var(--bg-input); padding:12px 14px; border-radius:10px; border:1px solid var(--border);">${isAsu ? "<strong>Trasa na mapie ASU:</strong><br/>• <strong>Start:</strong> Górny odcinek kanału burzowego przy Mirror Park.<br/>• <strong>Przelot:</strong> Lot wzdłuż czerwonych strzałek pod wszystkimi mostami.<br/>• <strong>Meta:</strong> Wylot kanału przy porcie Elysian Island (poniżej 0:55s)." : "<strong>Trasa na mapie SEU:</strong><br/>• <strong>Start:</strong> Wjazd na Great Ocean Hwy przy plaży Pacific Bluffs.<br/>• <strong>Przejazd:</strong> Jazda wzdłuż wybrzeża przez Chumash, pętla przy Tongva Hills i tunel Zancudo.<br/>• <strong>Meta:</strong> Nawrotka za tunelem i dojazd pod bramę Fortu Zancudo."}</div></div></div>`;
-    }
-    var pHTML = `<div class="card"><h3 style="margin:0 0 10px; color:#34d399;">Etapy Praktyczne (${c.name})</h3><div style="display:flex; flex-direction:column; gap:8px;">${c.practical.map(function(p, idx) { return `<div class="blip-pill ${pr[idx] ? 'active-green' : ''}" style="border-radius:10px; padding:10px 14px; justify-content:space-between;" onclick="togglePracticalStageBlip(${idx})"><div style="display:flex; align-items:center; gap:10px;"><span class="blip-dot"></span><span>${p}</span></div><span class="pill ${pr[idx] ? 'pill-green' : 'pill-gray'}">${pr[idx] ? 'ZALICZONE' : 'DO WYKONANIA'}</span></div>`; }).join("")}</div></div>`;
-    container.innerHTML = tHTML + mapHTML + pHTML;
-  }
-  function assignCourseLicenseToSelected() {
-    var badge = document.getElementById("szk-officer-select").value, off = db.officers.find(function(o) { return o.badge === badge; });
-    if (!off) return;
-    if (!off.licenses) off.licenses = {};
-    off.licenses[selectedCourse] = true; off.updated = "Nadano " + selectedCourse;
-    saveDatabase(); renderLicenseMatrix(); renderAllOfficersView(); toast("Nadano licencję " + selectedCourse + " dla [" + off.badge + "] " + off.name);
-  }
-  function copyCourseProtocol() { copyText(`PROTOKÓŁ SZKOLENIA LSPD — ${COURSES_DATA[selectedCourse].name}\nSzkoleniowiec: ${db.loggedOfficer}\nStatus: ZALICZONE`, "Skopiowano protokół!"); }
-  function renderLicenseMatrix() {
-    var tbody = document.getElementById("matrix-tbody"); if (!tbody) return;
-    var q = (document.getElementById("matrix-search-inp")?.value || "").toLowerCase();
-    tbody.innerHTML = db.officers.filter(function(o) { return o.badge.toLowerCase().indexOf(q) > -1 || o.name.toLowerCase().indexOf(q) > -1; }).map(function(o) {
-      return `<tr><td style="font-weight:800; color:var(--accent-light);">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${LICENSES.map(function(k) { return `<div class="blip-pill ${o.licenses && o.licenses[k] ? 'active-green' : ''}" style="padding:3px 9px; font-size:11px; margin:2px;" onclick="toggleMatrixLic('${o.badge}','${k}')"><span class="blip-dot"></span><span>${k}</span></div>`; }).join("")}</td><td style="color:var(--text-dim); font-size:11px;">${o.updated || "-"}</td></tr>`;
+  function copyRadioOutput() { copyText(document.getElementById("rad-output").value, "Skopiowano meldunek radiowy!"); }
+  function renderDispatchCalls() {
+    var box = document.getElementById("dispatch-calls-box");
+    if (!box) return;
+    box.innerHTML = (db.dispatchCalls || []).map(function(c, i) {
+      return `<div style="background:var(--bg-input); border:1px solid var(--border); border-left:3px solid var(--accent-bright); border-radius:8px; padding:10px 12px; display:flex; justify-content:space-between; align-items:center;"><div><span class="pill pill-red" style="margin-right:6px;">${c.code}</span><strong>${c.title}</strong><div style="font-size:11px; color:var(--text-dim); margin-top:3px;">Zgłoszono: ${c.time} • Reaguje: ${c.unit}</div></div><div style="display:flex; gap:6px;"><button type="button" class="btn btn-sm btn-blue" onclick="respondDispatchCall(${i})">10-4 Reaguj</button><button type="button" class="btn btn-sm btn-red" onclick="removeDispatchCall(${i})">✕</button></div></div>`;
     }).join("");
   }
-  function toggleMatrixLic(badge, k) { var o = db.officers.find(function(x) { return x.badge === badge; }); if (o) { if (!o.licenses) o.licenses = {}; o.licenses[k] = !o.licenses[k]; saveDatabase(); renderLicenseMatrix(); renderAllOfficersView(); } }
-
-  var trialSwRunning = false, trialSwStart = 0, trialSwElapsed = 0, trialSwInterval = null;
-  function toggleTrialStopwatch() {
-    var btn = document.getElementById("trial-sw-btn");
-    if (trialSwRunning) {
-      trialSwElapsed += Date.now() - trialSwStart; trialSwRunning = false;
-      clearInterval(trialSwInterval); btn.textContent = "Start"; btn.className = "btn btn-sm btn-green";
-    } else {
-      trialSwStart = Date.now(); trialSwRunning = true;
-      btn.textContent = "Stop"; btn.className = "btn btn-sm btn-red";
-      trialSwInterval = setInterval(function() {
-        var ms = trialSwElapsed + (Date.now() - trialSwStart), totSec = Math.floor(ms / 1000);
-        setTxt("trial-stopwatch-val", `${String(Math.floor(totSec / 60)).padStart(2, "0")}:${String(totSec % 60).padStart(2, "0")}.${Math.floor((ms % 1000) / 100)}`);
-      }, 100);
-    }
+  function addDispatchCall() {
+    var code = document.getElementById("disp-code-inp").value.trim() || "10-90";
+    var title = document.getElementById("disp-title-inp").value.trim() || "Zgłoszenie centrali LSPD";
+    if (!db.dispatchCalls) db.dispatchCalls = [];
+    db.dispatchCalls.unshift({ code: code, title: title, time: new Date().toLocaleTimeString("pl-PL", {hour:"2-digit",minute:"2-digit"}), unit: "Brak" });
+    document.getElementById("disp-title-inp").value = "";
+    saveDatabase(); renderDispatchCalls();
   }
-  function resetTrialStopwatch() { trialSwRunning = false; trialSwElapsed = 0; clearInterval(trialSwInterval); setTxt("trial-stopwatch-val", "00:00.0"); var btn = document.getElementById("trial-sw-btn"); if (btn) { btn.textContent = "Start"; btn.className = "btn btn-sm btn-green"; } }
+  function respondDispatchCall(i) { db.dispatchCalls[i].unit = db.loggedOfficer; saveDatabase(); renderDispatchCalls(); toast("Przypisano " + db.loggedOfficer + " do wezwania!"); }
+  function removeDispatchCall(i) { db.dispatchCalls.splice(i, 1); saveDatabase(); renderDispatchCalls(); }
 
-  /* BAZA DANYCH I INICJALIZACJA */
-  var INITIAL_OFFICERS = [
-    { badge: "923", name: "Oley Sasa", rank: "Sergeant I", channel: "LSPD Tac #1", status: "Na służbie", licenses: { "SYTUACYJNE": true, "KOMPENDIUM": true, "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "ASU": true, "MERRY": true, "SEU": true, "L.W": true }, updated: "Szkoleniowiec" },
-    { badge: "27", name: "John Cagville", rank: "Captain I", channel: "LSPD Tac #1", status: "Na służbie", licenses: { "KOMPENDIUM": true, "RTO+HRO": true, "NEGO": true, "SV": true, "PWC+APWC": true, "SEU": true }, updated: "HC" },
-    { badge: "80", name: "Henry Scott", rank: "Sergeant I", channel: "Dyspozytornia LSPD", status: "Na służbie", licenses: { "RTO+HRO": true, "SV": true, "PWC+APWC": true }, updated: "-" },
-    { badge: "941", name: "Gregory Solin", rank: "Officer II", channel: "LSPD Tac #2", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true, "SV": true }, updated: "SASA" },
-    { badge: "141", name: "Vivienne Walker", rank: "Officer I", channel: "LSPD Tac #2", status: "Na służbie", licenses: { "RTO+HRO": true, "NEGO": true }, updated: "SASA" }
+  /* AIAD */
+  var AIAD_OFFENSES = [
+    { id: "offduty_gun", label: "Poruszanie się ze sprzętem/w mundurze poza służbą (2.8)", text: "naruszył pkt 2.8 regulaminu (posiadanie wyposażenia lub munduru poza służbą)" },
+    { id: "illegal_attachments", label: "Nielegalne dodatki do broni służbowej", text: "posiadał zamontowane niedozwolone dodatki do broni służbowej (inne niż latarka taktyczna)" },
+    { id: "evidence_theft", label: "Brak zdania konfiskaty po Statusie 7 (2.10)", text: "nie zdał skonfiskowanych przedmiotów do magazynu policyjnego bezpośrednio po zakończeniu Statusu 7 (pkt 2.10)" },
+    { id: "insubordination", label: "Podważanie decyzji przełożonego / SV (3.4)", text: "dopuścił się niesubordynacji oraz podważania decyzji funkcjonariusza wyższego stopniem (pkt 3.4)" },
+    { id: "no_backup", label: "Brak reakcji na Kod 0 / 10-13 Panic Button (3.1)", text: "nie zareagował na wezwanie najwyższego priorytetu Kod 0 / 10-13 (pkt 3.1)" },
+    { id: "taser_abuse", label: "Nadużycie Tasera (>2 razy / na osobie zakutej)", text: "złamał zasady użycia paralizatora Taser (użycie powyżej 2 razy lub wobec osoby zakutej - pkt 13.2)" }
   ];
-  var INITIAL_REPORTS = [
-    { id: 308, author: "[923] Oley Sasa", title: "Podsumowanie akcji - Kod Czerwony w Paleto", type: "Podsumowanie akcji", date: "15.10.2026 02:39", body: "Jednostki LSPD zareagowały na Kod Czerwony w rejonie Paleto Bay.", officers: ["[27] John Cagville"], persons: [], vehicles: [] }
-  ];
-  var INITIAL_CADETS = [
-    { id: "165", badge: "165", name: "Paulo Cortez", fto: "Oley Sasa", joinDate: "03.10.2026", sec: 0, running: false, ts: null, pos: true, posNotes: "Dobry pościg.", neg: "BRAK", negNotes: "", modules: { "Code 6": { ok: true, note: "Poprawił błędy", sign: "SASA" }, "FTS": { ok: true, note: "", sign: "SASA" }, "10-80": { ok: true, note: "Dobry pościg", sign: "Sasa" }, "10-80 Pieszo": { ok: true, note: "(wyżej)", sign: "SASA" }, "Status 7": { ok: true, note: "OK", sign: "Smith" }, "TCCC": { ok: true, note: "", sign: "Walker" }, "Kompendium": { ok: true, note: "OK", sign: "Solin" } } },
-    { id: "166", badge: "166", name: "Cayden Potato", fto: "Oley Sasa", joinDate: "10.10.2026", sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} }
-  ];
-  var INITIAL_BOLO = [
-    { id: 1, type: "POJAZD", target: "Czarny Karin Sultan RSX", details: "Rej. 68LCE795", author: "[923] Oley Sasa", date: "20:45", body: "KOMUNIKAT BOLO — POSZUKIWANY POJAZD\nObiekt: Czarny Karin Sultan RSX (Rej. 68LCE795)\nPowód: Ucieczka przed LSPD (10-80) oraz kradzież z nadajnikiem Tracker GPS.\nWytyczne: Przeprowadzić FTS (10-21)." }
-  ];
-
-  var db = { loggedOfficer: "[923] Oley Sasa", theme: "lspd", pwc: "[80] Henry Scott", apwc: "Brak przypisanego", officers: [], reports: [], cadets: [], patrols: [{ id: 1, type: "ADAM", members: ["[923] Oley Sasa", "[141] Vivienne Walker"] }], aiadCases: [], vehicles: [], tickets: [], dispatchCalls: [], boloList: [], customMaps: {} };
-
-  function loadDatabase() {
-    try {
-      var raw = localStorage.getItem("lspd_mdt_gh_v13");
-      if (raw) db = JSON.parse(raw);
-      else {
-        db.officers = JSON.parse(JSON.stringify(INITIAL_OFFICERS));
-        db.reports = JSON.parse(JSON.stringify(INITIAL_REPORTS));
-        db.cadets = JSON.parse(JSON.stringify(INITIAL_CADETS));
-        db.boloList = JSON.parse(JSON.stringify(INITIAL_BOLO));
-      }
-    } catch (e) {
-      db.officers = JSON.parse(JSON.stringify(INITIAL_OFFICERS));
-      db.reports = JSON.parse(JSON.stringify(INITIAL_REPORTS));
-      db.cadets = JSON.parse(JSON.stringify(INITIAL_CADETS));
-      db.boloList = JSON.parse(JSON.stringify(INITIAL_BOLO));
-    }
-    if (!db.boloList) db.boloList = JSON.parse(JSON.stringify(INITIAL_BOLO));
-    if (!db.customMaps) db.customMaps = {};
-    db.cadets.forEach(function(c) {
-      if (!c.modules) c.modules = {};
-      FTO_BASIC.forEach(function(m) { if (!c.modules[m]) c.modules[m] = { ok: false, note: "", sign: "" }; });
+  var selectedAiadOffenses = ["offduty_gun"], aiadMode = "self", aiadSanction = "warn";
+  function renderAiadOffensesBlips() {
+    var bar = document.getElementById("aiad-offenses-bar");
+    if (!bar) return;
+    bar.innerHTML = AIAD_OFFENSES.map(function(o) {
+      return `<div class="blip-pill ${selectedAiadOffenses.indexOf(o.id) > -1 ? 'active-red' : ''}" onclick="toggleAiadOffense('${o.id}')"><span class="blip-dot"></span><span>${o.label}</span></div>`;
+    }).join("");
+  }
+  function toggleAiadOffense(id) {
+    var idx = selectedAiadOffenses.indexOf(id);
+    if (idx > -1) selectedAiadOffenses.splice(idx, 1); else selectedAiadOffenses.push(id);
+    renderAiadOffensesBlips(); generateAiadAutoText();
+  }
+  function setAiadMode(m) {
+    aiadMode = m;
+    document.getElementById("aiad-mode-self").className = "blip-pill " + (m === "self" ? "active-blue" : "");
+    document.getElementById("aiad-mode-complaint").className = "blip-pill " + (m === "complaint" ? "active-amber" : "");
+    document.getElementById("aiad-mode-observed").className = "blip-pill " + (m === "observed" ? "active-red" : "");
+    generateAiadAutoText();
+  }
+  function setAiadSanction(s) {
+    aiadSanction = s;
+    ["warn", "strike", "fine", "suspend", "fire"].forEach(function(k) {
+      var cls = k === "warn" ? "active-green" : (k === "strike" || k === "fine" ? "active-amber" : "active-red");
+      document.getElementById("aiad-sanc-" + k).className = "blip-pill " + (s === k ? cls : "");
     });
-    if (db.theme) setTabletTheme(db.theme);
-    updateSidebarCounters();
+    generateAiadAutoText();
   }
-  function saveDatabase() {
-    try { localStorage.setItem("lspd_mdt_gh_v13", JSON.stringify(db)); } catch (e) {}
-    updateSidebarCounters();
+  function generateAiadAutoText() {
+    var offName = document.getElementById("aiad-officer-inp")?.value.trim() || "[Nieznany funkcjonariusz]";
+    var inspector = db.loggedOfficer || "[923] Oley Sasa";
+    var chosen = AIAD_OFFENSES.filter(function(o) { return selectedAiadOffenses.indexOf(o.id) > -1; }).map(function(o) { return o.text; });
+    var offenseStr = chosen.length ? chosen.join(", a ponadto ") : "dopuścił się uchybienia regulaminowego wymagającego weryfikacji przez wydział wewnętrzny";
+    var modeStr = aiadMode === "self"
+      ? `Funkcjonariusz ${offName} zgłosił się dobrowolnie na rozmowę wyjaśniającą („dywanik”) do inspektora AIAD ${inspector}.`
+      : aiadMode === "complaint"
+      ? `Postępowanie wewnętrzne wobec funkcjonariusza ${offName} zostało wszczęte przez inspektora AIAD ${inspector} po wpłynięciu zawiadomienia.`
+      : `Postępowanie wobec funkcjonariusza ${offName} zostało wszczęte bezpośrednio przez inspektora AIAD ${inspector} podczas kontroli służbowej.`;
+    var sancMap = {
+      warn: "Zakończono czynności na pouczeniu ustnym oraz przypomnieniu formułki pompki policyjnej.",
+      strike: "Na funkcjonariusza nałożono oficjalne upomnienie pisemne wpisywane do akt osobowych (1/3).",
+      fine: "Decyzją wydziału AIAD na funkcjonariusza nałożono naganę służbową połączoną z karą finansową.",
+      suspend: "Decyzją wydziału AIAD funkcjonariusz zostaje zawieszony w czynnościach służbowych (Suspension).",
+      fire: "Wydział AIAD wnioskuje do High Command o natychmiastowe wydalenie funkcjonariusza ze służby."
+    };
+    var area = document.getElementById("aiad-desc-txt");
+    if (area) area.value = `PROTOKÓŁ POSTĘPOWANIA WEWNĘTRZNEGO AIAD\nInspektor prowadzący: ${inspector}\nFunkcjonariusz: ${offName}\n\n1. Ustalenia:\n${modeStr} W toku weryfikacji ustalono, iż funkcjonariusz ${offenseStr}.\n\n2. Decyzja AIAD:\n${sancMap[aiadSanction]}`;
   }
-  function updateSidebarCounters() {
-    setTxt("cnt-duty", db.officers.filter(function(o) { return o.status === "Na służbie"; }).length);
-    setTxt("cnt-reports", db.reports.length);
-    setTxt("cnt-officers", db.officers.length);
-    setTxt("cnt-cadets", db.cadets.length);
-    setTxt("cnt-patrols", db.patrols.length);
-    setTxt("cnt-aiad", (db.aiadCases || []).length);
-    setTxt("cnt-vehicles", (db.vehicles || []).length);
-    setTxt("cnt-bolo", (db.boloList || []).length);
-    setTxt("logged-officer-display", db.loggedOfficer);
-    setTxt("case-lead-officer", db.loggedOfficer);
+  function saveAiadCase() {
+    var offName = document.getElementById("aiad-officer-inp").value.trim() || "[147] Peter Fals";
+    var body = document.getElementById("aiad-desc-txt").value.trim();
+    var sancLabels = { warn: "POUCZENIE", strike: "UPOMNIENIE 1/3", fine: "KARA FINANSOWA", suspend: "ZAWIESZONY", fire: "WYDALENIE" };
+    var now = new Date(), dStr = now.toLocaleDateString("pl-PL") + " " + now.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
+    if (!db.aiadCases) db.aiadCases = [];
+    db.aiadCases.unshift({ id: Date.now(), officer: offName, inspector: db.loggedOfficer, sanction: sancLabels[aiadSanction], sanctionKey: aiadSanction, date: dStr, body: body });
+    saveDatabase(); renderAiadCasesList(); toast("Zapisano protokół w rejestrze AIAD!");
   }
+  function renderAiadCasesList() {
+    var box = document.getElementById("aiad-cases-list");
+    if (!box) return;
+    var list = db.aiadCases || [];
+    setTxt("aiad-total-badge", list.length + " wpisów"); setTxt("cnt-aiad", list.length);
+    box.innerHTML = list.length ? list.map(function(item) {
+      return `<div style="background:var(--bg-input); border:1px solid var(--border); border-radius:10px; padding:11px 13px; margin-bottom:8px;"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><strong style="color:#fff;">${item.officer}</strong><span class="pill pill-red">${item.sanction}</span></div><div style="font-size:11px; color:var(--text-dim); margin-bottom:6px;">Inspektor: ${item.inspector} • ${item.date}</div><div style="font-size:12px; color:var(--text-muted); white-space:pre-line; max-height:75px; overflow-y:auto; margin-bottom:8px;">${item.body}</div><div style="display:flex; justify-content:flex-end; gap:6px;"><button type="button" class="btn btn-sm btn-dark" onclick="copySingleAiad(${item.id})">Kopiuj</button><button type="button" class="btn btn-sm btn-red" onclick="deleteAiadCase(${item.id})">Usuń</button></div></div>`;
+    }).join("") : `<div style="padding:20px; text-align:center; color:var(--text-dim);">Brak spraw AIAD.</div>`;
+  }
+  function copySingleAiad(id) { var it = (db.aiadCases || []).find(function(x) { return x.id === id; }); if (it) copyText(it.body, "Skopiowano protokół AIAD!"); }
+  function deleteAiadCase(id) { db.aiadCases = (db.aiadCases || []).filter(function(x) { return x.id !== id; }); saveDatabase(); renderAiadCasesList(); }
+  function resetAiadForm() { document.getElementById("aiad-officer-inp").value = ""; selectedAiadOffenses = []; renderAiadOffensesBlips(); generateAiadAutoText(); }
+  function copyAiadProtocol() { copyText(document.getElementById("aiad-desc-txt").value, "Skopiowano protokół AIAD!"); }
 
-  /* STREFA KADETA, RAPORTY, PATROLE, NAWIGACJA */
-  var currentCadetId = "165";
-  function getCadetTotalSec(c) { return (c.sec || 0) + (c.running && c.ts ? Math.max(0, Math.floor((Date.now() - c.ts) / 1000)) : 0); }
-  function formatHMS(s) { return String(Math.floor(s / 3600)).padStart(2, "0") + "h " + String(Math.floor((s % 3600) / 60)).padStart(2, "0") + "m " + String(s % 60).padStart(2, "0") + "s"; }
-  function toggleCadetStopwatch(id) {
-    var c = db.cadets.find(function(x) { return x.id === id; }); if (!c) return;
-    if (c.running) { c.sec = getCadetTotalSec(c); c.running = false; c.ts = null; toast("Zatrzymano patrol [" + c.badge + "] " + c.name); }
-    else { c.running = true; c.ts = Date.now(); toast("Start patrolu [" + c.badge + "] " + c.name); }
-    saveDatabase(); renderCadets(); refreshCadetSheetButtonState();
+  /* RAPORTY */
+  var editingReportId = null, draftOfficers = [], draftPersons = [], draftVehicles = [], currentPickerType = "officers";
+  function renderReportsList() {
+    var tbody = document.getElementById("reports-tbody");
+    if (!tbody) return;
+    var q = (document.getElementById("report-search-inp")?.value || "").toLowerCase();
+    var filtered = db.reports.filter(function(r) { return ("#" + r.id).indexOf(q) > -1 || r.title.toLowerCase().indexOf(q) > -1 || r.author.toLowerCase().indexOf(q) > -1; });
+    tbody.innerHTML = filtered.length ? filtered.map(function(r) {
+      return `<tr><td style="font-weight:800; color:var(--accent-light);">#${r.id}</td><td style="font-weight:700;">${r.author}</td><td style="color:#fff;">${r.title}</td><td><span class="pill pill-amber">${r.type}</span></td><td style="color:var(--text-muted);">${r.date}</td><td style="text-align:right;"><button type="button" class="btn btn-sm btn-dark" onclick="openEditReport(${r.id})">Edytuj</button><button type="button" class="btn btn-sm btn-red" onclick="deleteReport(${r.id})">Usuń</button></td></tr>`;
+    }).join("") : `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--text-dim);">Brak raportów.</td></tr>`;
   }
-  function adjustCadetTime(mins) { var c = db.cadets.find(function(x) { return x.id === currentCadetId; }); if (c) { c.sec = Math.max(0, (c.sec || 0) + mins * 60); saveDatabase(); renderCadets(); refreshCadetSheetButtonState(); } }
-  function refreshCadetSheetButtonState() {
-    var c = db.cadets.find(function(x) { return x.id === currentCadetId; }); if (!c) return;
-    setTxt("cs-live-timer", formatHMS(getCadetTotalSec(c)));
-    var b = document.getElementById("cs-startstop-btn");
-    if (b) { b.textContent = c.running ? "STOP" : "START"; b.className = "btn btn-sm " + (c.running ? "btn-red" : "btn-green"); }
+  function openCleanReportCreator() {
+    editingReportId = null; setTxt("rep-form-header", "Nowy raport");
+    document.getElementById("rf-title").value = ""; document.getElementById("rf-body").value = "";
+    setTxt("rf-author", db.loggedOfficer); draftOfficers = []; draftPersons = []; draftVehicles = [];
+    renderDraftChips();
+    document.getElementById("reports-list-subview").classList.add("hidden");
+    document.getElementById("reports-form-subview").classList.remove("hidden");
   }
-  function renderCadets() {
-    var tbody = document.getElementById("fto-cadets-tbody"); if (!tbody) return;
-    var q = (document.getElementById("fto-search")?.value || "").toLowerCase();
-    tbody.innerHTML = db.cadets.filter(function(c) { return c.badge.toLowerCase().indexOf(q) > -1 || c.name.toLowerCase().indexOf(q) > -1; }).map(function(c) {
-      var done = FTO_BASIC.filter(function(m) { return c.modules[m]?.ok; }).length;
-      return `<tr><td style="font-weight:800; color:var(--accent-light);">#${c.badge}</td><td style="font-weight:700;">${c.name}</td><td>${c.fto}</td><td><div style="display:flex; align-items:center; gap:8px;"><span id="cad-timer-${c.id}" style="font-family:monospace; font-weight:800; color:${c.running ? '#34d399' : '#38bdf8'};">${formatHMS(getCadetTotalSec(c))}</span><button type="button" class="btn btn-sm ${c.running ? 'btn-red' : 'btn-green'}" onclick="toggleCadetStopwatch('${c.id}')">${c.running ? 'STOP' : 'START'}</button></div></td><td><button type="button" class="btn btn-sm btn-blue" onclick="openCadetSheetView('${c.id}')">ARKUSZ (${done}/7)</button></td><td>${c.joinDate}</td><td><div class="blip-pill ${c.pos ? 'active-green' : ''}" style="padding:3px 9px; font-size:11px;" onclick="setCadetPos('${c.id}', ${!c.pos})"><span class="blip-dot"></span><span>${c.pos ? 'TAK' : 'NIE'}</span></div></td><td><select class="sel" style="padding:4px 8px; font-size:11px;" onchange="setCadetNeg('${c.id}', this.value)">${["BRAK","1 NEGATYWNY","2 NEGATYWNE","DO POPRAWY","ZAWIESZONY"].map(function(opt) { return `<option value="${opt}" ${c.neg===opt?'selected':''}>${opt}</option>`; }).join("")}</select></td><td><button type="button" class="btn btn-sm btn-red" onclick="removeCadet('${c.id}')">✕</button></td></tr>`;
-    }).join("");
-    var examSel = document.getElementById("exam-cadet-sel");
-    if (examSel) examSel.innerHTML = db.cadets.map(function(c) { return `<option value="${c.id}">[${c.badge}] ${c.name}</option>`; }).join("");
+  function openEditReport(id) {
+    var r = db.reports.find(function(x) { return x.id === id; }); if (!r) return;
+    editingReportId = r.id; setTxt("rep-form-header", "Edycja raportu #" + r.id);
+    document.getElementById("rf-title").value = r.title; document.getElementById("rf-type").value = r.type;
+    document.getElementById("rf-body").value = r.body; setTxt("rf-author", r.author);
+    draftOfficers = (r.officers || []).slice(); draftPersons = (r.persons || []).slice(); draftVehicles = (r.vehicles || []).slice();
+    renderDraftChips();
+    document.getElementById("reports-list-subview").classList.add("hidden");
+    document.getElementById("reports-form-subview").classList.remove("hidden");
   }
-  function createCadet() {
-    var badge = document.getElementById("new-c-badge").value.trim(), name = document.getElementById("new-c-name").value.trim(), fto = document.getElementById("new-c-fto").value.trim() || "Oley Sasa";
-    if (!badge || !name) { toast("Wpisz odznakę i imię kadeta!"); return; }
-    var nc = { id: badge + "_" + Date.now(), badge: badge, name: name, fto: fto, joinDate: new Date().toLocaleDateString("pl-PL"), sec: 0, running: false, ts: null, pos: false, posNotes: "", neg: "BRAK", negNotes: "", modules: {} };
-    FTO_BASIC.forEach(function(m) { nc.modules[m] = { ok: false, note: "", sign: "" }; });
-    db.cadets.unshift(nc); saveDatabase(); renderCadets();
-    document.getElementById("new-c-badge").value = ""; document.getElementById("new-c-name").value = ""; toast("Dodano kadeta!");
+  function closeReportCreator() {
+    document.getElementById("reports-form-subview").classList.add("hidden");
+    document.getElementById("reports-list-subview").classList.remove("hidden");
+    renderReportsList();
   }
-  function removeCadet(id) { db.cadets = db.cadets.filter(function(x) { return x.id !== id; }); saveDatabase(); renderCadets(); }
-  function setCadetPos(id, v) { var c = db.cadets.find(function(x) { return x.id === id; }); if (c) { c.pos = v; saveDatabase(); renderCadets(); } }
-  function setCadetNeg(id, v) { var c = db.cadets.find(function(x) { return x.id === id; }); if (c) { c.neg = v; saveDatabase(); renderCadets(); } }
-  function openCadetSheetView(id) {
-    currentCadetId = id; var c = db.cadets.find(function(x) { return x.id === id; }); if (!c) return;
-    setTxt("cs-badge-pill", "#" + c.badge); setTxt("cs-title-name", c.name); setTxt("cs-subtitle", "Opiekun FTO: " + c.fto + " • Dołączył: " + c.joinDate);
-    document.getElementById("cs-pos-blip").className = "blip-pill " + (c.pos ? "active-green" : "");
-    document.getElementById("cs-pos-notes").value = c.posNotes || "";
-    document.getElementById("cs-neg-select").value = c.neg || "BRAK";
-    document.getElementById("cs-neg-notes").value = c.negNotes || "";
-    refreshCadetSheetButtonState(); renderCadetSheetModules(c); switchFtoView("sheet");
+  function renderDraftChips() {
+    var rBox = function(id, arr, k) {
+      var el = document.getElementById(id);
+      if (el) el.innerHTML = arr.length ? arr.map(function(it, i) { return `<div class="chip-item"><span>${it}</span><button type="button" class="chip-remove" onclick="removeDraftChip('${k}',${i})">×</button></div>`; }).join("") : `<div style="color:var(--text-dim); font-size:12px;">Brak pozycji</div>`;
+    };
+    rBox("rf-officers-box", draftOfficers, "officers");
+    rBox("rf-persons-box", draftPersons, "persons");
+    rBox("rf-vehicles-box", draftVehicles, "vehicles");
   }
-  function toggleSheetPosBlip() { var c = db.cadets.find(function(x) { return x.id === currentCadetId; }); if (c) { c.pos = !c.pos; document.getElementById("cs-pos-blip").className = "blip-pill " + (c.pos ? "active-green" : ""); saveDatabase(); renderCadets(); } }
-  function renderCadetSheetModules(c) {
-    var tbody = document.getElementById("cs-modules-body"); if (!tbody) return;
-    tbody.innerHTML = FTO_BASIC.map(function(m, i) {
-      var mod = c.modules[m] || { ok: false, note: "", sign: "" };
-      return `<tr><td style="font-weight:700;">${m}</td><td><div class="blip-pill ${mod.ok ? 'active-green' : ''}" style="padding:4px 10px; font-size:11px;" onclick="toggleCadetModOk(${i})"><span class="blip-dot"></span><span>${mod.ok ? 'Potrafi' : 'Brak'}</span></div></td><td><input type="text" class="inp" value="${mod.note}" oninput="updateCadMod(${i},'note',this.value)"/></td><td><input type="text" class="inp" style="text-align:center;font-weight:700;" value="${mod.sign}" oninput="updateCadMod(${i},'sign',this.value)"/></td><td><button type="button" class="btn btn-sm btn-dark" onclick="quickSignCadMod(${i})">Podpisz: SASA</button></td></tr>`;
-    }).join("");
+  function removeDraftChip(k, i) {
+    if (k === "officers") draftOfficers.splice(i, 1);
+    if (k === "persons") draftPersons.splice(i, 1);
+    if (k === "vehicles") draftVehicles.splice(i, 1);
+    renderDraftChips();
   }
-  function toggleCadetModOk(idx) { var c = db.cadets.find(function(x) { return x.id === currentCadetId; }); if (c) { c.modules[FTO_BASIC[idx]].ok = !c.modules[FTO_BASIC[idx]].ok; saveDatabase(); renderCadetSheetModules(c); renderCadets(); } }
-  function updateCadMod(idx, field, val) { var c = db.cadets.find(function(x) { return x.id === currentCadetId; }); if (c) { c.modules[FTO_BASIC[idx]][field] = val; saveDatabase(); renderCadets(); } }
-  function quickSignCadMod(idx) { var c = db.cadets.find(function(x) { return x.id === currentCadetId; }); if (c) { c.modules[FTO_BASIC[idx]].ok = true; c.modules[FTO_BASIC[idx]].sign = "SASA"; saveDatabase(); renderCadetSheetModules(c); renderCadets(); } }
-  function signAllCadetBasic() { var c = db.cadets.find(function(x) { return x.id === currentCadetId; }); if (c) { FTO_BASIC.forEach(function(m) { c.modules[m].ok = true; c.modules[m].sign = "SASA"; }); saveDatabase(); renderCadetSheetModules(c); renderCadets(); toast("Zatwierdzono moduły jako SASA"); } }
-  function saveCadetRemarks() { var c = db.cadets.find(function(x) { return x.id === currentCadetId; }); if (c) { c.posNotes = document.getElementById("cs-pos-notes").value; c.neg = document.getElementById("cs-neg-select").value; c.negNotes = document.getElementById("cs-neg-notes").value; saveDatabase(); renderCadets(); } }
-  function promoteCadetToOfficer() {
-    var c = db.cadets.find(function(x) { return x.id === currentCadetId; }); if (!c) return;
-    db.officers.unshift({ badge: c.badge, name: c.name, rank: "Officer I", channel: "LSPD Tac #1", status: "Na służbie", licenses: {}, updated: "Awans FTO" });
-    db.cadets = db.cadets.filter(function(x) { return x.id !== currentCadetId; });
-    saveDatabase(); renderCadets(); renderAllOfficersView(); switchFtoView("list"); toast("Awansowano [" + c.badge + "] " + c.name + "!");
+  function openPickerModal(k) {
+    currentPickerType = k; document.getElementById("picker-custom-inp").value = "";
+    document.getElementById("picker-modal").classList.remove("hidden");
+    var box = document.getElementById("picker-list-box");
+    var pool = (k === "officers" || k === "case_officers") ? db.officers.map(function(o) { return `[${o.badge}] ${o.name}`; }) : k === "persons" ? ["[729] Jade Grayson (SAMS)", "[711] Andrew Karabin (SAMS)"] : ["Bravado Charger LSPD", "BMW M3 Patrol Unit"];
+    box.innerHTML = pool.map(function(it, idx) { return `<div class="penal-blip-item" onclick="selectPickerPool(${idx})"><span>${it}</span><span class="pill pill-blue">+ Wybierz</span></div>`; }).join("");
+    window._pickerPool = pool;
   }
-
-  var EXAM_ITEMS = ["Teoria (Kompendium LEA)", "NTS", "FTS", "Status 7 (Cele)", "10-80 (Pościg)", "10-80 pieszo (Taser/BLOS)", "Pierwsza pomoc (MedBag)"];
-  var examScores = {}; EXAM_ITEMS.forEach(function(i) { examScores[i] = 0; });
-  function renderOfficerExamTable() {
-    var tb = document.getElementById("exam-rows-tbody"); if (!tb) return;
-    var total = 0;
-    tb.innerHTML = EXAM_ITEMS.map(function(item, idx) {
-      var val = examScores[item] || 0; total += val;
-      var nodes = [0, 1, 2, 3].map(function(p) { return `<div class="blip-node ${val === p ? (p === 0 ? 'selected-zero' : (p === 3 ? 'selected-max' : 'selected-pts')) : ''}" onclick="setExamPts(${idx},${p})">${p}</div>`; }).join("");
-      return `<tr><td style="font-weight:700; color:var(--accent-light);">${item}</td><td><div class="blip-nodes-group">${nodes}</div></td><td style="text-align:center; font-weight:800;">${val} pkt</td></tr>`;
-    }).join("");
-    setTxt("exam-total-cell", total + " / 21");
-    var v = document.getElementById("exam-verdict-cell");
-    if (v) { v.textContent = total >= 17 ? "ZDANE" : "NIEZDANE (Min. 17 pkt)"; v.style.color = total >= 17 ? "#34d399" : "#f87171"; }
+  function selectPickerPool(idx) { selectItemFromPicker(window._pickerPool[idx]); }
+  function closePickerModal() { document.getElementById("picker-modal").classList.add("hidden"); }
+  function selectItemFromPicker(val) {
+    if (currentPickerType === "case_officers") {
+      if (caseAssistOfficers.indexOf(val) === -1) caseAssistOfficers.push(val);
+      renderCaseAssistOfficers(); generateAutoCaseDescription(); closePickerModal(); return;
+    }
+    if (currentPickerType === "officers" && draftOfficers.indexOf(val) === -1) draftOfficers.push(val);
+    if (currentPickerType === "persons" && draftPersons.indexOf(val) === -1) draftPersons.push(val);
+    if (currentPickerType === "vehicles" && draftVehicles.indexOf(val) === -1) draftVehicles.push(val);
+    renderDraftChips(); closePickerModal();
   }
-  function setExamPts(idx, p) { examScores[EXAM_ITEMS[idx]] = p; renderOfficerExamTable(); }
-  function copyFinalExamProtocol() { var total = 0; EXAM_ITEMS.forEach(function(i) { total += examScores[i]; }); copyText(`EGZAMIN OFICERSKI LSPD — Wynik: ${total}/21 pkt (${total >= 17 ? 'ZDANE' : 'NIEZDANE'})`, "Skopiowano wynik egzaminu!"); }
-
-  function renderPatrols() {
-    setTxt("pwc-holder-name", db.pwc); setTxt("apwc-holder-name", db.apwc);
-    var grid = document.getElementById("patrols-grid");
-    if (grid) grid.innerHTML = db.patrols.map(function(p, idx) { return `<div class="card" style="margin-bottom:0;"><div class="card-header"><div><strong>Patrol ${idx + 1}</strong> <span class="pill pill-blue">${p.type}</span></div><button type="button" class="btn btn-sm btn-red" onclick="removePatrol(${p.id})">Usuń</button></div>${p.members.map(function(m) { return `<div class="chip-item"><span>${m}</span></div>`; }).join("")}</div>`; }).join("");
+  function addCustomPickerItem() { var val = document.getElementById("picker-custom-inp").value.trim(); if (val) selectItemFromPicker(val); }
+  function saveReportFromForm() {
+    var title = document.getElementById("rf-title").value.trim(), type = document.getElementById("rf-type").value, body = document.getElementById("rf-body").value.trim();
+    if (!title || !body) { toast("Wpisz tytuł i treść raportu!"); return; }
+    var now = new Date(), dStr = now.toLocaleDateString("pl-PL") + " " + now.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
+    if (editingReportId) {
+      var r = db.reports.find(function(x) { return x.id === editingReportId; });
+      if (r) { r.title = title; r.type = type; r.body = body; r.officers = draftOfficers.slice(); r.persons = draftPersons.slice(); r.vehicles = draftVehicles.slice(); }
+    } else {
+      var nextId = db.reports.length ? Math.max.apply(null, db.reports.map(function(x) { return x.id; })) + 1 : 309;
+      db.reports.unshift({ id: nextId, author: db.loggedOfficer, title: title, type: type, date: dStr, body: body, officers: draftOfficers.slice(), persons: draftPersons.slice(), vehicles: draftVehicles.slice() });
+    }
+    saveDatabase(); closeReportCreator(); toast("Zapisano raport!");
   }
-  function removePatrol(id) { db.patrols = db.patrols.filter(function(x) { return x.id !== id; }); saveDatabase(); renderPatrols(); }
-  function takeOverRole(r) { if (r === "PWC") db.pwc = db.loggedOfficer; else db.apwc = db.loggedOfficer; saveDatabase(); renderPatrols(); toast("Przejęto " + r); }
-  function createNewPatrolUnit() {
-    var type = document.getElementById("new-patrol-type").value, mem = document.getElementById("new-patrol-members").value.trim() || db.loggedOfficer;
-    db.patrols.push({ id: Date.now(), type: type, members: mem.split(",").map(function(s) { return s.trim(); }) });
-    document.getElementById("new-patrol-members").value = ""; saveDatabase(); renderPatrols();
-  }
-  function renderAllOfficersView() {
-    var dispBody = document.getElementById("dispatch-officers-tbody"), allBody = document.getElementById("all-officers-tbody");
-    if (dispBody) dispBody.innerHTML = db.officers.map(function(o) { return `<tr><td style="font-weight:800; color:var(--accent-light);">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${o.channel || "LSPD Tac #1"}</td><td><div class="blip-pill ${o.status === 'Na służbie' ? 'active-green' : ''}" style="padding:3px 10px; font-size:11px;" onclick="toggleOfficerDuty('${o.badge}')"><span class="blip-dot"></span><span>${o.status}</span></div></td></tr>`; }).join("");
-    if (allBody) allBody.innerHTML = db.officers.map(function(o) { return `<tr><td style="font-weight:800; color:var(--accent-light);">[${o.badge}]</td><td style="font-weight:700;">${o.name}</td><td>${o.rank}</td><td>${LICENSES.filter(function(k) { return o.licenses && o.licenses[k]; }).map(function(k) { return `<span class="pill pill-blue" style="margin-right:3px;">${k}</span>`; }).join("") || `<span style="color:var(--text-dim);">Brak</span>`}</td><td><span class="pill ${o.status === 'Na służbie' ? 'pill-green' : 'pill-gray'}">${o.status}</span></td><td style="text-align:right;"><button type="button" class="btn btn-sm btn-red" onclick="deleteOfficer('${o.badge}')">Usuń</button></td></tr>`; }).join("");
-  }
-  function deleteOfficer(b) { db.officers = db.officers.filter(function(x) { return x.badge !== b; }); saveDatabase(); renderAllOfficersView(); renderLicenseMatrix(); }
-  function toggleOfficerDuty(b) { var o = db.officers.find(function(x) { return x.badge === b; }); if (o) { o.status = o.status === "Na służbie" ? "Poza służbą" : "Na służbie"; saveDatabase(); renderAllOfficersView(); } }
-  function createOfficerInDB() {
-    var b = document.getElementById("add-off-badge").value.trim(), n = document.getElementById("add-off-name").value.trim(), r = document.getElementById("add-off-rank").value.trim() || "Officer I";
-    if (!b || !n) { toast("Wpisz odznakę i imię!"); return; }
-    db.officers.unshift({ badge: b, name: n, rank: r, channel: "LSPD Tac #1", status: "Na służbie", licenses: {}, updated: "Nowy" });
-    saveDatabase(); renderAllOfficersView(); renderLicenseMatrix(); renderSzkCourseBar(); renderAiadOffensesBlips();
-    document.getElementById("add-off-badge").value = ""; document.getElementById("add-off-name").value = ""; toast("Dodano funkcjonariusza!");
-  }
+  function deleteReport(id) { db.reports = db.reports.filter(function(x) { return x.id !== id; }); saveDatabase(); renderReportsList(); }
+  function copyCurrentReportForm() { copyText(`TYTUŁ: ${document.getElementById("rf-title").value}\nAUTOR: ${db.loggedOfficer}\n\n${document.getElementById("rf-body").value}`, "Skopiowano raport!"); }
 
   function switchMainView(v) {
     ["sprawy", "poszukiwania", "raporty", "pojazdy", "dispatch", "aiad", "dyspozytornia", "patrole", "funkcjonariusze", "szkolenia", "kompendium", "kadet"].forEach(function(k) {
@@ -2017,6 +1860,7 @@
     var targetSec = document.getElementById("view-" + v), targetNav = document.getElementById("nav-" + v);
     if (targetSec) targetSec.classList.remove("hidden");
     if (targetNav) targetNav.classList.add("active");
+    if (v === "szkolenia") { renderSzkCourseBar(); renderLicenseMatrix(); }
   }
   function switchSzkMode(m) {
     document.getElementById("szk-mode-exam").classList.toggle("hidden", m !== "exam");
@@ -2064,28 +1908,33 @@
   }
   setInterval(tickClock, 1000);
 
-  loadDatabase();
-  tickClock();
-  renderCaseAssistOfficers();
-  renderConfiscatedDisplay([]);
-  renderContextualChargeBlips();
-  updateCaseTotals();
-  renderBoloBlips();
-  generateBoloAutoText();
-  renderBoloList();
-  renderVehiclesAndTickets();
-  updateRadioPreview();
-  renderDispatchCalls();
-  renderAiadOffensesBlips();
-  generateAiadAutoText();
-  renderAiadCasesList();
-  renderReportsList();
-  renderSzkCourseBar();
-  renderLicenseMatrix();
-  renderCadets();
-  renderOfficerExamTable();
-  renderPatrols();
-  renderAllOfficersView();
+  /* BEZPIECZNY START WSZYSTKICH MODUŁÓW */
+  [
+    loadDatabase,
+    tickClock,
+    renderSzkCourseBar,
+    renderLicenseMatrix,
+    renderCaseAssistOfficers,
+    function() { renderConfiscatedDisplay([]); },
+    renderContextualChargeBlips,
+    updateCaseTotals,
+    renderBoloBlips,
+    generateBoloAutoText,
+    renderBoloList,
+    renderVehiclesAndTickets,
+    updateRadioPreview,
+    renderDispatchCalls,
+    renderAiadOffensesBlips,
+    generateAiadAutoText,
+    renderAiadCasesList,
+    renderReportsList,
+    renderCadets,
+    renderOfficerExamTable,
+    renderPatrols,
+    renderAllOfficersView
+  ].forEach(function(fn) {
+    try { fn(); } catch (err) { console.error(err); }
+  });
 </script>
 </body>
 </html>
